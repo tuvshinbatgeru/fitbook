@@ -11966,12 +11966,7 @@ exports.default = {
 
 	ready: function ready() {
 		this.modal = new Foundation.Reveal($('#customModal'));
-	},
-
-	events: {
-		'closed.zf.reveal': function closedZfReveal() {
-			alert('test');
-		}
+		$(window).on('closed.zf.reveal', this.modalClose);
 	},
 
 	methods: {
@@ -11981,8 +11976,6 @@ exports.default = {
 
 		modalSave: function modalSave() {
 			this.$dispatch('modal-saved', this.usage);
-			//somevalidation method called
-			//ajax request gone then hide method
 		}
 	},
 
