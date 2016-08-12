@@ -1,0 +1,53 @@
+.hw-default-logo {
+  color: white;
+  font-size: 30px; }
+  .hw-default-logo img {
+    height: 30px;
+    width: auto; }
+
+.hw-default-top-bar {
+  background-color: rgba(28, 28, 23, 0.3);
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: 60px;
+  z-index: 1; }
+  .hw-default-top-bar ul {
+    background-color: inherit; }
+    .hw-default-top-bar ul:hover {
+      color: #fff; }
+
+.parallax-container {
+  height: 100%;
+  overflow: hidden; }
+
+.parallax-content {
+  color: #fff;
+  margin: 0;
+  padding: 0;
+  perspective: 1px;
+  transform-style: preserve-3d;
+  height: 100%;
+  overflow-y: hidden;
+  overflow-x: hidden; }
+
+.parallax-back {
+  top: 0;
+  left: 0;
+  background: url(../../images/flexgym/08.jpg) no-repeat right top fixed;
+  background-size: cover;
+  width: 100%;
+  height: 30vw;
+  z-index: -1;
+  padding: 24vw 0 1vw; }
+  .parallax-back * {
+    font-weight: normal;
+    letter-spacing: 0.2em;
+    text-align: center;
+    margin: 0;
+    padding: 2em 0; }
+  .parallax-back p {
+    background-color: rgba(255, 255, 255, 0.3);
+    color: #fff; }
+
+/*# sourceMappingURL=hw-default.css.map */

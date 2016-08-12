@@ -1,0 +1,20 @@
+.widget-1 {
+  padding: 10px;
+  background-color: #fff; }
+  .widget-1 h1 {
+    font-weight: bold; }
+  .widget-1 ul {
+    display: inline-block;
+    list-style-type: none;
+    margin: 5px; }
+  .widget-1 img {
+    height: 120px; }
+
+.line {
+  border-bottom: 1px solid #000; }
+
+.clip-circle {
+  -webkit-clip-path: circle(60px at center);
+  clip-path: circle(60px at center); }
+
+/*# sourceMappingURL=cw-default.css.map */
