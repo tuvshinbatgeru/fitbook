@@ -1,0 +1,313 @@
+/* ==========================================================================
+   Materialize variables
+   ========================================================================== */
+/**
+ * Table of Contents:
+ *
+ *  1. Colors
+ *  2. Badges
+ *  3. Buttons
+ *  4. Cards
+ *  5. Collapsible
+ *  6. Chips
+ *  7. Date Picker
+ *  8. Dropdown
+ *  10. Forms
+ *  11. Global
+ *  12. Grid
+ *  13. Navigation Bar
+ *  14. Side Navigation
+ *  15. Photo Slider
+ *  16. Spinners | Loaders
+ *  17. Tabs
+ *  18. Tables
+ *  19. Toasts
+ *  20. Typography
+ *  21. Footer
+ *  22. Flow Text
+ *  23. Collections
+ *  24. Progress Bar
+ */
+
+
+/* 1. Colors
+   ========================================================================== */
+
+$m-primary-color: color("materialize-red", "lighten-2") !default;   
+$m-primary-color-light: lighten($m-primary-color, 15%) !default;
+$m-primary-color-dark: darken($m-primary-color, 15%) !default;
+
+$m-secondary-color: color("teal", "lighten-1") !default;
+$m-success-color: color("green", "base") !default;
+$m-error-color: color("red", "base") !default;
+$m-link-color: color("light-blue", "darken-1") !default;
+
+
+/* 2. Badges
+   ========================================================================== */
+
+$m-badge-bg-color: $m-secondary-color !default;
+
+
+/* 3. Buttons
+   ========================================================================== */
+
+// Shared styles
+$m-button-border: none !default;
+$m-button-background-focus: lighten($m-secondary-color, 4%) !default;
+$m-button-font-size: 1.3rem !default;
+$m-button-height: 36px !default;
+$m-button-padding: 0 2rem !default;
+$m-button-radius: 2px !default;
+
+// Disabled styles
+$m-button-disabled-background: #DFDFDF !default;
+$m-button-disabled-color: #9F9F9F !default;
+
+// Raised buttons
+$m-button-raised-background: $m-secondary-color !default;
+$m-button-raised-background-hover: lighten($m-button-raised-background, 5%) !default;
+$m-button-raised-color: #fff !default;
+
+// Large buttons
+$m-button-large-icon-font-size: 1.6rem !default;
+$m-button-large-height: $m-button-height * 1.5 !default;
+
+// Flat buttons
+$m-button-flat-color: #343434 !default;
+$m-button-flat-disabled-color: lighten(#999, 10%) !default;
+
+// Floating buttons
+$m-button-floating-background: $m-secondary-color !default;
+$m-button-floating-background-hover: $m-button-floating-background !default;
+$m-button-floating-color: #fff !default;
+$m-button-floating-size: 37px !default;
+$m-button-floating-large-size: $m-button-floating-size * 1.5 !default;
+$m-button-floating-radius: 50% !default;
+
+
+/* 4. Cards
+   ========================================================================== */
+
+$m-card-padding: 20px !default;
+$m-card-bg-color: #fff !default;
+$m-card-link-color: color("orange", "accent-2") !default;
+$m-card-link-color-light: lighten($m-card-link-color, 20%) !default;
+
+
+/* 5. Collapsible
+   ========================================================================== */
+
+$m-collapsible-height: 3rem !default;
+$m-collapsible-header-color: #fff !default;
+$m-collapsible-border-color: #ddd !default;
+
+
+/* 6. Chips
+   ========================================================================== */
+
+$m-chip-bg-color: #e4e4e4 !default;
+$m-chip-border-color: #9e9e9e !default;
+$m-chip-selected-color: #26a69a !default;
+$m-chip-margin: 5px !default;
+
+
+/* 7. Date Picker
+   ========================================================================== */
+
+$m-datepicker-weekday-bg: darken($m-secondary-color, 7%) !default;
+$m-datepicker-date-bg: $m-secondary-color !default;
+$m-datepicker-year: rgba(255, 255, 255, .4) !default;
+$m-datepicker-focus: rgba(0,0,0, .05) !default;
+$m-datepicker-selected: $m-secondary-color !default;
+$m-datepicker-selected-outfocus: desaturate(lighten($m-secondary-color, 35%), 15%) !default;
+
+
+/* 8. Dropdown
+   ========================================================================== */
+
+$m-dropdown-bg-color: #fff !default;
+$m-dropdown-hover-bg-color: #eee !default;
+$m-dropdown-color: $m-secondary-color !default;
+$m-dropdown-item-height: 50px !default;
+
+
+/* 9. Fonts
+   ========================================================================== */
+
+$m-roboto-font-path: "../fonts/roboto/" !default;
+
+
+/* 10. Forms
+   ========================================================================== */
+
+// Text Inputs + Textarea
+$m-input-height: 3rem !default;
+$m-input-border-color: color("grey", "base") !default;
+$m-input-border: 1px solid $m-input-border-color !default;
+$m-input-background: #fff !default;
+$m-input-error-color: $m-error-color !default;
+$m-input-success-color: $m-success-color !default;
+$m-input-focus-color: $m-secondary-color !default;
+$m-input-font-size: 1rem !default;
+$m-input-margin: 0 0 20px 0 !default;
+$m-input-padding: 0 !default;
+$m-input-transition: all .3s !default;
+$m-label-font-size: .8rem !default;
+$m-input-disabled-color: rgba(0,0,0, .26) !default;
+$m-input-disabled-solid-color: #BDBDBD !default;
+$m-input-disabled-border: 1px dotted $m-input-disabled-color !default;
+$m-input-invalid-border: 1px solid $m-input-error-color !default;
+$m-placeholder-text-color: lighten($m-input-border-color, 20%) !default;
+
+// Radio Buttons
+$m-radio-fill-color: $m-secondary-color !default;
+$m-radio-empty-color: #5a5a5a !default;
+$m-radio-border: 2px solid $m-radio-fill-color !default;
+
+// Range
+$m-range-height: 14px !default;
+$m-range-width: 14px !default;
+$m-track-height: 3px !default;
+
+// Select
+$m-select-border: 1px solid #f2f2f2 !default;
+$m-select-background: rgba(255, 255, 255, 0.90) !default;
+$m-select-focus: 1px solid lighten($m-secondary-color, 47%) !default;
+$m-select-padding: 5px !default;
+$m-select-radius: 2px !default;
+$m-select-disabled-color: rgba(0,0,0,.3) !default;
+
+// Switches
+$m-switch-bg-color: $m-secondary-color !default;
+$m-switch-checked-lever-bg: desaturate(lighten($m-secondary-color, 25%), 25%) !default;
+$m-switch-unchecked-bg: #F1F1F1 !default;
+$m-switch-unchecked-lever-bg: #818181 !default;
+$m-switch-radius: 15px !default;
+
+
+/* 11. Global
+   ========================================================================== */
+
+// Media Query Ranges
+$m-small-screen-up: 601px !default;
+$m-medium-screen-up: 993px !default;
+$m-large-screen-up: 1201px !default;
+$m-small-screen: 600px !default;
+$m-medium-screen: 992px !default;
+$m-large-screen: 1200px !default;
+
+$m-medium-and-up: "only screen and (min-width : #{$m-small-screen-up})" !default;
+$m-large-and-up: "only screen and (min-width : #{$m-medium-screen-up})" !default;
+$m-small-and-down: "only screen and (max-width : #{$m-small-screen})" !default;
+$m-medium-and-down: "only screen and (max-width : #{$m-medium-screen})" !default;
+$m-medium-only: "only screen and (min-width : #{$m-small-screen-up}) and (max-width : #{$m-medium-screen})" !default;
+
+
+/* 12. Grid
+   ========================================================================== */
+
+$m-num-cols: 12 !default;
+$m-gutter-width: 1.5rem !default;
+$m-element-top-margin: $m-gutter-width/3 !default;
+$m-element-bottom-margin: ($m-gutter-width*2)/3 !default;
+
+
+/* 13. Navigation Bar
+   ========================================================================== */
+
+$m-navbar-height: 64px !default;
+$m-navbar-height-mobile: 56px !default;
+$m-navbar-font-size: 1rem !default;
+$m-navbar-font-color: #fff !default;
+$m-navbar-brand-font-size: 2.1rem !default;
+
+/* 14. Side Navigation
+   ========================================================================== */
+
+$m-sidenav-font-size: 14px !default;
+$m-sidenav-font-color: rgba(0,0,0,.87) !default;
+$m-sidenav-bg-color: #fff !default;
+$m-sidenav-padding: 16px !default;
+$m-sidenav-item-height: 48px !default;
+
+
+/* 15. Photo Slider
+   ========================================================================== */
+
+$m-slider-bg-color: color('grey', 'base') !default;
+$m-slider-bg-color-light: color('grey', 'lighten-2') !default;
+$m-slider-indicator-color: color('green', 'base') !default;
+
+
+/* 16. Spinners | Loaders
+   ========================================================================== */
+
+$m-spinner-default-color: $m-secondary-color !default;
+
+
+/* 17. Tabs
+   ========================================================================== */
+
+$m-tabs-underline-color: $m-primary-color-light !default;
+$m-tabs-text-color: $m-primary-color !default;
+$m-tabs-bg-color: #fff !default;
+
+
+/* 18. Tables
+   ========================================================================== */
+
+$m-table-border-color: #d0d0d0 !default;
+$m-table-striped-color: #f2f2f2 !default;
+
+
+/* 19. Toasts
+   ========================================================================== */
+
+$m-toast-height: 48px !default;
+$m-toast-color: #323232 !default;
+$m-toast-text-color: #fff !default;
+
+
+/* 20. Typography
+   ========================================================================== */
+
+$m-off-black: rgba(0, 0, 0, 0.87) !default;
+// Header Styles
+$m-h1-fontsize: 4.2rem !default;
+$m-h2-fontsize: 3.56rem !default;
+$m-h3-fontsize: 2.92rem !default;
+$m-h4-fontsize: 2.28rem !default;
+$m-h5-fontsize: 1.64rem !default;
+$m-h6-fontsize: 1rem !default;
+
+
+/* 21. Footer
+   ========================================================================== */
+
+$m-footer-bg-color: $m-primary-color !default;
+
+
+/* 22. Flow Text
+   ========================================================================== */
+
+$m-range : $m-large-screen - $m-small-screen !default;
+$m-intervals: 20 !default;
+$m-interval-size: $m-range / $m-intervals !default;
+
+
+/* 23. Collections
+   ========================================================================== */
+
+$m-collection-border-color: #e0e0e0 !default;
+$m-collection-bg-color: #fff !default;
+$m-collection-active-bg-color: $m-secondary-color !default;
+$m-collection-active-color: lighten($m-secondary-color, 55%) !default;
+$m-collection-hover-bg-color: #ddd !default;
+$m-collection-link-color: $m-secondary-color !default;
+
+
+/* 24. Progress Bar
+   ========================================================================== */
+
+$m-progress-bar-color: $m-secondary-color !default;
