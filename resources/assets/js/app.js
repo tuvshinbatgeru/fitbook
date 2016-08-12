@@ -17,7 +17,7 @@ var app = new Vue({
 
 	created: function () {
 		this.$env.set('APP_ENV', 'Development');
-		this.$env.set('APP_URI', 'http://192.168.1.7/');
+		this.$env.set('APP_URI', 'http://localhost/');
 	},
 
 	ready : function () {
