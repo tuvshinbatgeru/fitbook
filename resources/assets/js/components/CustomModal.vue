@@ -50,12 +50,7 @@
 
 		ready : function () {
 			this.modal = new Foundation.Reveal($('#customModal'));
-		},
-
-		events : {
-			'closed.zf.reveal' : function () {
-				alert('test');
-			}
+			$(window).on('closed.zf.reveal', this.modalClose);
 		},
 
 		methods : {
@@ -65,9 +60,6 @@
 
 			modalSave : function() {
 				this.$dispatch('modal-saved', this.usage);
-				//somevalidation method called
-				//ajax request gone then hide method
-
 			}
 		},
 
