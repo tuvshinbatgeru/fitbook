@@ -1,0 +1,123 @@
+// .parallax-container{
+//   height: 100%;
+//   overflow: hidden;
+// }
+// .parallax-content {
+//   color: #fff;
+//   margin:0;
+//   padding:0;
+// 	-webkit-perspective: 1px;
+// 	perspective: 1px;
+// 	-webkit-transform-style: preserve-3d;
+// 	transform-style: preserve-3d;
+//   height: 100%;
+//   overflow-y: hidden;
+//   overflow-x: hidden;
+// }
+// .parallax-back{
+// 	top: 0;
+// 	left: 0;
+// 	background: url(../images/flexgym/10.jpg) no-repeat right top fixed;
+// 	background-size: cover;
+// 	width: 100%;
+// 	height: 300px;
+// 	z-index: -1;
+// 	padding: 50px 0 10px;
+// 	& * {
+// 		font-weight: normal;
+//   		letter-spacing: 0.2em;
+//   		text-align: center;
+//   		margin: 0;
+// 		padding: 1em 0;
+// 	}
+// 	& p {
+//   		background-color: hsla(0, 0%, 100%,0.3);
+//   		color: #fff;
+// 	}
+// }
+// .parallax-main {
+//   background-color: hsl(60, 10%, 10%);
+//   line-height: 1.7;
+//   position: relative;
+//   z-index: 2;
+//   padding: 40px;
+//   & * {
+// 	width: 80%;
+//     text-align: justify;
+//     margin-left: auto;
+//     margin-top: 20px;
+//     margin-right: auto;
+//     max-width: initial;
+//   }
+// }
+// .ft-line{
+// 	content: " ";
+// 	border-bottom: 1px solid #fff;
+// }
+
+// .ft-tile{
+// 	width: 100% !important;
+// 	border: 1px solid #fff;
+// 	margin: 1%;
+// 	height: 100px;
+// 	& p{
+// 		text-align: center;
+// 		vertical-align: bottom;
+// 		display: block;
+// 		width: 100%;
+// 		margin: 0;
+// 		margin-top: 60px; 
+// 		background-color: #fff;
+// 		opacity: 0.5;
+// 		color: #000;
+// 	}
+// }
+// .ft-tile{
+// 	width: 100% !important;
+// 	border: 1px solid #fff;
+// 	margin: 1%;
+// 	height: 100px;
+// 	& p{
+// 		text-align: center;
+// 		vertical-align: bottom;
+// 		display: block;
+// 		width: 100%;
+// 		margin: 0;
+// 		margin-top: 60px; 
+// 		background-color: #fff;
+// 		opacity: 0.5;
+// 		color: #000;
+// 	}
+// }
+// .cw-default-masonry{
+// 	background-color: #fff;
+// 	color: #ccc;
+// 	width: 100%;
+// 	height: 300px;	
+// 	overflow-y: scroll;
+// 	&.grid{
+// 		width: 20%;
+// 	}
+
+// }
+.widget-1{
+	padding: 10px;
+	background-color: #fff;
+	h1{
+		font-weight: bold;
+	}
+	ul{
+		display: inline-block;
+		list-style-type: none;
+		margin: 5px;
+	}
+	img{
+		height: 120px;
+	}
+}
+.line{
+	border-bottom: 1px solid #000;
+}
+.clip-circle {
+  clip-path: circle(60px at center);
+}

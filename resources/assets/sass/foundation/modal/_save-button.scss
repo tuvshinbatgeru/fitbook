@@ -1,0 +1,53 @@
+// Foundation for Sites by ZURB
+// foundation.zurb.com
+// Licensed under MIT Open Source
+
+////
+/// @group close-button
+////
+
+/// Default position of the close button. The first value should be `right` or `left`, and the second value should be `top` or `bottom`.
+/// @type List
+$savebutton-position: right top !default;  
+
+/// Right (or left) offset for a save button.
+/// @type Number
+$savebutton-offset-horizontal: 1rem !default;
+
+/// Top (or bottom) offset for a save button.
+/// @type Number
+$savebutton-offset-vertical: 0.5rem !default;
+
+/// Default font size of the save button.
+/// @type Number
+$savebutton-size: 20px !default;
+
+/// The line-height of the save button. It affects the spacing of the element.
+/// @type Number
+$savebutton-lineheight: 1 !default;
+
+/// Default color of the save button.
+/// @type Color
+$savebutton-color: #5fcf80;
+
+/// Default color of the save button when being hovered on.
+/// @type Color
+$savebutton-color-hover: #34ad58 !default;
+
+/// Adds styles for a save button, using the styles in the settings variables.
+.save-button {
+  $x: nth($savebutton-position, 1);
+  $y: nth($savebutton-position, 2);
+  position: absolute;
+  color: $savebutton-color;
+  #{$x}: $savebutton-offset-horizontal;
+  #{$y}: $savebutton-offset-vertical;
+  font-size: $savebutton-size;
+  line-height: $savebutton-lineheight;
+  cursor: pointer;
+  &:hover,
+  &:focus {
+    color: $savebutton-color-hover;
+  }
+}
+

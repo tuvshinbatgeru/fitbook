@@ -1,0 +1,61 @@
+// HEADER TOP
+.hw-default-logo{
+	color: white;
+	font-size: 30px;
+	& img{
+		height: 30px;
+		width: auto;
+	}
+}
+.hw-default-top-bar{
+	background-color: rgba(#1c1c17, 0.3);
+	position: fixed;
+	top: 0;
+	width: 100%;
+	height: 60px;
+	z-index:1;
+	& ul{
+		background-color: inherit;
+		&:hover{
+			color: #fff;
+		}
+	}
+}
+// HEADER CONTENT
+.parallax-container{
+  height: 100%;
+  overflow: hidden;
+}
+.parallax-content {
+  color: #fff;
+  margin:0;
+  padding:0;
+	-webkit-perspective: 1px;
+	perspective: 1px;
+	-webkit-transform-style: preserve-3d;
+	transform-style: preserve-3d;
+  height: 100%;
+  overflow-y: hidden;
+  overflow-x: hidden;
+}
+.parallax-back{
+	top: 0;
+	left: 0;
+	background: url(../../images/flexgym/08.jpg) no-repeat right top fixed;
+	background-size: cover;
+	width: 100%;
+	height: 30vw;
+	z-index: -1;
+	padding: 24vw 0 1vw;
+	& * {
+		font-weight: normal;
+  		letter-spacing: 0.2em;
+  		text-align: center;
+  		margin: 0;
+		padding: 2em 0;
+	}
+	& p {
+  		background-color: hsla(0, 0%, 100%,0.3);
+  		color: #fff;
+	}
+}
