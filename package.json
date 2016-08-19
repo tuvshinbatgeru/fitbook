@@ -14,7 +14,12 @@
     "vue-resource": "^0.9.3"
   },
   "dependencies": {
+    "blueimp-file-upload": "^9.12.5",
     "blueimp-file-upload-node": "^2.1.0",
-    "gulp-install": "^0.6.0"
+    "foundation": "^4.2.1-1",
+    "gulp-install": "^0.6.0",
+    "masonry-layout": "^4.1.0",
+    "vue-animated-list": "^1.0.2",
+    "vue-waterfall": "^0.2.3"
   }
 }

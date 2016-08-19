@@ -29,7 +29,8 @@ elixir(function(mix) {
 	mix.version("css/app.css");
 
 	mix.sass(['style.scss'],'public/css/style.css');
-	mix.sass(['widget/hw-default.scss'],'public/css/widget/hw-default.css');
-	mix.sass(['widget/cw-default.scss'],'public/css/widget/cw-default.css');
 	mix.browserify('app.js');
+	/*mix.sass(['widget/hw-default.scss'],'public/css/widget/hw-default.css');
+	mix.sass(['widget/cw-default.scss'],'public/css/widget/cw-default.css');*/
+	
 });
