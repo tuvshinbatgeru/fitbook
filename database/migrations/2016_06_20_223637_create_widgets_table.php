@@ -15,20 +15,17 @@ class CreateWidgetsTable extends Migration
         Schema::create('widgets', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('section_id')->unsigned(); //1. header 2.body 3.footer
-            $table->string('tag')->unique();
-            $table->string('tag_en')->unique();
-            $table->string('name')->unique();
-            $table->string('name_en')->unique();
+            $table->string('content_map')->unique();
+            $table->string('name');
+            $table->string('name_en');
             $table->integer('price');
-            $table->integer('price_en');
             $table->string('description')->nullable();
             $table->string('description_en')->nullable();
-            $table->string('img_url');
+            $table->integer('photo_id')->unsigned();
             $table->integer('usage_id');
             $table->integer('total_used')->default(0);
-            $table->decimal('star_count', 1, 1);
-            $table->enum('commercial_status', ['N', 'Y'])->default('N');
-            $table->enum('verified', ['N', 'Y'])->default('N');
+            $table->enum('commercial_status', ['N', 'Y'])->default('Y');
+            $table->enum('verified', ['N', 'Y'])->default('Y');
             $table->enum('is_default', ['N', 'Y'])->default('N');
             $table->timestamps();
         });

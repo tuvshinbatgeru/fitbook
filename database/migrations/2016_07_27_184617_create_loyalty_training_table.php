@@ -16,6 +16,8 @@ class CreateLoyaltyTrainingTable extends Migration
             $table->integer('loyalty_id')->unsigned();
             $table->integer('training_id')->unsigned();
             $table->timestamps();
+
+            $table->primary(['training_id', 'loyalty_id']);
         });
     }
 

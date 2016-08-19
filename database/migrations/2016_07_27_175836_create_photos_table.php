@@ -16,8 +16,10 @@ class CreatePhotosTable extends Migration
             $table->increments('id');
             $table->integer('type');
             $table->integer('object_id')->unsigned();
-            $table->string('ext',10);
-            $table->binary('image');
+            $table->string('ext', 10);
+            $table->decimal('size', 18);  //as .kb
+            $table->float('ratio');
+            $table->string('url');
         });
     }
 

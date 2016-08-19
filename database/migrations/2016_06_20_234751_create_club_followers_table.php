@@ -16,6 +16,8 @@ class CreateClubFollowersTable extends Migration
             $table->integer('club_id')->unsigned()->index();
             $table->integer('user_id')->unsigned()->index();
             $table->timestamps();
+
+            $table->primary(['club_id', 'user_id']);
         });
     }
 

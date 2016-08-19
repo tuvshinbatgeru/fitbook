@@ -18,6 +18,7 @@ class CreateClubRequestsTable extends Migration
             $table->tinyInteger('type'); //1.Teacher request 2.Trainer request
             $table->string('description', 1000)->nullable();
             $table->timestamps();
+            $table->primary(['club_id', 'user_id']);
         });
     }
 

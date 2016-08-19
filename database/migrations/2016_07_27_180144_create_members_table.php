@@ -18,6 +18,8 @@ class CreateMembersTable extends Migration
             $table->tinyInteger('type'); //1. Club Manager 2.Club Teacher 3.Trainer 4.Ceo etc
             $table->date('since_date');
             $table->timestamps();
+
+            $table->primary(['club_id', 'user_id']);
         });
     }
 

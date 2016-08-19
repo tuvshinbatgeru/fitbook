@@ -16,6 +16,8 @@ class CreateLoyaltyServiceTable extends Migration
             $table->integer('loyalty_id')->unsigned();
             $table->integer('service_id')->unsigned();
             $table->timestamps();
+
+            $table->primary(['loyalty_id', 'service_id']);
         });
     }
 

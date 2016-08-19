@@ -16,6 +16,8 @@ class CreateTrainingGenreTable extends Migration
             $table->integer('training_id')->unsigned();
             $table->integer('genre_id')->unsigned();
             $table->timestamps();
+
+            $table->primary(['training_id', 'genre_id']);
         });
     }
 

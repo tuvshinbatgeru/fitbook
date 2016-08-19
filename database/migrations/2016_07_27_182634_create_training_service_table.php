@@ -16,6 +16,8 @@ class CreateTrainingServiceTable extends Migration
             $table->integer('training_id')->unsigned();
             $table->integer('service_id')->unsigned();
             $table->timestamps();
+
+            $table->primary(['training_id', 'service_id']);
         });
     }
 

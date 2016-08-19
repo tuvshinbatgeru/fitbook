@@ -17,6 +17,8 @@ class CreateOnlineMemberTable extends Migration
             $table->integer('user_id');
             $table->dateTime('start_time');
             $table->timestamps();
+
+            $table->primary(['club_id', 'user_id']);
         });
     }
 
