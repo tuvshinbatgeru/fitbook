@@ -3,70 +3,109 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests;
-use App\Photos;
+use App\Photo;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
-use Image;
+use Illuminate\Support\Facades\Validator;
+use Intervention\Image\Facades\Image;
+use Response;
 
 class FileManagerController extends Controller
 {
-    //
-    public function resizeImage()
+    public function test(Request $request)
     {
-    	return view('resizeImage');
+        dd($request->all());    
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function resizeImagePost(Request $request)
-    {
-	    /*$this->validate($request, [
-	    	'title' => 'required',
-        ]);*/
+    public function files(Request $request)
+    {	
+        $selected = explode(',', $request->selected);
+        $maxSize = Auth::user()->maxFileUpload();
+        $photos = Auth::user()->photos;
+        $actualSize = 0;
 
-        $images = $request->file('image');
+        foreach ($photos as $photo) {
+           	$photo->tags;
+           	$actualSize += $photo->size;
+            $photo->selected = false;
 
-        foreach ($images as $image) {
+            if(empty($selected)) {
+                continue;
+            }
 
-        	$im = file_get_contents($image);
-        	$ext = pathinfo($image, PATHINFO_EXTENSION);
-			$imageUrl = 'data:image/' . $ext . ';base64,' . base64_encode($im);
+            for($i = 0; $i < count($selected); $i ++) {
+                if ($photo->equalAsString($selected[$i])) {
+                    $photo->selected = true;
+                }
+            }
+        }   
 
-        	$photo = new Photos;
-        	$photo->type = 1;
-        	$photo->object_id = Auth::user()->id;
-        	$photo->image = $imageUrl;
-        	$photo->ext = $ext;
-        	$photo->save();
+		return Response::json([
+        	'files' => $photos,
+        	'actualSize' => $actualSize,
+        	'maxSize' => $maxSize,
+        ]);
+    }
+
+    public function upload(Request $request)
+    {	
+        $messages = [
+            'image.*' => 'Image type must be Jpeg, jpg, png and gif',
+            'size' => "photo's size long enought"
+        ];
+
+        $validator = Validator::make($request->all(), [
+            'image.*' => 'mimes:jpeg,jpg,png,gif|required|max:10000'
+        ], $messages);
+
+        if ($validator->fails()) {
+        	return Response::json([
+        			'result' => 'failed', 
+        			'errors' => $validator->errors()->getMessages(),
+        		]);
         }
 
-        return back()
-        	->with('success','Image Upload successful')
-        	->with('imageUrl', $imageUrl);
+        $photos = [];
 
-        dd($imdata);
-        dd(file_get_contents($image[0]));
-        dd($image);
-        /*$input['imagename'] = time().'.'.$image->getClientOriginalExtension();
-     
-   
-        $destinationPath = public_path('thumbnail');
+        foreach ($request->file('image') as $image) 
+        {
+            $image_url = self::generatePhotoId($image);
+            $img = Image::make($image->getRealPath());
+            $img->save(public_path() 
+                      . '/images/users/' 
+                      . $image_url);
 
-        $img = Image::make($image->getRealPath());
-        $img->resize(100, 100, function ($constraint) {
-		    $constraint->aspectRatio();
-		})->save($destinationPath.'/'.$input['imagename']);
+            $photo = new Photo;
+            $photo->type = 1;
+            $photo->ext = explode('/', $image->getmimeType())[1];
+            $photo->object_id = Auth::user()->id;
+            $photo->size = $image->getSize(); 
+            $photo->ratio = self::calcRatio($image); 
+            $photo->url = App::make('url')->to('/') . '/images/users/' . $image_url;
+            $photo->save();
+            $photo->selected = true;
+            $photos = $photo;
+        }
+        
+        return Response::json([
+        		'result' => 'success',
+        		'data' => $photos,
+        ]);
+    }   
 
-        $destinationPath = public_path('/images');
-        $image->move($destinationPath, $input['imagename']);*/
+    private function calcRatio($image)
+    {
+        $detail = getimagesize($image);
+        return $detail[1] / $detail[0];  
+    }
 
-        //$this->postImage->add($input);
-
-        return back()
-        	->with('success','Image Upload successful')
-        	->with('imageName',$input['imagename']);
+    private function generatePhotoId($image)
+    {
+        return Auth::user()->id 
+            . 'user'
+            . strtotime(Carbon::now()) 
+            . $image->getClientOriginalName();
     }
 }
