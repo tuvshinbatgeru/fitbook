@@ -6,7 +6,7 @@
 				<div class="card column">
 				    <!-- Header -->
 				    <div class="card-header">
-				      <div class="card-header__avatar" style="background-image: url({{member.avatar_url}});"></div><a href="http://codepen.io/andytran" class="card-header__follow">Follow</a>
+				      <div class="card-header__avatar" :style="{'background-image': 'url(' + member.avatar_url + ')'}"></div><a href="http://codepen.io/andytran" class="card-header__follow">Follow</a>
 				    </div>
 				    <!-- Content-->
 				    <div class="card-content">

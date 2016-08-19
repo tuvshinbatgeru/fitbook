@@ -3,7 +3,6 @@
 	  <div class="top-bar-left">
 	    <ul class="menu ">
 	      <li class="menu-text hw-default-logo">
-	      	<img src="{{asset('images/flexgym/logo.png')}}"> 
 	      	{{club.short_name}}</li>
 	      <li><a href="#">{{club.short_name}}</a></li>
 	      <li><a href="#">{{club.full_name}}</a></li>
@@ -53,7 +52,7 @@
 
 		methods : {
 			getClubHeaderContent : function(clubId) {
-				this.$http.get(this.$env.get('APP_URI') + 'api/club/club-info/' + clubId).then((response) => {
+				this.$http.get(this.$env.get('APP_URI') + 'api/club/'+ clubId +'/club-info').then((response) => {
 			        this.club = response.data.club;
 			        this.follow_status = response.data.follow_status;
 			        this.teacher_status = response.data.teacher_status;
@@ -64,8 +63,7 @@
 			},
 
 			sentFollow : function () {
-				debugger;
-				this.$http.get(this.$env.get('APP_URI') + 'api/club/follow/' + this.club.id).then((response) => {
+				this.$http.get(this.$env.get('APP_URI') + 'api/club/'+ this.club.id + '/follow').then((response) => {
 					debugger;
 			        this.follow_status = response.data.type;
 			    }, (response) => {
@@ -74,7 +72,7 @@
 			},
 
 			sentTrainerRequest : function () {
-				this.$http.get(this.$env.get('APP_URI') + 'api/club/request/' + this.club.id + '?type=2').then((response) => {
+				this.$http.get(this.$env.get('APP_URI') + 'api/club/'+ this.club.id +'/request?type=2').then((response) => {
 			        this.request_status = response.data.type;
 			    }, (response) => {
 
@@ -82,7 +80,7 @@
 			},
 
 			sentTeacherRequest : function () {
-				this.$http.get(this.$env.get('APP_URI') + 'api/club/request/' + this.club.id + '?type=1').then((response) => {
+				this.$http.get(this.$env.get('APP_URI') + 'api/club/'+ this.club.id + '/request?type=1').then((response) => {
 			        this.teacher_status = response.data.type;
 			    }, (response) => {
 

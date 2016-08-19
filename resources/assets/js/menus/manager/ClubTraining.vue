@@ -1,118 +1,36 @@
 <template>
 	<div>
 		<h3>Club Training</h3>
-		<p><a @click="showAddTraining = true" data-open="revealTraining" class="button success">
-				<i class="fa fa-plus"></i>Add Training
+		<p><a @click="showAddTraining = true" class="button success">
+				<i class="fa fa-plus"></i>
 		   </a></p>
 
-		<custom-modal title="Add Training" usage="_add-training" :show.sync="showAddTraining">
-			<div slot="body">
-				<form method="POST" accept="">
-					<ul class="tabs" data-tabs id="example-tabs">
-					  <li class="tabs-title is-active"><a href="#main" aria-selected="true">Info</a></li>
-					  <li class="tabs-title"><a href="#photos">Photos</a></li>
-					  <li class="tabs-title"><a href="#teacher">Teacher</a></li>
-				    </ul>
-				  <div class="tabs-content" data-tabs-content="example-tabs">
-					  <div class="tabs-panel is-active" id="main">
-					    <div class="row">
-						    <div class="medium-6 columns">
-						      <label>Training name
-						        <input type="text" placeholder="fill training name">
-						      </label>
-						    </div>
-						    <div class="medium-6 columns">
-						      <label>Description
-						        <textarea type="text" placeholder="Description ...">
-						        </textarea>
-						      </label>
-						    </div>
-						</div>
-						<div class="row">
-						  	<div class="medium-6 columns">
-						  	  <label> Priceless
-						  		<input type="checkbox" name="priceless">
-						  	  </label>
-						  	</div>
-						  	<div class="medium-6 columns">
-						  	  <label>Price
-						  	  	<input type="text" placeholder="price">
-						  	  </label>
-						  	</div>
-						</div>
-					  </div>
-					  <div class="tabs-panel" id="teacher">
-	  	  	  		  	<teachers :clubid="clubid"></teachers>
-					  </div>
-					  <div class="tabs-panel" id="photos">
-						  <div class="picture-list">
-						  	<div class="row small-up-2 medium-up-3 large-up-4">
-						  		<br>
-							  	<div class="column">
-								  	<div class="figure">
-					                    <img src="https://graph.facebook.com/v2.6/1098895463504115/picture?width=1920" alt="Jeffrey Way" height="120" width="120" style="border-radius:4px;">
-					                    <div class="figcaption">
-					                        <a class="btn-floating red" style="left: 25%;">
-					                        	<i class="fa fa-trash"></i>
-					                        </a>
-					                    </div>
-					                </div>
-							  	</div>
-
-							  	<div class="column">
-								  	<div class="figure">
-					                    <img src="https://graph.facebook.com/v2.6/1098895463504115/picture?width=1920" alt="Jeffrey Way" height="120" width="120" style="border-radius:4px;">
-					                    <div class="figcaption">
-					                        <a class="btn-floating red" style="left: 25%;">
-					                        	<i class="fa fa-trash"></i>
-					                        </a>
-					                    </div>
-					                </div>
-							  	</div>
-
-							  	<div class="column">
-								  	<div class="figure">
-					                    <img src="https://graph.facebook.com/v2.6/1098895463504115/picture?width=1920" alt="Jeffrey Way" height="120" width="120" style="border-radius:4px;">
-					                    <div class="figcaption">
-					                        <a class="btn-floating red" style="left: 25%;">
-					                        	<i class="fa fa-trash"></i>
-					                        </a>
-					                    </div>
-					                </div>
-							  	</div>
-							  	
-							  	<div class="column">
-								  	<div class="figure">
-					                    <div class="figcaption" style="opacity:1;">
-					                        <a class="btn-floating red" style="left: 25%;">
-					                        	<i class="fa fa-plus"></i>
-					                        </a>
-					                    </div>
-					                </div>
-							  	</div>
-							</div>
-						  </div>
-					  </div>
-				  </div>
-				</form>
-			</div>
+		<custom-modal 
+			:id = "clubid"
+			type = "Club"
+			title = "Add Training" 
+			usage = "_add-training" 
+			:show.sync = "showAddTraining"
+			save-callback = "saveTraining"
+			validateable = 'Y'
+			context = "AddTraining"
+			>
 		</custom-modal>
 
 		<label>Search Training
         	<input type="text" placeholder="search ..." />
         </label>
-		<ul v-if="training == null">
-			<li></li>
-		</ul>
+
+		<ft-training :item = "train" v-for = "train in training">
+			
+		</ft-training>
 		
 		<h3 v-else>There is no training registered !</h3>
 	<div>
 </template>
 
 <script>
-
-	import teachers from '../.././components/teachers.vue';
-	import CustomModal from '../.././components/CustomModal.vue'; 
+	import FtTraining from '../.././components/FtTraining.vue';
 
 	export default {
 		props: { 
@@ -121,39 +39,49 @@
 
 		data() {
 			return {
-				training : [],
+				training : null,
 				showAddTraining : false,
+				showTest : false,
 			}
+		},
+
+		created : function () {
+			this.getTrainings();
 		},
 		
 		ready : function () {
-			$(document).foundation();
+
 		},
 
 		events : {
-			'modal-saved' : function($request) {
-				switch($request) 
-				{
-					case "_add-training" : 
-						this.saveTraining();
-						break;
-					case "_somethingelse" :
-						break;	
-					default : 
-						break;
-				}
+			'saveTraining' : function($response) {
+				this.saveTraining($response);
 			},
 		},
 
 		methods : {
-			saveTraining : function() {
-				alert('training saved :D !');
+			getTrainings : function () {
+				this.$http.get(this.$env.get('APP_URI') + 'api/club/' + this.clubid + '/training').then(res => {
+				  this.training = res.data.result;
+				  debugger;
+				}).catch(err => {
+				});
+			},
+
+			saveTraining : function($response) {
+
+				this.$http.post(this.$env.get('APP_URI') + 'api/club/' + this.clubid + '/training?data=' + $response.data).then(res => {
+				}).catch(err => {
+
+				});
+
 				this.showAddTraining = false;
+				this.$root.$refs.toast.showMessage('Successfully add new training.');
 			}
 		},
 
 		components : {
-			teachers, CustomModal
+			FtTraining
 		}
 	}
 </script>

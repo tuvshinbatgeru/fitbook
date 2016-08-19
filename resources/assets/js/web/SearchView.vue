@@ -1,7 +1,5 @@
 <script>
 	import SearchTooltip from '.././components/SearchTooltip.vue';
-	/*import SearchSettings from '.././settings/SearchSettings.js'*/
-	/*var SearchSettings = require('.././settings/SearchSettings.js');*/
 
 	export default {
 
@@ -24,6 +22,12 @@
 				center : { lat: 47.9118309, lng: 106.8276077 },
 				searchOptions : null,
 			}
+		},
+
+		created : function () {
+ 				this.searchOptions = {
+		            useCircleDetector: true,
+		        };
 		},
 
 		ready : function () {
@@ -59,11 +63,6 @@
 		            editable : true,
 		            draggable : true,
 		        });	
-
-		        this.searchOptions = {
-		            useCircleDetector: true,
-		        };
-
 			},
 
 			getGeolocation : function () {
@@ -106,20 +105,21 @@
 			
 			search : function() {
 
-				var uri = this.$env.get('APP_URI') + 'api/search?';
+				var uri = this.$env.get('APP_URI') + 'api/search';
 
-				uri += 'useCircleDetector=' + this.searchOptions.useCircleDetector;
+				/*uri += 'useCircleDetector=' + false;
 				uri += '&center=' + this.circleTool.center;
-				uri += '&radius=' + this.circleTool.radius;
+				uri += '&radius=' + this.circleTool.radius;*/
 				var vm = this;
 
 		        this.$http.get(uri).then((response) => 
 				{	
 					debugger;
 					var originalClubs = response.data;
-					this.clubs = originalClubs.filter(function($var){
+					this.clubs = originalClubs;
+					/*this.clubs = originalClubs.filter(function($var){
 						return  (google.maps.geometry.spherical.computeDistanceBetween(new google.maps.LatLng($var.lat, $var.lng), vm.circleTool.center)) <= vm.circleTool.radius;
-					});
+					});*/
 
 					this.clearPrevSearchResult();
 					this.displayResult();

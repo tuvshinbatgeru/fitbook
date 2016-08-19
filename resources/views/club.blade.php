@@ -1,6 +1,8 @@
 @extends('layouts.default-layout')
 @section('content')
 	@foreach ($widget_content as $widget)
-    	@include($widget)
+		<component id = "{{$id}}" is="{{$widget}}">
+	          
+	    </component>
     @endforeach
 @stop

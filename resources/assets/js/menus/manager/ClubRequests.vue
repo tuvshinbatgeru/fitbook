@@ -17,7 +17,6 @@
 	      </label>
 	    </p>
 	    <form>
-	    	{{ csrf_field() }}
 			<ul>
 				<h3>{{requestType}}</h3>
 				<li v-for="request in filteredRequests">

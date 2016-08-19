@@ -4,14 +4,14 @@
 	import ClubRequests from '.././menus/manager/ClubRequests.vue';
 	import ClubTraining from '.././menus/manager/ClubTraining.vue';
 	import ClubLoyalty from '.././menus/manager/ClubLoyalty.vue';
+	import ClubTemplate from '.././menus/manager/ClubTemplate.vue';
 	import autocomplete from '.././components/autocomplete.vue';
-	import filemanager from '.././components/filemanager.vue';
 
 	export default {
 
 		props: { 
 			clubid : {},
-			selectedMenu : { default : 'club-training'},
+			selectedMenu : { default : 'club-template'},
 		},
 
 		data () {
@@ -26,7 +26,7 @@
 		},
 
 		ready : function () {
-
+			
 		},
 
 		events: {
@@ -48,18 +48,18 @@
 					this.requests_count = response.data.requests_count;
 				}, (response) => {
 
-				});			   
+				});	
 			},
 
 			setMenu : function(menu) {
 				this.selectedMenu = menu;
-			}
+			},
 		},
 
 		components : {
 			ClubDashboard, ClubMembers, ClubRequests, 
 			ClubTraining, ClubLoyalty, autocomplete, 
-			filemanager
+			ClubTemplate
 		}
 	}
 </script>

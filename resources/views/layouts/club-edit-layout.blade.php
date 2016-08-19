@@ -5,11 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Laravel</title>
     @include('includes.header')
-    <link rel="stylesheet" type="text/css" href="{{asset('css/widget/hw-default.css')}}">
-    <link rel="stylesheet" type="text/css" href="{{asset('css/widget/cw-d
-    efault.css')}}">
 </head>
 <body>
+    <custom-toast v-ref:toast></custom-toast>
     <div class="container body">
       <div>
         <component clubid = "{{$club->id}}" is="club-edit-view" inline-template>
@@ -23,6 +21,8 @@
    <script type="text/javascript" src="{{asset('js/jquery.min.js')}}"></script>
    <script type="text/javascript" src="{{asset('js/jquery.tokenize.js')}}"></script>
    <script type="text/javascript" src="{{asset('js/foundation.min.js')}}"></script>
+   <script src="{{asset('js/vendor/jquery.ui.widget.js')}}"></script>
+   <script src="{{asset('js/jquery.fileupload.js')}}"></script>
    <script type="text/javascript" src="{{asset('js/app.js')}}"></script>
 </body>
 </html>

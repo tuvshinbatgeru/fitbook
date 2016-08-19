@@ -10,14 +10,14 @@
 </head>
 <body>
     <div class="container body">
-      <component clubid = "{{$clubId}}" is="{{$widget_header}}">
+      <component clubid = "{{$id}}" is="{{$widget_header}}">
           
       </component>
       <div>
-    		@yield('content');
+    		@yield('content')
     	</div>
       <div>
-        @include($widget_footer)
+        
     	</div>
     </div>
    <!-- FOR WIDGET ANIMATION -->

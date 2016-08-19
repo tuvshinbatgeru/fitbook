@@ -27,10 +27,11 @@
 		    </div>
 		</div>
 	</div>
-	<div class="pane hide">
+	<div class="pane">
 		<div class="pane-holder">
 			<div style="pane-holder-small">
 				<div class="pane-header" style="background-image: url({{ URL::asset('images/flexgym/08.jpg')}}); background-size: cover;">
+					<a style="top:100px;" class="button success" href="/flexgym"></a>
 				</div>
 				<div class="pane-content">
 					<h1>Flex gym</h1>
@@ -78,6 +79,6 @@
 	<div id="map" style="height: 100%;">
 	</div>
 	<h4 style="position:absolute; z-index:999; top: 100px; left: 10px;">
-	radius = @{{circleTool.radius}}</h4>
+	radius = @{{searchOptions.userCircleDetector}}</h4>
 	<script type="text/javascript" src="{{asset('js/jquery.min.js')}}"></script>
 @stop

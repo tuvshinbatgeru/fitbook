@@ -1,7 +1,7 @@
 <template>
-	<div class="reveal" id="customModal" data-reveal data-animation-in="slide-in-up" data-animation-out="slide-out-down">
-		<div class="modal-container">
-			<div class="modal-header">
+<div class="modal-mask" @click="modalClose" v-if="show" transition="modal">
+        <div class="modal-container" @click.stop>
+            <div class="modal-header">
 				<slot name="header">
 					<div class="row small-up-3 medium-up-3 large-up-3">
 					  <div class="columns">
@@ -19,56 +19,174 @@
 						<h4 style="color:#5fcf80;">{{title}}</h4>
 					</div>
 				</slot>
-			<div>
-			<div class="modal-body">
+			</div>
+
+            <div class="modal-body">
 	          <slot name="body">
-	            default body
+	          	<component v-ref:context 
+	          			   v-if="type == 'Club'" 
+	          			   :id="id" 
+	          			   :type="type" 
+	          			   :is="context"
+	          			   :selected="items">
+				</component>
+				<components v-ref:context 
+							v-else 
+							:is="context" 
+							:selected="items">
+				</components>
 	          </slot>
 	        </div>
 
-	        <div class="modal-footer">
+            <div class="modal-footer">
 	          <slot name="footer">
-	            default footer
 	          </slot>
 	        </div>
-		</div>
-	</div>
+        </div>
+    </div>
 </template>
 
 <script>
+	import AddTraining from '../context/AddTraining.vue'; 
+	import FileManager from '../context/FileManager.vue'; 
+	import teachers from '../context/teachers.vue'; 
+
 	export default {
 		props: {
+			id : {
+				required: true,
+			},
+			type : {default : 'Club'},
+			multiple : {default : false },
 			title : { default: '' },
 			usage : { default: 'questionable'},
+			context : { 
+				required: true,
+			},
+			items : {},
+			saveCallback : { default: null },
+			validateable : { 
+				default: 'N'
+			},
 			show: {
 		      type: Boolean,
 		      required: true,
 		      twoWay: true,
 		      default : false,    
 		    },
+		    zIndex : {
+		    	default: 1006,
+		    }
 		},
 
-		ready : function () {
-			this.modal = new Foundation.Reveal($('#customModal'));
-			$(window).on('closed.zf.reveal', this.modalClose);
+		ready : function () {			
+
 		},
 
 		methods : {
+
 			modalClose : function () {
 				this.show = false;
 			},
 
 			modalSave : function() {
-				this.$dispatch('modal-saved', this.usage);
+				if(this.saveCallback) {
+					if(this.validateable == 'Y' && !this.$refs.context.validate()){
+						return;
+					}
+
+					var response = {
+						id: this.usage, 
+						data: this.$refs.context.getData(),
+					};
+
+					this.$dispatch(this.saveCallback, response);
+				}
+				else
+					this.modalClose();
 			}
 		},
 
-		watch : {
-		    show : function(value) {
-		       value ? this.modal.open() : this.modal.close();
-		    }
-		},
+		components : {
+			AddTraining, FileManager, teachers
+		}
 	}
 </script>
-<style>
+<style lang="scss">
+	* {
+    box-sizing: border-box;
+	}
+
+	.modal-mask {
+	    position: fixed;
+	    z-index: 9998;
+	    top: 0;
+	    left: 0;
+	    width: 100%;
+	    height: 100%;
+	    background-color: rgba(0, 0, 0, .5);
+	    transition: opacity .3s ease;
+	}
+
+	.modal-container {
+		display: block;
+	    z-index: 1006;
+	    padding: 1rem;
+	    border: 1px solid #cacaca;
+	    background-color: #fefefe;
+	    border-radius: 4px;
+	    position: relative;
+	    top: 0px;
+	    height: 100%;
+	    margin-left: auto;
+	    margin-right: auto;
+	    overflow-y: auto;
+	}
+
+	.modal-header h3 {
+	    margin-top: 0;
+	    color: #42b983;
+	}
+
+	.modal-body {
+	    
+	}
+
+	.text-right {
+	    text-align: right;
+	}
+
+	.form-label {
+	    display: block;
+	    margin-bottom: 1em;
+	}
+
+	.form-label > .form-control {
+	    margin-top: 0.5em;
+	}
+
+	.form-control {
+	    display: block;
+	    width: 100%;
+	    padding: 0.5em 1em;
+	    line-height: 1.5;
+	    border: 1px solid #ddd;
+	}
+
+	.modal-enter, .modal-leave {
+	    opacity: 0;
+	}
+
+	.modal-enter .modal-container,
+	.modal-leave .modal-container {
+	    transition: all .3s ease;
+	}
+
+	@media screen and (min-width: 640px) {
+		.modal-container {
+		    width: 600px;
+		    max-width: 75rem;
+		    top: 50px;
+		}
+	}
 </style>
