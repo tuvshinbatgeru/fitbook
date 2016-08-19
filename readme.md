@@ -1,3 +1,14 @@
+# Fitbook 
+
+Official health care search engine based Vue.js and Laravel.
+
+How to configure ...
+
+1. pull project
+	a. composer install /First time pull project then you need to install dependencies of project/
+2. Check .env file is in project
+3. Okay now free to play some code :D ...
+
 # Laravel PHP Framework
 
 [![Build Status](https://travis-ci.org/laravel/framework.svg)](https://travis-ci.org/laravel/framework)
