@@ -1791,6 +1791,13 @@ if (typeof window !== 'undefined' && window.Vue) {
 
 module.exports = plugin;
 },{}],6:[function(require,module,exports){
+/*!
+ * vue-waterfall v0.2.3
+ * (c) 2016 MopTym <moptym@163.com>
+ * https://github.com/MopTym/vue-waterfall
+ */
+!function(t,e){"object"==typeof exports&&"object"==typeof module?module.exports=e():"function"==typeof define&&define.amd?define([],e):"object"==typeof exports?exports.Waterfall=e():t.Waterfall=e()}(this,function(){return function(t){function e(i){if(n[i])return n[i].exports;var r=n[i]={exports:{},id:i,loaded:!1};return t[i].call(r.exports,r,r.exports,e),r.loaded=!0,r.exports}var n={};return e.m=t,e.c=n,e.p="",e(0)}([function(t,e,n){"use strict";function i(t){return t&&t.__esModule?t:{"default":t}}var r=n(1),o=i(r),a=n(8),s=i(a);t.exports={Waterfall:o["default"],WaterfallSlot:s["default"],waterfall:o["default"],waterfallSlot:s["default"]}},function(t,e,n){var i,r;n(2),i=n(6),r=n(7),t.exports=i||{},t.exports.__esModule&&(t.exports=t.exports["default"]),r&&(("function"==typeof t.exports?t.exports.options||(t.exports.options={}):t.exports).template=r)},function(t,e,n){var i=n(3);"string"==typeof i&&(i=[[t.id,i,""]]);n(5)(i,{});i.locals&&(t.exports=i.locals)},function(t,e,n){e=t.exports=n(4)(),e.push([t.id,".vue-waterfall{position:relative}",""])},function(t,e){t.exports=function(){var t=[];return t.toString=function(){for(var t=[],e=0;e<this.length;e++){var n=this[e];n[2]?t.push("@media "+n[2]+"{"+n[1]+"}"):t.push(n[1])}return t.join("")},t.i=function(e,n){"string"==typeof e&&(e=[[null,e,""]]);for(var i={},r=0;r<this.length;r++){var o=this[r][0];"number"==typeof o&&(i[o]=!0)}for(r=0;r<e.length;r++){var a=e[r];"number"==typeof a[0]&&i[a[0]]||(n&&!a[2]?a[2]=n:n&&(a[2]="("+a[2]+") and ("+n+")"),t.push(a))}},t}},function(t,e,n){function i(t,e){for(var n=0;n<t.length;n++){var i=t[n],r=c[i.id];if(r){r.refs++;for(var o=0;o<r.parts.length;o++)r.parts[o](i.parts[o]);for(;o<i.parts.length;o++)r.parts.push(u(i.parts[o],e))}else{for(var a=[],o=0;o<i.parts.length;o++)a.push(u(i.parts[o],e));c[i.id]={id:i.id,refs:1,parts:a}}}}function r(t){for(var e=[],n={},i=0;i<t.length;i++){var r=t[i],o=r[0],a=r[1],s=r[2],u=r[3],l={css:a,media:s,sourceMap:u};n[o]?n[o].parts.push(l):e.push(n[o]={id:o,parts:[l]})}return e}function o(t,e){var n=p(),i=m[m.length-1];if("top"===t.insertAt)i?i.nextSibling?n.insertBefore(e,i.nextSibling):n.appendChild(e):n.insertBefore(e,n.firstChild),m.push(e);else{if("bottom"!==t.insertAt)throw new Error("Invalid value for parameter 'insertAt'. Must be 'top' or 'bottom'.");n.appendChild(e)}}function a(t){t.parentNode.removeChild(t);var e=m.indexOf(t);e>=0&&m.splice(e,1)}function s(t){var e=document.createElement("style");return e.type="text/css",o(t,e),e}function u(t,e){var n,i,r;if(e.singleton){var o=g++;n=v||(v=s(e)),i=l.bind(null,n,o,!1),r=l.bind(null,n,o,!0)}else n=s(e),i=f.bind(null,n),r=function(){a(n)};return i(t),function(e){if(e){if(e.css===t.css&&e.media===t.media&&e.sourceMap===t.sourceMap)return;i(t=e)}else r()}}function l(t,e,n,i){var r=n?"":i.css;if(t.styleSheet)t.styleSheet.cssText=x(e,r);else{var o=document.createTextNode(r),a=t.childNodes;a[e]&&t.removeChild(a[e]),a.length?t.insertBefore(o,a[e]):t.appendChild(o)}}function f(t,e){var n=e.css,i=e.media,r=e.sourceMap;if(i&&t.setAttribute("media",i),r&&(n+="\n/*# sourceURL="+r.sources[0]+" */",n+="\n/*# sourceMappingURL=data:application/json;base64,"+btoa(unescape(encodeURIComponent(JSON.stringify(r))))+" */"),t.styleSheet)t.styleSheet.cssText=n;else{for(;t.firstChild;)t.removeChild(t.firstChild);t.appendChild(document.createTextNode(n))}}var c={},d=function(t){var e;return function(){return"undefined"==typeof e&&(e=t.apply(this,arguments)),e}},h=d(function(){return/msie [6-9]\b/.test(window.navigator.userAgent.toLowerCase())}),p=d(function(){return document.head||document.getElementsByTagName("head")[0]}),v=null,g=0,m=[];t.exports=function(t,e){e=e||{},"undefined"==typeof e.singleton&&(e.singleton=h()),"undefined"==typeof e.insertAt&&(e.insertAt="bottom");var n=r(t);return i(n,e),function(t){for(var o=[],a=0;a<n.length;a++){var s=n[a],u=c[s.id];u.refs--,o.push(u)}if(t){var l=r(t);i(l,e)}for(var a=0;a<o.length;a++){var u=o[a];if(0===u.refs){for(var f=0;f<u.parts.length;f++)u.parts[f]();delete c[u.id]}}}};var x=function(){var t=[];return function(e,n){return t[e]=n,t.filter(Boolean).join("\n")}}()},function(t,e){"use strict";function n(t){t!==!1&&this.autoResize?y(window,"resize",this.reflowHandler,!1):b(window,"resize",this.reflowHandler,!1)}function i(t){var e=t.target,n=e[L];n&&m(e,n)}function r(t){return function(){clearTimeout(t),t=setTimeout(this.reflow,this.interval)}}function o(){var t=this;if(this.$el){var e=this.$el.clientWidth,n=this.$children.map(function(t){return t.getMeta()});n.sort(function(t,e){return t.order-e.order}),this.virtualRects=n.map(function(){return{}}),s(this,n,this.virtualRects),setTimeout(function(){a(t.$el,e)&&s(t,n,t.virtualRects),t.style.overflow="hidden",f(t.virtualRects,n),t.$broadcast("wf-reflowed",[t]),t.$dispatch("wf-reflowed",[t])},0)}}function a(t,e){return e!==t.clientWidth}function s(t,e,n){var i=u(t),r="h"===t.line?W:C;r.calculate(t,i,e,n)}function u(t){return{align:~["left","right","center"].indexOf(t.align)?t.align:"left",line:~["v","h"].indexOf(t.line)?t.line:"v",lineGap:+t.lineGap,minLineGap:t.minLineGap?+t.minLineGap:t.lineGap,maxLineGap:t.maxLineGap?+t.maxLineGap:t.lineGap,singleMaxWidth:Math.max(t.singleMaxWidth||0,t.maxLineGap),fixedHeight:!!t.fixedHeight}}function l(t,e,n){switch(n){case"right":return t-e;case"center":return(t-e)/2;default:return 0}}function f(t,e){var n=e.filter(function(t){return t.moveClass}),i=c(n);d(t,e);var r=c(n);n.forEach(function(t,e){t.node[L]=t.moveClass,h(t.node,i[e],r[e])}),document.body.clientWidth,n.forEach(function(t){g(t.node,t.moveClass),p(t.node)})}function c(t){return t.map(function(t){return t.vm.rect})}function d(t,e){t.forEach(function(t,n){var i=e[n].node.style;e[n].vm.rect=t;for(var r in t)i[r]=t[r]+"px"})}function h(t,e,n){var i=e.left-n.left,r=e.top-n.top,o=e.width/n.width,a=e.height/n.height;t.style.transform=t.style.WebkitTransform="translate("+i+"px,"+r+"px) scale("+o+","+a+")",t.style.transitionDuration="0s"}function p(t){t.style.transform=t.style.WebkitTransform="",t.style.transitionDuration=""}function v(t,e){for(var n="function"==typeof t?function(){return t()}:function(){return t},i=[],r=0;e>r;r++)i[r]=n();return i}function g(t,e){if(!x(t,e)){var n=w(t,"class").trim(),i=(n+" "+e).trim();w(t,"class",i)}}function m(t,e){var n=new RegExp("\\s*\\b"+e+"\\b\\s*","g"),i=w(t,"class").replace(n," ").trim();w(t,"class",i)}function x(t,e){return new RegExp("\\b"+e+"\\b").test(w(t,"class"))}function w(t,e,n){return"undefined"==typeof n?t.getAttribute(e)||"":void t.setAttribute(e,n)}function y(t,e,n){var i=arguments.length<=3||void 0===arguments[3]?!1:arguments[3];t.addEventListener(e,n,i)}function b(t,e,n){var i=arguments.length<=3||void 0===arguments[3]?!1:arguments[3];t.removeEventListener(e,n,i)}Object.defineProperty(e,"__esModule",{value:!0});var G=void 0===window.ontransitionend&&void 0!==window.onwebkittransitionend,M=G?"webkitTransitionEnd":"transitionend",L="_wfMoveClass";e["default"]={props:{autoResize:{"default":!0},interval:{"default":200,validator:function(t){return t>=0}},align:{"default":"left",validator:function(t){return~["left","right","center"].indexOf(t)}},line:{"default":"v",validator:function(t){return~["v","h"].indexOf(t)}},lineGap:{required:!0,validator:function(t){return t>=0}},minLineGap:{validator:function(t){return t>=0}},maxLineGap:{validator:function(t){return t>=0}},singleMaxWidth:{validator:function(t){return t>=0}},fixedHeight:{"default":!1},watch:{"default":{}}},data:function(){return{style:{height:"",overflow:""}}},methods:{autoResizeHandler:n,reflowHandler:r(),reflow:o},events:{"wf-reflow":function(){this.reflowHandler()}},compiled:function(){this.virtualRects=[]},ready:function(){var t=this;this.autoResizeHandler(),this.$watch("autoResize",this.autoResizeHandler),this.$watch(function(){return t.align,t.line,t.lineGap,t.minLineGap,t.maxLineGap,t.singleMaxWidth,t.fixedHeight,t.watch},this.reflowHandler),y(this.$el,M,i,!0)},beforeDestroy:function(){this.autoResizeHandler(!1),b(this.$el,M,i,!0)}};var C=function(){function t(t,n,i,r){var o=t.$el.clientWidth,a=e(o,n),s=v(0,a.count);i.forEach(function(t,e){var i=s.reduce(function(t,e,n){return e<s[t]?n:t},0),o=r[e];o.top=s[i],o.left=a.left+a.width*i,o.width=a.width,o.height=t.height*(n.fixedHeight?1:a.width/t.width),s[i]=s[i]+o.height}),t.style.height=Math.max.apply(null,s)+"px"}function e(t,e){var n=t/e.lineGap,i=void 0;if(e.singleMaxWidth>=t)n=1,i=Math.max(t,e.minLineGap);else{var r=e.maxLineGap*~~n,o=e.minLineGap*~~(n+1),a=r>=t,s=t>=o;a&&s?(n=Math.round(n),i=t/n):a?(n=~~n,i=t/n):s?(n=~~(n+1),i=t/n):(n=~~n,i=e.maxLineGap),1===n&&(i=Math.min(t,e.singleMaxWidth),i=Math.max(i,e.minLineGap))}return{width:i,count:n,left:l(t,i*n,e.align)}}return{calculate:t}}(),W=function(){function t(t,n,i,r){for(var o=t.$el.clientWidth,a=i.length,s=0,u=0;a>u;){for(var l,f,c=e(o,n,i,u),d=0,h=0;d<c.count;d++)l=i[u+d],f=r[u+d],f.top=s,f.left=c.left+h,f.width=l.width*c.height/l.height,f.height=c.height,h+=f.width;u+=c.count,s+=c.height}t.style.height=s+"px"}function e(t,e,o,a){var s=n(t,e.lineGap,o,a),u=Math.max(s-1,1),f=i(t,e,o,a,s),c=i(t,e,o,a,u),d=r(c,f,t),h=d.height,p=d.width;return 1===d.count&&(p=Math.min(e.singleMaxWidth,t),h=o[a].height*p/o[a].width),{left:l(t,p,e.align),count:d.count,height:h}}function n(t,e,n,i){for(var r=0,o=i,a=0;o<n.length&&t>=a;o++)a+=n[o].width*e/n[o].height,r++;return r}function i(t,e,n,i,r){for(var o=0,a=r-1;a>=0;a--){var s=n[i+a];o+=s.width*e.lineGap/s.height}var u=e.lineGap*t/o,l=u<=e.maxLineGap&&u>=e.minLineGap;if(l)return{cost:Math.abs(e.lineGap-u),count:r,width:t,height:u};var f=o>t?e.minLineGap:e.maxLineGap;return{cost:1/0,count:r,width:o*f/e.lineGap,height:f}}function r(t,e,n){return t.cost===1/0&&e.cost===1/0?e.width<n?e:t:e.cost>=t.cost?t:e}return{calculate:t}}()},function(t,e){t.exports="<div class=vue-waterfall :style=style><slot></slot></div>"},function(t,e,n){var i,r;n(9),i=n(11),r=n(12),t.exports=i||{},t.exports.__esModule&&(t.exports=t.exports["default"]),r&&(("function"==typeof t.exports?t.exports.options||(t.exports.options={}):t.exports).template=r)},function(t,e,n){var i=n(10);"string"==typeof i&&(i=[[t.id,i,""]]);n(5)(i,{});i.locals&&(t.exports=i.locals)},function(t,e,n){e=t.exports=n(4)(),e.push([t.id,".vue-waterfall-slot{position:absolute;margin:0;padding:0;box-sizing:border-box}",""])},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e["default"]={data:function(){return{isShow:!1}},props:{width:{required:!0,validator:function(t){return t>=0}},height:{required:!0,validator:function(t){return t>=0}},order:{"default":0},moveClass:{"default":""}},methods:{notify:function(){this.$dispatch("wf-reflow",[this])},getMeta:function(){return{vm:this,node:this.$el,order:this.order,width:this.width,height:this.height,moveClass:this.moveClass}}},compiled:function(){var t=this;this.$watch("width, height",this.notify),this.$once("wf-reflowed",function(){return t.isShow=!0}),this.rect={top:0,left:0,width:0,height:0}},attached:function(){this.notify()},detached:function(){this.notify()}}},function(t,e){t.exports="<div class=vue-waterfall-slot v-show=isShow><slot></slot></div>"}])});
+},{}],7:[function(require,module,exports){
 (function (process,global){
 /*!
  * Vue.js v1.0.26
@@ -11867,7 +11874,7 @@ setTimeout(function () {
 
 module.exports = Vue;
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"_process":2}],7:[function(require,module,exports){
+},{"_process":2}],8:[function(require,module,exports){
 var inserted = exports.cache = {}
 
 exports.insert = function (css) {
@@ -11887,7 +11894,7 @@ exports.insert = function (css) {
   return elem
 }
 
-},{}],8:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 'use strict';
 
 var _vue = require('vue');
@@ -11914,15 +11921,38 @@ var _Default = require('./widgets/header/Default.vue');
 
 var _Default2 = _interopRequireDefault(_Default);
 
+var _TeacherDefault = require('./widgets/content/TeacherDefault.vue');
+
+var _TeacherDefault2 = _interopRequireDefault(_TeacherDefault);
+
+var _TrainingDefault = require('./widgets/content/TrainingDefault.vue');
+
+var _TrainingDefault2 = _interopRequireDefault(_TrainingDefault);
+
 var _env2 = require('../../../env.js');
 
 var _env3 = _interopRequireDefault(_env2);
 
+var _CustomModal = require('./components/CustomModal.vue');
+
+var _CustomModal2 = _interopRequireDefault(_CustomModal);
+
+var _CustomToast = require('./components/CustomToast.vue');
+
+var _CustomToast2 = _interopRequireDefault(_CustomToast);
+
+var _Tools = require('./settings/Tools.js');
+
+var _Tools2 = _interopRequireDefault(_Tools);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var VueResource = require('vue-resource');
-_vue2.default.use(VueResource);
+_vue2.default.debug = true;
+_vue2.default.component('CustomModal', _CustomModal2.default);
+_vue2.default.component('CustomToast', _CustomToast2.default);
+_vue2.default.use(require('vue-resource'));
 _vue2.default.use(require('vue-env'), _env3.default);
+_vue2.default.use(_Tools2.default);
 
 _vue2.default.http.headers.common['X-CSRF-TOKEN'] = document.querySelector('#_token').getAttribute('value');
 
@@ -11936,17 +11966,125 @@ var app = new _vue2.default({
 
 	ready: function ready() {
 		$(document).foundation();
+		var toast = this.$refs.toast;
+	},
+
+	methods: {
+		test: function test() {
+			var param = encodeURIComponent(JSON.stringify(['foo', 'bar']));
+			alert(param);
+
+			this.$http.post(this.$env.get('APP_URI') + 'api/test?data=' + param).then(function (response) {
+				debugger;
+			}, function (response) {});
+		}
 	},
 
 	components: {
-		VerifyView: _VerifyView2.default, IndexView: _IndexView2.default, SearchView: _SearchView2.default, HeaderDefault: _Default2.default, ClubEditView: _ClubEditView2.default
+		VerifyView: _VerifyView2.default, IndexView: _IndexView2.default, SearchView: _SearchView2.default,
+		HeaderDefault: _Default2.default, ClubEditView: _ClubEditView2.default, TeacherDefault: _TeacherDefault2.default,
+		TrainingDefault: _TrainingDefault2.default
 	}
-
 });
 
-},{"../../../env.js":1,"./web/ClubEditView.vue":19,"./web/IndexView.vue":20,"./web/SearchView.vue":21,"./web/VerifyView.vue":22,"./widgets/header/Default.vue":23,"vue":6,"vue-env":3,"vue-resource":5}],9:[function(require,module,exports){
+},{"../../../env.js":1,"./components/CustomModal.vue":10,"./components/CustomToast.vue":11,"./settings/Tools.js":24,"./web/ClubEditView.vue":25,"./web/IndexView.vue":26,"./web/SearchView.vue":27,"./web/VerifyView.vue":28,"./widgets/content/TeacherDefault.vue":29,"./widgets/content/TrainingDefault.vue":30,"./widgets/header/Default.vue":31,"vue":7,"vue-env":3,"vue-resource":5}],10:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
-var __vueify_style__ = __vueify_insert__.insert("\n")
+var __vueify_style__ = __vueify_insert__.insert("/* line 2, stdin */\n* {\n  box-sizing: border-box; }\n\n/* line 6, stdin */\n.modal-mask {\n  position: fixed;\n  z-index: 9998;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n  background-color: rgba(0, 0, 0, 0.5);\n  -webkit-transition: opacity .3s ease;\n  transition: opacity .3s ease; }\n\n/* line 17, stdin */\n.modal-container {\n  display: block;\n  z-index: 1006;\n  padding: 1rem;\n  border: 1px solid #cacaca;\n  background-color: #fefefe;\n  border-radius: 4px;\n  position: relative;\n  top: 0px;\n  height: 100%;\n  margin-left: auto;\n  margin-right: auto;\n  overflow-y: auto; }\n\n/* line 32, stdin */\n.modal-header h3 {\n  margin-top: 0;\n  color: #42b983; }\n\n/* line 41, stdin */\n.text-right {\n  text-align: right; }\n\n/* line 45, stdin */\n.form-label {\n  display: block;\n  margin-bottom: 1em; }\n\n/* line 50, stdin */\n.form-label > .form-control {\n  margin-top: 0.5em; }\n\n/* line 54, stdin */\n.form-control {\n  display: block;\n  width: 100%;\n  padding: 0.5em 1em;\n  line-height: 1.5;\n  border: 1px solid #ddd; }\n\n/* line 62, stdin */\n.modal-enter, .modal-leave {\n  opacity: 0; }\n\n/* line 66, stdin */\n.modal-enter .modal-container,\n.modal-leave .modal-container {\n  -webkit-transition: all .3s ease;\n  transition: all .3s ease; }\n\n@media screen and (min-width: 640px) {\n  /* line 72, stdin */\n  .modal-container {\n    width: 600px;\n    max-width: 75rem;\n    top: 50px; } }\n")
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _AddTraining = require('../context/AddTraining.vue');
+
+var _AddTraining2 = _interopRequireDefault(_AddTraining);
+
+var _FileManager = require('../context/FileManager.vue');
+
+var _FileManager2 = _interopRequireDefault(_FileManager);
+
+var _teachers = require('../context/teachers.vue');
+
+var _teachers2 = _interopRequireDefault(_teachers);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = {
+	props: {
+		id: {
+			required: true
+		},
+		type: { default: 'Club' },
+		multiple: { default: false },
+		title: { default: '' },
+		usage: { default: 'questionable' },
+		context: {
+			required: true
+		},
+		items: {},
+		saveCallback: { default: null },
+		validateable: {
+			default: 'N'
+		},
+		show: {
+			type: Boolean,
+			required: true,
+			twoWay: true,
+			default: false
+		},
+		zIndex: {
+			default: 1006
+		}
+	},
+
+	ready: function ready() {},
+
+	methods: {
+
+		modalClose: function modalClose() {
+			this.show = false;
+		},
+
+		modalSave: function modalSave() {
+			if (this.saveCallback) {
+				if (this.validateable == 'Y' && !this.$refs.context.validate()) {
+					return;
+				}
+
+				var response = {
+					id: this.usage,
+					data: this.$refs.context.getData()
+				};
+
+				this.$dispatch(this.saveCallback, response);
+			} else this.modalClose();
+		}
+	},
+
+	components: {
+		AddTraining: _AddTraining2.default, FileManager: _FileManager2.default, teachers: _teachers2.default
+	}
+};
+if (module.exports.__esModule) module.exports = module.exports.default
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"modal-mask\" @click=\"modalClose\" v-if=\"show\" transition=\"modal\">\n        <div class=\"modal-container\" @click.stop=\"\">\n            <div class=\"modal-header\">\n\t\t\t\t<slot name=\"header\">\n\t\t\t\t\t<div class=\"row small-up-3 medium-up-3 large-up-3\">\n\t\t\t\t\t  <div class=\"columns\">\n\t\t\t\t\t  \t<button @click=\"modalClose\" class=\"close-button\" type=\"button\">\n\t\t\t\t\t\t\t<span class=\"fa fa-times\" aria-hidden=\"true\"></span>\n\t\t\t\t\t\t</button>\n\t\t\t\t\t  </div>\n\t\t\t\t\t  <div class=\"columns\">\n\t\t\t\t\t  \t<button @click=\"modalSave\" class=\"save-button\" type=\"button\">\n\t\t\t\t\t    \t<span aria-hidden=\"true\" class=\"fa fa-check\"></span>\n\t\t\t\t\t    </button>\n\t\t\t\t\t  </div>\n\t\t\t\t\t</div>\t\n\t\t\t\t\t<div class=\"row\" style=\"height:50px; text-align: center;\">\n\t\t\t\t\t\t<h4 style=\"color:#5fcf80;\">{{title}}</h4>\n\t\t\t\t\t</div>\n\t\t\t\t</slot>\n\t\t\t</div>\n\n            <div class=\"modal-body\">\n\t          <slot name=\"body\">\n\t          \t<component v-ref:context=\"\" v-if=\"type == 'Club'\" :id=\"id\" :type=\"type\" :is=\"context\" :selected=\"items\">\n\t\t\t\t</component>\n\t\t\t\t<components v-ref:context=\"\" v-else=\"\" :is=\"context\" :selected=\"items\">\n\t\t\t\t</components>\n\t          </slot>\n\t        </div>\n\n            <div class=\"modal-footer\">\n\t          <slot name=\"footer\">\n\t          </slot>\n\t        </div>\n        </div>\n    </div>\n"
+if (module.hot) {(function () {  module.hot.accept()
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), true)
+  if (!hotAPI.compatible) return
+  module.hot.dispose(function () {
+    __vueify_insert__.cache["/* line 2, stdin */\n* {\n  box-sizing: border-box; }\n\n/* line 6, stdin */\n.modal-mask {\n  position: fixed;\n  z-index: 9998;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n  background-color: rgba(0, 0, 0, 0.5);\n  -webkit-transition: opacity .3s ease;\n  transition: opacity .3s ease; }\n\n/* line 17, stdin */\n.modal-container {\n  display: block;\n  z-index: 1006;\n  padding: 1rem;\n  border: 1px solid #cacaca;\n  background-color: #fefefe;\n  border-radius: 4px;\n  position: relative;\n  top: 0px;\n  height: 100%;\n  margin-left: auto;\n  margin-right: auto;\n  overflow-y: auto; }\n\n/* line 32, stdin */\n.modal-header h3 {\n  margin-top: 0;\n  color: #42b983; }\n\n/* line 41, stdin */\n.text-right {\n  text-align: right; }\n\n/* line 45, stdin */\n.form-label {\n  display: block;\n  margin-bottom: 1em; }\n\n/* line 50, stdin */\n.form-label > .form-control {\n  margin-top: 0.5em; }\n\n/* line 54, stdin */\n.form-control {\n  display: block;\n  width: 100%;\n  padding: 0.5em 1em;\n  line-height: 1.5;\n  border: 1px solid #ddd; }\n\n/* line 62, stdin */\n.modal-enter, .modal-leave {\n  opacity: 0; }\n\n/* line 66, stdin */\n.modal-enter .modal-container,\n.modal-leave .modal-container {\n  -webkit-transition: all .3s ease;\n  transition: all .3s ease; }\n\n@media screen and (min-width: 640px) {\n  /* line 72, stdin */\n  .modal-container {\n    width: 600px;\n    max-width: 75rem;\n    top: 50px; } }\n"] = false
+    document.head.removeChild(__vueify_style__)
+  })
+  if (!module.hot.data) {
+    hotAPI.createRecord("_v-df8e52a6", module.exports)
+  } else {
+    hotAPI.update("_v-df8e52a6", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+  }
+})()}
+},{"../context/AddTraining.vue":15,"../context/FileManager.vue":16,"../context/teachers.vue":17,"vue":7,"vue-hot-reload-api":4,"vueify/lib/insert-css":8}],11:[function(require,module,exports){
+var __vueify_insert__ = require("vueify/lib/insert-css")
+var __vueify_style__ = __vueify_insert__.insert("\n\n.CustomToast {\n    min-width: 250px;\n    margin-left: -125px;\n    background-color: #333;\n    color: #fff;\n    text-align: center;\n    border-radius: 2px;\n    padding: 16px;\n    position: fixed;\n    z-index: 9999;\n    left: 50%;\n    font-size: 17px;\n}\n\n.CustomToast--Top {\n\ttop: 10px;\n}\n\n.CustomToast--Bottom {\n\tbottom: 30px;\n}\n\n.CustomToast--Success {\n\tbackground-color : green;\n}\n\n.CustomToast--Info {\n\tbackground-color : #333;\n}\n\n.CustomToast--Warning {\n\tbackground-color : yellow;\n}\n\n.CustomToast--Error {\n\tbackground-color : red;\n}\n\n\n.fade-transition {\n  display: inline-block; /* otherwise scale animation won't work */\n}\n\n.fade-enter {\n  -webkit-animation: fadein .5s;\n          animation: fadein .5s;\n}\n.fade-leave {\n  -webkit-animation: fadeout .5s;\n          animation: fadeout .5s;\n}\n\n@-webkit-keyframes fadein {\n    from {bottom: 0; opacity: 0;}\n    to {bottom: 30px; opacity: 1;}\n}\n\n@keyframes fadein {\n    from {bottom: 0; opacity: 0;}\n    to {bottom: 30px; opacity: 1;}\n}\n\n@-webkit-keyframes fadeout {\n    from {bottom: 30px; opacity: 1;}\n    to {bottom: 0; opacity: 0;}\n}\n\n@keyframes fadeout {\n    from {bottom: 30px; opacity: 1;}\n    to {bottom: 0; opacity: 0;}\n}\n\n")
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -11954,39 +12092,89 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = {
 	props: {
-		title: { default: '' },
-		usage: { default: 'questionable' },
-		show: {
-			type: Boolean,
-			required: true,
-			twoWay: true,
-			default: false
+		type: {
+			default: 'info'
+		},
+		timeout: {
+			default: 3000
+		},
+		position: {
+			default: 'bottom'
 		}
 	},
 
-	ready: function ready() {
-		this.modal = new Foundation.Reveal($('#customModal'));
-		$(window).on('closed.zf.reveal', this.modalClose);
+	data: function data() {
+		return {
+			show: false,
+			message: ''
+		};
 	},
+
+
+	ready: function ready() {},
 
 	methods: {
-		modalClose: function modalClose() {
-			this.show = false;
+
+		showMessage: function showMessage(message) {
+			this.message = message;
+			this.show = true;
+			this.resetOption();
 		},
 
-		modalSave: function modalSave() {
-			this.$dispatch('modal-saved', this.usage);
-		}
-	},
+		showToast: function showToast(option) {
+			debugger;
 
-	watch: {
-		show: function show(value) {
-			value ? this.modal.open() : this.modal.close();
+			this.message = option.message ? option.message : '';
+			this.timeout = option.timeout ? option.timeout : 3000;
+			this.position = option.position ? option.position : 'bottom';
+			this.show = true;
+			this.resetOption();
+		},
+
+		resetOption: function resetOption() {
+			var _this = this;
+
+			setTimeout(function () {
+				return _this.tick();
+			}, this.timeout);
+		},
+
+		tick: function tick() {
+			this.show = false;
 		}
 	}
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n\t<div class=\"reveal\" id=\"customModal\" data-reveal=\"\" data-animation-in=\"slide-in-up\" data-animation-out=\"slide-out-down\">\n\t\t<div class=\"modal-container\">\n\t\t\t<div class=\"modal-header\">\n\t\t\t\t<slot name=\"header\">\n\t\t\t\t\t<div class=\"row small-up-3 medium-up-3 large-up-3\">\n\t\t\t\t\t  <div class=\"columns\">\n\t\t\t\t\t  \t<button @click=\"modalClose\" class=\"close-button\" type=\"button\">\n\t\t\t\t\t\t\t<span class=\"fa fa-times\" aria-hidden=\"true\"></span>\n\t\t\t\t\t\t</button>\n\t\t\t\t\t  </div>\n\t\t\t\t\t  <div class=\"columns\">\n\t\t\t\t\t  \t<button @click=\"modalSave\" class=\"save-button\" type=\"button\">\n\t\t\t\t\t    \t<span aria-hidden=\"true\" class=\"fa fa-check\"></span>\n\t\t\t\t\t    </button>\n\t\t\t\t\t  </div>\n\t\t\t\t\t</div>\t\n\t\t\t\t\t<div class=\"row\" style=\"height:50px; text-align: center;\">\n\t\t\t\t\t\t<h4 style=\"color:#5fcf80;\">{{title}}</h4>\n\t\t\t\t\t</div>\n\t\t\t\t</slot>\n\t\t\t<div>\n\t\t\t<div class=\"modal-body\">\n\t          <slot name=\"body\">\n\t            default body\n\t          </slot>\n\t        </div>\n\n\t        <div class=\"modal-footer\">\n\t          <slot name=\"footer\">\n\t            default footer\n\t          </slot>\n\t        </div>\n\t\t</div>\n\t</div>\n</div></div>"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div v-show=\"show\" transition=\"fade\" class=\"CustomToast \n     \t    CustomToast--{{position | capitalize}}\n     \t    CustomToast--{{type | capitalize}}\">\n\t<div>\n\t\t{{message}}\n\t</div>\n</div>\n"
+if (module.hot) {(function () {  module.hot.accept()
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), true)
+  if (!hotAPI.compatible) return
+  module.hot.dispose(function () {
+    __vueify_insert__.cache["\n\n.CustomToast {\n    min-width: 250px;\n    margin-left: -125px;\n    background-color: #333;\n    color: #fff;\n    text-align: center;\n    border-radius: 2px;\n    padding: 16px;\n    position: fixed;\n    z-index: 9999;\n    left: 50%;\n    font-size: 17px;\n}\n\n.CustomToast--Top {\n\ttop: 10px;\n}\n\n.CustomToast--Bottom {\n\tbottom: 30px;\n}\n\n.CustomToast--Success {\n\tbackground-color : green;\n}\n\n.CustomToast--Info {\n\tbackground-color : #333;\n}\n\n.CustomToast--Warning {\n\tbackground-color : yellow;\n}\n\n.CustomToast--Error {\n\tbackground-color : red;\n}\n\n\n.fade-transition {\n  display: inline-block; /* otherwise scale animation won't work */\n}\n\n.fade-enter {\n  -webkit-animation: fadein .5s;\n          animation: fadein .5s;\n}\n.fade-leave {\n  -webkit-animation: fadeout .5s;\n          animation: fadeout .5s;\n}\n\n@-webkit-keyframes fadein {\n    from {bottom: 0; opacity: 0;}\n    to {bottom: 30px; opacity: 1;}\n}\n\n@keyframes fadein {\n    from {bottom: 0; opacity: 0;}\n    to {bottom: 30px; opacity: 1;}\n}\n\n@-webkit-keyframes fadeout {\n    from {bottom: 30px; opacity: 1;}\n    to {bottom: 0; opacity: 0;}\n}\n\n@keyframes fadeout {\n    from {bottom: 30px; opacity: 1;}\n    to {bottom: 0; opacity: 0;}\n}\n\n"] = false
+    document.head.removeChild(__vueify_style__)
+  })
+  if (!module.hot.data) {
+    hotAPI.createRecord("_v-1e8d2527", module.exports)
+  } else {
+    hotAPI.update("_v-1e8d2527", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+  }
+})()}
+},{"vue":7,"vue-hot-reload-api":4,"vueify/lib/insert-css":8}],12:[function(require,module,exports){
+var __vueify_insert__ = require("vueify/lib/insert-css")
+var __vueify_style__ = __vueify_insert__.insert("\n")
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+exports.default = {
+	props: {
+		item: {}
+	}
+};
+if (module.exports.__esModule) module.exports = module.exports.default
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<li style=\"border: 1px solid green;\">\n\t<h3>{{item.name}}</h3>\n\t{{item.description}}\t\n\t<ul>\n\t\t<li v-for=\"teacher in item.teachers\">\n\t\t\t#{{teacher.username}},\n\t\t</li>\n\t</ul>\t\n\t<ul>\n\t\t<li v-for=\"photo in item.photos\">\n\t\t\t<img height=\"100\" width=\"100\" v-bind:src=\"photo.url\">\n\t\t</li>\n\t</ul>\t\n</li>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -11996,12 +12184,12 @@ if (module.hot) {(function () {  module.hot.accept()
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
-    hotAPI.createRecord("_v-df8e52a6", module.exports)
+    hotAPI.createRecord("_v-4f4e86e7", module.exports)
   } else {
-    hotAPI.update("_v-df8e52a6", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+    hotAPI.update("_v-4f4e86e7", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":6,"vue-hot-reload-api":4,"vueify/lib/insert-css":7}],10:[function(require,module,exports){
+},{"vue":7,"vue-hot-reload-api":4,"vueify/lib/insert-css":8}],13:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
 var __vueify_style__ = __vueify_insert__.insert("\nbutton:focus {outline:0;}\n\n#omnibox {\n    position: absolute;\n    left: 0px;\n    margin: 16px;\n    top: 0px;\n    z-index: 10;\n    -webkit-transition:left 0.5s;\n    transition: left 0.5s;\n    -webkit-transform: translateX(0px);\n    transform: translateX(0px);\n    transition-property: -webkit-transform,transform,visibility,opacity;\n    -webkit-transition-duration: 200ms;\n            transition-duration: 200ms;\n    -webkit-transition-timing-function: cubic-bezier(0.0,0.0,0.2,1);\n            transition-timing-function: cubic-bezier(0.0,0.0,0.2,1);\n}\n\n.vasquette-margin-enabled#rap-card, .vasquette-margin-enabled#omnibox {\n    margin: 8px 0 8px 8px;\n}\n\n.searchbox.suggestions-shown \n{\n    border-radius: 2px 2px 0 0;\n}\n\n.searchbox-shadow \n{\n    box-shadow: 0 2px 4px rgba(0,0,0,0.2),0 -1px 0px rgba(0,0,0,0.02);\n}\n\n.searchbox \n{\n\n    position: relative;\n    background: #fff;\n    border-radius: 2px;\n    box-sizing: border-box;\n    height: 48px;\n    border-bottom: 1px solid transparent;\n    padding: 12px 104px 11px 64px;\n    -webkit-transition-property:background,box-shadow;\n    transition-property: background,box-shadow;\n    -webkit-transition-duration: 0.3s;\n            transition-duration: 0.3s;\n}\n\n.searchbox-searchbutton-container \n{\n    position: absolute;\n    right: 54px;\n    top: 0;\n}\n\n.searchbox-findme\n{\n    position: absolute;\n    right: 0px;\n    top: 0;\n}\n\n.searchbox-searchbutton::before {\n    content: '';\n    display: block;\n    width: 24px;\n    height: 24px;\n    background: url(//maps.gstatic.com/tactile/omnibox/quantum_search_button-20150825-1x.png);\n    background-size: 72px 24px;\n}\n\n.searchbox-searchbutton-container::after {\n    content: \"\";\n    position: absolute;\n    right: 0;\n    top: 10px;\n    border-left: 1px solid #ddd;\n    height: 28px;\n}\n\n.searchbox-searchbutton {\n    display: block;\n    padding: 12px 15px;\n}\n\n.searchbox-input {\n    border: none; \n    padding: 0px; \n    margin: 0px; \n    height: auto; \n    width: 100%; \n    z-index: 6;\n    left: 0px;\n    outline: none;\n    font-size: 15px;\n}\n\n.searchbox-hamburger::before {\n    content: '';\n    display: block;\n    background-image: url(//maps.gstatic.com/tactile/omnibox/quantum_menu-v2-1x.png);\n    background-size: 48px 24px;\n    background-position: 0 0;\n    height: 24px;\n    width: 24px;\n    opacity: .62;\n}\n\n.searchbox-hamburger {\n    display: block;\n    cursor: pointer;\n    padding: 12px 16px;\n}\n\n.searchbox-hamburger-container \n{\n    position: absolute;\n    z-index: 1003;\n    left: 0;\n    top: 0;\n}\n\n/* Pin Hover Box Styles */\n.search-tooltip{\n\tz-index: 11;\n    position: absolute;\n    background-color: #FFFFFF;\n    width: 250px;\n    height: 70px;\n    -webkit-box-shadow: 10px 10px 30px 0px rgba(174,174,174,1);\n    -moz-box-shadow: 10px 10px 30px 0px rgba(174,174,174,1);\n    box-shadow: 10px 10px 30px 0px rgba(174,174,174,1);\n    border-radius: 5px;\n}\n\n.rating {\n  margin: 10px 0;\n}\n\n.rating i {\n  display: inline-block;\n  width: 0;\n  height: 1.5em;\n  border-width: 1.5em / 2;\n  border-style: solid;\n  border-color: #eee;\n  border-radius: .22em;\n  color: white;\n  background: #eee;\n  font-style: normal;\n  line-height: 1.6em;\n  text-indent: -0.5em;\n  text-shadow: 1px 0 1px hsl(0, 0%, 70%);\n}\n/*panel*/\n.pane {\n    /*position: relative;*/\n    display: block;\n}\n\n.pane-holder{\n    width: 408px;\n    height: 100%;\n    position: absolute;\n    z-index: 2;\n    left: 0;\n    top: 0;\n    overflow: hidden;\n}\n\n.pane-holder:hover{\n    overflow-y: scroll;\n}\n\n.pane-header{\n    width: 100%;\n    height: 256px;\n    background-color: #fff;\n}\n.pane-content{\n    width: 100%;\n    height: auto;\n    line-height: 1.5em;\n    background-color: #4285F4;\n    padding: 10px;\n    color: #fff;\n}\n.pane-content h1{\n    font-size: 25px;\n}\n.pane-holder-small{\n    overflow-y: scroll;\n}\n\n.find-mylocation{\n    display: block;\n    padding: 12px 15px;\n}\n\n.reset-button{\n    display: block;\n    padding: 12px 15px;\n}\n.reset-button::before{\n    background-image: url(//maps.gstatic.com/tactile/omnibox/clear-1x-20150504.png);\n    background-size: 96px 24px;\n    height: 24px;\n    width: 24px;\n    cursor: pointer;\n    display: block;\n    content: '';\n}\n\n")
 "use strict";
@@ -12031,7 +12219,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-3f3bb728", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":6,"vue-hot-reload-api":4,"vueify/lib/insert-css":7}],11:[function(require,module,exports){
+},{"vue":7,"vue-hot-reload-api":4,"vueify/lib/insert-css":8}],14:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
 var __vueify_style__ = __vueify_insert__.insert("\n\tdiv.TokenizeMeasure,\n\tdiv.Tokenize ul li span,\n\tdiv.Tokenize ul.TokensContainer li.TokenSearch input {\n\t    font-size: 50%;\n\t    font-weight: 600;\n    \tcolor: white !important;\n\t}\n\n\tdiv.Tokenize {\n\t    position: relative;\n\t    display: inline-block;\n\t    zoom: 1;\n\t}\n\n\tdiv.Tokenize ul {\n\t    list-style: none;\n\t    padding: 0;\n\t    margin: 0;\n\t}\n\n\tdiv.Tokenize ul li {\n\t    white-space: nowrap;\n\t}\n\n\tdiv.Tokenize ul.TokensContainer {\n\t    cursor: text;\n\t    padding: 0 5px 5px 0;\n\t    height: 100px;\n\t    overflow-y: auto;\n\t    background-color: white;\n\t    -webkit-touch-callout: none;\n\t    -webkit-user-select: none;\n\t    -moz-user-select: none;\n\t    -ms-user-select: none;\n\t    user-select: none;\n\t}\n\n\tdiv.Tokenize ul.TokensContainer.Autosize {\n\t    height: auto;\n\t}\n\n\tdiv.Tokenize.Disabled ul.TokensContainer,\n\tdiv.Tokenize.Disabled ul.TokensContainer input {\n\t    cursor: not-allowed;\n\t}\n\n\tdiv.Tokenize ul.TokensContainer li.Token {\n\t    background-color: red;\n\t    padding: 0 5px;\n\t    line-height: 6px;\n\t    border-radius: 4px;\n\t}\n\n\tdiv.Tokenize ul.TokensContainer.ui-sortable:not(.ui-sortable-disabled) li.Token {\n\t    cursor: move;\n\t}\n\n\tdiv.Tokenize ul.TokensContainer li.Token.MovingShadow  {\n\t    border: 1px solid #fcefa1;\n\t    background-color: #fbf9ee;\n\t}\n\n\tdiv.Tokenize ul.TokensContainer li.Token.PendingDelete {\n\t    opacity : 0.5;\n\t    -moz-opacity : 0.5;\n\t    -ms-filter: \"alpha(opacity=50)\";\n\t    filter : alpha(opacity=50);\n\t}\n\n\tdiv.Tokenize ul.TokensContainer li.Token,\n\tdiv.Tokenize ul.TokensContainer li.TokenSearch {\n\t    margin: 1px 0 0 1px;\n\t    height: 12px;\n\t    float: left;\n\t}\n\n\tdiv.Tokenize ul.TokensContainer li.TokenSearch input {\n\t    margin: 0;\n\t    padding: 1px 0;\n\t    background-color: transparent;\n\t    line-height: 18px;\n\t    border: none;\n\t    outline: none;\n\t    font-weight: 100 !important;\n\t    color: #000 !important;\n\t}\n\n\tdiv.Tokenize ul.TokensContainer li.Placeholder {\n\t    color: #ddd;\n\t    position: absolute;\n\t    line-height: 20px;\n\t    padding: 5px 0 0 5px;\n\t    display: none;\n\t}\n\n\tdiv.Tokenize ul.TokensContainer,\n\tdiv.Tokenize ul.Dropdown {\n\t    border: 1px solid #ccc;\n\t}\n\n\tdiv.Tokenize ul.TokensContainer li.Token a.Close {\n\t    font-family: Arial, Helvetica, sans-serif !important;\n\t    font-size: 9px !important;\n\t    line-height: 10px;\n\t    float: right;\n\t    margin: 1px 0 0 5px;\n\t    padding: 0;\n\t    cursor: pointer;\n\t    color: #ebeced;\n\t}\n\n\tdiv.Tokenize.Disabled ul.TokensContainer li.Token a.Close {\n\t    display: none;\n\t}\n\n\tdiv.Tokenize ul.TokensContainer li.Token a.Close:hover {\n\t    background: transparent;\n\t    text-decoration: none;\n\t}\n\n\tdiv.Tokenize ul.Dropdown {\n\t    -webkit-box-sizing: border-box;\n\t    -moz-box-sizing: border-box;\n\t    -ms-box-sizing: border-box;\n\t    box-sizing: border-box;\n\n\t    display: none;\n\t    width: 100%;\n\t    padding: 5px 0;\n\t    margin: -1px 0 0 0;\n\t    position: absolute;\n\t    background-color: white;\n\t    overflow-y: auto;\n\n\t    -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);\n\t    -moz-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);\n\t    -o-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);\n\t    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);\n\n\t    -webkit-background-clip: padding-box;\n\t    -moz-background-clip: padding;\n\t    background-clip: padding-box;\n\n\t    -webkit-border-radius: 0 0 6px 6px;\n\t    -moz-border-radius: 0 0 6px 6px;\n\t    border-radius: 0 0 6px 6px;\n\n\t    z-index: 20;\n\t}\n\n\tdiv.Tokenize ul.Dropdown li {\n\t    padding: 5px 20px;\n\t    overflow: hidden;\n\t    cursor: pointer;\n\t}\n\n\tdiv.Tokenize ul.Dropdown li.Hover {\n\t    color: white;\n\t    text-decoration: none;\n\t    background-color: #0081c2;\n\t    background-image: -moz-linear-gradient(top, #0088cc, #0077b3);\n\t    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#0088cc), to(#0077b3));\n\t    background-image: -webkit-linear-gradient(top, #0088cc, #0077b3);\n\t    background-image: -o-linear-gradient(top, #0088cc, #0077b3);\n\t    background-image: linear-gradient(to bottom, #0088cc, #0077b3);\n\t    background-repeat: repeat-x;\n\t    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff0088cc', endColorstr='#ff0077b3', GradientType=0);\n\t}\n")
 'use strict';
@@ -12077,9 +12265,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-2d605127", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":6,"vue-hot-reload-api":4,"vueify/lib/insert-css":7}],12:[function(require,module,exports){
-var __vueify_insert__ = require("vueify/lib/insert-css")
-var __vueify_style__ = __vueify_insert__.insert("\n/*\nUploadify\nCopyright (c) 2012 Reactive Apps, Ronnie Garcia\nReleased under the MIT License <http://www.opensource.org/licenses/mit-license.php> \n*/\n\n.uploadify {\n\tposition: relative;\n\tmargin-bottom: 1em;\n}\n.uploadify-button {\n\tbackground-color: #505050;\n\tbackground-image: linear-gradient(bottom, #505050 0%, #707070 100%);\n\tbackground-image: -o-linear-gradient(bottom, #505050 0%, #707070 100%);\n\tbackground-image: -moz-linear-gradient(bottom, #505050 0%, #707070 100%);\n\tbackground-image: -webkit-linear-gradient(bottom, #505050 0%, #707070 100%);\n\tbackground-image: -ms-linear-gradient(bottom, #505050 0%, #707070 100%);\n\tbackground-image: -webkit-gradient(\n\t\tlinear,\n\t\tleft bottom,\n\t\tleft top,\n\t\tcolor-stop(0, #505050),\n\t\tcolor-stop(1, #707070)\n\t);\n\tbackground-position: center top;\n\tbackground-repeat: no-repeat;\n\t-webkit-border-radius: 30px;\n\t-moz-border-radius: 30px;\n\tborder-radius: 30px;\n\tborder: 2px solid #808080;\n\tcolor: #FFF;\n\tfont: bold 12px Arial, Helvetica, sans-serif;\n\ttext-align: center;\n\ttext-shadow: 0 -1px 0 rgba(0,0,0,0.25);\n\twidth: 100%;\n}\n.uploadify:hover .uploadify-button {\n\tbackground-color: #606060;\n\tbackground-image: linear-gradient(top, #606060 0%, #808080 100%);\n\tbackground-image: -o-linear-gradient(top, #606060 0%, #808080 100%);\n\tbackground-image: -moz-linear-gradient(top, #606060 0%, #808080 100%);\n\tbackground-image: -webkit-linear-gradient(top, #606060 0%, #808080 100%);\n\tbackground-image: -ms-linear-gradient(top, #606060 0%, #808080 100%);\n\tbackground-image: -webkit-gradient(\n\t\tlinear,\n\t\tleft bottom,\n\t\tleft top,\n\t\tcolor-stop(0, #606060),\n\t\tcolor-stop(1, #808080)\n\t);\n\tbackground-position: center bottom;\n}\n.uploadify-button.disabled {\n\tbackground-color: #D0D0D0;\n\tcolor: #808080;\n}\n.uploadify-queue {\n\tmargin-bottom: 1em;\n}\n.uploadify-queue-item {\n\tbackground-color: #F5F5F5;\n\t-webkit-border-radius: 3px;\n\t-moz-border-radius: 3px;\n\tborder-radius: 3px;\n\tfont: 11px Verdana, Geneva, sans-serif;\n\tmargin-top: 5px;\n\tmax-width: 350px;\n\tpadding: 10px;\n}\n.uploadify-error {\n\tbackground-color: #FDE5DD !important;\n}\n.uploadify-queue-item .cancel a {\n\tbackground: url('../img/uploadify-cancel.png') 0 0 no-repeat;\n\tfloat: right;\n\theight:\t16px;\n\ttext-indent: -9999px;\n\twidth: 16px;\n}\n.uploadify-queue-item.completed {\n\tbackground-color: #E5E5E5;\n}\n.uploadify-progress {\n\tbackground-color: #E5E5E5;\n\tmargin-top: 10px;\n\twidth: 100%;\n}\n.uploadify-progress-bar {\n\tbackground-color: #0099FF;\n\theight: 3px;\n\twidth: 1px;\n}\n")
+},{"vue":7,"vue-hot-reload-api":4,"vueify/lib/insert-css":8}],15:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -12087,47 +12273,258 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = {
 	props: {
-		user: { default: null },
-		text: { default: 'Upload photo' }
+		id: {},
+		type: {},
+		selected: {}
 	},
 
-	/*data() {
- 	return {
- 		instance : null,
- 	}			
- },*/
+	data: function data() {
+		return {
+			name: '',
+			description: '',
+			priceless: false,
+			price: 0,
+			teachers: [],
+			pictures: [],
+			services: [],
+			showFileManager: false,
+			showTeachers: false
+		};
+	},
 
-	created: function created() {},
 
-	ready: function ready() {},
+	ready: function ready() {
+		var tab = new Foundation.Tabs($('#example-tabs'));
+	},
+
+	events: {
+		'choosedTeachers': function choosedTeachers($response) {
+			this.choosedTeachers($response);
+		},
+
+		'choosedPictures': function choosedPictures($response) {
+			this.choosedPictures($response);
+		}
+	},
 
 	methods: {
-		getFiles: function getFiles() {},
+		getData: function getData() {
+			return this.$tools.transformParameters({
+				club_id: this.id,
+				name: this.name,
+				description: this.description,
+				pictures: this.$tools.collectionBy(this.pictures, "id|url"),
+				teachers: this.$tools.collectionBy(this.teachers, "id")
+			});
+		},
 
-		onSelect: function onSelect(file) {
-			alert(file);
+		choosedTeachers: function choosedTeachers($response) {
+			this.teachers = $response.data;
+			this.showTeachers = false;
+		},
+
+		triggerPictureBtn: function triggerPictureBtn() {
+			this.showFileManager = true;
+		},
+
+		choosedPictures: function choosedPictures($response) {
+			this.pictures = $response.data;
+			this.showFileManager = false;
+		},
+
+		deletePhoto: function deletePhoto(photo) {
+			this.pictures.$remove(photo);
+		},
+
+		deleteTeacher: function deleteTeacher(teacher) {
+			this.teachers.$remove(teacher);
+		},
+
+		validate: function validate() {
+			if (!this.name.trim()) {
+				this.$root.$refs.toast.showMessage("Please. Fill the name of training");
+				return false;
+			}
+
+			if (!this.description.trim()) {
+				this.$root.$refs.toast.showMessage("Please. Fill the description of training");
+				return false;
+			}
+
+			return true;
 		}
+	},
+
+	components: {}
+};
+if (module.exports.__esModule) module.exports = module.exports.default
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n\t<custom-modal :id=\"id\" type=\"User\" title=\"Photo chooser\" usage=\"_photo-chooser\" :items=\"pictures\" :show.sync=\"showFileManager\" save-callback=\"choosedPictures\" context=\"fileManager\">\n\t</custom-modal>\n\n\t<custom-modal :id=\"id\" type=\"Club\" title=\"Teachers\" usage=\"_teacher-chooser\" :items=\"teachers\" :show.sync=\"showTeachers\" save-callback=\"choosedTeachers\" context=\"teachers\">\n\t</custom-modal>\n\n\t<form method=\"POST\" accept=\"\">\n\t\t<ul class=\"tabs\" data-tabs=\"\" id=\"example-tabs\">\n\t\t  <li class=\"tabs-title is-active\"><a href=\"#main\" aria-selected=\"true\">Info</a></li>\n\t\t  <li class=\"tabs-title\"><a href=\"#photos\">Photos</a></li>\n\t\t  <li class=\"tabs-title\"><a href=\"#teacher\">Teacher</a></li>\n\t    </ul>\n\t  <div class=\"tabs-content\" data-tabs-content=\"example-tabs\">\n\t\t  <div class=\"tabs-panel is-active\" id=\"main\">\n\t\t    <div class=\"row\">\n\t\t\t    <div class=\"medium-6 columns\">\n\t\t\t      <label>Training name\n\t\t\t        <input type=\"text\" name=\"name\" v-model=\"name\" placeholder=\"fill training name\">\n\t\t\t      </label>\n\t\t\t    </div>\n\t\t\t    <div class=\"medium-6 columns\">\n\t\t\t      <label>Description\n\t\t\t        <textarea type=\"text\" name=\"description\" v-model=\"description\" placeholder=\"Description ...\">\t\t\t        </textarea>\n\t\t\t      </label>\n\t\t\t    </div>\n\t\t\t</div>\n\t\t\t<div class=\"row\">\n\t\t\t  \t<div class=\"medium-6 columns\">\n\t\t\t  \t  <label> Priceless\n\t\t\t  \t\t<input type=\"checkbox\" v-model=\"priceless\" name=\"priceless\">\n\t\t\t  \t  </label>\n\t\t\t  \t</div>\n\t\t\t  \t<div class=\"medium-6 columns\">\n\t\t\t  \t  <label>Price\n\t\t\t  \t  \t<input type=\"text\" v-model=\"price\" placeholder=\"price\">\n\t\t\t  \t  </label>\n\t\t\t  \t</div>\n\t\t\t</div>\n\t\t  </div>\n\t\t  <div class=\"tabs-panel\" id=\"teacher\">\n  \t  \t\t   <div class=\"picture-list\">\n\t\t\t  \t<div class=\"row small-up-2 medium-up-3 large-up-4\">\n\t\t\t  \t\t<br>\n\t\t\t\t  \t<div class=\"column\" v-for=\"teacher in teachers\">\n\t\t\t\t\t  \t<div class=\"figure\">\n\t\t                    <img v-bind:src=\"teacher.avatar_url\" alt=\"Jeffrey Way\" height=\"120\" width=\"120\" style=\"border-radius:4px;\">\n\t\t                    <div class=\"figcaption\">\n\t\t                        <a @click=\"deleteTeacher(teacher)\" class=\"btn-floating red\" style=\"left: 25%;\">\n\t\t                        \t<i class=\"fa fa-trash\"></i>\n\t\t                        </a>\n\t\t                    </div>\n\t\t                </div>\n\t\t\t\t  \t</div>\n\t\t\t\t  \t<div class=\"column\">\n\t\t\t\t\t  \t<div class=\"figure\">\n\t\t                    <div class=\"figcaption\" style=\"opacity:1;\">\n\t\t                        <a @click=\"showTeachers = true\" class=\"btn-floating red\" style=\"left: 25%;\">\n\t\t                        \t<i class=\"fa fa-plus\"></i>\n\t\t                        </a>\n\t\t                    </div>\n\t\t                </div>\n\t\t\t\t  \t</div>\n\t\t\t\t</div>\n\t\t\t  </div>\n\t\t  </div>\n\t\t  <div class=\"tabs-panel\" id=\"photos\">\n\t\t\t  <div class=\"picture-list\">\n\t\t\t  \t<div class=\"row small-up-2 medium-up-3 large-up-4\">\n\t\t\t  \t\t<br>\n\t\t\t\t  \t<div class=\"column\" v-for=\"photo in pictures\">\n\t\t\t\t\t  \t<div class=\"figure\">\n\t\t                    <img v-bind:src=\"photo.url\" alt=\"Jeffrey Way\" height=\"120\" width=\"120\" style=\"border-radius:4px;\">\n\t\t                    <div class=\"figcaption\">\n\t\t                        <a @click=\"deletePhoto(photo)\" class=\"btn-floating red\" style=\"left: 25%;\">\n\t\t                        \t<i class=\"fa fa-trash\"></i>\n\t\t                        </a>\n\t\t                    </div>\n\t\t                </div>\n\t\t\t\t  \t</div>\n\t\t\t\t  \t<div class=\"column\">\n\t\t\t\t\t  \t<div class=\"figure\">\n\t\t                    <div class=\"figcaption\" style=\"opacity:1;\">\n\t\t                        <a @click=\"triggerPictureBtn\" class=\"btn-floating red\" style=\"left: 25%;\">\n\t\t                        \t<i class=\"fa fa-plus\"></i>\n\t\t                        </a>\n\t\t                    </div>\n\t\t                </div>\n\t\t\t\t  \t</div>\n\t\t\t\t</div>\n\t\t\t  </div>\n\t\t  </div>\n\t  </div>\n\t</form>\n"
+if (module.hot) {(function () {  module.hot.accept()
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), true)
+  if (!hotAPI.compatible) return
+  if (!module.hot.data) {
+    hotAPI.createRecord("_v-2f8a7901", module.exports)
+  } else {
+    hotAPI.update("_v-2f8a7901", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+  }
+})()}
+},{"vue":7,"vue-hot-reload-api":4}],16:[function(require,module,exports){
+var __vueify_insert__ = require("vueify/lib/insert-css")
+var __vueify_style__ = __vueify_insert__.insert("/* line 3, stdin */\n.thumb-img {\n  position: absolute;\n  top: 5px;\n  left: 5px;\n  right: 5px;\n  bottom: 5px;\n  font-size: 1.2em; }\n\n/* line 12, stdin */\n.vue-waterfall-slot:hover .thumb-back,\n.vue-waterfall-slot:hover ~ .thumb-back {\n  color: #fff;\n  opacity: 1; }\n\n/* line 18, stdin */\n.thumb-back {\n  opacity: 0;\n  border-radius: 4px;\n  background-color: rgba(0, 0, 0, 0.7);\n  position: absolute;\n  top: 5px;\n  left: 5px;\n  right: 5px;\n  bottom: 5px;\n  font-size: 1.2em; }\n\n/* line 30, stdin */\n.thumb-check {\n  top: 50%;\n  left: 50%; }\n\n/* line 35, stdin */\n.thumb-back ul {\n  list-style-type: none; }\n\n/* line 39, stdin */\n.thumb-back ul li {\n  color: #000;\n  background-color: #fff;\n  border-radius: 2px; }\n\n/* line 45, stdin */\n.thumb-img img {\n  width: 100%;\n  height: 100%;\n  display: block;\n  border-radius: 4px; }\n\n/* line 52, stdin */\n.fileinput-button {\n  position: relative;\n  overflow: hidden;\n  display: inline-block; }\n\n/* line 58, stdin */\n.fileinput-button input {\n  position: absolute;\n  top: 0;\n  right: 0;\n  margin: 0;\n  opacity: 0;\n  -ms-filter: 'alpha(opacity=0)';\n  font-size: 200px !important;\n  direction: ltr;\n  cursor: pointer; }\n\n/* line 70, stdin */\n.progress {\n  height: 20px;\n  margin-bottom: 20px;\n  overflow: hidden;\n  background-color: #f5f5f5;\n  border-radius: 4px;\n  -webkit-box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);\n  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1); }\n\n/* line 80, stdin */\n.progress-bar-success {\n  background-color: #5fcf80 !important; }\n\n/* line 84, stdin */\n.progress-bar {\n  float: left;\n  width: 0;\n  height: 100%;\n  font-size: 12px;\n  line-height: 20px;\n  color: #fff;\n  text-align: center;\n  background-color: #428bca;\n  -webkit-box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.15);\n  box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.15);\n  -webkit-transition: width .6s ease;\n  -o-transition: width .6s ease;\n  transition: width .6s ease; }\n\n/* line 100, stdin */\n.item-move {\n  transition: all 0.5s cubic-bezier(0.55, 0, 0.1, 1);\n  -webkit-transition: all 0.5s cubic-bezier(0.55, 0, 0.1, 1); }\n\n/* line 105, stdin */\n.wf-transition {\n  transition: opacity .3s ease;\n  -webkit-transition: opacity .3s ease; }\n\n/* line 110, stdin */\n.wf-enter, .wf-leave {\n  opacity: 0; }\n")
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+
+/*var uploader = require('blueimp-file-upload');*/
+var Waterfall = require('vue-waterfall');
+
+exports.default = {
+
+	props: {
+		selected: {
+			default: []
+		}
+	},
+
+	data: function data() {
+		return {
+			files: [],
+			actualSize: null,
+			maxSize: null,
+			type: 'all',
+			isBusy: false
+		};
+	},
+
+
+	created: function created() {
+		this.getFiles();
+	},
+
+	ready: function ready() {
+		$.ajaxSetup({
+			headers: { 'X-CSRF-TOKEN': $('#_token').attr('value') }
+		});
+
+		$('#fileupload').fileupload({
+			url: '/upload',
+			dataType: 'json',
+			start: this.start,
+			done: this.done,
+			progressall: this.progress
+		}).prop('disabled', !$.support.fileInput).parent().addClass($.support.fileInput ? undefined : 'disabled');
+	},
+
+	methods: {
+		getData: function getData() {
+			this.type = "selected";
+			return this.filteredFiles;
+		},
+
+		start: function start(e) {
+			$('#progress .progress-bar').css('width', 0 + '%');
+		},
+
+		done: function done(e, response) {
+			if (response.result.result == "failed") {
+				var option = {
+					message: response.result.errors.image
+				};
+
+				this.$root.$refs.toast.showToast(option);
+
+				return;
+			}
+
+			this.files.push(response.result.data);
+		},
+
+		progress: function progress(e, data) {
+			var progress = parseInt(data.loaded / data.total * 100, 10);
+			$('#progress .progress-bar').css('width', progress + '%');
+		},
+
+		typeFilter: function typeFilter(type) {
+			if (!this.isBusy) this.type = type;
+		},
+
+		getFiles: function getFiles() {
+			var _this = this;
+
+			var maps = this.objectListToMap(this.selected);
+			this.$http.get(this.$env.get('APP_URI') + 'api/user/files?selected=' + maps).then(function (response) {
+
+				_this.files = response.data.files;
+				_this.actualSize = response.data.actualSize;
+				_this.maxSize = response.data.maxSize;
+			}, function (response) {});
+		},
+
+		objectListToMap: function objectListToMap(list) {
+			var map = [];
+			for (var i = 0; i < list.length; i++) {
+				map.push(list[i].id);
+			}
+			return map;
+		},
+
+		filterByType: function filterByType(obj) {
+			if (this.type == "all") return true;
+
+			if (this.type == "selected" && obj.selected) return true;
+
+			for (i = 0; i < obj.tags.length; i++) {
+				if (obj.tags[i].name_en == this.type) return true;
+			}
+
+			return false;
+		},
+
+		toggle: function toggle(photo) {
+			photo.selected = !photo.selected;
+		}
+	},
+
+	events: {
+		'wf-reflowed': function wfReflowed() {
+			this.isBusy = false;
+		}
+	},
+
+	computed: {
+		filteredFiles: function filteredFiles() {
+			return this.files.filter(this.filterByType);
+		}
+	},
+
+	components: {
+		'waterfall': Waterfall.waterfall,
+		'waterfall-slot': Waterfall.waterfallSlot
 	}
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<form enctype=\"multipart/form-data\">\n    <div class=\"row\">\n  \t    <div class=\"small-6 large-4 columns\">1</div>\n\t\t    <div class=\"small-6 large-4 columns\">2</div>\n\t\t    <div class=\"small-6 large-4 columns\">3</div>\n\t\t</div>\n\n\t<button class=\"file-upload button success\">            \n\t \t<i class=\"fa fa-cloud-upload\" aria-hidden=\"true\"></i>\t\n\t  \t{{text}}\n\t</button>\n</form>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<form id=\"uploader\" method=\"POST\" action=\"/upload\" enctype=\"multipart/form-data\">\n\t<div class=\"row\">\n\t\t<div class=\"small-12 medium-12 column\"> \n\t\t\t<div class=\"row\">\n\t\t\t\t<div class=\"small-2 medium-2 column\">\n\t\t\t\t\t<span class=\"button success fileinput-button\">\n\t\t\t\t\t\t<i class=\"fa fa-cloud\"></i>\n\t\t\t\t\t\t<input id=\"fileupload\" type=\"file\" class=\"image button success\" name=\"image[]\" multiple=\"\">\n\t\t\t\t\t</span>\t\n\t\t\t\t</div>\n\t\t\t\t<div class=\"small-10 medium-10 column\">\n\t\t\t\t\t<div id=\"progress\" class=\"progress\">\n\t\t\t\t        <div class=\"progress-bar progress-bar-success\"></div>\n\t\t\t\t    </div>\n\t\t\t    </div>\n\t\t\t</div>\n\t\t</div>\n\t</div>\n\t<div class=\"row\">\n     <a @click=\"typeFilter('all')\" class=\"button success\">All</a>\n\t <a @click=\"typeFilter('training')\" class=\"button success\">Training</a>\n\t <a @click=\"typeFilter('loyalty')\" class=\"button success\">Loyalty</a>\n\t <a @click=\"typeFilter('selected')\" class=\"button success\">Selected</a>\n\t {{actualSize / 1024 / 1024}}mb to {{maxSize}}\n\t</div>\n</form>\n\n<waterfall align=\"center\" :watch=\"filteredFiles\" :line-gap=\"200\" :min-line-gap=\"100\" :max-line-gap=\"220\" :single-max-width=\"300\">\n  <waterfall-slot v-for=\"file in filteredFiles\" width=\"160\" move-class=\"item-move\" transition=\"wf\" :height=\"file.ratio * 160\" :order=\"$index\">\n  \t<div class=\"thumb-img\">\n\t    <img v-bind:src=\"file.url\">\n\t</div>\n\t<div class=\"thumb-back\">\n\t\t<ul>\n\t\t\t<li v-for=\"tag in file.tags\">\n\t\t\t\t{{tag.name_en}}\n\t\t\t</li>\n\t\t</ul>\n\n\t\t<div class=\"thumb-check\">\n\t\t\t<a v-if=\"file.selected\" @click=\"toggle(file)\" class=\"success button\">\n\t\t\t\t<i class=\"fa fa-check\"></i>\n\t\t\t</a>\n\t\t\t<a v-else=\"\" @click=\"toggle(file)\" class=\"warning button\">\n\t\t\t\t<i class=\"fa fa-times\"></i>\n\t\t\t</a>\n\t\t</div>\n\t</div>\n  </waterfall-slot>\n</waterfall>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
   module.hot.dispose(function () {
-    __vueify_insert__.cache["\n/*\nUploadify\nCopyright (c) 2012 Reactive Apps, Ronnie Garcia\nReleased under the MIT License <http://www.opensource.org/licenses/mit-license.php> \n*/\n\n.uploadify {\n\tposition: relative;\n\tmargin-bottom: 1em;\n}\n.uploadify-button {\n\tbackground-color: #505050;\n\tbackground-image: linear-gradient(bottom, #505050 0%, #707070 100%);\n\tbackground-image: -o-linear-gradient(bottom, #505050 0%, #707070 100%);\n\tbackground-image: -moz-linear-gradient(bottom, #505050 0%, #707070 100%);\n\tbackground-image: -webkit-linear-gradient(bottom, #505050 0%, #707070 100%);\n\tbackground-image: -ms-linear-gradient(bottom, #505050 0%, #707070 100%);\n\tbackground-image: -webkit-gradient(\n\t\tlinear,\n\t\tleft bottom,\n\t\tleft top,\n\t\tcolor-stop(0, #505050),\n\t\tcolor-stop(1, #707070)\n\t);\n\tbackground-position: center top;\n\tbackground-repeat: no-repeat;\n\t-webkit-border-radius: 30px;\n\t-moz-border-radius: 30px;\n\tborder-radius: 30px;\n\tborder: 2px solid #808080;\n\tcolor: #FFF;\n\tfont: bold 12px Arial, Helvetica, sans-serif;\n\ttext-align: center;\n\ttext-shadow: 0 -1px 0 rgba(0,0,0,0.25);\n\twidth: 100%;\n}\n.uploadify:hover .uploadify-button {\n\tbackground-color: #606060;\n\tbackground-image: linear-gradient(top, #606060 0%, #808080 100%);\n\tbackground-image: -o-linear-gradient(top, #606060 0%, #808080 100%);\n\tbackground-image: -moz-linear-gradient(top, #606060 0%, #808080 100%);\n\tbackground-image: -webkit-linear-gradient(top, #606060 0%, #808080 100%);\n\tbackground-image: -ms-linear-gradient(top, #606060 0%, #808080 100%);\n\tbackground-image: -webkit-gradient(\n\t\tlinear,\n\t\tleft bottom,\n\t\tleft top,\n\t\tcolor-stop(0, #606060),\n\t\tcolor-stop(1, #808080)\n\t);\n\tbackground-position: center bottom;\n}\n.uploadify-button.disabled {\n\tbackground-color: #D0D0D0;\n\tcolor: #808080;\n}\n.uploadify-queue {\n\tmargin-bottom: 1em;\n}\n.uploadify-queue-item {\n\tbackground-color: #F5F5F5;\n\t-webkit-border-radius: 3px;\n\t-moz-border-radius: 3px;\n\tborder-radius: 3px;\n\tfont: 11px Verdana, Geneva, sans-serif;\n\tmargin-top: 5px;\n\tmax-width: 350px;\n\tpadding: 10px;\n}\n.uploadify-error {\n\tbackground-color: #FDE5DD !important;\n}\n.uploadify-queue-item .cancel a {\n\tbackground: url('../img/uploadify-cancel.png') 0 0 no-repeat;\n\tfloat: right;\n\theight:\t16px;\n\ttext-indent: -9999px;\n\twidth: 16px;\n}\n.uploadify-queue-item.completed {\n\tbackground-color: #E5E5E5;\n}\n.uploadify-progress {\n\tbackground-color: #E5E5E5;\n\tmargin-top: 10px;\n\twidth: 100%;\n}\n.uploadify-progress-bar {\n\tbackground-color: #0099FF;\n\theight: 3px;\n\twidth: 1px;\n}\n"] = false
+    __vueify_insert__.cache["/* line 3, stdin */\n.thumb-img {\n  position: absolute;\n  top: 5px;\n  left: 5px;\n  right: 5px;\n  bottom: 5px;\n  font-size: 1.2em; }\n\n/* line 12, stdin */\n.vue-waterfall-slot:hover .thumb-back,\n.vue-waterfall-slot:hover ~ .thumb-back {\n  color: #fff;\n  opacity: 1; }\n\n/* line 18, stdin */\n.thumb-back {\n  opacity: 0;\n  border-radius: 4px;\n  background-color: rgba(0, 0, 0, 0.7);\n  position: absolute;\n  top: 5px;\n  left: 5px;\n  right: 5px;\n  bottom: 5px;\n  font-size: 1.2em; }\n\n/* line 30, stdin */\n.thumb-check {\n  top: 50%;\n  left: 50%; }\n\n/* line 35, stdin */\n.thumb-back ul {\n  list-style-type: none; }\n\n/* line 39, stdin */\n.thumb-back ul li {\n  color: #000;\n  background-color: #fff;\n  border-radius: 2px; }\n\n/* line 45, stdin */\n.thumb-img img {\n  width: 100%;\n  height: 100%;\n  display: block;\n  border-radius: 4px; }\n\n/* line 52, stdin */\n.fileinput-button {\n  position: relative;\n  overflow: hidden;\n  display: inline-block; }\n\n/* line 58, stdin */\n.fileinput-button input {\n  position: absolute;\n  top: 0;\n  right: 0;\n  margin: 0;\n  opacity: 0;\n  -ms-filter: 'alpha(opacity=0)';\n  font-size: 200px !important;\n  direction: ltr;\n  cursor: pointer; }\n\n/* line 70, stdin */\n.progress {\n  height: 20px;\n  margin-bottom: 20px;\n  overflow: hidden;\n  background-color: #f5f5f5;\n  border-radius: 4px;\n  -webkit-box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);\n  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1); }\n\n/* line 80, stdin */\n.progress-bar-success {\n  background-color: #5fcf80 !important; }\n\n/* line 84, stdin */\n.progress-bar {\n  float: left;\n  width: 0;\n  height: 100%;\n  font-size: 12px;\n  line-height: 20px;\n  color: #fff;\n  text-align: center;\n  background-color: #428bca;\n  -webkit-box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.15);\n  box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.15);\n  -webkit-transition: width .6s ease;\n  -o-transition: width .6s ease;\n  transition: width .6s ease; }\n\n/* line 100, stdin */\n.item-move {\n  transition: all 0.5s cubic-bezier(0.55, 0, 0.1, 1);\n  -webkit-transition: all 0.5s cubic-bezier(0.55, 0, 0.1, 1); }\n\n/* line 105, stdin */\n.wf-transition {\n  transition: opacity .3s ease;\n  -webkit-transition: opacity .3s ease; }\n\n/* line 110, stdin */\n.wf-enter, .wf-leave {\n  opacity: 0; }\n"] = false
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
-    hotAPI.createRecord("_v-7e12557c", module.exports)
+    hotAPI.createRecord("_v-1b4eb012", module.exports)
   } else {
-    hotAPI.update("_v-7e12557c", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+    hotAPI.update("_v-1b4eb012", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":6,"vue-hot-reload-api":4,"vueify/lib/insert-css":7}],13:[function(require,module,exports){
+},{"vue":7,"vue-hot-reload-api":4,"vue-waterfall":6,"vueify/lib/insert-css":8}],17:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
-var __vueify_style__ = __vueify_insert__.insert("\n/*\nUploadify\nCopyright (c) 2012 Reactive Apps, Ronnie Garcia\nReleased under the MIT License <http://www.opensource.org/licenses/mit-license.php> \n*/\n\n.uploadify {\n\tposition: relative;\n\tmargin-bottom: 1em;\n}\n.uploadify-button {\n\tbackground-color: #505050;\n\tbackground-image: linear-gradient(bottom, #505050 0%, #707070 100%);\n\tbackground-image: -o-linear-gradient(bottom, #505050 0%, #707070 100%);\n\tbackground-image: -moz-linear-gradient(bottom, #505050 0%, #707070 100%);\n\tbackground-image: -webkit-linear-gradient(bottom, #505050 0%, #707070 100%);\n\tbackground-image: -ms-linear-gradient(bottom, #505050 0%, #707070 100%);\n\tbackground-image: -webkit-gradient(\n\t\tlinear,\n\t\tleft bottom,\n\t\tleft top,\n\t\tcolor-stop(0, #505050),\n\t\tcolor-stop(1, #707070)\n\t);\n\tbackground-position: center top;\n\tbackground-repeat: no-repeat;\n\t-webkit-border-radius: 30px;\n\t-moz-border-radius: 30px;\n\tborder-radius: 30px;\n\tborder: 2px solid #808080;\n\tcolor: #FFF;\n\tfont: bold 12px Arial, Helvetica, sans-serif;\n\ttext-align: center;\n\ttext-shadow: 0 -1px 0 rgba(0,0,0,0.25);\n\twidth: 100%;\n}\n.uploadify:hover .uploadify-button {\n\tbackground-color: #606060;\n\tbackground-image: linear-gradient(top, #606060 0%, #808080 100%);\n\tbackground-image: -o-linear-gradient(top, #606060 0%, #808080 100%);\n\tbackground-image: -moz-linear-gradient(top, #606060 0%, #808080 100%);\n\tbackground-image: -webkit-linear-gradient(top, #606060 0%, #808080 100%);\n\tbackground-image: -ms-linear-gradient(top, #606060 0%, #808080 100%);\n\tbackground-image: -webkit-gradient(\n\t\tlinear,\n\t\tleft bottom,\n\t\tleft top,\n\t\tcolor-stop(0, #606060),\n\t\tcolor-stop(1, #808080)\n\t);\n\tbackground-position: center bottom;\n}\n.uploadify-button.disabled {\n\tbackground-color: #D0D0D0;\n\tcolor: #808080;\n}\n.uploadify-queue {\n\tmargin-bottom: 1em;\n}\n.uploadify-queue-item {\n\tbackground-color: #F5F5F5;\n\t-webkit-border-radius: 3px;\n\t-moz-border-radius: 3px;\n\tborder-radius: 3px;\n\tfont: 11px Verdana, Geneva, sans-serif;\n\tmargin-top: 5px;\n\tmax-width: 350px;\n\tpadding: 10px;\n}\n.uploadify-error {\n\tbackground-color: #FDE5DD !important;\n}\n.uploadify-queue-item .cancel a {\n\tbackground: url('../img/uploadify-cancel.png') 0 0 no-repeat;\n\tfloat: right;\n\theight:\t16px;\n\ttext-indent: -9999px;\n\twidth: 16px;\n}\n.uploadify-queue-item.completed {\n\tbackground-color: #E5E5E5;\n}\n.uploadify-progress {\n\tbackground-color: #E5E5E5;\n\tmargin-top: 10px;\n\twidth: 100%;\n}\n.uploadify-progress-bar {\n\tbackground-color: #0099FF;\n\theight: 3px;\n\twidth: 1px;\n}\n")
+var __vueify_style__ = __vueify_insert__.insert("\n")
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -12135,12 +12532,15 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = {
 	props: {
-		clubid: { default: null }
+		id: {},
+		type: {},
+		selected: {}
 	},
 
 	data: function data() {
 		return {
-			teachers: []
+			teachers: [],
+			filterBy: 'all'
 		};
 	},
 
@@ -12152,32 +12552,67 @@ exports.default = {
 	ready: function ready() {},
 
 	methods: {
+		// This method should implement all context using as a save-callback 
+		getData: function getData() {
+			this.filterBy = "selected";
+			return this.filteredTeachers;
+		},
+
 		getTeachers: function getTeachers() {
 			var _this = this;
 
-			this.$http.get(this.$env.get('APP_URI') + 'api/club/teacher/' + this.clubid).then(function (response) {
+			var maps = this.objectListToMap(this.selected);
+			this.$http.get(this.$env.get('APP_URI') + 'api/club/' + this.id + '/teacher?selected=' + maps).then(function (response) {
 				_this.teachers = response.data;
 			}, function (response) {});
+		},
+
+		filterByType: function filterByType(obj) {
+			if (this.filterBy == "all") return true;
+
+			if (this.filterBy == "selected") {
+				if (obj.selected) return true;
+			}
+
+			return false;
+		},
+
+		objectListToMap: function objectListToMap(list) {
+			var map = [];
+			for (var i = 0; i < list.length; i++) {
+				map.push(list[i].id);
+			}
+			return map;
+		},
+
+		toggle: function toggle(teacher) {
+			teacher.selected = !teacher.selected;
+		}
+	},
+
+	computed: {
+		filteredTeachers: function filteredTeachers() {
+			return this.teachers.filter(this.filterByType);
 		}
 	}
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"row\">\n    <input type=\"text\" name=\"\" placeholder=\"search ...\">\n</div>\n<div class=\"row small-up-2 medium-up-3 large-up-4\">\n  \t<div class=\"column\" v-for=\"teacher in teachers\">\n\t  \t<div>\n\t  \t\t{{teacher.username}}\n\t  \t</div>\n\t  \t<div style=\"background-image: url({{teacher.avatar_url}}); height: 80px; width: 80px;\">\n\t  \t\t\n\t  \t</div>\n  \t</div>\n</div>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"row\">\n    <input type=\"text\" name=\"\" placeholder=\"search ...\">\n</div>\n<div class=\"row small-up-2 medium-up-3 large-up-4\">\n  \t<div class=\"column\" v-for=\"teacher in teachers\">\n\t  \t<div>\n\t  \t\t{{teacher.username}}\n\t  \t</div>\n\t  \t<div :style=\"{'background-image': 'url(' + teacher.avatar_url + ')'}\" style=\"height: 80px; width: 80px;\">\n\t  \t</div>\n\n\t  \t<a v-if=\"teacher.selected\" @click=\"toggle(teacher)\" class=\"success button\">\n\t\t\t<i class=\"fa fa-check\"></i>\n\t\t</a>\n\t\t<a v-else=\"\" @click=\"toggle(teacher)\" class=\"warning button\">\n\t\t\t<i class=\"fa fa-times\"></i>\n\t\t</a>\n  \t</div>\n</div>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
   module.hot.dispose(function () {
-    __vueify_insert__.cache["\n/*\nUploadify\nCopyright (c) 2012 Reactive Apps, Ronnie Garcia\nReleased under the MIT License <http://www.opensource.org/licenses/mit-license.php> \n*/\n\n.uploadify {\n\tposition: relative;\n\tmargin-bottom: 1em;\n}\n.uploadify-button {\n\tbackground-color: #505050;\n\tbackground-image: linear-gradient(bottom, #505050 0%, #707070 100%);\n\tbackground-image: -o-linear-gradient(bottom, #505050 0%, #707070 100%);\n\tbackground-image: -moz-linear-gradient(bottom, #505050 0%, #707070 100%);\n\tbackground-image: -webkit-linear-gradient(bottom, #505050 0%, #707070 100%);\n\tbackground-image: -ms-linear-gradient(bottom, #505050 0%, #707070 100%);\n\tbackground-image: -webkit-gradient(\n\t\tlinear,\n\t\tleft bottom,\n\t\tleft top,\n\t\tcolor-stop(0, #505050),\n\t\tcolor-stop(1, #707070)\n\t);\n\tbackground-position: center top;\n\tbackground-repeat: no-repeat;\n\t-webkit-border-radius: 30px;\n\t-moz-border-radius: 30px;\n\tborder-radius: 30px;\n\tborder: 2px solid #808080;\n\tcolor: #FFF;\n\tfont: bold 12px Arial, Helvetica, sans-serif;\n\ttext-align: center;\n\ttext-shadow: 0 -1px 0 rgba(0,0,0,0.25);\n\twidth: 100%;\n}\n.uploadify:hover .uploadify-button {\n\tbackground-color: #606060;\n\tbackground-image: linear-gradient(top, #606060 0%, #808080 100%);\n\tbackground-image: -o-linear-gradient(top, #606060 0%, #808080 100%);\n\tbackground-image: -moz-linear-gradient(top, #606060 0%, #808080 100%);\n\tbackground-image: -webkit-linear-gradient(top, #606060 0%, #808080 100%);\n\tbackground-image: -ms-linear-gradient(top, #606060 0%, #808080 100%);\n\tbackground-image: -webkit-gradient(\n\t\tlinear,\n\t\tleft bottom,\n\t\tleft top,\n\t\tcolor-stop(0, #606060),\n\t\tcolor-stop(1, #808080)\n\t);\n\tbackground-position: center bottom;\n}\n.uploadify-button.disabled {\n\tbackground-color: #D0D0D0;\n\tcolor: #808080;\n}\n.uploadify-queue {\n\tmargin-bottom: 1em;\n}\n.uploadify-queue-item {\n\tbackground-color: #F5F5F5;\n\t-webkit-border-radius: 3px;\n\t-moz-border-radius: 3px;\n\tborder-radius: 3px;\n\tfont: 11px Verdana, Geneva, sans-serif;\n\tmargin-top: 5px;\n\tmax-width: 350px;\n\tpadding: 10px;\n}\n.uploadify-error {\n\tbackground-color: #FDE5DD !important;\n}\n.uploadify-queue-item .cancel a {\n\tbackground: url('../img/uploadify-cancel.png') 0 0 no-repeat;\n\tfloat: right;\n\theight:\t16px;\n\ttext-indent: -9999px;\n\twidth: 16px;\n}\n.uploadify-queue-item.completed {\n\tbackground-color: #E5E5E5;\n}\n.uploadify-progress {\n\tbackground-color: #E5E5E5;\n\tmargin-top: 10px;\n\twidth: 100%;\n}\n.uploadify-progress-bar {\n\tbackground-color: #0099FF;\n\theight: 3px;\n\twidth: 1px;\n}\n"] = false
+    __vueify_insert__.cache["\n"] = false
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
-    hotAPI.createRecord("_v-1b7ee110", module.exports)
+    hotAPI.createRecord("_v-5a634b8a", module.exports)
   } else {
-    hotAPI.update("_v-1b7ee110", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+    hotAPI.update("_v-5a634b8a", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":6,"vue-hot-reload-api":4,"vueify/lib/insert-css":7}],14:[function(require,module,exports){
+},{"vue":7,"vue-hot-reload-api":4,"vueify/lib/insert-css":8}],18:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
 var __vueify_style__ = __vueify_insert__.insert("\n")
 "use strict";
@@ -12208,7 +12643,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-48e0c687", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":6,"vue-hot-reload-api":4,"vueify/lib/insert-css":7}],15:[function(require,module,exports){
+},{"vue":7,"vue-hot-reload-api":4,"vueify/lib/insert-css":8}],19:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
 var __vueify_style__ = __vueify_insert__.insert("\n")
 "use strict";
@@ -12239,7 +12674,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-e9badc0e", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":6,"vue-hot-reload-api":4,"vueify/lib/insert-css":7}],16:[function(require,module,exports){
+},{"vue":7,"vue-hot-reload-api":4,"vueify/lib/insert-css":8}],20:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
 var __vueify_style__ = __vueify_insert__.insert("/* line 12, stdin */\n.card {\n  background: #FFFFFF;\n  border-radius: 4px;\n  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);\n  overflow: hidden;\n  width: 300px;\n  height: 100%;\n  margin-bottom: 10px; }\n  /* line 21, stdin */\n  .card-header {\n    position: relative;\n    background: #303841;\n    height: 200px;\n    text-align: center;\n    overflow: hidden; }\n    /* line 28, stdin */\n    .card-header__avatar {\n      background: #303841;\n      background-position: center 30%;\n      background-size: 100%;\n      height: 100%;\n      width: 100%; }\n    /* line 36, stdin */\n    .card-header__follow {\n      position: absolute;\n      top: 20px;\n      right: 20px;\n      background: #FFFFFF;\n      border-radius: 2px;\n      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);\n      padding: 6px 10px;\n      color: #333333;\n      font-size: 10px;\n      font-weight: 600;\n      line-height: normal;\n      text-decoration: none;\n      text-transform: uppercase; }\n  /* line 53, stdin */\n  .card-content {\n    text-align: center;\n    padding: 30px 20px; }\n    /* line 57, stdin */\n    .card-content__username {\n      margin: 0 0 10px;\n      color: #333333;\n      font-size: 14px;\n      font-weight: 600;\n      text-transform: uppercase; }\n      /* line 64, stdin */\n      .card-content__username .badge {\n        display: inline-block;\n        background: #FCD000;\n        border-radius: 2px;\n        margin: 0 10px 0;\n        padding: 4px;\n        color: #333333;\n        font-size: 10px;\n        font-weight: 600;\n        vertical-align: middle; }\n    /* line 77, stdin */\n    .card-content__bio {\n      color: #666666;\n      font-size: 12px; }\n  /* line 83, stdin */\n  .card-footer {\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-orient: horizontal;\n    -webkit-box-direction: normal;\n        -ms-flex-direction: row;\n            flex-direction: row;\n    -ms-flex-wrap: nowrap;\n        flex-wrap: nowrap;\n    -webkit-box-pack: justify;\n        -ms-flex-pack: justify;\n            justify-content: space-between;\n    background: #F3F3F3;\n    padding: 15px 40px;\n    color: #333333;\n    font-size: 14px;\n    font-weight: 600;\n    text-align: center; }\n    /* line 95, stdin */\n    .card-footer .ft-label {\n      display: block;\n      margin: 4px 0 0;\n      color: #666666;\n      font-size: 10px;\n      font-weight: 400; }\n\n/* line 105, stdin */\n.code {\n  background: rgba(0, 0, 0, 0.1);\n  max-width: 600px;\n  border-radius: 2px;\n  margin: 40px auto 100px;\n  font-family: monospace;\n  overflow: hidden;\n  overflow-x: auto; }\n  /* line 114, stdin */\n  .code:before {\n    content: 'HTML Code';\n    display: block;\n    padding: 20px 20px 0;\n    color: #333333;\n    font-weight: 600; }\n")
 'use strict';
@@ -12276,7 +12711,7 @@ exports.default = {
 	}
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n\t<div>\n\t\t<h3>Club Members</h3>\n\t\t<div class=\"row small-up-3 medium-up-4 large-up-5\">\n\t\t\t<div v-for=\"member in members\">\n\t\t\t\t<div class=\"card column\">\n\t\t\t\t    <!-- Header -->\n\t\t\t\t    <div class=\"card-header\">\n\t\t\t\t      <div class=\"card-header__avatar\" style=\"background-image: url({{member.avatar_url}});\"></div><a href=\"http://codepen.io/andytran\" class=\"card-header__follow\">Follow</a>\n\t\t\t\t    </div>\n\t\t\t\t    <!-- Content-->\n\t\t\t\t    <div class=\"card-content\">\n\t\t\t\t      <div class=\"card-content__username\">{{member.username}}\n\t\t\t\t      <span class=\"badge\">{{member.pivot.type == 1 ? 'Manager' : 'Trainer'}}</span></div>\n\t\t\t\t      <div class=\"card-content__bio\">Always looking for new knowledge :D.</div>\n\t\t\t\t    </div>\n\t\t\t\t    <!-- Footer-->\n\t\t\t\t    <div class=\"card-footer\">\n\t\t\t\t      <div class=\"card-footer__pens\"> <span>84</span>\n\t\t\t\t        <div class=\"ft-label\">Pens</div>\n\t\t\t\t      </div>\n\t\t\t\t      <div class=\"card-footer__followers\"> <span>986</span>\n\t\t\t\t        <div class=\"ft-label\">Followers</div>\n\t\t\t\t      </div>\n\t\t\t\t      <div class=\"card-footer__following\"> <span>33</span>\n\t\t\t\t        <div class=\"ft-label\">Following</div>\n\t\t\t\t      </div>\n\t\t\t\t    </div>\n\t\t\t    </div>\n\t\t\t</div>\n\t\t</div>\n\t<div>\n</div></div>"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n\t<div>\n\t\t<h3>Club Members</h3>\n\t\t<div class=\"row small-up-3 medium-up-4 large-up-5\">\n\t\t\t<div v-for=\"member in members\">\n\t\t\t\t<div class=\"card column\">\n\t\t\t\t    <!-- Header -->\n\t\t\t\t    <div class=\"card-header\">\n\t\t\t\t      <div class=\"card-header__avatar\" :style=\"{'background-image': 'url(' + member.avatar_url + ')'}\"></div><a href=\"http://codepen.io/andytran\" class=\"card-header__follow\">Follow</a>\n\t\t\t\t    </div>\n\t\t\t\t    <!-- Content-->\n\t\t\t\t    <div class=\"card-content\">\n\t\t\t\t      <div class=\"card-content__username\">{{member.username}}\n\t\t\t\t      <span class=\"badge\">{{member.pivot.type == 1 ? 'Manager' : 'Trainer'}}</span></div>\n\t\t\t\t      <div class=\"card-content__bio\">Always looking for new knowledge :D.</div>\n\t\t\t\t    </div>\n\t\t\t\t    <!-- Footer-->\n\t\t\t\t    <div class=\"card-footer\">\n\t\t\t\t      <div class=\"card-footer__pens\"> <span>84</span>\n\t\t\t\t        <div class=\"ft-label\">Pens</div>\n\t\t\t\t      </div>\n\t\t\t\t      <div class=\"card-footer__followers\"> <span>986</span>\n\t\t\t\t        <div class=\"ft-label\">Followers</div>\n\t\t\t\t      </div>\n\t\t\t\t      <div class=\"card-footer__following\"> <span>33</span>\n\t\t\t\t        <div class=\"ft-label\">Following</div>\n\t\t\t\t      </div>\n\t\t\t\t    </div>\n\t\t\t    </div>\n\t\t\t</div>\n\t\t</div>\n\t<div>\n</div></div>"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -12291,7 +12726,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-d86a1568", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":6,"vue-hot-reload-api":4,"vueify/lib/insert-css":7}],17:[function(require,module,exports){
+},{"vue":7,"vue-hot-reload-api":4,"vueify/lib/insert-css":8}],21:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
 var __vueify_style__ = __vueify_insert__.insert("\n")
 'use strict';
@@ -12355,7 +12790,7 @@ exports.default = {
 	}
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n\t<div>\n\t\t<h3>Club Requests</h3>\n\t\t<p>\n\t      <label for=\"all\">Both\n\t      \t<input name=\"requestType\" type=\"radio\" value=\"0\" id=\"all\" v-model=\"requestType\">\n\t      </label>\n\t    </p>\n\t\t<p>\n\t      <label for=\"teacher\">Teacher\n\t      \t<input name=\"requestType\" type=\"radio\" value=\"1\" id=\"teacher\" v-model=\"requestType\">\n\t      </label>\n\t    </p>\n\t    <p>\n\t      <label for=\"trainer\">Trainer\n\t      \t<input name=\"requestType\" type=\"radio\" value=\"2\" id=\"trainer\" v-model=\"requestType\">\n\t      </label>\n\t    </p>\n\t    <form>\n\t    \t{{ csrf_field() }}\n\t\t\t<ul>\n\t\t\t\t<h3>{{requestType}}</h3>\n\t\t\t\t<li v-for=\"request in filteredRequests\">\n\t\t\t\t\t{{request.username}}\n\t\t\t\t\t{{request.pivot.type}}\n\t\t\t\t\t<img src=\"{{request.avatar_url}}\" height=\"20\" width=\"20\">\n\t\t\t\t\t<a @click=\"acceptRequest(request)\" class=\"button success\">Accept</a>\n\t\t\t\t\t<a @click=\"rejectRequest(request)\" class=\"button alert\">Reject</a>\n\t\t\t\t</li>\n\t\t\t</ul>\n\t\t</form>\n\t<div>\n</div></div>"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n\t<div>\n\t\t<h3>Club Requests</h3>\n\t\t<p>\n\t      <label for=\"all\">Both\n\t      \t<input name=\"requestType\" type=\"radio\" value=\"0\" id=\"all\" v-model=\"requestType\">\n\t      </label>\n\t    </p>\n\t\t<p>\n\t      <label for=\"teacher\">Teacher\n\t      \t<input name=\"requestType\" type=\"radio\" value=\"1\" id=\"teacher\" v-model=\"requestType\">\n\t      </label>\n\t    </p>\n\t    <p>\n\t      <label for=\"trainer\">Trainer\n\t      \t<input name=\"requestType\" type=\"radio\" value=\"2\" id=\"trainer\" v-model=\"requestType\">\n\t      </label>\n\t    </p>\n\t    <form>\n\t\t\t<ul>\n\t\t\t\t<h3>{{requestType}}</h3>\n\t\t\t\t<li v-for=\"request in filteredRequests\">\n\t\t\t\t\t{{request.username}}\n\t\t\t\t\t{{request.pivot.type}}\n\t\t\t\t\t<img src=\"{{request.avatar_url}}\" height=\"20\" width=\"20\">\n\t\t\t\t\t<a @click=\"acceptRequest(request)\" class=\"button success\">Accept</a>\n\t\t\t\t\t<a @click=\"rejectRequest(request)\" class=\"button alert\">Reject</a>\n\t\t\t\t</li>\n\t\t\t</ul>\n\t\t</form>\n\t<div>\n</div></div>"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -12370,7 +12805,73 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-188ca5a1", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":6,"vue-hot-reload-api":4,"vueify/lib/insert-css":7}],18:[function(require,module,exports){
+},{"vue":7,"vue-hot-reload-api":4,"vueify/lib/insert-css":8}],22:[function(require,module,exports){
+var __vueify_insert__ = require("vueify/lib/insert-css")
+var __vueify_style__ = __vueify_insert__.insert("\n")
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+exports.default = {
+	props: {
+		clubid: {}
+	},
+
+	data: function data() {
+		return {
+			type: 1,
+			widgets: []
+		};
+	},
+
+
+	created: function created() {
+		this.getWidgets();
+	},
+
+	methods: {
+		getWidgets: function getWidgets() {
+			var _this = this;
+
+			this.$http.get(this.$env.get('APP_URI') + 'api/club/' + this.clubid + '/widgets').then(function (res) {
+				debugger;
+				_this.widgets = res.data;
+			}).catch(function (err) {});
+		},
+
+		setType: function setType(type) {
+			this.type = type;
+		},
+
+		filterByType: function filterByType(obj) {
+			return obj.section_id == this.type;
+		}
+	},
+
+	computed: {
+		filteredWidgets: function filteredWidgets() {
+			return this.widgets.filter(this.filterByType);;
+		}
+	}
+};
+if (module.exports.__esModule) module.exports = module.exports.default
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n\t<div>\n\t\t<h3>Club Template</h3>\n\t\t<a @click=\"setType(1)\" class=\"button success\">\n\t\t\tHeader\n\t\t</a>\n\t\t<a @click=\"setType(2)\" class=\"button success\">\n\t\t\tContent\n\t\t</a>\n\t\t<a @click=\"setType(3)\" class=\"button success\">\n\t\t\tFooter\n\t\t</a>\n\n\t\t<ul>\n\t\t\t<li v-for=\"widget in filteredWidgets\">\n\t\t\t\t{{widget.name}}\t\n\t\t\t</li>\n\t\t</ul>\n\t<div>\n</div></div>"
+if (module.hot) {(function () {  module.hot.accept()
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), true)
+  if (!hotAPI.compatible) return
+  module.hot.dispose(function () {
+    __vueify_insert__.cache["\n"] = false
+    document.head.removeChild(__vueify_style__)
+  })
+  if (!module.hot.data) {
+    hotAPI.createRecord("_v-e0b27152", module.exports)
+  } else {
+    hotAPI.update("_v-e0b27152", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+  }
+})()}
+},{"vue":7,"vue-hot-reload-api":4,"vueify/lib/insert-css":8}],23:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
 var __vueify_style__ = __vueify_insert__.insert("@charset \"UTF-8\";\n/* line 3, stdin */\n.picture-list {\n  background-color: #5fcf80;\n  border-radius: 4px; }\n\n/* line 8, stdin */\n.add-button {\n  height: 120px;\n  width: 120px;\n  background-color: #fff;\n  border-radius: 4px;\n  border: 1px solid #53BBB4; }\n\n/* line 16, stdin */\n.figure {\n  margin: 0 10px 10px 0;\n  height: 120px;\n  width: 120px;\n  position: relative; }\n  /* line 23, stdin */\n  .figure:hover .figcaption {\n    opacity: 1; }\n\n/* line 29, stdin */\n.figcaption {\n  border-radius: 4px;\n  background-color: rgba(58, 52, 42, 0.7);\n  -webkit-backface-visibility: hidden;\n  backface-visibility: hidden;\n  position: absolute;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n  color: #fff;\n  padding: 0 25px;\n  display: -webkit-flex;\n  display: -ms-flexbox;\n  display: -webkit-box;\n  display: flex;\n  -webkit-align-items: center;\n  -ms-flex-align: center;\n  -webkit-box-align: center;\n          align-items: center;\n  -webkit-transition: all 0.25s;\n  transition: all 0.25s;\n  opacity: 0; }\n\n/* line 53, stdin */\n.gh-search-submit {\n  opacity: 0.75;\n  z-index: 9999;\n  background-image: url(\"data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgi…KCUM1LjE1NCwxMi44NTUsMi44MjQsMTAuNTI3LDIuODI0LDcuNjY2eiIvPg0KPC9zdmc+DQo=\"); }\n\n/* line 59, stdin */\n.gh-search-reset.show {\n  cursor: pointer;\n  z-index: 9999;\n  opacity: 1;\n  -webkit-transform: translateX(0px);\n  -ms-transform: translateX(0px);\n  transform: translateX(0px);\n  -webkit-transition-delay: .2s;\n  transition-delay: .2s; }\n")
 'use strict';
@@ -12379,13 +12880,9 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-var _teachers = require('../.././components/teachers.vue');
+var _FtTraining = require('../.././components/FtTraining.vue');
 
-var _teachers2 = _interopRequireDefault(_teachers);
-
-var _CustomModal = require('../.././components/CustomModal.vue');
-
-var _CustomModal2 = _interopRequireDefault(_CustomModal);
+var _FtTraining2 = _interopRequireDefault(_FtTraining);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -12396,43 +12893,50 @@ exports.default = {
 
 	data: function data() {
 		return {
-			training: [],
-			showAddTraining: false
+			training: null,
+			showAddTraining: false,
+			showTest: false
 		};
 	},
 
 
-	ready: function ready() {
-		$(document).foundation();
+	created: function created() {
+		this.getTrainings();
 	},
 
+	ready: function ready() {},
+
 	events: {
-		'modal-saved': function modalSaved($request) {
-			switch ($request) {
-				case "_add-training":
-					this.saveTraining();
-					break;
-				case "_somethingelse":
-					break;
-				default:
-					break;
-			}
+		'saveTraining': function saveTraining($response) {
+			this.saveTraining($response);
 		}
 	},
 
 	methods: {
-		saveTraining: function saveTraining() {
-			alert('training saved :D !');
+		getTrainings: function getTrainings() {
+			var _this = this;
+
+			this.$http.get(this.$env.get('APP_URI') + 'api/club/' + this.clubid + '/training').then(function (res) {
+				_this.training = res.data.result;
+				debugger;
+			}).catch(function (err) {});
+		},
+
+		saveTraining: function saveTraining($response) {
+
+			this.$http.post(this.$env.get('APP_URI') + 'api/club/' + this.clubid + '/training?data=' + $response.data).then(function (res) {}).catch(function (err) {});
+
 			this.showAddTraining = false;
+			this.$root.$refs.toast.showMessage('Successfully add new training.');
 		}
 	},
 
 	components: {
-		teachers: _teachers2.default, CustomModal: _CustomModal2.default
+		FtTraining: _FtTraining2.default
 	}
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n\t<div>\n\t\t<h3>Club Training</h3>\n\t\t<p><a @click=\"showAddTraining = true\" data-open=\"revealTraining\" class=\"button success\">\n\t\t\t\t<i class=\"fa fa-plus\"></i>Add Training\n\t\t   </a></p>\n\n\t\t<custom-modal title=\"Add Training\" usage=\"_add-training\" :show.sync=\"showAddTraining\">\n\t\t\t<div slot=\"body\">\n\t\t\t\t<form method=\"POST\" accept=\"\">\n\t\t\t\t\t<ul class=\"tabs\" data-tabs=\"\" id=\"example-tabs\">\n\t\t\t\t\t  <li class=\"tabs-title is-active\"><a href=\"#main\" aria-selected=\"true\">Info</a></li>\n\t\t\t\t\t  <li class=\"tabs-title\"><a href=\"#photos\">Photos</a></li>\n\t\t\t\t\t  <li class=\"tabs-title\"><a href=\"#teacher\">Teacher</a></li>\n\t\t\t\t    </ul>\n\t\t\t\t  <div class=\"tabs-content\" data-tabs-content=\"example-tabs\">\n\t\t\t\t\t  <div class=\"tabs-panel is-active\" id=\"main\">\n\t\t\t\t\t    <div class=\"row\">\n\t\t\t\t\t\t    <div class=\"medium-6 columns\">\n\t\t\t\t\t\t      <label>Training name\n\t\t\t\t\t\t        <input type=\"text\" placeholder=\"fill training name\">\n\t\t\t\t\t\t      </label>\n\t\t\t\t\t\t    </div>\n\t\t\t\t\t\t    <div class=\"medium-6 columns\">\n\t\t\t\t\t\t      <label>Description\n\t\t\t\t\t\t        <textarea type=\"text\" placeholder=\"Description ...\">\t\t\t\t\t\t        </textarea>\n\t\t\t\t\t\t      </label>\n\t\t\t\t\t\t    </div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t<div class=\"row\">\n\t\t\t\t\t\t  \t<div class=\"medium-6 columns\">\n\t\t\t\t\t\t  \t  <label> Priceless\n\t\t\t\t\t\t  \t\t<input type=\"checkbox\" name=\"priceless\">\n\t\t\t\t\t\t  \t  </label>\n\t\t\t\t\t\t  \t</div>\n\t\t\t\t\t\t  \t<div class=\"medium-6 columns\">\n\t\t\t\t\t\t  \t  <label>Price\n\t\t\t\t\t\t  \t  \t<input type=\"text\" placeholder=\"price\">\n\t\t\t\t\t\t  \t  </label>\n\t\t\t\t\t\t  \t</div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t  </div>\n\t\t\t\t\t  <div class=\"tabs-panel\" id=\"teacher\">\n\t  \t  \t  \t\t  \t<teachers :clubid=\"clubid\"></teachers>\n\t\t\t\t\t  </div>\n\t\t\t\t\t  <div class=\"tabs-panel\" id=\"photos\">\n\t\t\t\t\t\t  <div class=\"picture-list\">\n\t\t\t\t\t\t  \t<div class=\"row small-up-2 medium-up-3 large-up-4\">\n\t\t\t\t\t\t  \t\t<br>\n\t\t\t\t\t\t\t  \t<div class=\"column\">\n\t\t\t\t\t\t\t\t  \t<div class=\"figure\">\n\t\t\t\t\t                    <img src=\"https://graph.facebook.com/v2.6/1098895463504115/picture?width=1920\" alt=\"Jeffrey Way\" height=\"120\" width=\"120\" style=\"border-radius:4px;\">\n\t\t\t\t\t                    <div class=\"figcaption\">\n\t\t\t\t\t                        <a class=\"btn-floating red\" style=\"left: 25%;\">\n\t\t\t\t\t                        \t<i class=\"fa fa-trash\"></i>\n\t\t\t\t\t                        </a>\n\t\t\t\t\t                    </div>\n\t\t\t\t\t                </div>\n\t\t\t\t\t\t\t  \t</div>\n\n\t\t\t\t\t\t\t  \t<div class=\"column\">\n\t\t\t\t\t\t\t\t  \t<div class=\"figure\">\n\t\t\t\t\t                    <img src=\"https://graph.facebook.com/v2.6/1098895463504115/picture?width=1920\" alt=\"Jeffrey Way\" height=\"120\" width=\"120\" style=\"border-radius:4px;\">\n\t\t\t\t\t                    <div class=\"figcaption\">\n\t\t\t\t\t                        <a class=\"btn-floating red\" style=\"left: 25%;\">\n\t\t\t\t\t                        \t<i class=\"fa fa-trash\"></i>\n\t\t\t\t\t                        </a>\n\t\t\t\t\t                    </div>\n\t\t\t\t\t                </div>\n\t\t\t\t\t\t\t  \t</div>\n\n\t\t\t\t\t\t\t  \t<div class=\"column\">\n\t\t\t\t\t\t\t\t  \t<div class=\"figure\">\n\t\t\t\t\t                    <img src=\"https://graph.facebook.com/v2.6/1098895463504115/picture?width=1920\" alt=\"Jeffrey Way\" height=\"120\" width=\"120\" style=\"border-radius:4px;\">\n\t\t\t\t\t                    <div class=\"figcaption\">\n\t\t\t\t\t                        <a class=\"btn-floating red\" style=\"left: 25%;\">\n\t\t\t\t\t                        \t<i class=\"fa fa-trash\"></i>\n\t\t\t\t\t                        </a>\n\t\t\t\t\t                    </div>\n\t\t\t\t\t                </div>\n\t\t\t\t\t\t\t  \t</div>\n\t\t\t\t\t\t\t  \t\n\t\t\t\t\t\t\t  \t<div class=\"column\">\n\t\t\t\t\t\t\t\t  \t<div class=\"figure\">\n\t\t\t\t\t                    <div class=\"figcaption\" style=\"opacity:1;\">\n\t\t\t\t\t                        <a class=\"btn-floating red\" style=\"left: 25%;\">\n\t\t\t\t\t                        \t<i class=\"fa fa-plus\"></i>\n\t\t\t\t\t                        </a>\n\t\t\t\t\t                    </div>\n\t\t\t\t\t                </div>\n\t\t\t\t\t\t\t  \t</div>\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t  </div>\n\t\t\t\t\t  </div>\n\t\t\t\t  </div>\n\t\t\t\t</form>\n\t\t\t</div>\n\t\t</custom-modal>\n\n\t\t<label>Search Training\n        \t<input type=\"text\" placeholder=\"search ...\">\n        </label>\n\t\t<ul v-if=\"training == null\">\n\t\t\t<li></li>\n\t\t</ul>\n\t\t\n\t\t<h3 v-else=\"\">There is no training registered !</h3>\n\t<div>\n</div></div>"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n\t<div>\n\t\t<h3>Club Training</h3>\n\t\t<p><a @click=\"showAddTraining = true\" class=\"button success\">\n\t\t\t\t<i class=\"fa fa-plus\"></i>\n\t\t   </a></p>\n\n\t\t<custom-modal :id=\"clubid\" type=\"Club\" title=\"Add Training\" usage=\"_add-training\" :show.sync=\"showAddTraining\" save-callback=\"saveTraining\" validateable=\"Y\" context=\"AddTraining\">\n\t\t</custom-modal>\n\n\t\t<label>Search Training\n        \t<input type=\"text\" placeholder=\"search ...\">\n        </label>\n\n\t\t<ft-training :item=\"train\" v-for=\"train in training\">\n\t\t\t\n\t\t</ft-training>\n\t\t\n\t\t<h3 v-else=\"\">There is no training registered !</h3>\n\t<div>\n</div></div>"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -12447,7 +12951,44 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-0ac6d3b7", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"../.././components/CustomModal.vue":9,"../.././components/teachers.vue":13,"vue":6,"vue-hot-reload-api":4,"vueify/lib/insert-css":7}],19:[function(require,module,exports){
+},{"../.././components/FtTraining.vue":12,"vue":7,"vue-hot-reload-api":4,"vueify/lib/insert-css":8}],24:[function(require,module,exports){
+'use strict';
+
+module.exports = function () {
+
+    function Tools() {}
+
+    Tools.prototype.collectionBy = function (items, filter) {
+        var arrays = [];
+        var fields = filter.split('|');
+
+        for (var d = 0, len = items.length; d < len; d += 1) {
+            var ret = {};
+            for (var i = 0; i < fields.length; i++) {
+                ret[fields[i]] = items[d][fields[i]];
+            }
+
+            arrays.push(ret);
+        }
+
+        return arrays;
+    };
+
+    Tools.prototype.transformParameters = function (plainArray) {
+        /*var { 
+            x: 5,
+            y: 6 
+        };*/
+
+        return encodeURIComponent(JSON.stringify(plainArray));
+    };
+
+    return function install(Vue) {
+        Vue.prototype.$tools = new Tools();
+    };
+}();
+
+},{}],25:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -12474,13 +13015,13 @@ var _ClubLoyalty = require('.././menus/manager/ClubLoyalty.vue');
 
 var _ClubLoyalty2 = _interopRequireDefault(_ClubLoyalty);
 
+var _ClubTemplate = require('.././menus/manager/ClubTemplate.vue');
+
+var _ClubTemplate2 = _interopRequireDefault(_ClubTemplate);
+
 var _autocomplete = require('.././components/autocomplete.vue');
 
 var _autocomplete2 = _interopRequireDefault(_autocomplete);
-
-var _filemanager = require('.././components/filemanager.vue');
-
-var _filemanager2 = _interopRequireDefault(_filemanager);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -12488,7 +13029,7 @@ exports.default = {
 
 	props: {
 		clubid: {},
-		selectedMenu: { default: 'club-training' }
+		selectedMenu: { default: 'club-template' }
 	},
 
 	data: function data() {
@@ -12534,7 +13075,7 @@ exports.default = {
 	components: {
 		ClubDashboard: _ClubDashboard2.default, ClubMembers: _ClubMembers2.default, ClubRequests: _ClubRequests2.default,
 		ClubTraining: _ClubTraining2.default, ClubLoyalty: _ClubLoyalty2.default, autocomplete: _autocomplete2.default,
-		filemanager: _filemanager2.default
+		ClubTemplate: _ClubTemplate2.default
 	}
 };
 if (module.exports.__esModule) module.exports = module.exports.default
@@ -12548,7 +13089,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-149d772a", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{".././components/autocomplete.vue":11,".././components/filemanager.vue":12,".././menus/manager/ClubDashboard.vue":14,".././menus/manager/ClubLoyalty.vue":15,".././menus/manager/ClubMembers.vue":16,".././menus/manager/ClubRequests.vue":17,".././menus/manager/ClubTraining.vue":18,"vue":6,"vue-hot-reload-api":4}],20:[function(require,module,exports){
+},{".././components/autocomplete.vue":14,".././menus/manager/ClubDashboard.vue":18,".././menus/manager/ClubLoyalty.vue":19,".././menus/manager/ClubMembers.vue":20,".././menus/manager/ClubRequests.vue":21,".././menus/manager/ClubTemplate.vue":22,".././menus/manager/ClubTraining.vue":23,"vue":7,"vue-hot-reload-api":4}],26:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -12596,7 +13137,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-334daf3c", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":6,"vue-hot-reload-api":4}],21:[function(require,module,exports){
+},{"vue":7,"vue-hot-reload-api":4}],27:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -12608,9 +13149,6 @@ var _SearchTooltip = require('.././components/SearchTooltip.vue');
 var _SearchTooltip2 = _interopRequireDefault(_SearchTooltip);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-/*import SearchSettings from '.././settings/SearchSettings.js'*/
-/*var SearchSettings = require('.././settings/SearchSettings.js');*/
 
 exports.default = {
 
@@ -12635,6 +13173,12 @@ exports.default = {
 		};
 	},
 
+
+	created: function created() {
+		this.searchOptions = {
+			useCircleDetector: true
+		};
+	},
 
 	ready: function ready() {
 		this.init();
@@ -12669,10 +13213,6 @@ exports.default = {
 				editable: true,
 				draggable: true
 			});
-
-			this.searchOptions = {
-				useCircleDetector: true
-			};
 		},
 
 		getGeolocation: function getGeolocation() {
@@ -12712,19 +13252,20 @@ exports.default = {
 		search: function search() {
 			var _this = this;
 
-			var uri = this.$env.get('APP_URI') + 'api/search?';
+			var uri = this.$env.get('APP_URI') + 'api/search';
 
-			uri += 'useCircleDetector=' + this.searchOptions.useCircleDetector;
-			uri += '&center=' + this.circleTool.center;
-			uri += '&radius=' + this.circleTool.radius;
+			/*uri += 'useCircleDetector=' + false;
+   uri += '&center=' + this.circleTool.center;
+   uri += '&radius=' + this.circleTool.radius;*/
 			var vm = this;
 
 			this.$http.get(uri).then(function (response) {
 				debugger;
 				var originalClubs = response.data;
-				_this.clubs = originalClubs.filter(function ($var) {
-					return google.maps.geometry.spherical.computeDistanceBetween(new google.maps.LatLng($var.lat, $var.lng), vm.circleTool.center) <= vm.circleTool.radius;
-				});
+				_this.clubs = originalClubs;
+				/*this.clubs = originalClubs.filter(function($var){
+    	return  (google.maps.geometry.spherical.computeDistanceBetween(new google.maps.LatLng($var.lat, $var.lng), vm.circleTool.center)) <= vm.circleTool.radius;
+    });*/
 
 				_this.clearPrevSearchResult();
 				_this.displayResult();
@@ -12861,7 +13402,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-333b9032", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{".././components/SearchTooltip.vue":10,"vue":6,"vue-hot-reload-api":4}],22:[function(require,module,exports){
+},{".././components/SearchTooltip.vue":13,"vue":7,"vue-hot-reload-api":4}],28:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -12901,7 +13442,111 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-56035bfa", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":6,"vue-hot-reload-api":4}],23:[function(require,module,exports){
+},{"vue":7,"vue-hot-reload-api":4}],29:[function(require,module,exports){
+var __vueify_insert__ = require("vueify/lib/insert-css")
+var __vueify_style__ = __vueify_insert__.insert("\n\n")
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+exports.default = {
+	props: {
+		id: {
+			required: true
+		}
+	},
+
+	created: function created() {
+		this.getTeachers();
+	},
+
+	data: function data() {
+		return {
+			teachers: []
+		};
+	},
+
+	methods: {
+		getTeachers: function getTeachers() {
+			var _this = this;
+
+			this.$http.get(this.$env.get('APP_URI') + 'api/club/' + this.id + '/teacher').then(function (response) {
+				debugger;
+				_this.teachers = response.data;
+			}, function (response) {});
+		}
+	}
+};
+if (module.exports.__esModule) module.exports = module.exports.default
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"row small-up-2 medium-up-3 large-up-4 small-centered\">\n\t<div class=\"column\" v-for=\"teacher in teachers\" style=\"background-color:#aecaec\">\n\t\t<img height=\"100\" width=\"100\" v-bind:src=\"teacher.avatar_url\">\n\t\t<div>\n\t\t\t<h4>\n\t\t\t\t{{teacher.username}}\n\t\t\t</h4>\n\t\t</div>\n\t</div>\n</div>\n"
+if (module.hot) {(function () {  module.hot.accept()
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), true)
+  if (!hotAPI.compatible) return
+  module.hot.dispose(function () {
+    __vueify_insert__.cache["\n\n"] = false
+    document.head.removeChild(__vueify_style__)
+  })
+  if (!module.hot.data) {
+    hotAPI.createRecord("_v-67feff5f", module.exports)
+  } else {
+    hotAPI.update("_v-67feff5f", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+  }
+})()}
+},{"vue":7,"vue-hot-reload-api":4,"vueify/lib/insert-css":8}],30:[function(require,module,exports){
+var __vueify_insert__ = require("vueify/lib/insert-css")
+var __vueify_style__ = __vueify_insert__.insert("\n\n")
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+exports.default = {
+	props: {
+		id: {
+			required: true
+		}
+	},
+
+	created: function created() {
+		this.getTrainings();
+	},
+
+	data: function data() {
+		return {
+			trainings: []
+		};
+	},
+
+	methods: {
+		getTrainings: function getTrainings() {
+			var _this = this;
+
+			this.$http.get(this.$env.get('APP_URI') + 'api/club/' + this.id + '/training').then(function (response) {
+				debugger;
+				_this.trainings = response.data.result;
+			}, function (response) {});
+		}
+	}
+};
+if (module.exports.__esModule) module.exports = module.exports.default
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"row small-up-2 medium-up-3 large-up-4 small-centered\">\n\t<div class=\"column\" v-for=\"item in trainings\" style=\"background-color:#222222; color:#fff;\">\n\t\t<div>\n\t\t\t<h4>\n\t\t\t\t{{item.name}}\n\t\t\t</h4>\n\t\t\t{{item.description}}\n\t\t</div>\n\n\t\t<div class=\"row small-up-2 medium-up-3 large-up-4 small-centered\">\n\t\t\t<div class=\"column\" v-for=\"teacher in item.teachers\">\n\t\t\t\t{{teacher.username}}\n\t\t\t\t<img height=\"100\" width=\"100\" v-bind:src=\"teacher.avatar_url\">\n\t\t\t</div>\n\t\t</div>\n\n\t\t<div class=\"row small-up-2 medium-up-3 large-up-4 small-centered\">\n\t\t\t<div class=\"column\" v-for=\"photo in item.photos\">\n\t\t\t\t<img height=\"400\" width=\"400\" v-bind:src=\"photo.url\">\n\t\t\t</div>\n\t\t</div>\t\t\t\n\t</div>\n</div>\n"
+if (module.hot) {(function () {  module.hot.accept()
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), true)
+  if (!hotAPI.compatible) return
+  module.hot.dispose(function () {
+    __vueify_insert__.cache["\n\n"] = false
+    document.head.removeChild(__vueify_style__)
+  })
+  if (!module.hot.data) {
+    hotAPI.createRecord("_v-46b2f7d7", module.exports)
+  } else {
+    hotAPI.update("_v-46b2f7d7", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+  }
+})()}
+},{"vue":7,"vue-hot-reload-api":4,"vueify/lib/insert-css":8}],31:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
 var __vueify_style__ = __vueify_insert__.insert("\n\n")
 'use strict';
@@ -12931,7 +13576,7 @@ exports.default = {
 		getClubHeaderContent: function getClubHeaderContent(clubId) {
 			var _this = this;
 
-			this.$http.get(this.$env.get('APP_URI') + 'api/club/club-info/' + clubId).then(function (response) {
+			this.$http.get(this.$env.get('APP_URI') + 'api/club/' + clubId + '/club-info').then(function (response) {
 				_this.club = response.data.club;
 				_this.follow_status = response.data.follow_status;
 				_this.teacher_status = response.data.teacher_status;
@@ -12942,8 +13587,7 @@ exports.default = {
 		sentFollow: function sentFollow() {
 			var _this2 = this;
 
-			debugger;
-			this.$http.get(this.$env.get('APP_URI') + 'api/club/follow/' + this.club.id).then(function (response) {
+			this.$http.get(this.$env.get('APP_URI') + 'api/club/' + this.club.id + '/follow').then(function (response) {
 				debugger;
 				_this2.follow_status = response.data.type;
 			}, function (response) {});
@@ -12952,7 +13596,7 @@ exports.default = {
 		sentTrainerRequest: function sentTrainerRequest() {
 			var _this3 = this;
 
-			this.$http.get(this.$env.get('APP_URI') + 'api/club/request/' + this.club.id + '?type=2').then(function (response) {
+			this.$http.get(this.$env.get('APP_URI') + 'api/club/' + this.club.id + '/request?type=2').then(function (response) {
 				_this3.request_status = response.data.type;
 			}, function (response) {});
 		},
@@ -12960,14 +13604,14 @@ exports.default = {
 		sentTeacherRequest: function sentTeacherRequest() {
 			var _this4 = this;
 
-			this.$http.get(this.$env.get('APP_URI') + 'api/club/request/' + this.club.id + '?type=1').then(function (response) {
+			this.$http.get(this.$env.get('APP_URI') + 'api/club/' + this.club.id + '/request?type=1').then(function (response) {
 				_this4.teacher_status = response.data.type;
 			}, function (response) {});
 		}
 	}
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"top-bar hw-default-top-bar\">\n  <div class=\"top-bar-left\">\n    <ul class=\"menu \">\n      <li class=\"menu-text hw-default-logo\">\n      \t<img src=\"{{asset('images/flexgym/logo.png')}}\"> \n      \t{{club.short_name}}</li>\n      <li><a href=\"#\">{{club.short_name}}</a></li>\n      <li><a href=\"#\">{{club.full_name}}</a></li>\n      <li><a href=\"#\">{{club.description}}</a></li>\n      <li><a href=\"#\">Холбоо барих</a></li>\n    </ul>\n  </div>\n  <div class=\"top-bar-right\">\n    <ul class=\"menu\">\n      <li><a @click=\"sentTeacherRequest\" class=\"button btn-fb btn-trans\">{{teacher_status}}</a></li>\n      <li><a @click=\"sentFollow\" class=\"button btn-fb btn-trans\">{{follow_status}}</a></li>\n      <li><a @click=\"sentTrainerRequest\" class=\"button btn-fb btn-trans\">{{request_status}}</a></li>\n    </ul>\n  </div>\n</div>\n<div class=\"parallax-container\">\n  <div class=\"parallax-content\">\n    <div class=\"parallax-back\">\n      <!-- <div class=\"animated-word\">\n        <h1>Үзүүлэлт</h1>\n        <p>Тайлбар Тайлбар Тайлбар Тайлбар Тайлбар Тайлбар Тайлбар Тайлбар Тайлбар Тайлбар Тайлбар Тайлбар Тайлбар Тайлбар </p>\n      </div> -->\n      <p>Гоё уриа үг</p>\n    </div>\n  </div>\n</div>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"top-bar hw-default-top-bar\">\n  <div class=\"top-bar-left\">\n    <ul class=\"menu \">\n      <li class=\"menu-text hw-default-logo\">\n      \t{{club.short_name}}</li>\n      <li><a href=\"#\">{{club.short_name}}</a></li>\n      <li><a href=\"#\">{{club.full_name}}</a></li>\n      <li><a href=\"#\">{{club.description}}</a></li>\n      <li><a href=\"#\">Холбоо барих</a></li>\n    </ul>\n  </div>\n  <div class=\"top-bar-right\">\n    <ul class=\"menu\">\n      <li><a @click=\"sentTeacherRequest\" class=\"button btn-fb btn-trans\">{{teacher_status}}</a></li>\n      <li><a @click=\"sentFollow\" class=\"button btn-fb btn-trans\">{{follow_status}}</a></li>\n      <li><a @click=\"sentTrainerRequest\" class=\"button btn-fb btn-trans\">{{request_status}}</a></li>\n    </ul>\n  </div>\n</div>\n<div class=\"parallax-container\">\n  <div class=\"parallax-content\">\n    <div class=\"parallax-back\">\n      <!-- <div class=\"animated-word\">\n        <h1>Үзүүлэлт</h1>\n        <p>Тайлбар Тайлбар Тайлбар Тайлбар Тайлбар Тайлбар Тайлбар Тайлбар Тайлбар Тайлбар Тайлбар Тайлбар Тайлбар Тайлбар </p>\n      </div> -->\n      <p>Гоё уриа үг</p>\n    </div>\n  </div>\n</div>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -12982,6 +13626,6 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-41cbb6ee", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":6,"vue-hot-reload-api":4,"vueify/lib/insert-css":7}]},{},[8]);
+},{"vue":7,"vue-hot-reload-api":4,"vueify/lib/insert-css":8}]},{},[9]);
 
 //# sourceMappingURL=app.js.map
