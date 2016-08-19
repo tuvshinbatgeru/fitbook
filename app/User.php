@@ -48,7 +48,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
 
     public function photos()
     {
-        return $this->hasMany('App\Photos', 'object_id');
+        return $this->hasMany('App\Photo', 'object_id');
     }
 
     public function canEditable($club_id)
@@ -134,5 +134,18 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
     public function joinClub($club, $type)
     {
         return $this->clubs()->attach($club->id, ['type' => $type, 'since_date' => Carbon::now()]);
+    }
+
+    public function maxFileUpload()
+    {
+        return 500000;
+    }
+
+    public function equalAsString($otherId)
+    {
+        if (strcmp(strval($this->id), strval($otherId)) == 0) {
+            return true;
+        }
+        return false;
     }
 }
