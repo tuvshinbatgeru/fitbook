@@ -51,6 +51,13 @@ class Club extends Model
 
 	public function widgets()
 	{
-		return $this->belongsToMany('App\Widget', 'widgets', 'user_id', 'widgets_id');
+		return $this->belongsToMany('App\Widget', 'club_widgets', 'club_id', 'widget_id')
+					->withPivot('view_order', 'expired_date', 'licensed', 'is_active')
+					->withTimestamps();
+	}
+
+	public function activeWidgets()
+	{
+		return $this->widgets()->where('is_active', '=', 'Y')->get();
 	}
 }

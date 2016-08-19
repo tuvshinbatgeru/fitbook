@@ -10,11 +10,8 @@ use Illuminate\Support\Facades\Auth;
 
 class ClubController extends Controller
 {
-    //
-    public function info($clubId)
+    public function info(Club $club)
     {
-    	$club = Club::where('club_id','=', $clubId)->first();
-
     	if(!Auth::check())
     	{
     		return Response::json ([
@@ -57,7 +54,24 @@ class ClubController extends Controller
 
     public function getTeachers(Club $club, Request $request)
     {
-         return Club::teachers($club->id);
+        $selected = explode(',', $request->selected);
+        $teachers = Club::teachers($club->id);
+
+        foreach ($teachers as $teacher) {
+            $teacher->selected = false;
+
+            if(empty($selected)) {
+                continue;
+            }
+
+            for($i = 0; $i < count($selected); $i ++) {
+                if ($teacher->equalAsString($selected[$i])) {
+                    $teacher->selected = true;
+                }
+            }
+        }
+        
+        return $teachers;
     }
 
     private function isManager($member)
@@ -77,23 +91,30 @@ class ClubController extends Controller
 
     public function index($clubId)
     {
-    	if(!Club::isAvailableClub($clubId)) abort(404);
+    	$club = Club::isAvailableClub($clubId);
 
-    	$widget_header = "header-default";
-		$widget_footer = "widgets.footer.default";
-		$widget_content = array();
+        if(!$club) abort(404);
+        $id = $club->id;
 
-		switch ($clubId) {
-			case 'flexgym':
-				array_push($widget_content, 'widgets.content.default');
-				break;
-			case 'goldengym':
-				array_push($widget_content, 'widgets.content.default');
-				break;
-			default:
-				array_push($widget_content, 'widgets.content.default');
-				break;
-		}
-		return view('club')->with(compact('widget_header', 'widget_content','widget_footer', 'clubId'));
+        $widgets = $club->activeWidgets();
+        $widget_content = array();
+
+        foreach ($widgets as $widget) {
+            switch ($widget->section_id) {
+                case 1:
+                    $widget_header = $widget->content_map;
+                    break;
+                case 2:
+                    array_push($widget_content, $widget->content_map);
+                    break;
+                case 3:
+                    $widget_footer = $widget->content_map;
+                    break;
+                default:
+                    break;
+            }
+        }
+
+		return view('club')->with(compact('widget_header', 'widget_content','widget_footer', 'id'));
     }
 }
