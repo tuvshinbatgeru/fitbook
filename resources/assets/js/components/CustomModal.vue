@@ -31,6 +31,7 @@
 	          			   :selected="items">
 				</component>
 				<components v-ref:context 
+							:multiple="multiple"
 							v-else 
 							:is="context" 
 							:selected="items">
@@ -57,7 +58,7 @@
 				required: true,
 			},
 			type : {default : 'Club'},
-			multiple : {default : false },
+			multiple : {},
 			title : { default: '' },
 			usage : { default: 'questionable'},
 			context : { 
