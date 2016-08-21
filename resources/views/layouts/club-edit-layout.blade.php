@@ -4,6 +4,7 @@
     <meta id="_token" value="{{ csrf_token() }}"> 
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Laravel</title>
+    <link href="https://fonts.googleapis.com/css?family=Comfortaa" rel="stylesheet">
     @include('includes.header')
 </head>
 <body>
