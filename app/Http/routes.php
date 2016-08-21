@@ -1,7 +1,9 @@
 <?php
 
+use App\Events\UserOutTraining;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,21 +16,24 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::get('/', function () {
-    return view('index');
-});
-
-Route::get('/api/search', 'SearchController@search');
-Route::get('/search', function(Request $request) {
-	    return view('search');
-});
-
-Route::post('auth/login', 'Auth\AuthController@login');
-Route::get('auth/login', function() {
-		return view('auth.login');
-});
-
 Route::group(['middleware' => ['web']], function () {
+
+	Route::get('/', function () {
+    	return view('index');
+	});
+
+	Route::get('/api/search', 'SearchController@search');
+	Route::get('/search', function(Request $request) {
+		    return view('search');
+	});
+
+	Route::get('users/{username}', 'UserController@index');
+	Route::get('users/{username}/edit', 'UserController@edit')->middleware('auth');
+	Route::post('auth/login', 'Auth\AuthController@login');
+
+	Route::get('login', function() {
+			return view('auth.login');
+	});
 
 	Route::get('/dashboard', function() {
 	    return view('dashboard');
@@ -38,6 +43,7 @@ Route::group(['middleware' => ['web']], function () {
 	/* type - club */
 	Route::post('/api/test','FileManagerController@test');
 	Route::post('/upload', 'FileManagerController@upload');
+	Route::post('/api/user/avatar/{photo}', 'UserController@storeAvatar');
 
 	//Club info APIs
 	Route::group(['prefix' => '/api/club/{club}/'], function () {
@@ -62,9 +68,9 @@ Route::group(['middleware' => ['web']], function () {
 
 	});
 
-	/* type - user */
-
+	/* type - club */
 	Route::get('/api/user/files', 'FileManagerController@files');
+
 	Route::get('/create-club', function(Request $request) {
 	    return view('create-club');
 	});

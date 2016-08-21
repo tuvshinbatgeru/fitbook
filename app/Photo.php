@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\File;
 
 class Photo extends Model
 {
@@ -22,6 +23,13 @@ class Photo extends Model
     public function tags()
     {
         return $this->morphToMany('App\Tag', 'taggable');
+    }
+
+    public function deleteWithPicture()
+    {        
+        $files = explode('/', $this->url);
+        File::delete(public_path() . '/images/users/thumbnails/' . $files[count($files) - 1]);
+        $this->delete();
     }
 
     public function equalAsString($otherId)

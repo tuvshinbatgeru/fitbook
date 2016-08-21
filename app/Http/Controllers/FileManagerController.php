@@ -8,6 +8,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Intervention\Image\Facades\Image;
 use Response;
@@ -23,7 +24,7 @@ class FileManagerController extends Controller
     {	
         $selected = explode(',', $request->selected);
         $maxSize = Auth::user()->maxFileUpload();
-        $photos = Auth::user()->photos;
+        $photos = Auth::user()->photosWithoutAvatar;
         $actualSize = 0;
 
         foreach ($photos as $photo) {
@@ -103,8 +104,7 @@ class FileManagerController extends Controller
 
     private function generatePhotoId($image)
     {
-        return Auth::user()->id 
-            . 'user'
+        return md5(Auth::user()->id . 'user')
             . strtotime(Carbon::now()) 
             . $image->getClientOriginalName();
     }
