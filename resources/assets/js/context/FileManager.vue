@@ -69,8 +69,11 @@
 	export default {
 
 		props : {
+			multiple : {
+				default : false
+			},
 			selected : {
-				default : []
+				default: () => []
 			}
 		},
 
@@ -80,7 +83,8 @@
 				actualSize: null,
 				maxSize: null,
 				type : 'all',
-				isBusy: false
+				isBusy: false,
+				before : null,
 			}			
 		},
 
@@ -178,8 +182,18 @@
 				return false;
 			},
 
+			unselect : function () {
+				this.before.selected = false;
+			},
+
 			toggle : function (photo) {
 				photo.selected = !photo.selected;
+				if(!this.multiple)
+				{
+					if(this.before && this.before != photo)
+						this.unselect();
+					this.before = photo;
+				}
 			},
 		},
 
