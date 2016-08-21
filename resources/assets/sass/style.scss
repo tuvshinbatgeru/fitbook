@@ -12,7 +12,24 @@ $menu-color: #272C33;
 body{
 	background-color: #FFFFFF;
 	line-height: 1.4;
+	font-family: 'Comfortaa', cursive;
 }
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Comfortaa', cursive;
+    font-weight: normal;
+    font-style: normal;
+    color: inherit;
+    text-rendering: optimizeLegibility;
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+    line-height: 1.4;
+}
+
+ul {
+    list-style: none;
+}
+
 .logo{
 	font-size: 20px;
 	@include left-siders;

@@ -4,6 +4,7 @@
 		type = "User"
 		title ="Photo chooser" 
 		usage = "_photo-chooser" 
+		multiple = "true"
 		:items = "pictures"
 		:show.sync = "showFileManager"
 		save-callback = "choosedPictures"

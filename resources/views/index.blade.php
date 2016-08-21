@@ -1,4 +1,4 @@
-@extends('layouts.master-layout', ['currentView' => 'index-view'])
+@extends('layouts.master-layout', ['currentView' => 'index-view', 'user' => null])
 @section('content')
 		
 <header>
@@ -84,7 +84,7 @@
 </div>
 <hr>
 
-
+	
 	<div>
 		<div class="input-field" style="margin-left: 100px; margin-top: 50px; width:300px;">
 			<label>Name

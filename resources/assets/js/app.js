@@ -2,6 +2,8 @@ import Vue from 'vue';
 import VerifyView from './web/VerifyView.vue';
 import IndexView from './web/IndexView.vue';
 import SearchView from './web/SearchView.vue';
+import ProfileView from './web/ProfileView.vue';
+import ProfileEditView from './web/ProfileEditView.vue';
 import ClubEditView from './web/ClubEditView.vue';
 import HeaderDefault from './widgets/header/Default.vue';
 import TeacherDefault from './widgets/content/TeacherDefault.vue';
@@ -10,6 +12,7 @@ import _env from '../../../env.js';
 import CustomModal from './components/CustomModal.vue';
 import CustomToast from './components/CustomToast.vue';
 import Tools from './settings/Tools.js';
+import Chart from 'chart.js';
 
 Vue.debug = true;
 Vue.component('CustomModal', CustomModal);
@@ -33,23 +36,9 @@ var app = new Vue({
 		const toast = this.$refs.toast;
 	},
 
-	methods : {
-		test : function () {
-			var param = encodeURIComponent(JSON.stringify([ 'foo', 'bar' ]));
-			alert(param);
-
-			this.$http.post(this.$env.get('APP_URI') + 'api/test?data=' + param).then((response) => 
-			{
-				debugger;
-			}, (response) => {
-
-			});	
-		}
-	},
-
 	components : {
 		VerifyView, IndexView, SearchView, 
 		HeaderDefault, ClubEditView, TeacherDefault,
-		TrainingDefault,
+		TrainingDefault, ProfileView, ProfileEditView
 	},
 });

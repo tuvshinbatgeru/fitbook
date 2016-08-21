@@ -10,8 +10,18 @@
 			clubid : {},
 		},
 
-		created: function () {
+		data() {
+			return {
+				items : []
+			}
 		},
+
+		created: function () {
+
+		},
+		methods: {
+
+      	},
 	}
 </script>
 	
