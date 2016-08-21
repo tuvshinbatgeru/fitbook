@@ -14,6 +14,8 @@
 $factory->define(App\User::class, function (Faker\Generator $faker) {
     return [
         'username' => $faker->name,
+        'first_name' => $faker->name,
+        'last_name' => $faker->name,
         'email' => $faker->safeEmail,
         'socialite_type' => 1,
         'gender' => 'male',
