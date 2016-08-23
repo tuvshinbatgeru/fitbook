@@ -18,8 +18,13 @@ class TagSeeder extends Seeder
         ]);
 
         DB::table('tags')->insert([
-            'name' => 'урамшуулал',
-            'name_en' => 'loyalty',
+            'name' => 'хөтөлбөр',
+            'name_en' => 'plan',
+        ]);
+
+        DB::table('tags')->insert([
+            'name' => 'нүүр зураг',
+            'name_en' => 'profile',
         ]);
     }
 }

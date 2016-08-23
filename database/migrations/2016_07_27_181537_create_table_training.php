@@ -15,10 +15,8 @@ class CreateTableTraining extends Migration
         Schema::create('training', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('club_id')->unsigned()->index();
-            $table->string('name')->nullable();
+            $table->string('name')->unique();
             $table->string('description')->nullable();
-            $table->integer('price');
-            $table->enum('priceless', ['N', 'Y'])->default('Y'); //Y - free, N - commercial
             $table->enum('is_active', ['N', 'Y'])->default('Y'); 
             $table->timestamps();
         });

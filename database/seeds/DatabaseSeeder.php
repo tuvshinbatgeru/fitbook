@@ -15,5 +15,6 @@ class DatabaseSeeder extends Seeder
         $this->call(SocialiteTableSeeder::class);
         $this->call(ClubSeeder::class);
         $this->call(WidgetSeeder::class);
+        $this->call(TagSeeder::class);
     }
 }
