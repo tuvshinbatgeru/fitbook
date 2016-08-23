@@ -1,28 +1,17 @@
 <template>
 	<form id="uploader" method="POST" action="/upload" enctype="multipart/form-data">
 		<div class="row">
-			<div class="small-12 medium-12 column"> 
-				<div class="row">
-					<div class="small-2 medium-2 column">
-						<span class="button success fileinput-button">
-							<i class="fa fa-cloud"></i>
-							<input id="fileupload" type="file" class="image button success" name="image[]" multiple>
-						</span>	
-					</div>
-					<div class="small-10 medium-10 column">
-						<div id="progress" class="progress">
-					        <div class="progress-bar progress-bar-success"></div>
-					    </div>
-				    </div>
-				</div>
-			</div>
-		</div>
-		<div class="row">
 	     <a @click="typeFilter('all')" class="button success">All</a>
 		 <a @click="typeFilter('training')" class="button success">Training</a>
 		 <a @click="typeFilter('loyalty')" class="button success">Loyalty</a>
 		 <a @click="typeFilter('selected')" class="button success">Selected</a>
-		 {{actualSize / 1024 / 1024}}mb to {{maxSize}}
+		 <span class="button success fileinput-button">
+			<i class="fa fa-cloud"></i>
+			<input id="fileupload" type="file" class="image button success" name="image[]" multiple>
+		 </span>	
+		 <circle-progress-bar v-if="percentage" :percentage="percentage">
+		 	
+		 </circle-progress-bar>
 		</div>
 	</form>
 	
@@ -65,6 +54,7 @@
 <script>
 	/*var uploader = require('blueimp-file-upload');*/
 	var Waterfall = require('vue-waterfall')
+	import CircleProgressBar from '../components/CircleProgressBar.vue';
 
 	export default {
 
@@ -85,6 +75,7 @@
 				type : 'all',
 				isBusy: false,
 				before : null,
+				percentage: null,
 			}			
 		},
 
@@ -153,10 +144,11 @@
 				this.$http.get(this.$env.get('APP_URI') + 'api/user/files?selected=' + maps).then((response) => 
 				{
 
-
+					debugger;
 					this.files = response.data.files;
 					this.actualSize = response.data.actualSize;
 					this.maxSize = response.data.maxSize;
+					this.percentage = parseInt(this.actualSize * 100 / this.maxSize);
 				}, (response) => {
 
 				});	
@@ -213,6 +205,7 @@
 		components : {
 			'waterfall': Waterfall.waterfall,
     		'waterfall-slot': Waterfall.waterfallSlot,
+    		CircleProgressBar
 		}
 	}
 </script>

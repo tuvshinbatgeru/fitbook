@@ -14,11 +14,13 @@ use Illuminate\Support\Facades\Auth;
 class UserController extends Controller
 {
     //
-
     public function index($username)
     {
         $user = User::findByUsername($username);
-        return view('user')->with(compact('user'));
+        $editable = false;
+        if(Auth::check() && Auth::user()->username == $username)
+            $editable = true;
+        return view('user')->with(compact('user', 'editable'));
     }
 
     public function edit($username)

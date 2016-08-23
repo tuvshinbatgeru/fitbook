@@ -232,9 +232,10 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
         return $photo;
     }
 
+    // MByte
     public function maxFileUpload()
     {
-        return 500000;
+        return 100;
     }
 
     public function equalAsString($otherId)

@@ -45,9 +45,20 @@ class FileManagerController extends Controller
 
 		return Response::json([
         	'files' => $photos,
-        	'actualSize' => $actualSize,
+        	'actualSize' => self::castToMByte($actualSize),
         	'maxSize' => $maxSize,
         ]);
+    }
+
+    private function castToMByte($byte)
+    {
+        return self::customRound($byte / 1024 / 1024, 2);
+        
+    }
+
+    private function customRound($byte, $precision)
+    {
+        return round($byte, $precision, PHP_ROUND_HALF_DOWN);
     }
 
     public function upload(Request $request)

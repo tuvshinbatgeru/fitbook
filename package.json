@@ -8,6 +8,7 @@
   },
   "devDependencies": {
     "bootstrap-sass": "^3.0.0",
+    "chart.js": "^2.2.1",
     "gulp": "^3.9.1",
     "laravel-elixir": "^5.0.0",
     "motion-ui": "^1.2.2",

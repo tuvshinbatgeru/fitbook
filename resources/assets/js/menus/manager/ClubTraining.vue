@@ -2,7 +2,7 @@
 	<div>
 		<h3>Club Training</h3>
 		<p><a @click="showAddTraining = true" class="button success">
-				<i class="fa fa-plus"></i>
+				<i class="fa fa-pencil-square-o"></i>
 		   </a></p>
 
 		<custom-modal 
