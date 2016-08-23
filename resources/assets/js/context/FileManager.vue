@@ -1,17 +1,18 @@
 <template>
 	<form id="uploader" method="POST" action="/upload" enctype="multipart/form-data">
-		<div class="row">
-	     <a @click="typeFilter('all')" class="button success">All</a>
-		 <a @click="typeFilter('training')" class="button success">Training</a>
-		 <a @click="typeFilter('loyalty')" class="button success">Loyalty</a>
-		 <a @click="typeFilter('selected')" class="button success">Selected</a>
-		 <span class="button success fileinput-button">
-			<i class="fa fa-cloud"></i>
-			<input id="fileupload" type="file" class="image button success" name="image[]" multiple>
-		 </span>	
-		 <circle-progress-bar v-if="percentage" :percentage="percentage">
-		 	
-		 </circle-progress-bar>
+		<div class="row small-up-5 medium-up-5 large-up-5" >
+		     <a @click="typeFilter('all')" class="button success">All</a>
+			 <a @click="typeFilter('training')" class="button success">Training</a>
+			 <a @click="typeFilter('plan')" class="button success">Plan</a>
+			 <a @click="typeFilter('profile')" class="button success">Profile</a>
+			 <a @click="typeFilter('selected')" class="button success">Selected</a>
+			 <span class="button success fileinput-button">
+				<i class="fa fa-cloud"></i>
+				<input id="fileupload" type="file" class="image button success" name="image[]" multiple>
+			 </span>	
+			 <circle-progress-bar v-if="percentage" :percentage="percentage">
+			 	
+			 </circle-progress-bar>
 		</div>
 	</form>
 	
@@ -64,7 +65,7 @@
 			},
 			selected : {
 				default: () => []
-			}
+			},
 		},
 
 		data() {

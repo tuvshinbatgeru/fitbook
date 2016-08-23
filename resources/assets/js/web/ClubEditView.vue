@@ -3,7 +3,7 @@
 	import ClubMembers from '.././menus/manager/ClubMembers.vue';
 	import ClubRequests from '.././menus/manager/ClubRequests.vue';
 	import ClubTraining from '.././menus/manager/ClubTraining.vue';
-	import ClubLoyalty from '.././menus/manager/ClubLoyalty.vue';
+	import ClubPlan from '.././menus/manager/ClubPlan.vue';
 	import ClubTemplate from '.././menus/manager/ClubTemplate.vue';
 	import autocomplete from '.././components/autocomplete.vue';
 
@@ -58,7 +58,7 @@
 
 		components : {
 			ClubDashboard, ClubMembers, ClubRequests, 
-			ClubTraining, ClubLoyalty, autocomplete, 
+			ClubTraining, ClubPlan, autocomplete, 
 			ClubTemplate
 		}
 	}

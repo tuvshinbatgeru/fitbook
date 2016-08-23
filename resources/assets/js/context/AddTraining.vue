@@ -43,18 +43,6 @@
 			      </label>
 			    </div>
 			</div>
-			<div class="row">
-			  	<div class="medium-6 columns">
-			  	  <label> Priceless
-			  		<input type="checkbox" v-model="priceless" name="priceless">
-			  	  </label>
-			  	</div>
-			  	<div class="medium-6 columns">
-			  	  <label>Price
-			  	  	<input type="text" v-model="price" placeholder="price">
-			  	  </label>
-			  	</div>
-			</div>
 		  </div>
 		  <div class="tabs-panel" id="teacher">
   	  		   <div class="picture-list">

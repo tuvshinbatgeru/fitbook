@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<h3>Club Loyalty</h3>
+		<h3>Club Plan</h3>
 	<div>
 </template>
 
