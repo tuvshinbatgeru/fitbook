@@ -4,6 +4,7 @@ namespace App;
 
 use App\ClubFollowers;
 use App\Photo;
+use App\Tag;
 use Carbon\Carbon;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Auth\Passwords\CanResetPassword;
@@ -191,6 +192,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
 
     public function saveAvatar($photo)
     {
+        $photo->attachTag(Tag::PROFILE_ID);
         $this->avatar_url = $photo->url;
         $this->save();
         

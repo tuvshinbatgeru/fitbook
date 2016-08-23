@@ -25,6 +25,18 @@ class Photo extends Model
         return $this->morphToMany('App\Tag', 'taggable');
     }
 
+    public function attachTag($tagId)
+    {
+        if($this->tags()->where('id','=', $tagId)->first()) return;
+        return $this->tags()->attach($tagId);
+    }
+
+    static public function attachTagById($id, $tagId)
+    {
+        $photo = static::findOrFail($id);
+        $photo->attachTag($tagId);
+    }
+
     public function deleteWithPicture()
     {        
         $files = explode('/', $this->url);

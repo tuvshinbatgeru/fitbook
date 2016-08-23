@@ -15,10 +15,51 @@ use Response;
 
 class FileManagerController extends Controller
 {
-    public function test(Request $request)
-    {
-        dd($request->all());    
-    }
+    public function upload(Request $request)
+    {   
+        $messages = [
+            'image.*' => 'Image type must be Jpeg, jpg, png and gif',
+            'size' => "photo's size long enought"
+        ];
+
+        $validator = Validator::make($request->all(), [
+            'image.*' => 'mimes:jpeg,jpg,png,gif|required|max:10000'
+        ], $messages);
+
+        if ($validator->fails()) {
+            return Response::json([
+                    'result' => 'failed', 
+                    'errors' => $validator->errors()->getMessages(),
+                ]);
+        }
+
+        $photos = [];
+
+        foreach ($request->file('image') as $image) 
+        {
+            $image_url = self::generatePhotoId($image);
+            $img = Image::make($image->getRealPath());
+            $img->save(public_path() 
+                      . '/images/users/' 
+                      . $image_url);
+
+            $photo = new Photo;
+            $photo->type = 1;
+            $photo->ext = explode('/', $image->getmimeType())[1];
+            $photo->object_id = Auth::user()->id;
+            $photo->size = $image->getSize(); 
+            $photo->ratio = self::calcRatio($image); 
+            $photo->url = App::make('url')->to('/') . '/images/users/' . $image_url;
+            $photo->save();
+            $photo->selected = true;
+            $photos = $photo;
+        }
+        
+        return Response::json([
+                'result' => 'success',
+                'data' => $photos,
+        ]);
+    }   
 
     public function files(Request $request)
     {	
@@ -60,52 +101,6 @@ class FileManagerController extends Controller
     {
         return round($byte, $precision, PHP_ROUND_HALF_DOWN);
     }
-
-    public function upload(Request $request)
-    {	
-        $messages = [
-            'image.*' => 'Image type must be Jpeg, jpg, png and gif',
-            'size' => "photo's size long enought"
-        ];
-
-        $validator = Validator::make($request->all(), [
-            'image.*' => 'mimes:jpeg,jpg,png,gif|required|max:10000'
-        ], $messages);
-
-        if ($validator->fails()) {
-        	return Response::json([
-        			'result' => 'failed', 
-        			'errors' => $validator->errors()->getMessages(),
-        		]);
-        }
-
-        $photos = [];
-
-        foreach ($request->file('image') as $image) 
-        {
-            $image_url = self::generatePhotoId($image);
-            $img = Image::make($image->getRealPath());
-            $img->save(public_path() 
-                      . '/images/users/' 
-                      . $image_url);
-
-            $photo = new Photo;
-            $photo->type = 1;
-            $photo->ext = explode('/', $image->getmimeType())[1];
-            $photo->object_id = Auth::user()->id;
-            $photo->size = $image->getSize(); 
-            $photo->ratio = self::calcRatio($image); 
-            $photo->url = App::make('url')->to('/') . '/images/users/' . $image_url;
-            $photo->save();
-            $photo->selected = true;
-            $photos = $photo;
-        }
-        
-        return Response::json([
-        		'result' => 'success',
-        		'data' => $photos,
-        ]);
-    }   
 
     private function calcRatio($image)
     {

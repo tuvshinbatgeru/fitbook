@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Club;
 use App\Http\Requests;
+use App\Photo;
+use App\Tag;
 use App\Training;
 use App\Transformers\TrainingTransformer;
 use Illuminate\Http\Request;
@@ -54,7 +56,6 @@ class TrainingController extends Controller
      */
     public function store(Club $club, Request $request)
     {
-        //
         $decode = json_decode($request->data);
         $data = $this->trainingTransformer->transform($decode);
         $training = new Training($data);
@@ -62,6 +63,7 @@ class TrainingController extends Controller
 
         for ($i = 0; $i < count($decode->pictures); $i++) {
             $training->photos()->attach(intval($decode->pictures[$i]->id), ['pinned' => 'N']);
+            Photo::attachTagById($decode->pictures[$i]->id, Tag::TRAINING_ID);
         }
 
         for ($i = 0; $i < count($decode->teachers); $i ++) { 
