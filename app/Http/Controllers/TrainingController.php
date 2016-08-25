@@ -31,6 +31,7 @@ class TrainingController extends Controller
         foreach ($trainings as $training) {
             $training->photos;
             $training->teachers;
+            $training->selected = false;
         }
 
         return Response::json([

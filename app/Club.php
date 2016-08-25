@@ -24,6 +24,11 @@ class Club extends Model
 		return static::where('club_id','=', $club_id)->first();
 	}
 
+	public function plans()
+	{
+		return $this->hasMany('App\Plan');
+	}
+
 	public function trainings()
 	{
 		return $this->hasMany('App\Training');
