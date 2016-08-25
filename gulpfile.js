@@ -17,17 +17,16 @@ var paths = {
 }
 
 elixir(function(mix) {
-	mix.sass('app.scss', 'public/css/app.css', {
+	mix.sass(['app.scss'], 'public/css/app.css', {
 		includePaths: 
 		[
-			paths.foundation,
-			paths.motion,
-			paths.materialize
+			'./bower_components/foundation-sites/scss',
+			'./bower_components/motion-ui/src',
+			'./bower_components/materialize'
 		]
 	});
 
 	mix.version("css/app.css");
-
 	mix.sass(['style.scss'],'public/css/style.css');
 	mix.browserify('app.js');
 	/*mix.sass(['widget/hw-default.scss'],'public/css/widget/hw-default.css');

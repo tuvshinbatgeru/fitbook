@@ -18,11 +18,11 @@ class CreateUsersTable extends Migration
             $table->string('first_name');
             $table->string('last_name');
             $table->string('email')->nullable();
-            $table->string('socialite_id', 30);
+            $table->string('socialite_id', 30)->nullable();
             $table->integer('socialite_type');
             $table->string('avatar_url', 1000)->nullable();
             $table->date('birthday')->nullable();
-            $table->string('password');
+            $table->string('password')->nullable();
             $table->enum('gender', ['male', 'female'])->nullable();
             $table->enum('is_active', ['N', 'Y']);
             $table->rememberToken();

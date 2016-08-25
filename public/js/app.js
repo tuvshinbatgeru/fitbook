@@ -27006,7 +27006,7 @@ exports.default = {
 	components: {}
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n\t<custom-modal :id=\"id\" type=\"User\" title=\"Photo chooser\" usage=\"_photo-chooser\" multiple=\"true\" :items=\"pictures\" :show.sync=\"showFileManager\" save-callback=\"choosedPictures\" context=\"fileManager\">\n\t</custom-modal>\n\n\t<custom-modal :id=\"id\" type=\"Club\" title=\"Teachers\" usage=\"_teacher-chooser\" :items=\"teachers\" :show.sync=\"showTeachers\" save-callback=\"choosedTeachers\" context=\"teachers\">\n\t</custom-modal>\n\n\t<form method=\"POST\" accept=\"\">\n\t\t<ul class=\"tabs\" data-tabs=\"\" id=\"example-tabs\">\n\t\t  <li class=\"tabs-title is-active\"><a href=\"#main\" aria-selected=\"true\">Info</a></li>\n\t\t  <li class=\"tabs-title\"><a href=\"#photos\">Photos</a></li>\n\t\t  <li class=\"tabs-title\"><a href=\"#teacher\">Teacher</a></li>\n\t    </ul>\n\t  <div class=\"tabs-content\" data-tabs-content=\"example-tabs\">\n\t\t  <div class=\"tabs-panel is-active\" id=\"main\">\n\t\t    <div class=\"row\">\n\t\t\t    <div class=\"medium-6 columns\">\n\t\t\t      <label>Training name\n\t\t\t        <input type=\"text\" name=\"name\" v-model=\"name\" placeholder=\"fill training name\">\n\t\t\t      </label>\n\t\t\t    </div>\n\t\t\t    <div class=\"medium-6 columns\">\n\t\t\t      <label>Description\n\t\t\t        <textarea type=\"text\" name=\"description\" v-model=\"description\" placeholder=\"Description ...\">\t\t\t        </textarea>\n\t\t\t      </label>\n\t\t\t    </div>\n\t\t\t</div>\n\t\t\t<div class=\"row\">\n\t\t\t  \t<div class=\"medium-6 columns\">\n\t\t\t  \t  <label> Priceless\n\t\t\t  \t\t<input type=\"checkbox\" v-model=\"priceless\" name=\"priceless\">\n\t\t\t  \t  </label>\n\t\t\t  \t</div>\n\t\t\t  \t<div class=\"medium-6 columns\">\n\t\t\t  \t  <label>Price\n\t\t\t  \t  \t<input type=\"text\" v-model=\"price\" placeholder=\"price\">\n\t\t\t  \t  </label>\n\t\t\t  \t</div>\n\t\t\t</div>\n\t\t  </div>\n\t\t  <div class=\"tabs-panel\" id=\"teacher\">\n  \t  \t\t   <div class=\"picture-list\">\n\t\t\t  \t<div class=\"row small-up-2 medium-up-3 large-up-4\">\n\t\t\t  \t\t<br>\n\t\t\t\t  \t<div class=\"column\" v-for=\"teacher in teachers\">\n\t\t\t\t\t  \t<div class=\"figure\">\n\t\t                    <img v-bind:src=\"teacher.avatar_url\" alt=\"Jeffrey Way\" height=\"120\" width=\"120\" style=\"border-radius:4px;\">\n\t\t                    <div class=\"figcaption\">\n\t\t                        <a @click=\"deleteTeacher(teacher)\" class=\"btn-floating red\" style=\"left: 25%;\">\n\t\t                        \t<i class=\"fa fa-trash\"></i>\n\t\t                        </a>\n\t\t                    </div>\n\t\t                </div>\n\t\t\t\t  \t</div>\n\t\t\t\t  \t<div class=\"column\">\n\t\t\t\t\t  \t<div class=\"figure\">\n\t\t                    <div class=\"figcaption\" style=\"opacity:1;\">\n\t\t                        <a @click=\"showTeachers = true\" class=\"btn-floating red\" style=\"left: 25%;\">\n\t\t                        \t<i class=\"fa fa-plus\"></i>\n\t\t                        </a>\n\t\t                    </div>\n\t\t                </div>\n\t\t\t\t  \t</div>\n\t\t\t\t</div>\n\t\t\t  </div>\n\t\t  </div>\n\t\t  <div class=\"tabs-panel\" id=\"photos\">\n\t\t\t  <div class=\"picture-list\">\n\t\t\t  \t<div class=\"row small-up-2 medium-up-3 large-up-4\">\n\t\t\t  \t\t<br>\n\t\t\t\t  \t<div class=\"column\" v-for=\"photo in pictures\">\n\t\t\t\t\t  \t<div class=\"figure\">\n\t\t                    <img v-bind:src=\"photo.url\" alt=\"Jeffrey Way\" height=\"120\" width=\"120\" style=\"border-radius:4px;\">\n\t\t                    <div class=\"figcaption\">\n\t\t                        <a @click=\"deletePhoto(photo)\" class=\"btn-floating red\" style=\"left: 25%;\">\n\t\t                        \t<i class=\"fa fa-trash\"></i>\n\t\t                        </a>\n\t\t                    </div>\n\t\t                </div>\n\t\t\t\t  \t</div>\n\t\t\t\t  \t<div class=\"column\">\n\t\t\t\t\t  \t<div class=\"figure\">\n\t\t                    <div class=\"figcaption\" style=\"opacity:1;\">\n\t\t                        <a @click=\"triggerPictureBtn\" class=\"btn-floating red\" style=\"left: 25%;\">\n\t\t                        \t<i class=\"fa fa-plus\"></i>\n\t\t                        </a>\n\t\t                    </div>\n\t\t                </div>\n\t\t\t\t  \t</div>\n\t\t\t\t</div>\n\t\t\t  </div>\n\t\t  </div>\n\t  </div>\n\t</form>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n\t<custom-modal :id=\"id\" type=\"User\" title=\"Photo chooser\" usage=\"_photo-chooser\" multiple=\"true\" :items=\"pictures\" :show.sync=\"showFileManager\" save-callback=\"choosedPictures\" context=\"fileManager\">\n\t</custom-modal>\n\n\t<custom-modal :id=\"id\" type=\"Club\" title=\"Teachers\" usage=\"_teacher-chooser\" :items=\"teachers\" :show.sync=\"showTeachers\" save-callback=\"choosedTeachers\" context=\"teachers\">\n\t</custom-modal>\n\n\t<form method=\"POST\" accept=\"\">\n\t\t<ul class=\"tabs\" data-tabs=\"\" id=\"example-tabs\">\n\t\t  <li class=\"tabs-title is-active\"><a href=\"#main\" aria-selected=\"true\">Info</a></li>\n\t\t  <li class=\"tabs-title\"><a href=\"#photos\">Photos</a></li>\n\t\t  <li class=\"tabs-title\"><a href=\"#teacher\">Teacher</a></li>\n\t    </ul>\n\t  <div class=\"tabs-content\" data-tabs-content=\"example-tabs\">\n\t\t  <div class=\"tabs-panel is-active\" id=\"main\">\n\t\t    <div class=\"row\">\n\t\t\t    <div class=\"medium-6 columns\">\n\t\t\t      <label>Training name\n\t\t\t        <input type=\"text\" name=\"name\" v-model=\"name\" placeholder=\"fill training name\">\n\t\t\t      </label>\n\t\t\t    </div>\n\t\t\t    <div class=\"medium-6 columns\">\n\t\t\t      <label>Description\n\t\t\t        <textarea type=\"text\" name=\"description\" v-model=\"description\" placeholder=\"Description ...\">\t\t\t        </textarea>\n\t\t\t      </label>\n\t\t\t    </div>\n\t\t\t</div>\n\t\t  </div>\n\t\t  <div class=\"tabs-panel\" id=\"teacher\">\n  \t  \t\t   <div class=\"picture-list\">\n\t\t\t  \t<div class=\"row small-up-2 medium-up-3 large-up-4\">\n\t\t\t  \t\t<br>\n\t\t\t\t  \t<div class=\"column\" v-for=\"teacher in teachers\">\n\t\t\t\t\t  \t<div class=\"figure\">\n\t\t                    <img v-bind:src=\"teacher.avatar_url\" alt=\"Jeffrey Way\" height=\"120\" width=\"120\" style=\"border-radius:4px;\">\n\t\t                    <div class=\"figcaption\">\n\t\t                        <a @click=\"deleteTeacher(teacher)\" class=\"btn-floating red\" style=\"left: 25%;\">\n\t\t                        \t<i class=\"fa fa-trash\"></i>\n\t\t                        </a>\n\t\t                    </div>\n\t\t                </div>\n\t\t\t\t  \t</div>\n\t\t\t\t  \t<div class=\"column\">\n\t\t\t\t\t  \t<div class=\"figure\">\n\t\t                    <div class=\"figcaption\" style=\"opacity:1;\">\n\t\t                        <a @click=\"showTeachers = true\" class=\"btn-floating red\" style=\"left: 25%;\">\n\t\t                        \t<i class=\"fa fa-plus\"></i>\n\t\t                        </a>\n\t\t                    </div>\n\t\t                </div>\n\t\t\t\t  \t</div>\n\t\t\t\t</div>\n\t\t\t  </div>\n\t\t  </div>\n\t\t  <div class=\"tabs-panel\" id=\"photos\">\n\t\t\t  <div class=\"picture-list\">\n\t\t\t  \t<div class=\"row small-up-2 medium-up-3 large-up-4\">\n\t\t\t  \t\t<br>\n\t\t\t\t  \t<div class=\"column\" v-for=\"photo in pictures\">\n\t\t\t\t\t  \t<div class=\"figure\">\n\t\t                    <img v-bind:src=\"photo.url\" alt=\"Jeffrey Way\" height=\"120\" width=\"120\" style=\"border-radius:4px;\">\n\t\t                    <div class=\"figcaption\">\n\t\t                        <a @click=\"deletePhoto(photo)\" class=\"btn-floating red\" style=\"left: 25%;\">\n\t\t                        \t<i class=\"fa fa-trash\"></i>\n\t\t                        </a>\n\t\t                    </div>\n\t\t                </div>\n\t\t\t\t  \t</div>\n\t\t\t\t  \t<div class=\"column\">\n\t\t\t\t\t  \t<div class=\"figure\">\n\t\t                    <div class=\"figcaption\" style=\"opacity:1;\">\n\t\t                        <a @click=\"triggerPictureBtn\" class=\"btn-floating red\" style=\"left: 25%;\">\n\t\t                        \t<i class=\"fa fa-plus\"></i>\n\t\t                        </a>\n\t\t                    </div>\n\t\t                </div>\n\t\t\t\t  \t</div>\n\t\t\t\t</div>\n\t\t\t  </div>\n\t\t  </div>\n\t  </div>\n\t</form>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -27177,7 +27177,7 @@ exports.default = {
 	}
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<form id=\"uploader\" method=\"POST\" action=\"/upload\" enctype=\"multipart/form-data\">\n\t<div class=\"row\">\n     <a @click=\"typeFilter('all')\" class=\"button success\">All</a>\n\t <a @click=\"typeFilter('training')\" class=\"button success\">Training</a>\n\t <a @click=\"typeFilter('loyalty')\" class=\"button success\">Loyalty</a>\n\t <a @click=\"typeFilter('selected')\" class=\"button success\">Selected</a>\n\t <span class=\"button success fileinput-button\">\n\t\t<i class=\"fa fa-cloud\"></i>\n\t\t<input id=\"fileupload\" type=\"file\" class=\"image button success\" name=\"image[]\" multiple=\"\">\n\t </span>\t\n\t <circle-progress-bar v-if=\"percentage\" :percentage=\"percentage\">\n\t \t\n\t </circle-progress-bar>\n\t</div>\n</form>\n\n<waterfall align=\"center\" :watch=\"filteredFiles\" :line-gap=\"200\" :min-line-gap=\"100\" :max-line-gap=\"220\" :single-max-width=\"300\">\n  <waterfall-slot v-for=\"file in filteredFiles\" width=\"160\" move-class=\"item-move\" transition=\"wf\" :height=\"file.ratio * 160\" :order=\"$index\">\n  \t<div class=\"thumb-img\">\n\t    <img v-bind:src=\"file.url\">\n\t</div>\n\t<div class=\"thumb-back\">\n\t\t<ul>\n\t\t\t<li v-for=\"tag in file.tags\">\n\t\t\t\t{{tag.name_en}}\n\t\t\t</li>\n\t\t</ul>\n\n\t\t<div class=\"thumb-check\">\n\t\t\t<a v-if=\"file.selected\" @click=\"toggle(file)\" class=\"success button\">\n\t\t\t\t<i class=\"fa fa-check\"></i>\n\t\t\t</a>\n\t\t\t<a v-else=\"\" @click=\"toggle(file)\" class=\"warning button\">\n\t\t\t\t<i class=\"fa fa-times\"></i>\n\t\t\t</a>\n\t\t</div>\n\t</div>\n  </waterfall-slot>\n</waterfall>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<form id=\"uploader\" method=\"POST\" action=\"/upload\" enctype=\"multipart/form-data\">\n\t<div class=\"row small-up-5 medium-up-5 large-up-5\">\n\t     <a @click=\"typeFilter('all')\" class=\"button success\">All</a>\n\t\t <a @click=\"typeFilter('training')\" class=\"button success\">Training</a>\n\t\t <a @click=\"typeFilter('plan')\" class=\"button success\">Plan</a>\n\t\t <a @click=\"typeFilter('profile')\" class=\"button success\">Profile</a>\n\t\t <a @click=\"typeFilter('selected')\" class=\"button success\">Selected</a>\n\t\t <span class=\"button success fileinput-button\">\n\t\t\t<i class=\"fa fa-cloud\"></i>\n\t\t\t<input id=\"fileupload\" type=\"file\" class=\"image button success\" name=\"image[]\" multiple=\"\">\n\t\t </span>\t\n\t\t <circle-progress-bar v-if=\"percentage\" :percentage=\"percentage\">\n\t\t \t\n\t\t </circle-progress-bar>\n\t</div>\n</form>\n\n<waterfall align=\"center\" :watch=\"filteredFiles\" :line-gap=\"200\" :min-line-gap=\"100\" :max-line-gap=\"220\" :single-max-width=\"300\">\n  <waterfall-slot v-for=\"file in filteredFiles\" width=\"160\" move-class=\"item-move\" transition=\"wf\" :height=\"file.ratio * 160\" :order=\"$index\">\n  \t<div class=\"thumb-img\">\n\t    <img v-bind:src=\"file.url\">\n\t</div>\n\t<div class=\"thumb-back\">\n\t\t<ul>\n\t\t\t<li v-for=\"tag in file.tags\">\n\t\t\t\t{{tag.name_en}}\n\t\t\t</li>\n\t\t</ul>\n\n\t\t<div class=\"thumb-check\">\n\t\t\t<a v-if=\"file.selected\" @click=\"toggle(file)\" class=\"success button\">\n\t\t\t\t<i class=\"fa fa-check\"></i>\n\t\t\t</a>\n\t\t\t<a v-else=\"\" @click=\"toggle(file)\" class=\"warning button\">\n\t\t\t\t<i class=\"fa fa-times\"></i>\n\t\t\t</a>\n\t\t</div>\n\t</div>\n  </waterfall-slot>\n</waterfall>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -27323,37 +27323,6 @@ if (module.hot) {(function () {  module.hot.accept()
 })()}
 },{"vue":51,"vue-hot-reload-api":48,"vueify/lib/insert-css":52}],64:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
-var __vueify_style__ = __vueify_insert__.insert("\n")
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
-exports.default = {
-	props: {
-		clubid: {}
-	},
-
-	created: function created() {}
-};
-if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n\t<div>\n\t\t<h3>Club Loyalty</h3>\n\t<div>\n</div></div>"
-if (module.hot) {(function () {  module.hot.accept()
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), true)
-  if (!hotAPI.compatible) return
-  module.hot.dispose(function () {
-    __vueify_insert__.cache["\n"] = false
-    document.head.removeChild(__vueify_style__)
-  })
-  if (!module.hot.data) {
-    hotAPI.createRecord("_v-e9badc0e", module.exports)
-  } else {
-    hotAPI.update("_v-e9badc0e", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
-  }
-})()}
-},{"vue":51,"vue-hot-reload-api":48,"vueify/lib/insert-css":52}],65:[function(require,module,exports){
-var __vueify_insert__ = require("vueify/lib/insert-css")
 var __vueify_style__ = __vueify_insert__.insert("/* line 12, stdin */\n.card {\n  background: #FFFFFF;\n  border-radius: 4px;\n  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);\n  overflow: hidden;\n  width: 300px;\n  height: 100%;\n  margin-bottom: 10px; }\n  /* line 21, stdin */\n  .card-header {\n    position: relative;\n    background: #303841;\n    height: 200px;\n    text-align: center;\n    overflow: hidden; }\n    /* line 28, stdin */\n    .card-header__avatar {\n      background: #303841;\n      background-position: center 30%;\n      background-size: 100%;\n      height: 100%;\n      width: 100%; }\n    /* line 36, stdin */\n    .card-header__follow {\n      position: absolute;\n      top: 20px;\n      right: 20px;\n      background: #FFFFFF;\n      border-radius: 2px;\n      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);\n      padding: 6px 10px;\n      color: #333333;\n      font-size: 10px;\n      font-weight: 600;\n      line-height: normal;\n      text-decoration: none;\n      text-transform: uppercase; }\n  /* line 53, stdin */\n  .card-content {\n    text-align: center;\n    padding: 30px 20px; }\n    /* line 57, stdin */\n    .card-content__username {\n      margin: 0 0 10px;\n      color: #333333;\n      font-size: 14px;\n      font-weight: 600;\n      text-transform: uppercase; }\n      /* line 64, stdin */\n      .card-content__username .badge {\n        display: inline-block;\n        background: #FCD000;\n        border-radius: 2px;\n        margin: 0 10px 0;\n        padding: 4px;\n        color: #333333;\n        font-size: 10px;\n        font-weight: 600;\n        vertical-align: middle; }\n    /* line 77, stdin */\n    .card-content__bio {\n      color: #666666;\n      font-size: 12px; }\n  /* line 83, stdin */\n  .card-footer {\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-orient: horizontal;\n    -webkit-box-direction: normal;\n        -ms-flex-direction: row;\n            flex-direction: row;\n    -ms-flex-wrap: nowrap;\n        flex-wrap: nowrap;\n    -webkit-box-pack: justify;\n        -ms-flex-pack: justify;\n            justify-content: space-between;\n    background: #F3F3F3;\n    padding: 15px 40px;\n    color: #333333;\n    font-size: 14px;\n    font-weight: 600;\n    text-align: center; }\n    /* line 95, stdin */\n    .card-footer .ft-label {\n      display: block;\n      margin: 4px 0 0;\n      color: #666666;\n      font-size: 10px;\n      font-weight: 400; }\n\n/* line 105, stdin */\n.code {\n  background: rgba(0, 0, 0, 0.1);\n  max-width: 600px;\n  border-radius: 2px;\n  margin: 40px auto 100px;\n  font-family: monospace;\n  overflow: hidden;\n  overflow-x: auto; }\n  /* line 114, stdin */\n  .code:before {\n    content: 'HTML Code';\n    display: block;\n    padding: 20px 20px 0;\n    color: #333333;\n    font-weight: 600; }\n")
 'use strict';
 
@@ -27402,6 +27371,37 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.createRecord("_v-d86a1568", module.exports)
   } else {
     hotAPI.update("_v-d86a1568", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+  }
+})()}
+},{"vue":51,"vue-hot-reload-api":48,"vueify/lib/insert-css":52}],65:[function(require,module,exports){
+var __vueify_insert__ = require("vueify/lib/insert-css")
+var __vueify_style__ = __vueify_insert__.insert("\n")
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+exports.default = {
+	props: {
+		clubid: {}
+	},
+
+	created: function created() {}
+};
+if (module.exports.__esModule) module.exports = module.exports.default
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n\t<div>\n\t\t<h3>Club Plan</h3>\n\t<div>\n</div></div>"
+if (module.hot) {(function () {  module.hot.accept()
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), true)
+  if (!hotAPI.compatible) return
+  module.hot.dispose(function () {
+    __vueify_insert__.cache["\n"] = false
+    document.head.removeChild(__vueify_style__)
+  })
+  if (!module.hot.data) {
+    hotAPI.createRecord("_v-5a330106", module.exports)
+  } else {
+    hotAPI.update("_v-5a330106", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
 },{"vue":51,"vue-hot-reload-api":48,"vueify/lib/insert-css":52}],66:[function(require,module,exports){
@@ -27689,9 +27689,9 @@ var _ClubTraining = require('.././menus/manager/ClubTraining.vue');
 
 var _ClubTraining2 = _interopRequireDefault(_ClubTraining);
 
-var _ClubLoyalty = require('.././menus/manager/ClubLoyalty.vue');
+var _ClubPlan = require('.././menus/manager/ClubPlan.vue');
 
-var _ClubLoyalty2 = _interopRequireDefault(_ClubLoyalty);
+var _ClubPlan2 = _interopRequireDefault(_ClubPlan);
 
 var _ClubTemplate = require('.././menus/manager/ClubTemplate.vue');
 
@@ -27752,7 +27752,7 @@ exports.default = {
 
 	components: {
 		ClubDashboard: _ClubDashboard2.default, ClubMembers: _ClubMembers2.default, ClubRequests: _ClubRequests2.default,
-		ClubTraining: _ClubTraining2.default, ClubLoyalty: _ClubLoyalty2.default, autocomplete: _autocomplete2.default,
+		ClubTraining: _ClubTraining2.default, ClubPlan: _ClubPlan2.default, autocomplete: _autocomplete2.default,
 		ClubTemplate: _ClubTemplate2.default
 	}
 };
@@ -27767,7 +27767,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-149d772a", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{".././components/autocomplete.vue":59,".././menus/manager/ClubDashboard.vue":63,".././menus/manager/ClubLoyalty.vue":64,".././menus/manager/ClubMembers.vue":65,".././menus/manager/ClubRequests.vue":66,".././menus/manager/ClubTemplate.vue":67,".././menus/manager/ClubTraining.vue":68,"vue":51,"vue-hot-reload-api":48}],71:[function(require,module,exports){
+},{".././components/autocomplete.vue":59,".././menus/manager/ClubDashboard.vue":63,".././menus/manager/ClubMembers.vue":64,".././menus/manager/ClubPlan.vue":65,".././menus/manager/ClubRequests.vue":66,".././menus/manager/ClubTemplate.vue":67,".././menus/manager/ClubTraining.vue":68,"vue":51,"vue-hot-reload-api":48}],71:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {

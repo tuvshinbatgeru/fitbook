@@ -1,32 +1,68 @@
-@extends('layouts.master-layout', ['currentView' => 'verify-view'])
+@extends('layouts.app')
+
 @section('content')
-  <div class="row">
-    <form method="POST" action="/auth/login" style="margin-top:100px;">
-        {{ csrf_field() }}
-        <label>Name
-          <input type="text" name="username" placeholder="Login user name" autocomplete="off">  
-        </label>
-        <label>Password
-          <input type="password" name="password" placeholder="Type password" autocomplete="off" />
-        </label>
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+            <div class="panel panel-default">
+                <div class="panel-heading">Login</div>
+                <div class="panel-body">
+                    <form class="form-horizontal" role="form" method="POST" action="{{ url('/login') }}">
+                        {{ csrf_field() }}
 
-        <p>
-              <input type="checkbox" id="filled-in-box"/>
-              <label for="filled-in-box">Remember me</label>
-          </p>
-        <div class="login-item"><a class="button btn-fb btn-1 btn-success">Login as</a></div>
-        <div class="login-item"><a class="dropdown button arrow-only btn-fb btn-2 btn-success" type="button" data-toggle="example-dropdown" data-options="align:down">
-            <span class="show-for-sr">Show menu</span>
-        </a></div>
+                        <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
+                            <label for="email" class="col-md-4 control-label">E-Mail Address</label>
 
-        <ul id="example-dropdown" class="f-dropdown dropdown-pane dropdown-menu" data-dropdown>
-          <li><a><i class="fa fa-facebook-official"></i>  Facebook</a></li>
-          <li><a><i class="fa fa-google-plus"></i>  Google</a></li>
-        </ul>
-        <div class="login-item"><a class="button btn-fb">Forgot Password</a></div>
-        <a href="/login/facebook" class="button btn-fb">login as facebook</a>
-        <a href="/login/google" class="button btn-fb">login as gmail</a>
-        <button class="button">Login</button>
-      </form>
-  </div>
-@stop
+                            <div class="col-md-6">
+                                <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" autofocus>
+
+                                @if ($errors->has('email'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('email') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
+                            <label for="password" class="col-md-4 control-label">Password</label>
+
+                            <div class="col-md-6">
+                                <input id="password" type="password" class="form-control" name="password">
+
+                                @if ($errors->has('password'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('password') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-6 col-md-offset-4">
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" name="remember"> Remember Me
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-8 col-md-offset-4">
+                                <button type="submit" class="btn btn-primary">
+                                    Login
+                                </button>
+
+                                <a class="btn btn-link" href="{{ url('/password/reset') }}">
+                                    Forgot Your Password?
+                                </a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@endsection

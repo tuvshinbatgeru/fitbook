@@ -20,7 +20,7 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
         'socialite_type' => 1,
         'gender' => 'male',
         'is_active' => 'Y',
-        'password' => Illuminate\Support\Facades\Hash::make('123'),
+        'password' => bcrypt('123'),
     ];
 });
 

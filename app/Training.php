@@ -11,7 +11,7 @@ class Training extends Model
 	protected $table = 'training';
 
 	protected $fillable = [
-        'club_id', 'name', 'description','price', 'priceless', 'is_active', 'pinned'
+        'club_id', 'name', 'description','is_active'
     ];
 
     public function photos()
