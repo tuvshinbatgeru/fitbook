@@ -54,7 +54,7 @@ Route::group(['middleware' => ['web']], function () {
 		Route::get('teacher', 'ClubController@getTeachers');
 
 		Route::resource('training', 'TrainingController');
-		Route::resource('loyalty', 'LoyaltyController');
+		Route::resource('Plan', 'PlanController');
 		Route::resource('widgets', 'TemplateController');
 	});
 
