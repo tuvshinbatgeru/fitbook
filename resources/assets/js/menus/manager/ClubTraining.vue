@@ -63,7 +63,6 @@
 			getTrainings : function () {
 				this.$http.get(this.$env.get('APP_URI') + 'api/club/' + this.clubid + '/training').then(res => {
 				  this.training = res.data.result;
-				  debugger;
 				}).catch(err => {
 				});
 			},

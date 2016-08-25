@@ -22,8 +22,6 @@
     	</div>
     </div>
    <!-- FOR WIDGET ANIMATION -->
-   <script type="text/javascript" src="{{asset('js/jquery.min.js')}}"></script>
-   <script type="text/javascript" src="{{asset('js/foundation.min.js')}}"></script>
-   <script type="text/javascript" src="{{asset('js/app.js')}}"></script>
+   <script src="{{ elixir('js/app.js') }}"></script>
 </body>
 </html>

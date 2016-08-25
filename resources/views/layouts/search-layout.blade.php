@@ -20,6 +20,6 @@
     <script type="text/javascript" src="{{asset('js/typeahead.bundle.min.js')}}"></script>
     <script src="https://maps.googleapis.com/maps/api/js"></script>
     <script type="text/javascript" src="{{asset('js/tooltip.js')}}"></script>
-    <script type="text/javascript" src="{{asset('js/app.js')}}"></script>
+    <script src="{{ elixir('js/app.js') }}"></script>
 </body>
 </html>

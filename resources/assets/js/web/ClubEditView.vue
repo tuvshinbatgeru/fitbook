@@ -11,7 +11,7 @@
 
 		props: { 
 			clubid : {},
-			selectedMenu : { default : 'club-training'},
+			selectedMenu : { default : 'club-plan'},
 		},
 
 		data () {

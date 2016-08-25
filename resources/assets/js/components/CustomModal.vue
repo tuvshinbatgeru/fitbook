@@ -49,8 +49,10 @@
 
 <script>
 	import AddTraining from '../context/AddTraining.vue'; 
+	import AddPlan from '../context/AddPlan.vue'; 
 	import FileManager from '../context/FileManager.vue'; 
 	import teachers from '../context/teachers.vue'; 
+	import trainings from '../context/trainings.vue'; 
 
 	export default {
 		props: {
@@ -109,7 +111,7 @@
 		},
 
 		components : {
-			AddTraining, FileManager, teachers
+			AddTraining, AddPlan, FileManager, teachers, trainings
 		}
 	}
 </script>

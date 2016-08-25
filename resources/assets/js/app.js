@@ -36,7 +36,6 @@ Vue.debug = true;
 Vue.component('example', require('./components/Example.vue'));
 Vue.component('CustomModal', CustomModal);
 Vue.component('CustomToast', CustomToast);
-Vue.use(require('vue-resource'));
 Vue.use(require('vue-env'), _env);
 Vue.use(Tools);
 

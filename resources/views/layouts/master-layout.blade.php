@@ -18,13 +18,6 @@
     	</component>
     @endif
 
-    <script src="{{asset('js/jquery.min.js')}}"></script>
-    <script src="{{asset('js/jquery.steps.min.js')}}"></script>
-    <script src="{{asset('js/foundation.min.js')}}"></script>
-    <script src="{{asset('js/velocity.min.js')}}"></script>
-    <script src="{{asset('js/buttons.js')}}"></script>
-    <script src="{{asset('js/vendor/jquery.ui.widget.js')}}"></script>
-   <script src="{{asset('js/jquery.fileupload.js')}}"></script>
-    <script src="{{asset('js/app.js')}}"></script>
+    <script src="{{ elixir('js/app.js') }}"></script>
 </body>
 </html>

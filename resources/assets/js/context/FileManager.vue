@@ -145,7 +145,6 @@
 				this.$http.get(this.$env.get('APP_URI') + 'api/user/files?selected=' + maps).then((response) => 
 				{
 
-					debugger;
 					this.files = response.data.files;
 					this.actualSize = response.data.actualSize;
 					this.maxSize = response.data.maxSize;

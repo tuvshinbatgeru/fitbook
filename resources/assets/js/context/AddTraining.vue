@@ -25,9 +25,10 @@
 	<form method="POST" accept="">
 		<ul class="tabs" data-tabs id="example-tabs">
 		  <li class="tabs-title is-active"><a href="#main" aria-selected="true">Info</a></li>
-		  <li class="tabs-title"><a href="#photos">Photos</a></li>
+		  <li class="tabs-title "><a href="#photos">Photos</a></li>
 		  <li class="tabs-title"><a href="#teacher">Teacher</a></li>
 	    </ul>
+
 	  <div class="tabs-content" data-tabs-content="example-tabs">
 		  <div class="tabs-panel is-active" id="main">
 		    <div class="row">
@@ -111,8 +112,6 @@
 			return {
 				name : '',
 				description : '',
-				priceless : false,
-				price : 0,
 				teachers : [],
 				pictures : [],
 				services : [],
