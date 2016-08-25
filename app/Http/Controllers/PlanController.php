@@ -6,16 +6,25 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 
-class LoyaltyController extends Controller
+class PlanController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Club $club)
     {
-        //
+        $trainings = $club->trainings;
+
+        foreach ($trainings as $training) {
+            $training->photos;
+            $training->teachers;
+        }
+
+        return Response::json([
+            'result' => $trainings,
+        ], 200);
     }
 
     /**
