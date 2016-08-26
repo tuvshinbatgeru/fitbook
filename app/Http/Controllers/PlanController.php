@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-
+use App\Club;
 use App\Http\Requests;
+use Illuminate\Http\Request;
+use Response;
+use Illuminate\Support\Facades\Log;
 
 class PlanController extends Controller
 {
@@ -15,15 +17,15 @@ class PlanController extends Controller
      */
     public function index(Club $club)
     {
-        $trainings = $club->trainings;
+        $plans = $club->plans;
 
-        foreach ($trainings as $training) {
+        /*foreach ($plans as $training) {
             $training->photos;
             $training->teachers;
-        }
+        }*/
 
         return Response::json([
-            'result' => $trainings,
+            'result' => $plans,
         ], 200);
     }
 

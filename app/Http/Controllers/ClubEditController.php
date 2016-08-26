@@ -51,6 +51,7 @@ class ClubEditController extends Controller
     public function requestResponse(Request $request, Club $club, User $user)
     {
         $user->removeClubRequest($club);
+
         $requestType = $request->requestType;
         $roleType = $request->roleType;
 
