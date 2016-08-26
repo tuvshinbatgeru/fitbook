@@ -18,6 +18,12 @@ use Illuminate\Support\Facades\Storage;
 
 Route::group(['middleware' => ['web']], function () {
 
+
+	Route::get('/userout', function() {
+		event(new UserOutTraining(User::find(1)));
+		return "running";
+	});
+
 	Route::get('/', function () {
     	return view('index');
 	});
@@ -54,7 +60,7 @@ Route::group(['middleware' => ['web']], function () {
 		Route::get('teacher', 'ClubController@getTeachers');
 
 		Route::resource('training', 'TrainingController');
-		Route::resource('Plan', 'PlanController');
+		Route::resource('plan', 'PlanController');
 		Route::resource('widgets', 'TemplateController');
 	});
 
@@ -111,6 +117,3 @@ Route::group(['middleware' => ['web']], function () {
 	    'as'   => 'auth.getSocialAuthCallback'
 	]);
 });
-Auth::routes();
-
-Route::get('/home', 'HomeController@index');
