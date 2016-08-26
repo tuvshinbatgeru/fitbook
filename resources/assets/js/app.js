@@ -39,6 +39,7 @@ Vue.component('CustomToast', CustomToast);
 Vue.use(require('vue-env'), _env);
 Vue.use(Tools);
 
+Vue.http.headers.common['X-CSRF-TOKEN'] = document.querySelector('#_token').getAttribute('value');
 
 const app = new Vue({
 	el : 'body',

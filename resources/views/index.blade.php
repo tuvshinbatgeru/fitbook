@@ -19,15 +19,6 @@
 		</div>
 	</div>
 	 
-	<div class="row">
-		<div class="medium-4 columns">
-			<img src="http://placehold.it/450x183&text=LOGO" alt="company logo">
-		</div>
-		<div class="medium-8 columns">
-			<img src="http://placehold.it/900x175&text=Responsive Ads - ZURB Playground/333" alt="advertisement for deep fried Twinkies">
-		</div>
-	</div>
-	 
 	<div class="title-bar" data-responsive-toggle="main-menu" data-hide-for="medium">
 		<button class="menu-icon" type="button" data-toggle>
 		</button>
@@ -37,16 +28,6 @@
 
 
 <br>
-<div class="row">
-<div class="medium-8 columns">
-<p><img src="http://placehold.it/900x450&text=Promoted Article" alt="main article image"></p>
-</div>
-<div class="medium-4 columns">
-<p><img src="http://placehold.it/400x200&text=Other cool article" alt="article promo image" alt="advertisement for deep fried Twinkies"></p>
-<p><img src="http://placehold.it/400x200&text=Other cool article" alt="article promo image"></p>
-</div>
-</div>
-<hr>
 <div class="row column">
 <h4 style="margin: 0;" class="text-center">BREAKING NEWS</h4>
 </div>
@@ -68,10 +49,6 @@
 <div class="row">
 <div class="large-8 columns" style="border-right: 1px solid #E3E5E8;">
 <article>
-<div class="row">
-<div class="large-6 columns">
-<p><img src="http://placehold.it/600x370&text=Look at me!" alt="image for article" alt="article preview image"></p>
-</div>
 <div class="large-6 columns">
 <h5><a href="#">'Death Star' Vaporizes Its Own Planet</a></h5>
 <p>

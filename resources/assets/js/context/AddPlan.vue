@@ -92,12 +92,12 @@
 			<div class="row">
 				<div class="small-12 medium-6 column">
 					<label>Trainerless
-						<input type="checkbox" name="trainerless">
+						<input type="checkbox" v-model="trainerless" name="trainerless">
 					</label>
 				</div>
 				<div class="small-12 medium-6 column">
 					<label>Trainer Count
-						<input type="number" name="trainercount">
+						<input type="number" :disabled="!trainerless" name="trainercount">
 					</label>
 				</div>
 			</div>
@@ -126,6 +126,7 @@
 			return {
 				name : '',
 				description : '',
+				trainerless : false,
 				price : 0,
 				teachers : [],
 				pictures : [],
