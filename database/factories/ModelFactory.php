@@ -29,10 +29,6 @@ $factory->define(App\Club::class, function (Faker\Generator $faker) {
         'club_id' => $faker->name,
         'short_name' => $faker->name,
         'full_name' => $faker->name,
-        'full_name' => $faker->name,
         'address' => $faker->address,
-        'phone' => $faker->cellphone,
-        'lat' => $faker->latitude,
-        'lng' => $faker->longitute,
     ];
 });
