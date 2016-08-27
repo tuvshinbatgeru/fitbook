@@ -15,10 +15,6 @@ use Illuminate\Support\Facades\Storage;
 | and give it the controller to call when that URI is requested.
 |
 */
-
-Route::group(['middleware' => ['web']], function () {
-
-
 	Route::get('/userout', function() {
 		event(new UserOutTraining(User::find(1)));
 		return "running";
@@ -116,4 +112,3 @@ Route::group(['middleware' => ['web']], function () {
 	    'uses' => 'Auth\LoginController@getSocialAuthCallback',
 	    'as'   => 'auth.getSocialAuthCallback'
 	]);
-});
