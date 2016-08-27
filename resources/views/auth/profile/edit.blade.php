@@ -59,6 +59,19 @@
 			<button class="button success" type="submit">Update</button>
 		</div>
 	</div>
+
+	<div class="row small-up-5">
+		
+    		@foreach ($activities as $activity)
+    		<div class="column">
+    			<h3>{{$activity->club_id}}</h3>
+    			{{$activity->pivot->duration}}
+    		</div>
+    		@endforeach
+		
+
+		{{ $activities->links() }}
+	</div>
 </form>
 
 @stop

@@ -32,12 +32,13 @@
 				if(photo.length > 0) {
 					this.$http.post(this.$env.get('APP_URI') + 'api/user/avatar/' + photo[0].id).then(res => {
 						this.user.avatar_url = res.data.avatar;	
+						this.showFileManager = false;
 					}).catch(err => {
-
+						this.showFileManager = false;
 					});
 				}
 				
-				this.showFileManager = false;
+				
 			}
 		}	
 	}
