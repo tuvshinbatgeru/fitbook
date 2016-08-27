@@ -28,7 +28,8 @@ class UserController extends Controller
         if(Auth::user()->username != $username) abort(404);
 
         $user = User::findByUsername($username);
-        return view('auth.profile.edit')->with(compact('user'));
+        $activities = $user->activities()->paginate(15);
+        return view('auth.profile.edit')->with(compact('user', 'activities'));
     }
 
     public function storeAvatar(Photo $photo)
