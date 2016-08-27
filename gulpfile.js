@@ -1,5 +1,6 @@
 var elixir = require('laravel-elixir');
 require('laravel-elixir-vueify');
+
 /*
  |--------------------------------------------------------------------------
  | Elixir Asset Management
@@ -10,15 +11,11 @@ require('laravel-elixir-vueify');
  | file for our application, as well as publishing vendor resources.
  |
  */
-var paths = {
-    'foundation' : './bower_components/foundation-sites/scss',
-    'motion' : './bower_components/motion-ui/src',
-    'materialize' : './bower_components/materialize'
-}
 
 elixir(function(mix) {
+
 	mix.sass(['app.scss'], 'public/css/app.css', {
-		includePaths: 
+		includePaths : 
 		[
 			'./bower_components/foundation-sites/scss',
 			'./bower_components/motion-ui/src',
@@ -26,9 +23,10 @@ elixir(function(mix) {
 		]
 	});
 
-	mix.version("css/app.css");
+	
 	mix.sass(['style.scss'],'public/css/style.css');
-	mix.browserify('app.js');
+	mix.browserify('app.js');	
+	mix.version(['css/app.css', 'js/app.js']);
 	/*mix.sass(['widget/hw-default.scss'],'public/css/widget/hw-default.css');
 	mix.sass(['widget/cw-default.scss'],'public/css/widget/cw-default.css');*/
 	
