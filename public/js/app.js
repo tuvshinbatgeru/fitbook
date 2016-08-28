@@ -41652,6 +41652,929 @@ function format (id) {
 }
 
 },{}],51:[function(require,module,exports){
+(function (process){
+/*!
+ * vue-i18n v4.3.1
+ * (c) 2016 kazuya kawaguchi
+ * Released under the MIT License.
+ */
+'use strict';
+
+var babelHelpers = {};
+babelHelpers.typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {
+  return typeof obj;
+} : function (obj) {
+  return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj;
+};
+babelHelpers;
+
+/**
+ * warn
+ *
+ * @param {String} msg
+ * @param {Error} [err]
+ *
+ */
+
+function warn(msg, err) {
+  if (window.console) {
+    console.warn('[vue-i18n] ' + msg);
+    if (err) {
+      console.warn(err.stack);
+    }
+  }
+}
+
+var locales = Object.create(null); // locales store
+
+function Asset (Vue) {
+  /**
+   * Register or retrieve a global locale definition.
+   *
+   * @param {String} id
+   * @param {Object | Function | Promise} definition
+   * @param {Function} cb
+   */
+
+  Vue.locale = function (id, definition, cb) {
+    if (definition === undefined) {
+      // gettter
+      return locales[id];
+    } else {
+      // setter
+      if (definition === null) {
+        locales[id] = undefined;
+        delete locales[id];
+      } else {
+        setLocale(id, definition, function (locale) {
+          if (locale) {
+            locales[id] = locale;
+            cb && cb();
+          } else {
+            warn('failed set `' + id + '` locale');
+          }
+        });
+      }
+    }
+  };
+}
+
+function setLocale(id, definition, cb) {
+  var _this = this;
+
+  if ((typeof definition === 'undefined' ? 'undefined' : babelHelpers.typeof(definition)) === 'object') {
+    // sync
+    cb(definition);
+  } else {
+    (function () {
+      var future = definition.call(_this);
+      if (typeof future === 'function') {
+        if (future.resolved) {
+          // cached
+          cb(future.resolved);
+        } else if (future.requested) {
+          // pool callbacks
+          future.pendingCallbacks.push(cb);
+        } else {
+          (function () {
+            future.requested = true;
+            var cbs = future.pendingCallbacks = [cb];
+            future(function (locale) {
+              // resolve
+              future.resolved = locale;
+              for (var i = 0, l = cbs.length; i < l; i++) {
+                cbs[i](locale);
+              }
+            }, function () {
+              // reject
+              cb();
+            });
+          })();
+        }
+      } else if (isPromise(future)) {
+        // promise
+        future.then(function (locale) {
+          // resolve
+          cb(locale);
+        }, function () {
+          // reject
+          cb();
+        }).catch(function (err) {
+          console.error(err);
+          cb();
+        });
+      }
+    })();
+  }
+}
+
+/**
+ * Forgiving check for a promise
+ *
+ * @param {Object} p
+ * @return {Boolean}
+ */
+
+function isPromise(p) {
+  return p && typeof p.then === 'function';
+}
+
+function Override (Vue, langVM, version) {
+  function update(vm) {
+    if (version > 1) {
+      vm.$forceUpdate();
+    } else {
+      var i = vm._watchers.length;
+      while (i--) {
+        vm._watchers[i].update(true); // shallow updates
+      }
+    }
+  }
+
+  // override _init
+  var init = Vue.prototype._init;
+  Vue.prototype._init = function (options) {
+    var _this = this;
+
+    init.call(this, options);
+
+    if (!this.$parent) {
+      // root
+      this.$lang = langVM;
+      this._langUnwatch = this.$lang.$watch('lang', function (a, b) {
+        update(_this);
+      });
+    }
+  };
+
+  // override _destroy
+  var destroy = Vue.prototype._destroy;
+  Vue.prototype._destroy = function () {
+    if (!this.$parent && this._langUnwatch) {
+      this._langUnwatch();
+      this._langUnwatch = null;
+      this.$lang = null;
+    }
+
+    destroy.apply(this, arguments);
+  };
+}
+
+/**
+ * Observer
+ */
+
+var Watcher = void 0;
+/**
+ * getWatcher
+ *
+ * @param {Vue} vm
+ * @return {Watcher}
+ */
+
+function getWatcher(vm) {
+  if (!Watcher) {
+    var unwatch = vm.$watch('__watcher__', function (a) {});
+    Watcher = vm._watchers[0].constructor;
+    unwatch();
+  }
+  return Watcher;
+}
+
+var Dep = void 0;
+/**
+ * getDep
+ *
+ * @param {Vue} vm
+ * @return {Dep}
+ */
+
+function getDep(vm) {
+  if (!Dep) {
+    Dep = vm._data.__ob__.dep.constructor;
+  }
+  return Dep;
+}
+
+var fallback = void 0; // fallback lang
+
+function Config (Vue, langVM, lang) {
+  var bind = Vue.util.bind;
+
+  var Watcher = getWatcher(langVM);
+  var Dep = getDep(langVM);
+
+  function makeComputedGetter(getter, owner) {
+    var watcher = new Watcher(owner, getter, null, {
+      lazy: true
+    });
+
+    return function computedGetter() {
+      watcher.dirty && watcher.evaluate();
+      Dep.target && watcher.depend();
+      return watcher.value;
+    };
+  }
+
+  // define Vue.config.lang configration
+  Object.defineProperty(Vue.config, 'lang', {
+    enumerable: true,
+    configurable: true,
+    get: makeComputedGetter(function () {
+      return langVM.lang;
+    }, langVM),
+    set: bind(function (val) {
+      langVM.lang = val;
+    }, langVM)
+  });
+
+  // define Vue.config.fallbackLang configration
+  fallback = lang;
+  Object.defineProperty(Vue.config, 'fallbackLang', {
+    enumerable: true,
+    configurable: true,
+    get: function get() {
+      return fallback;
+    },
+    set: function set(val) {
+      fallback = val;
+    }
+  });
+}
+
+/**
+ *  String format template
+ *  - Inspired:  
+ *    https://github.com/Matt-Esch/string-template/index.js
+ */
+
+var RE_NARGS = /(%|)\{([0-9a-zA-Z_]+)\}/g;
+
+function Format (Vue) {
+  var hasOwn = Vue.util.hasOwn;
+
+  /**
+   * template
+   *  
+   * @param {String} string
+   * @param {Array} ...args
+   * @return {String}
+   */
+
+  function template(string) {
+    for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+      args[_key - 1] = arguments[_key];
+    }
+
+    if (args.length === 1 && babelHelpers.typeof(args[0]) === 'object') {
+      args = args[0];
+    }
+
+    if (!args || !args.hasOwnProperty) {
+      args = {};
+    }
+
+    return string.replace(RE_NARGS, function (match, prefix, i, index) {
+      var result = void 0;
+
+      if (string[index - 1] === '{' && string[index + match.length] === '}') {
+        return i;
+      } else {
+        result = hasOwn(args, i) ? args[i] : null;
+        if (result === null || result === undefined) {
+          return '';
+        }
+
+        return result;
+      }
+    });
+  }
+
+  return template;
+}
+
+/**
+ *  Path paerser
+ *  - Inspired:  
+ *    Vue.js Path parser
+ */
+
+// cache
+var pathCache = Object.create(null);
+
+// actions
+var APPEND = 0;
+var PUSH = 1;
+var INC_SUB_PATH_DEPTH = 2;
+var PUSH_SUB_PATH = 3;
+
+// states
+var BEFORE_PATH = 0;
+var IN_PATH = 1;
+var BEFORE_IDENT = 2;
+var IN_IDENT = 3;
+var IN_SUB_PATH = 4;
+var IN_SINGLE_QUOTE = 5;
+var IN_DOUBLE_QUOTE = 6;
+var AFTER_PATH = 7;
+var ERROR = 8;
+
+var pathStateMachine = [];
+
+pathStateMachine[BEFORE_PATH] = {
+  'ws': [BEFORE_PATH],
+  'ident': [IN_IDENT, APPEND],
+  '[': [IN_SUB_PATH],
+  'eof': [AFTER_PATH]
+};
+
+pathStateMachine[IN_PATH] = {
+  'ws': [IN_PATH],
+  '.': [BEFORE_IDENT],
+  '[': [IN_SUB_PATH],
+  'eof': [AFTER_PATH]
+};
+
+pathStateMachine[BEFORE_IDENT] = {
+  'ws': [BEFORE_IDENT],
+  'ident': [IN_IDENT, APPEND]
+};
+
+pathStateMachine[IN_IDENT] = {
+  'ident': [IN_IDENT, APPEND],
+  '0': [IN_IDENT, APPEND],
+  'number': [IN_IDENT, APPEND],
+  'ws': [IN_PATH, PUSH],
+  '.': [BEFORE_IDENT, PUSH],
+  '[': [IN_SUB_PATH, PUSH],
+  'eof': [AFTER_PATH, PUSH]
+};
+
+pathStateMachine[IN_SUB_PATH] = {
+  "'": [IN_SINGLE_QUOTE, APPEND],
+  '"': [IN_DOUBLE_QUOTE, APPEND],
+  '[': [IN_SUB_PATH, INC_SUB_PATH_DEPTH],
+  ']': [IN_PATH, PUSH_SUB_PATH],
+  'eof': ERROR,
+  'else': [IN_SUB_PATH, APPEND]
+};
+
+pathStateMachine[IN_SINGLE_QUOTE] = {
+  "'": [IN_SUB_PATH, APPEND],
+  'eof': ERROR,
+  'else': [IN_SINGLE_QUOTE, APPEND]
+};
+
+pathStateMachine[IN_DOUBLE_QUOTE] = {
+  '"': [IN_SUB_PATH, APPEND],
+  'eof': ERROR,
+  'else': [IN_DOUBLE_QUOTE, APPEND]
+};
+
+/**
+ * Check if an expression is a literal value.
+ *
+ * @param {String} exp
+ * @return {Boolean}
+ */
+
+var literalValueRE = /^\s?(true|false|-?[\d\.]+|'[^']*'|"[^"]*")\s?$/;
+function isLiteral(exp) {
+  return literalValueRE.test(exp);
+}
+
+/**
+ * Strip quotes from a string
+ *
+ * @param {String} str
+ * @return {String | false}
+ */
+
+function stripQuotes(str) {
+  var a = str.charCodeAt(0);
+  var b = str.charCodeAt(str.length - 1);
+  return a === b && (a === 0x22 || a === 0x27) ? str.slice(1, -1) : str;
+}
+
+/**
+ * Determine the type of a character in a keypath.
+ *
+ * @param {Char} ch
+ * @return {String} type
+ */
+
+function getPathCharType(ch) {
+  if (ch === undefined) {
+    return 'eof';
+  }
+
+  var code = ch.charCodeAt(0);
+
+  switch (code) {
+    case 0x5B: // [
+    case 0x5D: // ]
+    case 0x2E: // .
+    case 0x22: // "
+    case 0x27: // '
+    case 0x30:
+      // 0
+      return ch;
+
+    case 0x5F: // _
+    case 0x24:
+      // $
+      return 'ident';
+
+    case 0x20: // Space
+    case 0x09: // Tab
+    case 0x0A: // Newline
+    case 0x0D: // Return
+    case 0xA0: // No-break space
+    case 0xFEFF: // Byte Order Mark
+    case 0x2028: // Line Separator
+    case 0x2029:
+      // Paragraph Separator
+      return 'ws';
+  }
+
+  // a-z, A-Z
+  if (code >= 0x61 && code <= 0x7A || code >= 0x41 && code <= 0x5A) {
+    return 'ident';
+  }
+
+  // 1-9
+  if (code >= 0x31 && code <= 0x39) {
+    return 'number';
+  }
+
+  return 'else';
+}
+
+/**
+ * Format a subPath, return its plain form if it is
+ * a literal string or number. Otherwise prepend the
+ * dynamic indicator (*).
+ *
+ * @param {String} path
+ * @return {String}
+ */
+
+function formatSubPath(path) {
+  var trimmed = path.trim();
+  // invalid leading 0
+  if (path.charAt(0) === '0' && isNaN(path)) {
+    return false;
+  }
+
+  return isLiteral(trimmed) ? stripQuotes(trimmed) : '*' + trimmed;
+}
+
+/**
+ * Parse a string path into an array of segments
+ *
+ * @param {String} path
+ * @return {Array|undefined}
+ */
+
+function parse(path) {
+  var keys = [];
+  var index = -1;
+  var mode = BEFORE_PATH;
+  var subPathDepth = 0;
+  var c = void 0,
+      newChar = void 0,
+      key = void 0,
+      type = void 0,
+      transition = void 0,
+      action = void 0,
+      typeMap = void 0;
+
+  var actions = [];
+
+  actions[PUSH] = function () {
+    if (key !== undefined) {
+      keys.push(key);
+      key = undefined;
+    }
+  };
+
+  actions[APPEND] = function () {
+    if (key === undefined) {
+      key = newChar;
+    } else {
+      key += newChar;
+    }
+  };
+
+  actions[INC_SUB_PATH_DEPTH] = function () {
+    actions[APPEND]();
+    subPathDepth++;
+  };
+
+  actions[PUSH_SUB_PATH] = function () {
+    if (subPathDepth > 0) {
+      subPathDepth--;
+      mode = IN_SUB_PATH;
+      actions[APPEND]();
+    } else {
+      subPathDepth = 0;
+      key = formatSubPath(key);
+      if (key === false) {
+        return false;
+      } else {
+        actions[PUSH]();
+      }
+    }
+  };
+
+  function maybeUnescapeQuote() {
+    var nextChar = path[index + 1];
+    if (mode === IN_SINGLE_QUOTE && nextChar === "'" || mode === IN_DOUBLE_QUOTE && nextChar === '"') {
+      index++;
+      newChar = '\\' + nextChar;
+      actions[APPEND]();
+      return true;
+    }
+  }
+
+  while (mode != null) {
+    index++;
+    c = path[index];
+
+    if (c === '\\' && maybeUnescapeQuote()) {
+      continue;
+    }
+
+    type = getPathCharType(c);
+    typeMap = pathStateMachine[mode];
+    transition = typeMap[type] || typeMap['else'] || ERROR;
+
+    if (transition === ERROR) {
+      return; // parse error
+    }
+
+    mode = transition[0];
+    action = actions[transition[1]];
+    if (action) {
+      newChar = transition[2];
+      newChar = newChar === undefined ? c : newChar;
+      if (action() === false) {
+        return;
+      }
+    }
+
+    if (mode === AFTER_PATH) {
+      keys.raw = path;
+      return keys;
+    }
+  }
+}
+
+/**
+ * External parse that check for a cache hit first
+ *
+ * @param {String} path
+ * @return {Array|undefined}
+ */
+
+function parsePath(path) {
+  var hit = pathCache[path];
+  if (!hit) {
+    hit = parse(path);
+    if (hit) {
+      pathCache[path] = hit;
+    }
+  }
+  return hit;
+}
+
+function Path (Vue) {
+  var _Vue$util = Vue.util;
+  var isObject = _Vue$util.isObject;
+  var isPlainObject = _Vue$util.isPlainObject;
+  var hasOwn = _Vue$util.hasOwn;
+
+
+  function empty(target) {
+    if (target === null || target === undefined) {
+      return true;
+    }
+
+    if (Array.isArray(target)) {
+      if (target.length > 0) {
+        return false;
+      }
+      if (target.length === 0) {
+        return true;
+      }
+    } else if (isPlainObject(target)) {
+      /* eslint-disable prefer-const */
+      for (var key in target) {
+        if (hasOwn(target, key)) {
+          return false;
+        }
+      }
+      /* eslint-enable prefer-const */
+    }
+
+    return true;
+  }
+
+  /**
+   * Get value from path string
+   *
+   * @param {Object} obj
+   * @param {String} path
+   * @return value
+   */
+
+  function getValue(obj, path) {
+    if (!isObject(obj)) {
+      return null;
+    }
+
+    var paths = parsePath(path);
+    if (empty(paths)) {
+      return null;
+    }
+
+    var length = paths.length;
+    var ret = null;
+    var last = obj;
+    var i = 0;
+    while (i < length) {
+      var value = last[paths[i]];
+      if (value === undefined) {
+        last = null;
+        break;
+      }
+      last = value;
+      i++;
+    }
+
+    ret = last;
+    return ret;
+  }
+
+  return getValue;
+}
+
+/**
+ * extend
+ * 
+ * @param {Vue} Vue
+ * @return {Vue}
+ */
+
+function Extend (Vue) {
+  var _Vue$util = Vue.util;
+  var isObject = _Vue$util.isObject;
+  var bind = _Vue$util.bind;
+
+  var format = Format(Vue);
+  var getValue = Path(Vue);
+
+  function parseArgs() {
+    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    var lang = Vue.config.lang;
+    var fallback = Vue.config.fallbackLang;
+
+    if (args.length === 1) {
+      if (isObject(args[0]) || Array.isArray(args[0])) {
+        args = args[0];
+      } else if (typeof args[0] === 'string') {
+        lang = args[0];
+      }
+    } else if (args.length === 2) {
+      if (typeof args[0] === 'string') {
+        lang = args[0];
+      }
+      if (isObject(args[1]) || Array.isArray(args[1])) {
+        args = args[1];
+      }
+    }
+
+    return { lang: lang, fallback: fallback, params: args };
+  }
+
+  function interpolate(locale, key, args) {
+    if (!locale) {
+      return null;
+    }
+
+    var val = getValue(locale, key) || locale[key];
+    if (!val) {
+      return null;
+    }
+
+    return args ? format(val, args) : val;
+  }
+
+  function translate(getter, lang, fallback, key, params) {
+    var res = null;
+    res = interpolate(getter(lang), key, params);
+    if (res) {
+      return res;
+    }
+
+    res = interpolate(getter(fallback), key, params);
+    if (res) {
+      if (process.env.NODE_ENV !== 'production') {
+        warn('Fall back to translate the keypath "' + key + '" with "' + fallback + '" language.');
+      }
+      return res;
+    } else {
+      return null;
+    }
+  }
+
+  function warnDefault(key) {
+    if (process.env.NODE_ENV !== 'production') {
+      warn('Cannot translate the value of keypath "' + key + '". ' + 'Use the value of keypath as default');
+    }
+    return key;
+  }
+
+  function getAssetLocale(lang) {
+    return Vue.locale(lang);
+  }
+
+  function getComponentLocale(lang) {
+    return this.$options.locales[lang];
+  }
+
+  function fetchChoice(locale, choice) {
+    if (!locale && typeof locale !== 'string') {
+      return null;
+    }
+    var choices = locale.split('|');
+    choice = choice - 1;
+    if (!choices[choice]) {
+      return locale;
+    }
+    return choices[choice].trim();
+  }
+
+  /**
+   * Vue.t
+   *
+   * @param {String} key
+   * @param {Array} ...args
+   * @return {String}
+   */
+
+  Vue.t = function (key) {
+    for (var _len2 = arguments.length, args = Array(_len2 > 1 ? _len2 - 1 : 0), _key2 = 1; _key2 < _len2; _key2++) {
+      args[_key2 - 1] = arguments[_key2];
+    }
+
+    if (!key) {
+      return '';
+    }
+
+    var _parseArgs = parseArgs.apply(undefined, args);
+
+    var lang = _parseArgs.lang;
+    var fallback = _parseArgs.fallback;
+    var params = _parseArgs.params;
+
+    return translate(getAssetLocale, lang, fallback, key, params) || warnDefault(key);
+  };
+
+  /**
+   * Vue.tc
+   *
+   * @param {String} key
+   * @param {number|undefined} choice
+   * @param {Array} ...args
+   * @return {String}
+   */
+
+  Vue.tc = function (key, choice) {
+    for (var _len3 = arguments.length, args = Array(_len3 > 2 ? _len3 - 2 : 0), _key3 = 2; _key3 < _len3; _key3++) {
+      args[_key3 - 2] = arguments[_key3];
+    }
+
+    if (!choice) {
+      choice = 1;
+    }
+    return fetchChoice(Vue.t.apply(Vue, [key].concat(args)), choice);
+  };
+
+  /**
+   * $t
+   *
+   * @param {String} key
+   * @param {Array} ...args
+   * @return {String}
+   */
+
+  Vue.prototype.$t = function (key) {
+    if (!key) {
+      return '';
+    }
+
+    for (var _len4 = arguments.length, args = Array(_len4 > 1 ? _len4 - 1 : 0), _key4 = 1; _key4 < _len4; _key4++) {
+      args[_key4 - 1] = arguments[_key4];
+    }
+
+    var _parseArgs2 = parseArgs.apply(undefined, args);
+
+    var lang = _parseArgs2.lang;
+    var fallback = _parseArgs2.fallback;
+    var params = _parseArgs2.params;
+
+    var res = null;
+    if (this.$options.locales) {
+      res = translate(bind(getComponentLocale, this), lang, fallback, key, params);
+      if (res) {
+        return res;
+      }
+    }
+    return translate(getAssetLocale, lang, fallback, key, params) || warnDefault(key);
+  };
+
+  /**
+   * $tc
+   *
+   * @param {String} key
+   * @param {number|undefined} choice
+   * @param {Array} ...args
+   * @return {String}
+   */
+
+  Vue.prototype.$tc = function (key, choice) {
+    if (typeof choice !== 'number' && typeof choice !== 'undefined') {
+      return key;
+    }
+    if (!choice) {
+      choice = 1;
+    }
+
+    for (var _len5 = arguments.length, args = Array(_len5 > 2 ? _len5 - 2 : 0), _key5 = 2; _key5 < _len5; _key5++) {
+      args[_key5 - 2] = arguments[_key5];
+    }
+
+    return fetchChoice(this.$t.apply(this, [key].concat(args)), choice);
+  };
+
+  return Vue;
+}
+
+var langVM = void 0; // singleton
+
+/**
+ * plugin
+ *
+ * @param {Object} Vue
+ * @param {Object} opts
+ */
+
+function plugin(Vue) {
+  var opts = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
+
+  var version = Vue.version && Number(Vue.version.split('.')[0]) || -1;
+
+  if (process.env.NODE_ENV !== 'production' && plugin.installed) {
+    warn('already installed.');
+    return;
+  }
+
+  if (process.env.NODE_ENV !== 'production' && version < 1) {
+    warn('vue-i18n (' + plugin.version + ') need to use vue version 1.0 or later (vue version: ' + Vue.version + ').');
+    return;
+  }
+
+  var lang = 'en';
+  setupLangVM(Vue, lang);
+
+  Asset(Vue);
+  Override(Vue, langVM, version);
+  Config(Vue, langVM, lang);
+  Extend(Vue);
+}
+
+function setupLangVM(Vue, lang) {
+  var silent = Vue.config.silent;
+  Vue.config.silent = true;
+  if (!langVM) {
+    langVM = new Vue({ data: { lang: lang } });
+  }
+  Vue.config.silent = silent;
+}
+
+plugin.version = '4.3.1';
+
+if (typeof window !== 'undefined' && window.Vue) {
+  window.Vue.use(plugin);
+}
+
+module.exports = plugin;
+}).call(this,require('_process'))
+},{"_process":48}],52:[function(require,module,exports){
 /*!
  * vue-resource v0.9.3
  * https://github.com/vuejs/vue-resource
@@ -42964,14 +43887,14 @@ if (typeof window !== 'undefined' && window.Vue) {
 }
 
 module.exports = plugin;
-},{}],52:[function(require,module,exports){
+},{}],53:[function(require,module,exports){
 /*!
  * vue-waterfall v0.2.3
  * (c) 2016 MopTym <moptym@163.com>
  * https://github.com/MopTym/vue-waterfall
  */
 !function(t,e){"object"==typeof exports&&"object"==typeof module?module.exports=e():"function"==typeof define&&define.amd?define([],e):"object"==typeof exports?exports.Waterfall=e():t.Waterfall=e()}(this,function(){return function(t){function e(i){if(n[i])return n[i].exports;var r=n[i]={exports:{},id:i,loaded:!1};return t[i].call(r.exports,r,r.exports,e),r.loaded=!0,r.exports}var n={};return e.m=t,e.c=n,e.p="",e(0)}([function(t,e,n){"use strict";function i(t){return t&&t.__esModule?t:{"default":t}}var r=n(1),o=i(r),a=n(8),s=i(a);t.exports={Waterfall:o["default"],WaterfallSlot:s["default"],waterfall:o["default"],waterfallSlot:s["default"]}},function(t,e,n){var i,r;n(2),i=n(6),r=n(7),t.exports=i||{},t.exports.__esModule&&(t.exports=t.exports["default"]),r&&(("function"==typeof t.exports?t.exports.options||(t.exports.options={}):t.exports).template=r)},function(t,e,n){var i=n(3);"string"==typeof i&&(i=[[t.id,i,""]]);n(5)(i,{});i.locals&&(t.exports=i.locals)},function(t,e,n){e=t.exports=n(4)(),e.push([t.id,".vue-waterfall{position:relative}",""])},function(t,e){t.exports=function(){var t=[];return t.toString=function(){for(var t=[],e=0;e<this.length;e++){var n=this[e];n[2]?t.push("@media "+n[2]+"{"+n[1]+"}"):t.push(n[1])}return t.join("")},t.i=function(e,n){"string"==typeof e&&(e=[[null,e,""]]);for(var i={},r=0;r<this.length;r++){var o=this[r][0];"number"==typeof o&&(i[o]=!0)}for(r=0;r<e.length;r++){var a=e[r];"number"==typeof a[0]&&i[a[0]]||(n&&!a[2]?a[2]=n:n&&(a[2]="("+a[2]+") and ("+n+")"),t.push(a))}},t}},function(t,e,n){function i(t,e){for(var n=0;n<t.length;n++){var i=t[n],r=c[i.id];if(r){r.refs++;for(var o=0;o<r.parts.length;o++)r.parts[o](i.parts[o]);for(;o<i.parts.length;o++)r.parts.push(u(i.parts[o],e))}else{for(var a=[],o=0;o<i.parts.length;o++)a.push(u(i.parts[o],e));c[i.id]={id:i.id,refs:1,parts:a}}}}function r(t){for(var e=[],n={},i=0;i<t.length;i++){var r=t[i],o=r[0],a=r[1],s=r[2],u=r[3],l={css:a,media:s,sourceMap:u};n[o]?n[o].parts.push(l):e.push(n[o]={id:o,parts:[l]})}return e}function o(t,e){var n=p(),i=m[m.length-1];if("top"===t.insertAt)i?i.nextSibling?n.insertBefore(e,i.nextSibling):n.appendChild(e):n.insertBefore(e,n.firstChild),m.push(e);else{if("bottom"!==t.insertAt)throw new Error("Invalid value for parameter 'insertAt'. Must be 'top' or 'bottom'.");n.appendChild(e)}}function a(t){t.parentNode.removeChild(t);var e=m.indexOf(t);e>=0&&m.splice(e,1)}function s(t){var e=document.createElement("style");return e.type="text/css",o(t,e),e}function u(t,e){var n,i,r;if(e.singleton){var o=g++;n=v||(v=s(e)),i=l.bind(null,n,o,!1),r=l.bind(null,n,o,!0)}else n=s(e),i=f.bind(null,n),r=function(){a(n)};return i(t),function(e){if(e){if(e.css===t.css&&e.media===t.media&&e.sourceMap===t.sourceMap)return;i(t=e)}else r()}}function l(t,e,n,i){var r=n?"":i.css;if(t.styleSheet)t.styleSheet.cssText=x(e,r);else{var o=document.createTextNode(r),a=t.childNodes;a[e]&&t.removeChild(a[e]),a.length?t.insertBefore(o,a[e]):t.appendChild(o)}}function f(t,e){var n=e.css,i=e.media,r=e.sourceMap;if(i&&t.setAttribute("media",i),r&&(n+="\n/*# sourceURL="+r.sources[0]+" */",n+="\n/*# sourceMappingURL=data:application/json;base64,"+btoa(unescape(encodeURIComponent(JSON.stringify(r))))+" */"),t.styleSheet)t.styleSheet.cssText=n;else{for(;t.firstChild;)t.removeChild(t.firstChild);t.appendChild(document.createTextNode(n))}}var c={},d=function(t){var e;return function(){return"undefined"==typeof e&&(e=t.apply(this,arguments)),e}},h=d(function(){return/msie [6-9]\b/.test(window.navigator.userAgent.toLowerCase())}),p=d(function(){return document.head||document.getElementsByTagName("head")[0]}),v=null,g=0,m=[];t.exports=function(t,e){e=e||{},"undefined"==typeof e.singleton&&(e.singleton=h()),"undefined"==typeof e.insertAt&&(e.insertAt="bottom");var n=r(t);return i(n,e),function(t){for(var o=[],a=0;a<n.length;a++){var s=n[a],u=c[s.id];u.refs--,o.push(u)}if(t){var l=r(t);i(l,e)}for(var a=0;a<o.length;a++){var u=o[a];if(0===u.refs){for(var f=0;f<u.parts.length;f++)u.parts[f]();delete c[u.id]}}}};var x=function(){var t=[];return function(e,n){return t[e]=n,t.filter(Boolean).join("\n")}}()},function(t,e){"use strict";function n(t){t!==!1&&this.autoResize?y(window,"resize",this.reflowHandler,!1):b(window,"resize",this.reflowHandler,!1)}function i(t){var e=t.target,n=e[L];n&&m(e,n)}function r(t){return function(){clearTimeout(t),t=setTimeout(this.reflow,this.interval)}}function o(){var t=this;if(this.$el){var e=this.$el.clientWidth,n=this.$children.map(function(t){return t.getMeta()});n.sort(function(t,e){return t.order-e.order}),this.virtualRects=n.map(function(){return{}}),s(this,n,this.virtualRects),setTimeout(function(){a(t.$el,e)&&s(t,n,t.virtualRects),t.style.overflow="hidden",f(t.virtualRects,n),t.$broadcast("wf-reflowed",[t]),t.$dispatch("wf-reflowed",[t])},0)}}function a(t,e){return e!==t.clientWidth}function s(t,e,n){var i=u(t),r="h"===t.line?W:C;r.calculate(t,i,e,n)}function u(t){return{align:~["left","right","center"].indexOf(t.align)?t.align:"left",line:~["v","h"].indexOf(t.line)?t.line:"v",lineGap:+t.lineGap,minLineGap:t.minLineGap?+t.minLineGap:t.lineGap,maxLineGap:t.maxLineGap?+t.maxLineGap:t.lineGap,singleMaxWidth:Math.max(t.singleMaxWidth||0,t.maxLineGap),fixedHeight:!!t.fixedHeight}}function l(t,e,n){switch(n){case"right":return t-e;case"center":return(t-e)/2;default:return 0}}function f(t,e){var n=e.filter(function(t){return t.moveClass}),i=c(n);d(t,e);var r=c(n);n.forEach(function(t,e){t.node[L]=t.moveClass,h(t.node,i[e],r[e])}),document.body.clientWidth,n.forEach(function(t){g(t.node,t.moveClass),p(t.node)})}function c(t){return t.map(function(t){return t.vm.rect})}function d(t,e){t.forEach(function(t,n){var i=e[n].node.style;e[n].vm.rect=t;for(var r in t)i[r]=t[r]+"px"})}function h(t,e,n){var i=e.left-n.left,r=e.top-n.top,o=e.width/n.width,a=e.height/n.height;t.style.transform=t.style.WebkitTransform="translate("+i+"px,"+r+"px) scale("+o+","+a+")",t.style.transitionDuration="0s"}function p(t){t.style.transform=t.style.WebkitTransform="",t.style.transitionDuration=""}function v(t,e){for(var n="function"==typeof t?function(){return t()}:function(){return t},i=[],r=0;e>r;r++)i[r]=n();return i}function g(t,e){if(!x(t,e)){var n=w(t,"class").trim(),i=(n+" "+e).trim();w(t,"class",i)}}function m(t,e){var n=new RegExp("\\s*\\b"+e+"\\b\\s*","g"),i=w(t,"class").replace(n," ").trim();w(t,"class",i)}function x(t,e){return new RegExp("\\b"+e+"\\b").test(w(t,"class"))}function w(t,e,n){return"undefined"==typeof n?t.getAttribute(e)||"":void t.setAttribute(e,n)}function y(t,e,n){var i=arguments.length<=3||void 0===arguments[3]?!1:arguments[3];t.addEventListener(e,n,i)}function b(t,e,n){var i=arguments.length<=3||void 0===arguments[3]?!1:arguments[3];t.removeEventListener(e,n,i)}Object.defineProperty(e,"__esModule",{value:!0});var G=void 0===window.ontransitionend&&void 0!==window.onwebkittransitionend,M=G?"webkitTransitionEnd":"transitionend",L="_wfMoveClass";e["default"]={props:{autoResize:{"default":!0},interval:{"default":200,validator:function(t){return t>=0}},align:{"default":"left",validator:function(t){return~["left","right","center"].indexOf(t)}},line:{"default":"v",validator:function(t){return~["v","h"].indexOf(t)}},lineGap:{required:!0,validator:function(t){return t>=0}},minLineGap:{validator:function(t){return t>=0}},maxLineGap:{validator:function(t){return t>=0}},singleMaxWidth:{validator:function(t){return t>=0}},fixedHeight:{"default":!1},watch:{"default":{}}},data:function(){return{style:{height:"",overflow:""}}},methods:{autoResizeHandler:n,reflowHandler:r(),reflow:o},events:{"wf-reflow":function(){this.reflowHandler()}},compiled:function(){this.virtualRects=[]},ready:function(){var t=this;this.autoResizeHandler(),this.$watch("autoResize",this.autoResizeHandler),this.$watch(function(){return t.align,t.line,t.lineGap,t.minLineGap,t.maxLineGap,t.singleMaxWidth,t.fixedHeight,t.watch},this.reflowHandler),y(this.$el,M,i,!0)},beforeDestroy:function(){this.autoResizeHandler(!1),b(this.$el,M,i,!0)}};var C=function(){function t(t,n,i,r){var o=t.$el.clientWidth,a=e(o,n),s=v(0,a.count);i.forEach(function(t,e){var i=s.reduce(function(t,e,n){return e<s[t]?n:t},0),o=r[e];o.top=s[i],o.left=a.left+a.width*i,o.width=a.width,o.height=t.height*(n.fixedHeight?1:a.width/t.width),s[i]=s[i]+o.height}),t.style.height=Math.max.apply(null,s)+"px"}function e(t,e){var n=t/e.lineGap,i=void 0;if(e.singleMaxWidth>=t)n=1,i=Math.max(t,e.minLineGap);else{var r=e.maxLineGap*~~n,o=e.minLineGap*~~(n+1),a=r>=t,s=t>=o;a&&s?(n=Math.round(n),i=t/n):a?(n=~~n,i=t/n):s?(n=~~(n+1),i=t/n):(n=~~n,i=e.maxLineGap),1===n&&(i=Math.min(t,e.singleMaxWidth),i=Math.max(i,e.minLineGap))}return{width:i,count:n,left:l(t,i*n,e.align)}}return{calculate:t}}(),W=function(){function t(t,n,i,r){for(var o=t.$el.clientWidth,a=i.length,s=0,u=0;a>u;){for(var l,f,c=e(o,n,i,u),d=0,h=0;d<c.count;d++)l=i[u+d],f=r[u+d],f.top=s,f.left=c.left+h,f.width=l.width*c.height/l.height,f.height=c.height,h+=f.width;u+=c.count,s+=c.height}t.style.height=s+"px"}function e(t,e,o,a){var s=n(t,e.lineGap,o,a),u=Math.max(s-1,1),f=i(t,e,o,a,s),c=i(t,e,o,a,u),d=r(c,f,t),h=d.height,p=d.width;return 1===d.count&&(p=Math.min(e.singleMaxWidth,t),h=o[a].height*p/o[a].width),{left:l(t,p,e.align),count:d.count,height:h}}function n(t,e,n,i){for(var r=0,o=i,a=0;o<n.length&&t>=a;o++)a+=n[o].width*e/n[o].height,r++;return r}function i(t,e,n,i,r){for(var o=0,a=r-1;a>=0;a--){var s=n[i+a];o+=s.width*e.lineGap/s.height}var u=e.lineGap*t/o,l=u<=e.maxLineGap&&u>=e.minLineGap;if(l)return{cost:Math.abs(e.lineGap-u),count:r,width:t,height:u};var f=o>t?e.minLineGap:e.maxLineGap;return{cost:1/0,count:r,width:o*f/e.lineGap,height:f}}function r(t,e,n){return t.cost===1/0&&e.cost===1/0?e.width<n?e:t:e.cost>=t.cost?t:e}return{calculate:t}}()},function(t,e){t.exports="<div class=vue-waterfall :style=style><slot></slot></div>"},function(t,e,n){var i,r;n(9),i=n(11),r=n(12),t.exports=i||{},t.exports.__esModule&&(t.exports=t.exports["default"]),r&&(("function"==typeof t.exports?t.exports.options||(t.exports.options={}):t.exports).template=r)},function(t,e,n){var i=n(10);"string"==typeof i&&(i=[[t.id,i,""]]);n(5)(i,{});i.locals&&(t.exports=i.locals)},function(t,e,n){e=t.exports=n(4)(),e.push([t.id,".vue-waterfall-slot{position:absolute;margin:0;padding:0;box-sizing:border-box}",""])},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e["default"]={data:function(){return{isShow:!1}},props:{width:{required:!0,validator:function(t){return t>=0}},height:{required:!0,validator:function(t){return t>=0}},order:{"default":0},moveClass:{"default":""}},methods:{notify:function(){this.$dispatch("wf-reflow",[this])},getMeta:function(){return{vm:this,node:this.$el,order:this.order,width:this.width,height:this.height,moveClass:this.moveClass}}},compiled:function(){var t=this;this.$watch("width, height",this.notify),this.$once("wf-reflowed",function(){return t.isShow=!0}),this.rect={top:0,left:0,width:0,height:0}},attached:function(){this.notify()},detached:function(){this.notify()}}},function(t,e){t.exports="<div class=vue-waterfall-slot v-show=isShow><slot></slot></div>"}])});
-},{}],53:[function(require,module,exports){
+},{}],54:[function(require,module,exports){
 (function (process,global){
 /*!
  * Vue.js v1.0.26
@@ -53048,7 +53971,7 @@ setTimeout(function () {
 
 module.exports = Vue;
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"_process":48}],54:[function(require,module,exports){
+},{"_process":48}],55:[function(require,module,exports){
 var inserted = exports.cache = {}
 
 exports.insert = function (css) {
@@ -53068,7 +53991,7 @@ exports.insert = function (css) {
   return elem
 }
 
-},{}],55:[function(require,module,exports){
+},{}],56:[function(require,module,exports){
 'use strict';
 
 var _chart = require('chart.js');
@@ -53119,6 +54042,10 @@ var _CustomToast = require('./components/CustomToast.vue');
 
 var _CustomToast2 = _interopRequireDefault(_CustomToast);
 
+var _locales = require('./lang/locales');
+
+var _locales2 = _interopRequireDefault(_locales);
+
 var _Tools = require('./settings/Tools.js');
 
 var _Tools2 = _interopRequireDefault(_Tools);
@@ -53153,12 +54080,20 @@ Vue.use(_Tools2.default);
 
 Vue.http.headers.common['X-CSRF-TOKEN'] = document.querySelector('#_token').getAttribute('value');
 
+Vue.config.lang = 'en';
+
+Object.keys(_locales2.default).forEach(function (lang) {
+	Vue.locale(lang, _locales2.default[lang]);
+});
+
 var app = new Vue({
 	el: 'body',
 
 	created: function created() {
+		/*Vue.config.lang = 'en';*/
 		this.$env.set('APP_ENV', 'Development');
 		this.$env.set('APP_URI', 'http://localhost/');
+		this.$env.set('APP_LANG', 'en');
 	},
 
 	ready: function ready() {
@@ -53173,7 +54108,7 @@ var app = new Vue({
 	}
 });
 
-},{"../../../env.js":1,"./bootstrap":56,"./components/CustomModal.vue":58,"./components/CustomToast.vue":59,"./components/Example.vue":60,"./settings/Tools.js":78,"./web/ClubEditView.vue":80,"./web/IndexView.vue":81,"./web/ProfileEditView.vue":82,"./web/ProfileView.vue":83,"./web/SearchView.vue":84,"./web/VerifyView.vue":85,"./widgets/content/TeacherDefault.vue":86,"./widgets/content/TrainingDefault.vue":87,"./widgets/header/Default.vue":88,"chart.js":2,"vue-env":49}],56:[function(require,module,exports){
+},{"../../../env.js":1,"./bootstrap":57,"./components/CustomModal.vue":59,"./components/CustomToast.vue":60,"./components/Example.vue":61,"./lang/locales":73,"./settings/Tools.js":80,"./web/ClubEditView.vue":82,"./web/IndexView.vue":83,"./web/ProfileEditView.vue":84,"./web/ProfileView.vue":85,"./web/SearchView.vue":86,"./web/VerifyView.vue":87,"./widgets/content/TeacherDefault.vue":88,"./widgets/content/TrainingDefault.vue":89,"./widgets/header/Default.vue":90,"chart.js":2,"vue-env":49}],57:[function(require,module,exports){
 'use strict';
 
 window._ = require('lodash');
@@ -53198,6 +54133,7 @@ require('./jquery.tokenize');
 
 window.Vue = require('vue');
 require('vue-resource');
+Vue.use(require('vue-i18n'));
 
 /**
  * We'll register a HTTP interceptor to attach the "CSRF" header to each of
@@ -53224,7 +54160,7 @@ Vue.http.interceptors.push((request, next) => {
 //     key: 'your-pusher-key'
 // });
 
-},{"./foundation":69,"./jquery.fileupload":70,"./jquery.tokenize":71,"jquery":45,"lodash":46,"vue":53,"vue-resource":51}],57:[function(require,module,exports){
+},{"./foundation":70,"./jquery.fileupload":71,"./jquery.tokenize":72,"jquery":45,"lodash":46,"vue":54,"vue-i18n":51,"vue-resource":52}],58:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
 var __vueify_style__ = __vueify_insert__.insert("/* line 8, stdin */\n.progress--circle {\n  position: relative;\n  display: inline-block;\n  margin: 1rem;\n  width: 120px;\n  height: 120px;\n  border-radius: 50%;\n  background-color: #ddd; }\n  /* line 16, stdin */\n  .progress--circle:before {\n    content: '';\n    position: absolute;\n    top: 15px;\n    left: 15px;\n    width: 90px;\n    height: 90px;\n    border-radius: 50%;\n    background-color: white; }\n  /* line 26, stdin */\n  .progress--circle:after {\n    content: '';\n    display: inline-block;\n    width: 100%;\n    height: 100%;\n    border-radius: 50%;\n    background-color: #63B8FF; }\n\n/* line 36, stdin */\n.progress__number {\n  position: absolute;\n  top: 50%;\n  width: 100%;\n  line-height: 1;\n  margin-top: -0.75rem;\n  text-align: center;\n  font-size: 1.5rem;\n  color: #777; }\n\n/* line 52, stdin */\n.progress--bar.progress--0:after {\n  width: 0%; }\n\n/* line 55, stdin */\n.progress--circle.progress--0:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(left, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(90deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--1:after {\n  width: 1%; }\n\n/* line 55, stdin */\n.progress--circle.progress--1:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(356.4deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(93.6deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--2:after {\n  width: 2%; }\n\n/* line 55, stdin */\n.progress--circle.progress--2:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(352.8deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(97.2deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--3:after {\n  width: 3%; }\n\n/* line 55, stdin */\n.progress--circle.progress--3:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(349.2deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(100.8deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--4:after {\n  width: 4%; }\n\n/* line 55, stdin */\n.progress--circle.progress--4:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(345.6deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(104.4deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--5:after {\n  width: 5%; }\n\n/* line 55, stdin */\n.progress--circle.progress--5:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(342deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(108deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--6:after {\n  width: 6%; }\n\n/* line 55, stdin */\n.progress--circle.progress--6:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(338.4deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(111.6deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--7:after {\n  width: 7%; }\n\n/* line 55, stdin */\n.progress--circle.progress--7:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(334.8deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(115.2deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--8:after {\n  width: 8%; }\n\n/* line 55, stdin */\n.progress--circle.progress--8:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(331.2deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(118.8deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--9:after {\n  width: 9%; }\n\n/* line 55, stdin */\n.progress--circle.progress--9:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(327.6deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(122.4deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--10:after {\n  width: 10%; }\n\n/* line 55, stdin */\n.progress--circle.progress--10:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(324deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(126deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--11:after {\n  width: 11%; }\n\n/* line 55, stdin */\n.progress--circle.progress--11:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(320.4deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(129.6deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--12:after {\n  width: 12%; }\n\n/* line 55, stdin */\n.progress--circle.progress--12:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(316.8deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(133.2deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--13:after {\n  width: 13%; }\n\n/* line 55, stdin */\n.progress--circle.progress--13:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(313.2deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(136.8deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--14:after {\n  width: 14%; }\n\n/* line 55, stdin */\n.progress--circle.progress--14:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(309.6deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(140.4deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--15:after {\n  width: 15%; }\n\n/* line 55, stdin */\n.progress--circle.progress--15:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(306deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(144deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--16:after {\n  width: 16%; }\n\n/* line 55, stdin */\n.progress--circle.progress--16:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(302.4deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(147.6deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--17:after {\n  width: 17%; }\n\n/* line 55, stdin */\n.progress--circle.progress--17:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(298.8deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(151.2deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--18:after {\n  width: 18%; }\n\n/* line 55, stdin */\n.progress--circle.progress--18:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(295.2deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(154.8deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--19:after {\n  width: 19%; }\n\n/* line 55, stdin */\n.progress--circle.progress--19:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(291.6deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(158.4deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--20:after {\n  width: 20%; }\n\n/* line 55, stdin */\n.progress--circle.progress--20:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(288deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(162deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--21:after {\n  width: 21%; }\n\n/* line 55, stdin */\n.progress--circle.progress--21:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(284.4deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(165.6deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--22:after {\n  width: 22%; }\n\n/* line 55, stdin */\n.progress--circle.progress--22:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(280.8deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(169.2deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--23:after {\n  width: 23%; }\n\n/* line 55, stdin */\n.progress--circle.progress--23:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(277.2deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(172.8deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--24:after {\n  width: 24%; }\n\n/* line 55, stdin */\n.progress--circle.progress--24:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(273.6deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(176.4deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--25:after {\n  width: 25%; }\n\n/* line 55, stdin */\n.progress--circle.progress--25:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(top, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(180deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--26:after {\n  width: 26%; }\n\n/* line 55, stdin */\n.progress--circle.progress--26:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(266.4deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(183.6deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--27:after {\n  width: 27%; }\n\n/* line 55, stdin */\n.progress--circle.progress--27:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(262.8deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(187.2deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--28:after {\n  width: 28%; }\n\n/* line 55, stdin */\n.progress--circle.progress--28:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(259.2deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(190.8deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--29:after {\n  width: 29%; }\n\n/* line 55, stdin */\n.progress--circle.progress--29:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(255.6deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(194.4deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--30:after {\n  width: 30%; }\n\n/* line 55, stdin */\n.progress--circle.progress--30:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(252deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(198deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--31:after {\n  width: 31%; }\n\n/* line 55, stdin */\n.progress--circle.progress--31:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(248.4deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(201.6deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--32:after {\n  width: 32%; }\n\n/* line 55, stdin */\n.progress--circle.progress--32:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(244.8deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(205.2deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--33:after {\n  width: 33%; }\n\n/* line 55, stdin */\n.progress--circle.progress--33:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(241.2deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(208.8deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--34:after {\n  width: 34%; }\n\n/* line 55, stdin */\n.progress--circle.progress--34:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(237.6deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(212.4deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--35:after {\n  width: 35%; }\n\n/* line 55, stdin */\n.progress--circle.progress--35:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(234deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(216deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--36:after {\n  width: 36%; }\n\n/* line 55, stdin */\n.progress--circle.progress--36:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(230.4deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(219.6deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--37:after {\n  width: 37%; }\n\n/* line 55, stdin */\n.progress--circle.progress--37:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(226.8deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(223.2deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--38:after {\n  width: 38%; }\n\n/* line 55, stdin */\n.progress--circle.progress--38:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(223.2deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(226.8deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--39:after {\n  width: 39%; }\n\n/* line 55, stdin */\n.progress--circle.progress--39:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(219.6deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(230.4deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--40:after {\n  width: 40%; }\n\n/* line 55, stdin */\n.progress--circle.progress--40:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(216deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(234deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--41:after {\n  width: 41%; }\n\n/* line 55, stdin */\n.progress--circle.progress--41:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(212.4deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(237.6deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--42:after {\n  width: 42%; }\n\n/* line 55, stdin */\n.progress--circle.progress--42:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(208.8deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(241.2deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--43:after {\n  width: 43%; }\n\n/* line 55, stdin */\n.progress--circle.progress--43:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(205.2deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(244.8deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--44:after {\n  width: 44%; }\n\n/* line 55, stdin */\n.progress--circle.progress--44:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(201.6deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(248.4deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--45:after {\n  width: 45%; }\n\n/* line 55, stdin */\n.progress--circle.progress--45:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(198deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(252deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--46:after {\n  width: 46%; }\n\n/* line 55, stdin */\n.progress--circle.progress--46:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(194.4deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(255.6deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--47:after {\n  width: 47%; }\n\n/* line 55, stdin */\n.progress--circle.progress--47:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(190.8deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(259.2deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--48:after {\n  width: 48%; }\n\n/* line 55, stdin */\n.progress--circle.progress--48:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(187.2deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(262.8deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--49:after {\n  width: 49%; }\n\n/* line 55, stdin */\n.progress--circle.progress--49:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(183.6deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(266.4deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--50:after {\n  width: 50%; }\n\n/* line 55, stdin */\n.progress--circle.progress--50:after {\n  background-image: -webkit-linear-gradient(right, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(-90deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--51:after {\n  width: 51%; }\n\n/* line 55, stdin */\n.progress--circle.progress--51:after {\n  background-image: -webkit-linear-gradient(176.4deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(-86.4deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--52:after {\n  width: 52%; }\n\n/* line 55, stdin */\n.progress--circle.progress--52:after {\n  background-image: -webkit-linear-gradient(172.8deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(-82.8deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--53:after {\n  width: 53%; }\n\n/* line 55, stdin */\n.progress--circle.progress--53:after {\n  background-image: -webkit-linear-gradient(169.2deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(-79.2deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--54:after {\n  width: 54%; }\n\n/* line 55, stdin */\n.progress--circle.progress--54:after {\n  background-image: -webkit-linear-gradient(165.6deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(-75.6deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--55:after {\n  width: 55%; }\n\n/* line 55, stdin */\n.progress--circle.progress--55:after {\n  background-image: -webkit-linear-gradient(162deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(-72deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--56:after {\n  width: 56%; }\n\n/* line 55, stdin */\n.progress--circle.progress--56:after {\n  background-image: -webkit-linear-gradient(158.4deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(-68.4deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--57:after {\n  width: 57%; }\n\n/* line 55, stdin */\n.progress--circle.progress--57:after {\n  background-image: -webkit-linear-gradient(154.8deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(-64.8deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--58:after {\n  width: 58%; }\n\n/* line 55, stdin */\n.progress--circle.progress--58:after {\n  background-image: -webkit-linear-gradient(151.2deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(-61.2deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--59:after {\n  width: 59%; }\n\n/* line 55, stdin */\n.progress--circle.progress--59:after {\n  background-image: -webkit-linear-gradient(147.6deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(-57.6deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--60:after {\n  width: 60%; }\n\n/* line 55, stdin */\n.progress--circle.progress--60:after {\n  background-image: -webkit-linear-gradient(144deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(-54deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--61:after {\n  width: 61%; }\n\n/* line 55, stdin */\n.progress--circle.progress--61:after {\n  background-image: -webkit-linear-gradient(140.4deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(-50.4deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--62:after {\n  width: 62%; }\n\n/* line 55, stdin */\n.progress--circle.progress--62:after {\n  background-image: -webkit-linear-gradient(136.8deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(-46.8deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--63:after {\n  width: 63%; }\n\n/* line 55, stdin */\n.progress--circle.progress--63:after {\n  background-image: -webkit-linear-gradient(133.2deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(-43.2deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--64:after {\n  width: 64%; }\n\n/* line 55, stdin */\n.progress--circle.progress--64:after {\n  background-image: -webkit-linear-gradient(129.6deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(-39.6deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--65:after {\n  width: 65%; }\n\n/* line 55, stdin */\n.progress--circle.progress--65:after {\n  background-image: -webkit-linear-gradient(126deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(-36deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--66:after {\n  width: 66%; }\n\n/* line 55, stdin */\n.progress--circle.progress--66:after {\n  background-image: -webkit-linear-gradient(122.4deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(-32.4deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--67:after {\n  width: 67%; }\n\n/* line 55, stdin */\n.progress--circle.progress--67:after {\n  background-image: -webkit-linear-gradient(118.8deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(-28.8deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--68:after {\n  width: 68%; }\n\n/* line 55, stdin */\n.progress--circle.progress--68:after {\n  background-image: -webkit-linear-gradient(115.2deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(-25.2deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--69:after {\n  width: 69%; }\n\n/* line 55, stdin */\n.progress--circle.progress--69:after {\n  background-image: -webkit-linear-gradient(111.6deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(-21.6deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--70:after {\n  width: 70%; }\n\n/* line 55, stdin */\n.progress--circle.progress--70:after {\n  background-image: -webkit-linear-gradient(108deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(-18deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--71:after {\n  width: 71%; }\n\n/* line 55, stdin */\n.progress--circle.progress--71:after {\n  background-image: -webkit-linear-gradient(104.4deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(-14.4deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--72:after {\n  width: 72%; }\n\n/* line 55, stdin */\n.progress--circle.progress--72:after {\n  background-image: -webkit-linear-gradient(100.8deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(-10.8deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--73:after {\n  width: 73%; }\n\n/* line 55, stdin */\n.progress--circle.progress--73:after {\n  background-image: -webkit-linear-gradient(97.2deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(-7.2deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--74:after {\n  width: 74%; }\n\n/* line 55, stdin */\n.progress--circle.progress--74:after {\n  background-image: -webkit-linear-gradient(93.6deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(-3.6deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--75:after {\n  width: 75%; }\n\n/* line 55, stdin */\n.progress--circle.progress--75:after {\n  background-image: -webkit-linear-gradient(bottom, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(0deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--76:after {\n  width: 76%; }\n\n/* line 55, stdin */\n.progress--circle.progress--76:after {\n  background-image: -webkit-linear-gradient(86.4deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(3.6deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--77:after {\n  width: 77%; }\n\n/* line 55, stdin */\n.progress--circle.progress--77:after {\n  background-image: -webkit-linear-gradient(82.8deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(7.2deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--78:after {\n  width: 78%; }\n\n/* line 55, stdin */\n.progress--circle.progress--78:after {\n  background-image: -webkit-linear-gradient(79.2deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(10.8deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--79:after {\n  width: 79%; }\n\n/* line 55, stdin */\n.progress--circle.progress--79:after {\n  background-image: -webkit-linear-gradient(75.6deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(14.4deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--80:after {\n  width: 80%; }\n\n/* line 55, stdin */\n.progress--circle.progress--80:after {\n  background-image: -webkit-linear-gradient(72deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(18deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--81:after {\n  width: 81%; }\n\n/* line 55, stdin */\n.progress--circle.progress--81:after {\n  background-image: -webkit-linear-gradient(68.4deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(21.6deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--82:after {\n  width: 82%; }\n\n/* line 55, stdin */\n.progress--circle.progress--82:after {\n  background-image: -webkit-linear-gradient(64.8deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(25.2deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--83:after {\n  width: 83%; }\n\n/* line 55, stdin */\n.progress--circle.progress--83:after {\n  background-image: -webkit-linear-gradient(61.2deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(28.8deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--84:after {\n  width: 84%; }\n\n/* line 55, stdin */\n.progress--circle.progress--84:after {\n  background-image: -webkit-linear-gradient(57.6deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(32.4deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--85:after {\n  width: 85%; }\n\n/* line 55, stdin */\n.progress--circle.progress--85:after {\n  background-image: -webkit-linear-gradient(54deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(36deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--86:after {\n  width: 86%; }\n\n/* line 55, stdin */\n.progress--circle.progress--86:after {\n  background-image: -webkit-linear-gradient(50.4deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(39.6deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--87:after {\n  width: 87%; }\n\n/* line 55, stdin */\n.progress--circle.progress--87:after {\n  background-image: -webkit-linear-gradient(46.8deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(43.2deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--88:after {\n  width: 88%; }\n\n/* line 55, stdin */\n.progress--circle.progress--88:after {\n  background-image: -webkit-linear-gradient(43.2deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(46.8deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--89:after {\n  width: 89%; }\n\n/* line 55, stdin */\n.progress--circle.progress--89:after {\n  background-image: -webkit-linear-gradient(39.6deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(50.4deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--90:after {\n  width: 90%; }\n\n/* line 55, stdin */\n.progress--circle.progress--90:after {\n  background-image: -webkit-linear-gradient(36deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(54deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--91:after {\n  width: 91%; }\n\n/* line 55, stdin */\n.progress--circle.progress--91:after {\n  background-image: -webkit-linear-gradient(32.4deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(57.6deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--92:after {\n  width: 92%; }\n\n/* line 55, stdin */\n.progress--circle.progress--92:after {\n  background-image: -webkit-linear-gradient(28.8deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(61.2deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--93:after {\n  width: 93%; }\n\n/* line 55, stdin */\n.progress--circle.progress--93:after {\n  background-image: -webkit-linear-gradient(25.2deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(64.8deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--94:after {\n  width: 94%; }\n\n/* line 55, stdin */\n.progress--circle.progress--94:after {\n  background-image: -webkit-linear-gradient(21.6deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(68.4deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--95:after {\n  width: 95%; }\n\n/* line 55, stdin */\n.progress--circle.progress--95:after {\n  background-image: -webkit-linear-gradient(18deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(72deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--96:after {\n  width: 96%; }\n\n/* line 55, stdin */\n.progress--circle.progress--96:after {\n  background-image: -webkit-linear-gradient(14.4deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(75.6deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--97:after {\n  width: 97%; }\n\n/* line 55, stdin */\n.progress--circle.progress--97:after {\n  background-image: -webkit-linear-gradient(10.8deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(79.2deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--98:after {\n  width: 98%; }\n\n/* line 55, stdin */\n.progress--circle.progress--98:after {\n  background-image: -webkit-linear-gradient(7.2deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(82.8deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--99:after {\n  width: 99%; }\n\n/* line 55, stdin */\n.progress--circle.progress--99:after {\n  background-image: -webkit-linear-gradient(3.6deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(86.4deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--100:after {\n  width: 100%; }\n\n/* line 55, stdin */\n.progress--circle.progress--100:after {\n  background-image: -webkit-linear-gradient(left, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n")
 'use strict';
@@ -53291,7 +54227,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-03cd24e7", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":53,"vue-hot-reload-api":50,"vueify/lib/insert-css":54}],58:[function(require,module,exports){
+},{"vue":54,"vue-hot-reload-api":50,"vueify/lib/insert-css":55}],59:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
 var __vueify_style__ = __vueify_insert__.insert("/* line 2, stdin */\n* {\n  box-sizing: border-box; }\n\n/* line 6, stdin */\n.modal-mask {\n  position: fixed;\n  z-index: 9998;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n  background-color: rgba(0, 0, 0, 0.5);\n  -webkit-transition: opacity .3s ease;\n  transition: opacity .3s ease; }\n\n/* line 17, stdin */\n.modal-container {\n  display: block;\n  z-index: 1006;\n  padding: 1rem;\n  border: 1px solid #cacaca;\n  background-color: #fefefe;\n  border-radius: 4px;\n  position: relative;\n  top: 0px;\n  height: 100%;\n  margin-left: auto;\n  margin-right: auto;\n  overflow-y: auto; }\n\n/* line 32, stdin */\n.modal-header h3 {\n  margin-top: 0;\n  color: #42b983; }\n\n/* line 41, stdin */\n.text-right {\n  text-align: right; }\n\n/* line 45, stdin */\n.form-label {\n  display: block;\n  margin-bottom: 1em; }\n\n/* line 50, stdin */\n.form-label > .form-control {\n  margin-top: 0.5em; }\n\n/* line 54, stdin */\n.form-control {\n  display: block;\n  width: 100%;\n  padding: 0.5em 1em;\n  line-height: 1.5;\n  border: 1px solid #ddd; }\n\n/* line 62, stdin */\n.modal-enter, .modal-leave {\n  opacity: 0; }\n\n/* line 66, stdin */\n.modal-enter .modal-container,\n.modal-leave .modal-container {\n  -webkit-transition: all .3s ease;\n  transition: all .3s ease; }\n\n@media screen and (min-width: 640px) {\n  /* line 72, stdin */\n  .modal-container {\n    width: 600px;\n    max-width: 75rem;\n    top: 50px; } }\n")
 'use strict';
@@ -53330,6 +54266,7 @@ exports.default = {
 		type: { default: 'Club' },
 		multiple: {},
 		title: { default: '' },
+		title_en: { default: '' },
 		usage: { default: 'questionable' },
 		context: {
 			required: true
@@ -53350,7 +54287,19 @@ exports.default = {
 		}
 	},
 
+	created: function created() {
+		this.setLanguage();
+	},
+
 	ready: function ready() {},
+
+	data: function data() {
+		return {
+			lang_mn: [],
+			lang_en: []
+		};
+	},
+
 
 	methods: {
 
@@ -53371,6 +54320,20 @@ exports.default = {
 
 				this.$dispatch(this.saveCallback, response);
 			} else this.modalClose();
+		},
+
+		setLanguage: function setLanguage() {
+			this.lang_en = {
+				title: this.title_en
+			};
+
+			this.lang_mn = {
+				title: this.title
+			};
+		},
+
+		translate: function translate(value) {
+			return this.lang_mn[value];
 		}
 	},
 
@@ -53379,7 +54342,7 @@ exports.default = {
 	}
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"modal-mask\" @click=\"modalClose\" v-if=\"show\" transition=\"modal\">\n        <div class=\"modal-container\" @click.stop=\"\">\n            <div class=\"modal-header\">\n\t\t\t\t<slot name=\"header\">\n\t\t\t\t\t<div class=\"row small-up-3 medium-up-3 large-up-3\">\n\t\t\t\t\t  <div class=\"columns\">\n\t\t\t\t\t  \t<button @click=\"modalClose\" class=\"close-button\" type=\"button\">\n\t\t\t\t\t\t\t<span class=\"fa fa-times\" aria-hidden=\"true\"></span>\n\t\t\t\t\t\t</button>\n\t\t\t\t\t  </div>\n\t\t\t\t\t  <div class=\"columns\">\n\t\t\t\t\t  \t<button @click=\"modalSave\" class=\"save-button\" type=\"button\">\n\t\t\t\t\t    \t<span aria-hidden=\"true\" class=\"fa fa-check\"></span>\n\t\t\t\t\t    </button>\n\t\t\t\t\t  </div>\n\t\t\t\t\t</div>\t\n\t\t\t\t\t<div class=\"row\" style=\"height:50px; text-align: center;\">\n\t\t\t\t\t\t<h4 style=\"color:#5fcf80;\">{{title}}</h4>\n\t\t\t\t\t</div>\n\t\t\t\t</slot>\n\t\t\t</div>\n\n            <div class=\"modal-body\">\n\t          <slot name=\"body\">\n\t          \t<component v-ref:context=\"\" v-if=\"type == 'Club'\" :id=\"id\" :type=\"type\" :is=\"context\" :selected=\"items\">\n\t\t\t\t</component>\n\t\t\t\t<components v-ref:context=\"\" :multiple=\"multiple\" v-else=\"\" :is=\"context\" :selected=\"items\">\n\t\t\t\t</components>\n\t          </slot>\n\t        </div>\n\n            <div class=\"modal-footer\">\n\t          <slot name=\"footer\">\n\t          </slot>\n\t        </div>\n        </div>\n    </div>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"modal-mask\" @click=\"modalClose\" v-if=\"show\" transition=\"modal\">\n        <div class=\"modal-container\" @click.stop=\"\">\n            <div class=\"modal-header\">\n\t\t\t\t<slot name=\"header\">\n\t\t\t\t\t<div class=\"row small-up-3 medium-up-3 large-up-3\">\n\t\t\t\t\t  <div class=\"columns\">\n\t\t\t\t\t  \t<button @click=\"modalClose\" class=\"close-button\" type=\"button\">\n\t\t\t\t\t\t\t<span class=\"fa fa-times\" aria-hidden=\"true\"></span>\n\t\t\t\t\t\t</button>\n\t\t\t\t\t  </div>\n\t\t\t\t\t  <div class=\"columns\">\n\t\t\t\t\t  \t<button @click=\"modalSave\" class=\"save-button\" type=\"button\">\n\t\t\t\t\t    \t<span aria-hidden=\"true\" class=\"fa fa-check\"></span>\n\t\t\t\t\t    </button>\n\t\t\t\t\t  </div>\n\t\t\t\t\t</div>\t\n\t\t\t\t\t<div class=\"row\" style=\"height:50px; text-align: center;\">\n\t\t\t\t\t\t<h4 style=\"color:#5fcf80;\">{{translate('title')}}</h4>\n\t\t\t\t\t</div>\n\t\t\t\t</slot>\n\t\t\t</div>\n\n            <div class=\"modal-body\">\n\t          <slot name=\"body\">\n\t          \t<component v-ref:context=\"\" v-if=\"type == 'Club'\" :id=\"id\" :type=\"type\" :is=\"context\" :selected=\"items\">\n\t\t\t\t</component>\n\t\t\t\t<components v-ref:context=\"\" :multiple=\"multiple\" v-else=\"\" :is=\"context\" :selected=\"items\">\n\t\t\t\t</components>\n\t          </slot>\n\t        </div>\n\n            <div class=\"modal-footer\">\n\t          <slot name=\"footer\">\n\t          </slot>\n\t        </div>\n        </div>\n    </div>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -53394,7 +54357,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-df8e52a6", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"../context/AddPlan.vue":64,"../context/AddTraining.vue":65,"../context/FileManager.vue":66,"../context/teachers.vue":67,"../context/trainings.vue":68,"vue":53,"vue-hot-reload-api":50,"vueify/lib/insert-css":54}],59:[function(require,module,exports){
+},{"../context/AddPlan.vue":65,"../context/AddTraining.vue":66,"../context/FileManager.vue":67,"../context/teachers.vue":68,"../context/trainings.vue":69,"vue":54,"vue-hot-reload-api":50,"vueify/lib/insert-css":55}],60:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
 var __vueify_style__ = __vueify_insert__.insert("\n\n.CustomToast {\n    min-width: 250px;\n    margin-left: -125px;\n    background-color: #333;\n    color: #fff;\n    text-align: center;\n    border-radius: 2px;\n    padding: 16px;\n    position: fixed;\n    z-index: 9999;\n    left: 50%;\n    font-size: 17px;\n}\n\n.CustomToast--Top {\n\ttop: 10px;\n}\n\n.CustomToast--Bottom {\n\tbottom: 30px;\n}\n\n.CustomToast--Success {\n\tbackground-color : green;\n}\n\n.CustomToast--Info {\n\tbackground-color : #333;\n}\n\n.CustomToast--Warning {\n\tbackground-color : yellow;\n}\n\n.CustomToast--Error {\n\tbackground-color : red;\n}\n\n\n.fade-transition {\n  display: inline-block; /* otherwise scale animation won't work */\n}\n\n.fade-enter {\n  -webkit-animation: fadein .5s;\n          animation: fadein .5s;\n}\n.fade-leave {\n  -webkit-animation: fadeout .5s;\n          animation: fadeout .5s;\n}\n\n@-webkit-keyframes fadein {\n    from {bottom: 0; opacity: 0;}\n    to {bottom: 30px; opacity: 1;}\n}\n\n@keyframes fadein {\n    from {bottom: 0; opacity: 0;}\n    to {bottom: 30px; opacity: 1;}\n}\n\n@-webkit-keyframes fadeout {\n    from {bottom: 30px; opacity: 1;}\n    to {bottom: 0; opacity: 0;}\n}\n\n@keyframes fadeout {\n    from {bottom: 30px; opacity: 1;}\n    to {bottom: 0; opacity: 0;}\n}\n\n")
 'use strict';
@@ -53472,7 +54435,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-1e8d2527", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":53,"vue-hot-reload-api":50,"vueify/lib/insert-css":54}],60:[function(require,module,exports){
+},{"vue":54,"vue-hot-reload-api":50,"vueify/lib/insert-css":55}],61:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -53495,7 +54458,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-74ad77db", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":53,"vue-hot-reload-api":50}],61:[function(require,module,exports){
+},{"vue":54,"vue-hot-reload-api":50}],62:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
 var __vueify_style__ = __vueify_insert__.insert("\n")
 "use strict";
@@ -53509,7 +54472,7 @@ exports.default = {
 	}
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<li style=\"border: 1px solid green;\">\n\t<h3>{{item.name}}</h3>\n\t{{item.description}}\t\n\t<ul>\n\t\t<li v-for=\"teacher in item.teachers\">\n\t\t\t#{{teacher.username}},\n\t\t</li>\n\t</ul>\t\n\t<ul>\n\t\t<li v-for=\"photo in item.photos\">\n\t\t\t<img height=\"100\" width=\"100\" v-bind:src=\"photo.url\">\n\t\t</li>\n\t</ul>\t\n</li>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<li style=\"border: 1px solid green;\">\n\t<h3>{{item.name}}</h3>\n\t{{item.description}}\t\n\t<ul>\n\t\t<li v-for=\"teacher in item.teachers\">\n\t\t\t#{{teacher.username}},\n\t\t</li>\n\t</ul>\t\n\t<ul>\n\t\t\n\t\t<li v-for=\"photo in item.photos\">\n\t\t\t<img height=\"100\" width=\"100\" v-bind:src=\"photo.url\">\n\t\t</li>\n\t\t\n\t</ul>\t\n</li>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -53524,7 +54487,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-4f4e86e7", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":53,"vue-hot-reload-api":50,"vueify/lib/insert-css":54}],62:[function(require,module,exports){
+},{"vue":54,"vue-hot-reload-api":50,"vueify/lib/insert-css":55}],63:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
 var __vueify_style__ = __vueify_insert__.insert("\nbutton:focus {outline:0;}\n\n#omnibox {\n    position: absolute;\n    left: 0px;\n    margin: 16px;\n    top: 0px;\n    z-index: 10;\n    -webkit-transition:left 0.5s;\n    transition: left 0.5s;\n    -webkit-transform: translateX(0px);\n    transform: translateX(0px);\n    transition-property: -webkit-transform,transform,visibility,opacity;\n    -webkit-transition-duration: 200ms;\n            transition-duration: 200ms;\n    -webkit-transition-timing-function: cubic-bezier(0.0,0.0,0.2,1);\n            transition-timing-function: cubic-bezier(0.0,0.0,0.2,1);\n}\n\n.vasquette-margin-enabled#rap-card, .vasquette-margin-enabled#omnibox {\n    margin: 8px 0 8px 8px;\n}\n\n.searchbox.suggestions-shown \n{\n    border-radius: 2px 2px 0 0;\n}\n\n.searchbox-shadow \n{\n    box-shadow: 0 2px 4px rgba(0,0,0,0.2),0 -1px 0px rgba(0,0,0,0.02);\n}\n\n.searchbox \n{\n\n    position: relative;\n    background: #fff;\n    border-radius: 2px;\n    box-sizing: border-box;\n    height: 48px;\n    border-bottom: 1px solid transparent;\n    padding: 12px 104px 11px 64px;\n    -webkit-transition-property:background,box-shadow;\n    transition-property: background,box-shadow;\n    -webkit-transition-duration: 0.3s;\n            transition-duration: 0.3s;\n}\n\n.searchbox-searchbutton-container \n{\n    position: absolute;\n    right: 54px;\n    top: 0;\n}\n\n.searchbox-findme\n{\n    position: absolute;\n    right: 0px;\n    top: 0;\n}\n\n.searchbox-searchbutton::before {\n    content: '';\n    display: block;\n    width: 24px;\n    height: 24px;\n    background: url(//maps.gstatic.com/tactile/omnibox/quantum_search_button-20150825-1x.png);\n    background-size: 72px 24px;\n}\n\n.searchbox-searchbutton-container::after {\n    content: \"\";\n    position: absolute;\n    right: 0;\n    top: 10px;\n    border-left: 1px solid #ddd;\n    height: 28px;\n}\n\n.searchbox-searchbutton {\n    display: block;\n    padding: 12px 15px;\n}\n\n.searchbox-input {\n    border: none; \n    padding: 0px; \n    margin: 0px; \n    height: auto; \n    width: 100%; \n    z-index: 6;\n    left: 0px;\n    outline: none;\n    font-size: 15px;\n}\n\n.searchbox-hamburger::before {\n    content: '';\n    display: block;\n    background-image: url(//maps.gstatic.com/tactile/omnibox/quantum_menu-v2-1x.png);\n    background-size: 48px 24px;\n    background-position: 0 0;\n    height: 24px;\n    width: 24px;\n    opacity: .62;\n}\n\n.searchbox-hamburger {\n    display: block;\n    cursor: pointer;\n    padding: 12px 16px;\n}\n\n.searchbox-hamburger-container \n{\n    position: absolute;\n    z-index: 1003;\n    left: 0;\n    top: 0;\n}\n\n/* Pin Hover Box Styles */\n.search-tooltip{\n\tz-index: 11;\n    position: absolute;\n    background-color: #FFFFFF;\n    width: 250px;\n    height: 70px;\n    -webkit-box-shadow: 10px 10px 30px 0px rgba(174,174,174,1);\n    -moz-box-shadow: 10px 10px 30px 0px rgba(174,174,174,1);\n    box-shadow: 10px 10px 30px 0px rgba(174,174,174,1);\n    border-radius: 5px;\n}\n\n.rating {\n  margin: 10px 0;\n}\n\n.rating i {\n  display: inline-block;\n  width: 0;\n  height: 1.5em;\n  border-width: 1.5em / 2;\n  border-style: solid;\n  border-color: #eee;\n  border-radius: .22em;\n  color: white;\n  background: #eee;\n  font-style: normal;\n  line-height: 1.6em;\n  text-indent: -0.5em;\n  text-shadow: 1px 0 1px hsl(0, 0%, 70%);\n}\n/*panel*/\n.pane {\n    /*position: relative;*/\n    display: block;\n}\n\n.pane-holder{\n    width: 408px;\n    height: 100%;\n    position: absolute;\n    z-index: 2;\n    left: 0;\n    top: 0;\n    overflow: hidden;\n}\n\n.pane-holder:hover{\n    overflow-y: scroll;\n}\n\n.pane-header{\n    width: 100%;\n    height: 256px;\n    background-color: #fff;\n}\n.pane-content{\n    width: 100%;\n    height: auto;\n    line-height: 1.5em;\n    background-color: #4285F4;\n    padding: 10px;\n    color: #fff;\n}\n.pane-content h1{\n    font-size: 25px;\n}\n.pane-holder-small{\n    overflow-y: scroll;\n}\n\n.find-mylocation{\n    display: block;\n    padding: 12px 15px;\n}\n\n.reset-button{\n    display: block;\n    padding: 12px 15px;\n}\n.reset-button::before{\n    background-image: url(//maps.gstatic.com/tactile/omnibox/clear-1x-20150504.png);\n    background-size: 96px 24px;\n    height: 24px;\n    width: 24px;\n    cursor: pointer;\n    display: block;\n    content: '';\n}\n\n")
 "use strict";
@@ -53554,7 +54517,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-3f3bb728", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":53,"vue-hot-reload-api":50,"vueify/lib/insert-css":54}],63:[function(require,module,exports){
+},{"vue":54,"vue-hot-reload-api":50,"vueify/lib/insert-css":55}],64:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
 var __vueify_style__ = __vueify_insert__.insert("\n\tdiv.TokenizeMeasure,\n\tdiv.Tokenize ul li span,\n\tdiv.Tokenize ul.TokensContainer li.TokenSearch input {\n\t    font-size: 50%;\n\t    font-weight: 600;\n    \tcolor: white !important;\n\t}\n\n\tdiv.Tokenize {\n\t    position: relative;\n\t    display: inline-block;\n\t    zoom: 1;\n\t}\n\n\tdiv.Tokenize ul {\n\t    list-style: none;\n\t    padding: 0;\n\t    margin: 0;\n\t}\n\n\tdiv.Tokenize ul li {\n\t    white-space: nowrap;\n\t}\n\n\tdiv.Tokenize ul.TokensContainer {\n\t    cursor: text;\n\t    padding: 0 5px 5px 0;\n\t    height: 100px;\n\t    overflow-y: auto;\n\t    background-color: white;\n\t    -webkit-touch-callout: none;\n\t    -webkit-user-select: none;\n\t    -moz-user-select: none;\n\t    -ms-user-select: none;\n\t    user-select: none;\n\t}\n\n\tdiv.Tokenize ul.TokensContainer.Autosize {\n\t    height: auto;\n\t}\n\n\tdiv.Tokenize.Disabled ul.TokensContainer,\n\tdiv.Tokenize.Disabled ul.TokensContainer input {\n\t    cursor: not-allowed;\n\t}\n\n\tdiv.Tokenize ul.TokensContainer li.Token {\n\t    background-color: red;\n\t    padding: 0 5px;\n\t    line-height: 6px;\n\t    border-radius: 4px;\n\t}\n\n\tdiv.Tokenize ul.TokensContainer.ui-sortable:not(.ui-sortable-disabled) li.Token {\n\t    cursor: move;\n\t}\n\n\tdiv.Tokenize ul.TokensContainer li.Token.MovingShadow  {\n\t    border: 1px solid #fcefa1;\n\t    background-color: #fbf9ee;\n\t}\n\n\tdiv.Tokenize ul.TokensContainer li.Token.PendingDelete {\n\t    opacity : 0.5;\n\t    -moz-opacity : 0.5;\n\t    -ms-filter: \"alpha(opacity=50)\";\n\t    filter : alpha(opacity=50);\n\t}\n\n\tdiv.Tokenize ul.TokensContainer li.Token,\n\tdiv.Tokenize ul.TokensContainer li.TokenSearch {\n\t    margin: 1px 0 0 1px;\n\t    height: 12px;\n\t    float: left;\n\t}\n\n\tdiv.Tokenize ul.TokensContainer li.TokenSearch input {\n\t    margin: 0;\n\t    padding: 1px 0;\n\t    background-color: transparent;\n\t    line-height: 18px;\n\t    border: none;\n\t    outline: none;\n\t    font-weight: 100 !important;\n\t    color: #000 !important;\n\t}\n\n\tdiv.Tokenize ul.TokensContainer li.Placeholder {\n\t    color: #ddd;\n\t    position: absolute;\n\t    line-height: 20px;\n\t    padding: 5px 0 0 5px;\n\t    display: none;\n\t}\n\n\tdiv.Tokenize ul.TokensContainer,\n\tdiv.Tokenize ul.Dropdown {\n\t    border: 1px solid #ccc;\n\t}\n\n\tdiv.Tokenize ul.TokensContainer li.Token a.Close {\n\t    font-family: Arial, Helvetica, sans-serif !important;\n\t    font-size: 9px !important;\n\t    line-height: 10px;\n\t    float: right;\n\t    margin: 1px 0 0 5px;\n\t    padding: 0;\n\t    cursor: pointer;\n\t    color: #ebeced;\n\t}\n\n\tdiv.Tokenize.Disabled ul.TokensContainer li.Token a.Close {\n\t    display: none;\n\t}\n\n\tdiv.Tokenize ul.TokensContainer li.Token a.Close:hover {\n\t    background: transparent;\n\t    text-decoration: none;\n\t}\n\n\tdiv.Tokenize ul.Dropdown {\n\t    -webkit-box-sizing: border-box;\n\t    -moz-box-sizing: border-box;\n\t    -ms-box-sizing: border-box;\n\t    box-sizing: border-box;\n\n\t    display: none;\n\t    width: 100%;\n\t    padding: 5px 0;\n\t    margin: -1px 0 0 0;\n\t    position: absolute;\n\t    background-color: white;\n\t    overflow-y: auto;\n\n\t    -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);\n\t    -moz-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);\n\t    -o-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);\n\t    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);\n\n\t    -webkit-background-clip: padding-box;\n\t    -moz-background-clip: padding;\n\t    background-clip: padding-box;\n\n\t    -webkit-border-radius: 0 0 6px 6px;\n\t    -moz-border-radius: 0 0 6px 6px;\n\t    border-radius: 0 0 6px 6px;\n\n\t    z-index: 20;\n\t}\n\n\tdiv.Tokenize ul.Dropdown li {\n\t    padding: 5px 20px;\n\t    overflow: hidden;\n\t    cursor: pointer;\n\t}\n\n\tdiv.Tokenize ul.Dropdown li.Hover {\n\t    color: white;\n\t    text-decoration: none;\n\t    background-color: #0081c2;\n\t    background-image: -moz-linear-gradient(top, #0088cc, #0077b3);\n\t    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#0088cc), to(#0077b3));\n\t    background-image: -webkit-linear-gradient(top, #0088cc, #0077b3);\n\t    background-image: -o-linear-gradient(top, #0088cc, #0077b3);\n\t    background-image: linear-gradient(to bottom, #0088cc, #0077b3);\n\t    background-repeat: repeat-x;\n\t    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff0088cc', endColorstr='#ff0077b3', GradientType=0);\n\t}\n")
 'use strict';
@@ -53600,7 +54563,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-2d605127", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":53,"vue-hot-reload-api":50,"vueify/lib/insert-css":54}],64:[function(require,module,exports){
+},{"vue":54,"vue-hot-reload-api":50,"vueify/lib/insert-css":55}],65:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -53704,7 +54667,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-4d3e4960", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":53,"vue-hot-reload-api":50}],65:[function(require,module,exports){
+},{"vue":54,"vue-hot-reload-api":50}],66:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -53792,10 +54755,31 @@ exports.default = {
 		}
 	},
 
-	components: {}
+	components: {},
+
+	locales: {
+		en: {
+			info: 'Info',
+			photos: 'Add photos',
+			teacher: 'Add teachers',
+			name: 'Training name',
+			description: 'Description',
+			name_watermark: 'name ...',
+			description_watermark: 'description ...'
+		},
+		mn: {
+			info: 'Инфо',
+			photos: 'Зураг оруулах',
+			teacher: 'Багш сонгох',
+			name: 'Хичээлийн нэр',
+			description: 'Тайлбар',
+			name_watermark: 'нэр ...',
+			description_watermark: 'тайлбар ...'
+		}
+	}
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n\t<custom-modal :id=\"id\" type=\"User\" title=\"Photo chooser\" usage=\"_photo-chooser\" multiple=\"true\" :items=\"pictures\" :show.sync=\"showFileManager\" save-callback=\"choosedPictures\" context=\"fileManager\">\n\t</custom-modal>\n\n\t<custom-modal :id=\"id\" type=\"Club\" title=\"Teachers\" usage=\"_teacher-chooser\" :items=\"teachers\" :show.sync=\"showTeachers\" save-callback=\"choosedTeachers\" context=\"teachers\">\n\t</custom-modal>\n\n\t<form method=\"POST\" accept=\"\">\n\t\t<ul class=\"tabs\" data-tabs=\"\" id=\"example-tabs\">\n\t\t  <li class=\"tabs-title is-active\"><a href=\"#main\" aria-selected=\"true\">Info</a></li>\n\t\t  <li class=\"tabs-title \"><a href=\"#photos\">Photos</a></li>\n\t\t  <li class=\"tabs-title\"><a href=\"#teacher\">Teacher</a></li>\n\t    </ul>\n\n\t  <div class=\"tabs-content\" data-tabs-content=\"example-tabs\">\n\t\t  <div class=\"tabs-panel is-active\" id=\"main\">\n\t\t    <div class=\"row\">\n\t\t\t    <div class=\"medium-6 columns\">\n\t\t\t      <label>Training name\n\t\t\t        <input type=\"text\" name=\"name\" v-model=\"name\" placeholder=\"fill training name\">\n\t\t\t      </label>\n\t\t\t    </div>\n\t\t\t    <div class=\"medium-6 columns\">\n\t\t\t      <label>Description\n\t\t\t        <textarea type=\"text\" name=\"description\" v-model=\"description\" placeholder=\"Description ...\">\t\t\t        </textarea>\n\t\t\t      </label>\n\t\t\t    </div>\n\t\t\t</div>\n\t\t  </div>\n\t\t  <div class=\"tabs-panel\" id=\"teacher\">\n  \t  \t\t   <div class=\"picture-list\">\n\t\t\t  \t<div class=\"row small-up-2 medium-up-3 large-up-4\">\n\t\t\t  \t\t<br>\n\t\t\t\t  \t<div class=\"column\" v-for=\"teacher in teachers\">\n\t\t\t\t\t  \t<div class=\"figure\">\n\t\t                    <img v-bind:src=\"teacher.avatar_url\" alt=\"Jeffrey Way\" height=\"120\" width=\"120\" style=\"border-radius:4px;\">\n\t\t                    <div class=\"figcaption\">\n\t\t                        <a @click=\"deleteTeacher(teacher)\" class=\"btn-floating red\" style=\"left: 25%;\">\n\t\t                        \t<i class=\"fa fa-trash\"></i>\n\t\t                        </a>\n\t\t                    </div>\n\t\t                </div>\n\t\t\t\t  \t</div>\n\t\t\t\t  \t<div class=\"column\">\n\t\t\t\t\t  \t<div class=\"figure\">\n\t\t                    <div class=\"figcaption\" style=\"opacity:1;\">\n\t\t                        <a @click=\"showTeachers = true\" class=\"btn-floating red\" style=\"left: 25%;\">\n\t\t                        \t<i class=\"fa fa-plus\"></i>\n\t\t                        </a>\n\t\t                    </div>\n\t\t                </div>\n\t\t\t\t  \t</div>\n\t\t\t\t</div>\n\t\t\t  </div>\n\t\t  </div>\n\t\t  <div class=\"tabs-panel\" id=\"photos\">\n\t\t\t  <div class=\"picture-list\">\n\t\t\t  \t<div class=\"row small-up-2 medium-up-3 large-up-4\">\n\t\t\t  \t\t<br>\n\t\t\t\t  \t<div class=\"column\" v-for=\"photo in pictures\">\n\t\t\t\t\t  \t<div class=\"figure\">\n\t\t                    <img v-bind:src=\"photo.url\" alt=\"Jeffrey Way\" height=\"120\" width=\"120\" style=\"border-radius:4px;\">\n\t\t                    <div class=\"figcaption\">\n\t\t                        <a @click=\"deletePhoto(photo)\" class=\"btn-floating red\" style=\"left: 25%;\">\n\t\t                        \t<i class=\"fa fa-trash\"></i>\n\t\t                        </a>\n\t\t                    </div>\n\t\t                </div>\n\t\t\t\t  \t</div>\n\t\t\t\t  \t<div class=\"column\">\n\t\t\t\t\t  \t<div class=\"figure\">\n\t\t                    <div class=\"figcaption\" style=\"opacity:1;\">\n\t\t                        <a @click=\"triggerPictureBtn\" class=\"btn-floating red\" style=\"left: 25%;\">\n\t\t                        \t<i class=\"fa fa-plus\"></i>\n\t\t                        </a>\n\t\t                    </div>\n\t\t                </div>\n\t\t\t\t  \t</div>\n\t\t\t\t</div>\n\t\t\t  </div>\n\t\t  </div>\n\t  </div>\n\t</form>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n\t<custom-modal :id=\"id\" type=\"User\" title_en=\"Photo chooser\" title=\"Зураг сонгох\" usage=\"_photo-chooser\" multiple=\"true\" :items=\"pictures\" :show.sync=\"showFileManager\" save-callback=\"choosedPictures\" context=\"fileManager\">\n\t</custom-modal>\n\n\t<custom-modal :id=\"id\" type=\"Club\" title=\"Багш сонгох\" title_en=\"Teacher chooser\" usage=\"_teacher-chooser\" :items=\"teachers\" :show.sync=\"showTeachers\" save-callback=\"choosedTeachers\" context=\"teachers\">\n\t</custom-modal>\n\n\t<form method=\"POST\" accept=\"\">\n\t\t<ul class=\"tabs\" data-tabs=\"\" id=\"example-tabs\">\n\t\t  <li class=\"tabs-title is-active\"><a href=\"#main\" aria-selected=\"true\">{{ $t(\"info\") }}</a></li>\n\t\t  <li class=\"tabs-title \"><a href=\"#photos\">{{ $t(\"photos\") }}</a></li>\n\t\t  <li class=\"tabs-title\"><a href=\"#teacher\">{{ $t(\"teacher\") }}</a></li>\n\t    </ul>\n\n\t  <div class=\"tabs-content\" data-tabs-content=\"example-tabs\">\n\t\t  <div class=\"tabs-panel is-active\" id=\"main\">\n\t\t    <div class=\"row\">\n\t\t\t    <div class=\"medium-6 columns\">\n\t\t\t      <label>{{ $t(\"name\") }}\n\t\t\t        <input type=\"text\" name=\"name\" v-model=\"name\" placeholder=\"\">\n\t\t\t      </label>\n\t\t\t    </div>\n\t\t\t    <div class=\"medium-6 columns\">\n\t\t\t      <label>{{ $t(\"description\") }}\n\t\t\t        <textarea type=\"text\" name=\"description\" v-model=\"description\" placeholder=\"\">\t\t\t        </textarea>\n\t\t\t      </label>\n\t\t\t    </div>\n\t\t\t</div>\n\t\t  </div>\n\t\t  <div class=\"tabs-panel\" id=\"teacher\">\n  \t  \t\t   <div class=\"picture-list\">\n\t\t\t  \t<div class=\"row small-up-2 medium-up-3 large-up-4\">\n\t\t\t  \t\t<br>\n\t\t\t\t  \t<div class=\"column\" v-for=\"teacher in teachers\">\n\t\t\t\t\t  \t<div class=\"figure\">\n\t\t                    <img v-bind:src=\"teacher.avatar_url\" alt=\"Jeffrey Way\" height=\"120\" width=\"120\" style=\"border-radius:4px;\">\n\t\t                    <div class=\"figcaption\">\n\t\t                        <a @click=\"deleteTeacher(teacher)\" class=\"btn-floating red\" style=\"left: 25%;\">\n\t\t                        \t<i class=\"fa fa-trash\"></i>\n\t\t                        </a>\n\t\t                    </div>\n\t\t                </div>\n\t\t\t\t  \t</div>\n\t\t\t\t  \t<div class=\"column\">\n\t\t\t\t\t  \t<div class=\"figure\">\n\t\t                    <div class=\"figcaption\" style=\"opacity:1;\">\n\t\t                        <a @click=\"showTeachers = true\" class=\"btn-floating red\" style=\"left: 25%;\">\n\t\t                        \t<i class=\"fa fa-plus\"></i>\n\t\t                        </a>\n\t\t                    </div>\n\t\t                </div>\n\t\t\t\t  \t</div>\n\t\t\t\t</div>\n\t\t\t  </div>\n\t\t  </div>\n\t\t  <div class=\"tabs-panel\" id=\"photos\">\n\t\t\t  <div class=\"picture-list\">\n\t\t\t  \t<div class=\"row small-up-2 medium-up-3 large-up-4\">\n\t\t\t  \t\t<br>\n\t\t\t\t  \t<div class=\"column\" v-for=\"photo in pictures\">\n\t\t\t\t\t  \t<div class=\"figure\">\n\t\t                    <img v-bind:src=\"photo.url\" alt=\"Jeffrey Way\" height=\"120\" width=\"120\" style=\"border-radius:4px;\">\n\t\t                    <div class=\"figcaption\">\n\t\t                        <a @click=\"deletePhoto(photo)\" class=\"btn-floating red\" style=\"left: 25%;\">\n\t\t                        \t<i class=\"fa fa-trash\"></i>\n\t\t                        </a>\n\t\t                    </div>\n\t\t                </div>\n\t\t\t\t  \t</div>\n\t\t\t\t  \t<div class=\"column\">\n\t\t\t\t\t  \t<div class=\"figure\">\n\t\t                    <div class=\"figcaption\" style=\"opacity:1;\">\n\t\t                        <a @click=\"triggerPictureBtn\" class=\"btn-floating red\" style=\"left: 25%;\">\n\t\t                        \t<i class=\"fa fa-plus\"></i>\n\t\t                        </a>\n\t\t                    </div>\n\t\t                </div>\n\t\t\t\t  \t</div>\n\t\t\t\t</div>\n\t\t\t  </div>\n\t\t  </div>\n\t  </div>\n\t</form>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -53806,7 +54790,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-2f8a7901", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":53,"vue-hot-reload-api":50}],66:[function(require,module,exports){
+},{"vue":54,"vue-hot-reload-api":50}],67:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
 var __vueify_style__ = __vueify_insert__.insert("/* line 3, stdin */\n.thumb-img {\n  position: absolute;\n  top: 5px;\n  left: 5px;\n  right: 5px;\n  bottom: 5px;\n  font-size: 1.2em; }\n\n/* line 12, stdin */\n.vue-waterfall-slot:hover .thumb-back,\n.vue-waterfall-slot:hover ~ .thumb-back {\n  color: #fff;\n  opacity: 1; }\n\n/* line 18, stdin */\n.thumb-back {\n  opacity: 0;\n  border-radius: 4px;\n  background-color: rgba(0, 0, 0, 0.7);\n  position: absolute;\n  top: 5px;\n  left: 5px;\n  right: 5px;\n  bottom: 5px;\n  font-size: 1.2em; }\n\n/* line 30, stdin */\n.thumb-check {\n  top: 50%;\n  left: 50%; }\n\n/* line 35, stdin */\n.thumb-back ul {\n  list-style-type: none; }\n\n/* line 39, stdin */\n.thumb-back ul li {\n  color: #000;\n  background-color: #fff;\n  border-radius: 2px; }\n\n/* line 45, stdin */\n.thumb-img img {\n  width: 100%;\n  height: 100%;\n  display: block;\n  border-radius: 4px; }\n\n/* line 52, stdin */\n.fileinput-button {\n  position: relative;\n  overflow: hidden;\n  display: inline-block; }\n\n/* line 58, stdin */\n.fileinput-button input {\n  position: absolute;\n  top: 0;\n  right: 0;\n  margin: 0;\n  opacity: 0;\n  -ms-filter: 'alpha(opacity=0)';\n  font-size: 200px !important;\n  direction: ltr;\n  cursor: pointer; }\n\n/* line 70, stdin */\n.progress {\n  height: 20px;\n  margin-bottom: 20px;\n  overflow: hidden;\n  background-color: #f5f5f5;\n  border-radius: 4px;\n  -webkit-box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);\n  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1); }\n\n/* line 80, stdin */\n.progress-bar-success {\n  background-color: #5fcf80 !important; }\n\n/* line 84, stdin */\n.progress-bar {\n  float: left;\n  width: 0;\n  height: 100%;\n  font-size: 12px;\n  line-height: 20px;\n  color: #fff;\n  text-align: center;\n  background-color: #428bca;\n  -webkit-box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.15);\n  box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.15);\n  -webkit-transition: width .6s ease;\n  -o-transition: width .6s ease;\n  transition: width .6s ease; }\n\n/* line 100, stdin */\n.item-move {\n  transition: all 0.5s cubic-bezier(0.55, 0, 0.1, 1);\n  -webkit-transition: all 0.5s cubic-bezier(0.55, 0, 0.1, 1); }\n\n/* line 105, stdin */\n.wf-transition {\n  transition: opacity .3s ease;\n  -webkit-transition: opacity .3s ease; }\n\n/* line 110, stdin */\n.wf-enter, .wf-leave {\n  opacity: 0; }\n")
 'use strict';
@@ -53962,10 +54946,29 @@ exports.default = {
 		'waterfall': Waterfall.waterfall,
 		'waterfall-slot': Waterfall.waterfallSlot,
 		CircleProgressBar: _CircleProgressBar2.default
+	},
+
+	locales: {
+		en: {
+			title: 'Add Training',
+			all: 'All',
+			training: 'Training',
+			plan: 'Plan',
+			profile: 'Profile',
+			selected: 'Selected'
+		},
+		mn: {
+			title: 'Хичээл нэмэх',
+			all: 'Бүгд',
+			training: 'Хичээл',
+			plan: 'Төлөвлөгөө',
+			profile: 'Нүүр зураг',
+			selected: 'Сонгосон'
+		}
 	}
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<form id=\"uploader\" method=\"POST\" action=\"/upload\" enctype=\"multipart/form-data\">\n\t<div class=\"row small-up-5 medium-up-5 large-up-5\">\n\t     <a @click=\"typeFilter('all')\" class=\"button success\">All</a>\n\t\t <a @click=\"typeFilter('training')\" class=\"button success\">Training</a>\n\t\t <a @click=\"typeFilter('plan')\" class=\"button success\">Plan</a>\n\t\t <a @click=\"typeFilter('profile')\" class=\"button success\">Profile</a>\n\t\t <a @click=\"typeFilter('selected')\" class=\"button success\">Selected</a>\n\t\t <span class=\"button success fileinput-button\">\n\t\t\t<i class=\"fa fa-cloud\"></i>\n\t\t\t<input id=\"fileupload\" type=\"file\" class=\"image button success\" name=\"image[]\" multiple=\"\">\n\t\t </span>\t\n\t\t <circle-progress-bar v-if=\"percentage\" :percentage=\"percentage\">\n\t\t \t\n\t\t </circle-progress-bar>\n\t</div>\n</form>\n\n<waterfall align=\"center\" :watch=\"filteredFiles\" :line-gap=\"200\" :min-line-gap=\"100\" :max-line-gap=\"220\" :single-max-width=\"300\">\n  <waterfall-slot v-for=\"file in filteredFiles\" width=\"160\" move-class=\"item-move\" transition=\"wf\" :height=\"file.ratio * 160\" :order=\"$index\">\n  \t<div class=\"thumb-img\">\n\t    <img v-bind:src=\"file.url\">\n\t</div>\n\t<div class=\"thumb-back\">\n\t\t<ul>\n\t\t\t<li v-for=\"tag in file.tags\">\n\t\t\t\t{{tag.name_en}}\n\t\t\t</li>\n\t\t</ul>\n\n\t\t<div class=\"thumb-check\">\n\t\t\t<a v-if=\"file.selected\" @click=\"toggle(file)\" class=\"success button\">\n\t\t\t\t<i class=\"fa fa-check\"></i>\n\t\t\t</a>\n\t\t\t<a v-else=\"\" @click=\"toggle(file)\" class=\"warning button\">\n\t\t\t\t<i class=\"fa fa-times\"></i>\n\t\t\t</a>\n\t\t</div>\n\t</div>\n  </waterfall-slot>\n</waterfall>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<form id=\"uploader\" method=\"POST\" action=\"/upload\" enctype=\"multipart/form-data\">\n\t<div class=\"row small-up-5 medium-up-5 large-up-5\">\n\t     <a @click=\"typeFilter('all')\" class=\"button success\">{{$t('all')}}</a>\n\t\t <a @click=\"typeFilter('training')\" class=\"button success\">{{$t('training')}}</a>\n\t\t <a @click=\"typeFilter('plan')\" class=\"button success\">{{$t('plan')}}</a>\n\t\t <a @click=\"typeFilter('profile')\" class=\"button success\">{{$t('profile')}}</a>\n\t\t <a @click=\"typeFilter('selected')\" class=\"button success\">{{$t('selected')}}</a>\n\t\t <span class=\"button success fileinput-button\">\n\t\t\t<i class=\"fa fa-cloud\"></i>\n\t\t\t<input id=\"fileupload\" type=\"file\" class=\"image button success\" name=\"image[]\" multiple=\"\">\n\t\t </span>\t\n\t\t <circle-progress-bar v-if=\"percentage\" :percentage=\"percentage\">\n\t\t \t\n\t\t </circle-progress-bar>\n\t</div>\n</form>\n\n<waterfall align=\"center\" :watch=\"filteredFiles\" :line-gap=\"200\" :min-line-gap=\"100\" :max-line-gap=\"220\" :single-max-width=\"300\">\n  <waterfall-slot v-for=\"file in filteredFiles\" width=\"160\" move-class=\"item-move\" transition=\"wf\" :height=\"file.ratio * 160\" :order=\"$index\">\n  \t<div class=\"thumb-img\">\n\t    <img v-bind:src=\"file.url\">\n\t</div>\n\t<div class=\"thumb-back\">\n\t\t<ul>\n\t\t\t<li v-for=\"tag in file.tags\">\n\t\t\t\t{{tag.name}}\n\t\t\t</li>\n\t\t</ul>\n\n\t\t<div class=\"thumb-check\">\n\t\t\t<a v-if=\"file.selected\" @click=\"toggle(file)\" class=\"success button\">\n\t\t\t\t<i class=\"fa fa-check\"></i>\n\t\t\t</a>\n\t\t\t<a v-else=\"\" @click=\"toggle(file)\" class=\"warning button\">\n\t\t\t\t<i class=\"fa fa-times\"></i>\n\t\t\t</a>\n\t\t</div>\n\t</div>\n  </waterfall-slot>\n</waterfall>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -53980,7 +54983,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-1b4eb012", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"../components/CircleProgressBar.vue":57,"vue":53,"vue-hot-reload-api":50,"vue-waterfall":52,"vueify/lib/insert-css":54}],67:[function(require,module,exports){
+},{"../components/CircleProgressBar.vue":58,"vue":54,"vue-hot-reload-api":50,"vue-waterfall":53,"vueify/lib/insert-css":55}],68:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
 var __vueify_style__ = __vueify_insert__.insert("\n\n.ft-teacher-img {\n\t-webkit-transition: box-shadow 200ms ease-in-out;\n\ttransition: box-shadow 200ms ease-in-out;\n    position: absolute;\n    top: 50%;\n    left: 0;\n    width: 32px;\n    height: 32px;\n    border-radius: 32px;\n    display: block;\n    margin-top: -16px;\n}\n\n.ft-teacher-column {\n\tcolor: #fff;\n}\t\n\n")
 'use strict';
@@ -53998,12 +55001,15 @@ exports.default = {
 	data: function data() {
 		return {
 			teachers: [],
-			filterBy: 'all'
+			filterBy: 'all',
+			lang_mn: [],
+			lang_en: []
 		};
 	},
 
 
 	created: function created() {
+		this.setLanguage();
 		this.getTeachers();
 	},
 
@@ -54045,6 +55051,20 @@ exports.default = {
 
 		toggle: function toggle(teacher) {
 			teacher.selected = !teacher.selected;
+		},
+
+		setLanguage: function setLanguage() {
+			this.lang_en = {
+				search: "search ..."
+			};
+
+			this.lang_mn = {
+				search: "хайх ..."
+			};
+		},
+
+		translate: function translate(value) {
+			return this.lang_mn[value];
 		}
 	},
 
@@ -54055,7 +55075,7 @@ exports.default = {
 	}
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"row\">\n    <input type=\"text\" name=\"\" placeholder=\"search ...\">\n</div>\n<div class=\"row small-up-3 medium-up-4 large-up-5\" style=\"background-color:#2d3339; border-radius: 4px;\">\n  \t<div class=\"column ft-teacher-column\" style=\"position: relative;\" v-for=\"teacher in teachers\">\n\t  \t<div style=\"padding-left: 44px;\">\n\t\t  \t<h4>{{teacher.username}}</h4>\n\t\t  \t<span>Tuvshinbat Gansukh</span>\n\n\t\t  \t<img class=\"ft-teacher-img\" v-bind:src=\"teacher.avatar_url\">\n\n\t\t  \t<a v-if=\"teacher.selected\" @click=\"toggle(teacher)\" class=\"success button\">\n\t\t\t\t<i class=\"fa fa-check\"></i>\n\t\t\t</a>\n\t\t\t<a v-else=\"\" @click=\"toggle(teacher)\" class=\"warning button\">\n\t\t\t\t<i class=\"fa fa-times\"></i>\n\t\t\t</a>\n\t\t</div>\n  \t</div>\n</div>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"row\">\n    <input type=\"text\" name=\"\" :placeholder=\"translate('search')\">\n</div>\n<div class=\"row small-up-3 medium-up-4 large-up-5\" style=\"background-color:#2d3339; border-radius: 4px;\">\n  \t<div class=\"column ft-teacher-column\" style=\"position: relative;\" v-for=\"teacher in teachers\">\n\t  \t<div style=\"padding-left: 44px;\">\n\t\t  \t<h4>{{teacher.username}}</h4>\n\t\t  \t<span>Tuvshinbat Gansukh</span>\n\n\t\t  \t<img class=\"ft-teacher-img\" v-bind:src=\"teacher.avatar_url\">\n\n\t\t  \t<a v-if=\"teacher.selected\" @click=\"toggle(teacher)\" class=\"success button\">\n\t\t\t\t<i class=\"fa fa-check\"></i>\n\t\t\t</a>\n\t\t\t<a v-else=\"\" @click=\"toggle(teacher)\" class=\"warning button\">\n\t\t\t\t<i class=\"fa fa-times\"></i>\n\t\t\t</a>\n\t\t</div>\n  \t</div>\n</div>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -54070,7 +55090,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-5a634b8a", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":53,"vue-hot-reload-api":50,"vueify/lib/insert-css":54}],68:[function(require,module,exports){
+},{"vue":54,"vue-hot-reload-api":50,"vueify/lib/insert-css":55}],69:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
 var __vueify_style__ = __vueify_insert__.insert("\n\n.tr-teacher-box {\n\toverflow: hidden;\n    padding: 10px 0;\n    color: #aecaec;\n}\n\n.training-text {\n\tpadding-left: 10px;\n    padding-top: 5px;\n}\n\n.training img {\n    height: 40px;\n    width: 40px;\n    border-radius: 150px;\n    -webkit-border-radius: 150px;\n    -moz-border-radius: 150px;\n}\n")
 'use strict';
@@ -54161,7 +55181,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-4d1a5842", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":53,"vue-hot-reload-api":50,"vueify/lib/insert-css":54}],69:[function(require,module,exports){
+},{"vue":54,"vue-hot-reload-api":50,"vueify/lib/insert-css":55}],70:[function(require,module,exports){
 'use strict';var _typeof=typeof Symbol==="function"&&typeof Symbol.iterator==="symbol"?function(obj){return typeof obj;}:function(obj){return obj&&typeof Symbol==="function"&&obj.constructor===Symbol?"symbol":typeof obj;};!function($){"use strict";var FOUNDATION_VERSION='6.2.3';// Global Foundation object
 // This is attached to the window, or used as a module for AMD/Browserify
 var Foundation={version:FOUNDATION_VERSION,/**
@@ -56573,7 +57593,7 @@ if(!_this.options.clickOpen){isFocus=false;}return false;}else{_this.show();}}).
    */// Window exports
 Foundation.plugin(Tooltip,'Tooltip');}(jQuery);
 
-},{}],70:[function(require,module,exports){
+},{}],71:[function(require,module,exports){
 'use strict';
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
@@ -57903,7 +58923,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
     });
 });
 
-},{"./vendor/jquery.ui.widget":79,"jquery":45}],71:[function(require,module,exports){
+},{"./vendor/jquery.ui.widget":81,"jquery":45}],72:[function(require,module,exports){
 'use strict';
 
 /**
@@ -58721,7 +59741,58 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
     };
 })(jQuery, 'tokenize');
 
-},{}],72:[function(require,module,exports){
+},{}],73:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = {
+  en: {
+    message: {
+      hello: 'the world',
+      hoge: 'hoge',
+      format: {
+        named: 'Hello {name}, how are you?',
+        list: 'Hello {0}, how are you?'
+      },
+      fallback: 'this is fallback'
+    },
+    'hello world': 'Hello World',
+    'Hello {0}': 'Hello {0}',
+    'continue-with-new-account': 'continue with new account',
+    underscore: '{hello_msg} world',
+    plurals: {
+      car: 'car | cars',
+      format: {
+        named: 'Hello {name}, how are you? | Hi {name}, you look fine',
+        list: 'Hello {0}, how are you? | Hi {0}, you look fine'
+      },
+      fallback: 'this is fallback | this is a plural fallback'
+    }
+  },
+  ja: {
+    message: {
+      hello: 'ザ・ワールド',
+      hoge: 'ほげ',
+      format: {
+        named: 'こんにちは {name}, ごきげんいかが？',
+        list: 'こんにちは {0}, ごきげんいかが？'
+      },
+      fallback1: 'これはフォールバック'
+    },
+    plurals: {
+      car: 'ザ・ワールド | これはフォールバック',
+      format: {
+        named: 'こんにちは {name}, ごきげんいかが？ | こんにちは {name}, ごきげんいかが？',
+        list: 'こんにちは {0}, ごきげんいかが？| こんにちは {0}, ごきげんいかが？'
+      },
+      fallback: 'これはフォールバック | ザ・ワールド'
+    }
+  }
+};
+
+},{}],74:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
 var __vueify_style__ = __vueify_insert__.insert("\n")
 "use strict";
@@ -58760,7 +59831,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-48e0c687", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":53,"vue-hot-reload-api":50,"vueify/lib/insert-css":54}],73:[function(require,module,exports){
+},{"vue":54,"vue-hot-reload-api":50,"vueify/lib/insert-css":55}],75:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
 var __vueify_style__ = __vueify_insert__.insert("/* line 12, stdin */\n.card {\n  background: #FFFFFF;\n  border-radius: 4px;\n  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);\n  overflow: hidden;\n  width: 300px;\n  height: 100%;\n  margin-bottom: 10px; }\n  /* line 21, stdin */\n  .card-header {\n    position: relative;\n    background: #303841;\n    height: 200px;\n    text-align: center;\n    overflow: hidden; }\n    /* line 28, stdin */\n    .card-header__avatar {\n      background: #303841;\n      background-position: center 30%;\n      background-size: 100%;\n      height: 100%;\n      width: 100%; }\n    /* line 36, stdin */\n    .card-header__follow {\n      position: absolute;\n      top: 20px;\n      right: 20px;\n      background: #FFFFFF;\n      border-radius: 2px;\n      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);\n      padding: 6px 10px;\n      color: #333333;\n      font-size: 10px;\n      font-weight: 600;\n      line-height: normal;\n      text-decoration: none;\n      text-transform: uppercase; }\n  /* line 53, stdin */\n  .card-content {\n    text-align: center;\n    padding: 30px 20px; }\n    /* line 57, stdin */\n    .card-content__username {\n      margin: 0 0 10px;\n      color: #333333;\n      font-size: 14px;\n      font-weight: 600;\n      text-transform: uppercase; }\n      /* line 64, stdin */\n      .card-content__username .badge {\n        display: inline-block;\n        background: #FCD000;\n        border-radius: 2px;\n        margin: 0 10px 0;\n        padding: 4px;\n        color: #333333;\n        font-size: 10px;\n        font-weight: 600;\n        vertical-align: middle; }\n    /* line 77, stdin */\n    .card-content__bio {\n      color: #666666;\n      font-size: 12px; }\n  /* line 83, stdin */\n  .card-footer {\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-orient: horizontal;\n    -webkit-box-direction: normal;\n        -ms-flex-direction: row;\n            flex-direction: row;\n    -ms-flex-wrap: nowrap;\n        flex-wrap: nowrap;\n    -webkit-box-pack: justify;\n        -ms-flex-pack: justify;\n            justify-content: space-between;\n    background: #F3F3F3;\n    padding: 15px 40px;\n    color: #333333;\n    font-size: 14px;\n    font-weight: 600;\n    text-align: center; }\n    /* line 95, stdin */\n    .card-footer .ft-label {\n      display: block;\n      margin: 4px 0 0;\n      color: #666666;\n      font-size: 10px;\n      font-weight: 400; }\n\n/* line 105, stdin */\n.code {\n  background: rgba(0, 0, 0, 0.1);\n  max-width: 600px;\n  border-radius: 2px;\n  margin: 40px auto 100px;\n  font-family: monospace;\n  overflow: hidden;\n  overflow-x: auto; }\n  /* line 114, stdin */\n  .code:before {\n    content: 'HTML Code';\n    display: block;\n    padding: 20px 20px 0;\n    color: #333333;\n    font-weight: 600; }\n")
 'use strict';
@@ -58797,7 +59868,7 @@ exports.default = {
 	}
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n\t<div>\n\t\t<h3>Club Members</h3>\n\t\t<div class=\"row small-up-3 medium-up-4 large-up-5\">\n\t\t\t<div v-for=\"member in members\">\n\t\t\t\t<div class=\"card column\">\n\t\t\t\t    <!-- Header -->\n\t\t\t\t    <div class=\"card-header\">\n\t\t\t\t      <div class=\"card-header__avatar\" :style=\"{'background-image': 'url(' + member.avatar_url + ')'}\"></div><a href=\"http://codepen.io/andytran\" class=\"card-header__follow\">Follow</a>\n\t\t\t\t    </div>\n\t\t\t\t    <!-- Content-->\n\t\t\t\t    <div class=\"card-content\">\n\t\t\t\t      <div class=\"card-content__username\">{{member.username}}\n\t\t\t\t      <span class=\"badge\">{{member.pivot.type == 1 ? 'Manager' : 'Trainer'}}</span></div>\n\t\t\t\t      <div class=\"card-content__bio\">Always looking for new knowledge :D.</div>\n\t\t\t\t    </div>\n\t\t\t\t    <!-- Footer-->\n\t\t\t\t    <div class=\"card-footer\">\n\t\t\t\t      <div class=\"card-footer__pens\"> <span>84</span>\n\t\t\t\t        <div class=\"ft-label\">Pens</div>\n\t\t\t\t      </div>\n\t\t\t\t      <div class=\"card-footer__followers\"> <span>986</span>\n\t\t\t\t        <div class=\"ft-label\">Followers</div>\n\t\t\t\t      </div>\n\t\t\t\t      <div class=\"card-footer__following\"> <span>33</span>\n\t\t\t\t        <div class=\"ft-label\">Following</div>\n\t\t\t\t      </div>\n\t\t\t\t    </div>\n\t\t\t    </div>\n\t\t\t</div>\n\t\t</div>\n\t<div>\n</div></div>"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n  <div class=\"row small-up-3\">\n    <div class=\"column\">\n      <a class=\"button success\">Teacher</a>\n      <a class=\"button success\">Trainer</a>\n    </div>\n  </div>\n\t<div>\n\t\t<h3>Club Members</h3>\n\t\t<div class=\"row small-up-3 medium-up-4 large-up-5\">\n\t\t\t<div v-for=\"member in members\">\n\t\t\t\t<div class=\"card column\">\n\t\t\t\t    <!-- Header -->\n\t\t\t\t    <div class=\"card-header\">\n\t\t\t\t      <div class=\"card-header__avatar\" :style=\"{'background-image': 'url(' + member.avatar_url + ')'}\"></div><a href=\"http://codepen.io/andytran\" class=\"card-header__follow\">Follow</a>\n\t\t\t\t    </div>\n\t\t\t\t    <!-- Content-->\n\t\t\t\t    <div class=\"card-content\">\n\t\t\t\t      <div class=\"card-content__username\">{{member.username}}\n\t\t\t\t      <span class=\"badge\">{{member.pivot.type == 1 ? 'Manager' : 'Trainer'}}</span></div>\n\t\t\t\t      <div class=\"card-content__bio\">Always looking for new knowledge :D.</div>\n\t\t\t\t    </div>\n\t\t\t\t    <!-- Footer-->\n\t\t\t\t    <div class=\"card-footer\">\n\t\t\t\t      <div class=\"card-footer__pens\"> <span>84</span>\n\t\t\t\t        <div class=\"ft-label\">Pens</div>\n\t\t\t\t      </div>\n\t\t\t\t      <div class=\"card-footer__followers\"> <span>986</span>\n\t\t\t\t        <div class=\"ft-label\">Followers</div>\n\t\t\t\t      </div>\n\t\t\t\t      <div class=\"card-footer__following\"> <span>33</span>\n\t\t\t\t        <div class=\"ft-label\">Following</div>\n\t\t\t\t      </div>\n\t\t\t\t    </div>\n\t\t\t    </div>\n\t\t\t</div>\n\t\t</div>\n\t<div>\n</div></div>"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -58812,7 +59883,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-d86a1568", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":53,"vue-hot-reload-api":50,"vueify/lib/insert-css":54}],74:[function(require,module,exports){
+},{"vue":54,"vue-hot-reload-api":50,"vueify/lib/insert-css":55}],76:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
 var __vueify_style__ = __vueify_insert__.insert("\n")
 'use strict';
@@ -58871,7 +59942,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-5a330106", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":53,"vue-hot-reload-api":50,"vueify/lib/insert-css":54}],75:[function(require,module,exports){
+},{"vue":54,"vue-hot-reload-api":50,"vueify/lib/insert-css":55}],77:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
 var __vueify_style__ = __vueify_insert__.insert("\n")
 'use strict';
@@ -58950,7 +60021,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-188ca5a1", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":53,"vue-hot-reload-api":50,"vueify/lib/insert-css":54}],76:[function(require,module,exports){
+},{"vue":54,"vue-hot-reload-api":50,"vueify/lib/insert-css":55}],78:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
 var __vueify_style__ = __vueify_insert__.insert("\n")
 'use strict';
@@ -59016,7 +60087,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-e0b27152", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":53,"vue-hot-reload-api":50,"vueify/lib/insert-css":54}],77:[function(require,module,exports){
+},{"vue":54,"vue-hot-reload-api":50,"vueify/lib/insert-css":55}],79:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
 var __vueify_style__ = __vueify_insert__.insert("@charset \"UTF-8\";\n/* line 3, stdin */\n.picture-list {\n  background-color: #5fcf80;\n  border-radius: 4px; }\n\n/* line 8, stdin */\n.add-button {\n  height: 120px;\n  width: 120px;\n  background-color: #fff;\n  border-radius: 4px;\n  border: 1px solid #53BBB4; }\n\n/* line 16, stdin */\n.figure {\n  margin: 0 10px 10px 0;\n  height: 120px;\n  width: 120px;\n  position: relative; }\n  /* line 23, stdin */\n  .figure:hover .figcaption {\n    opacity: 1; }\n\n/* line 29, stdin */\n.figcaption {\n  border-radius: 4px;\n  background-color: rgba(58, 52, 42, 0.7);\n  -webkit-backface-visibility: hidden;\n  backface-visibility: hidden;\n  position: absolute;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n  color: #fff;\n  padding: 0 25px;\n  display: -webkit-flex;\n  display: -ms-flexbox;\n  display: -webkit-box;\n  display: flex;\n  -webkit-align-items: center;\n  -ms-flex-align: center;\n  -webkit-box-align: center;\n          align-items: center;\n  -webkit-transition: all 0.25s;\n  transition: all 0.25s;\n  opacity: 0; }\n\n/* line 53, stdin */\n.gh-search-submit {\n  opacity: 0.75;\n  z-index: 9999;\n  background-image: url(\"data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgi…KCUM1LjE1NCwxMi44NTUsMi44MjQsMTAuNTI3LDIuODI0LDcuNjY2eiIvPg0KPC9zdmc+DQo=\"); }\n\n/* line 59, stdin */\n.gh-search-reset.show {\n  cursor: pointer;\n  z-index: 9999;\n  opacity: 1;\n  -webkit-transform: translateX(0px);\n  -ms-transform: translateX(0px);\n  transform: translateX(0px);\n  -webkit-transition-delay: .2s;\n  transition-delay: .2s; }\n")
 'use strict';
@@ -59080,7 +60151,7 @@ exports.default = {
 	}
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n\t<div>\n\t\t<h3>Club Training</h3>\n\t\t<p><a @click=\"showAddTraining = true\" class=\"button success\">\n\t\t\t\t<i class=\"fa fa-pencil-square-o\"></i>\n\t\t   </a></p>\n\n\t\t<custom-modal :id=\"clubid\" type=\"Club\" title=\"Add Training\" usage=\"_add-training\" :show.sync=\"showAddTraining\" save-callback=\"saveTraining\" validateable=\"Y\" context=\"AddTraining\">\n\t\t</custom-modal>\n\n\t\t<label>Search Training\n        \t<input type=\"text\" placeholder=\"search ...\">\n        </label>\n\n\t\t<ft-training :item=\"train\" v-for=\"train in training\">\n\t\t\t\n\t\t</ft-training>\n\t\t\n\t\t<h3 v-else=\"\">There is no training registered !</h3>\n\t<div>\n</div></div>"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n\t<div>\n\t\t<h3>Club Training</h3>\n\t\t<p><a @click=\"showAddTraining = true\" class=\"button success\">\n\t\t\t\t<i class=\"fa fa-pencil-square-o\"></i>\n\t\t   </a></p>\n\n\t\t<custom-modal :id=\"clubid\" type=\"Club\" title=\"Хичээл нэмэх\" title_en=\"Add Training\" usage=\"_add-training\" :show.sync=\"showAddTraining\" save-callback=\"saveTraining\" validateable=\"Y\" context=\"AddTraining\">\n\t\t</custom-modal>\n\n\t\t<label>Search Training\n        \t<input type=\"text\" placeholder=\"search ...\">\n        </label>\n\n\t\t<ft-training :item=\"train\" v-for=\"train in training\">\n\t\t\t\n\t\t</ft-training>\n\t\t\n\t\t<h3 v-else=\"\">There is no training registered !</h3>\n\t<div>\n</div></div>"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -59095,7 +60166,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-0ac6d3b7", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"../.././components/FtTraining.vue":61,"vue":53,"vue-hot-reload-api":50,"vueify/lib/insert-css":54}],78:[function(require,module,exports){
+},{"../.././components/FtTraining.vue":62,"vue":54,"vue-hot-reload-api":50,"vueify/lib/insert-css":55}],80:[function(require,module,exports){
 'use strict';
 
 module.exports = function () {
@@ -59132,7 +60203,7 @@ module.exports = function () {
     };
 }();
 
-},{}],79:[function(require,module,exports){
+},{}],81:[function(require,module,exports){
 "use strict";
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
@@ -59680,7 +60751,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 	var widget = $.widget;
 });
 
-},{"jquery":45}],80:[function(require,module,exports){
+},{"jquery":45}],82:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -59781,7 +60852,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-149d772a", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{".././components/autocomplete.vue":63,".././menus/manager/ClubDashboard.vue":72,".././menus/manager/ClubMembers.vue":73,".././menus/manager/ClubPlan.vue":74,".././menus/manager/ClubRequests.vue":75,".././menus/manager/ClubTemplate.vue":76,".././menus/manager/ClubTraining.vue":77,"vue":53,"vue-hot-reload-api":50}],81:[function(require,module,exports){
+},{".././components/autocomplete.vue":64,".././menus/manager/ClubDashboard.vue":74,".././menus/manager/ClubMembers.vue":75,".././menus/manager/ClubPlan.vue":76,".././menus/manager/ClubRequests.vue":77,".././menus/manager/ClubTemplate.vue":78,".././menus/manager/ClubTraining.vue":79,"vue":54,"vue-hot-reload-api":50}],83:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -59829,7 +60900,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-334daf3c", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":53,"vue-hot-reload-api":50}],82:[function(require,module,exports){
+},{"vue":54,"vue-hot-reload-api":50}],84:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -59888,7 +60959,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-7b0768ba", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":53,"vue-hot-reload-api":50}],83:[function(require,module,exports){
+},{"vue":54,"vue-hot-reload-api":50}],85:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -59936,7 +61007,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-4f51e179", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":53,"vue-hot-reload-api":50}],84:[function(require,module,exports){
+},{"vue":54,"vue-hot-reload-api":50}],86:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -60201,7 +61272,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-333b9032", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{".././components/SearchTooltip.vue":62,"vue":53,"vue-hot-reload-api":50}],85:[function(require,module,exports){
+},{".././components/SearchTooltip.vue":63,"vue":54,"vue-hot-reload-api":50}],87:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -60241,7 +61312,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-56035bfa", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":53,"vue-hot-reload-api":50}],86:[function(require,module,exports){
+},{"vue":54,"vue-hot-reload-api":50}],88:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
 var __vueify_style__ = __vueify_insert__.insert("\n\n")
 'use strict';
@@ -60293,7 +61364,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-67feff5f", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":53,"vue-hot-reload-api":50,"vueify/lib/insert-css":54}],87:[function(require,module,exports){
+},{"vue":54,"vue-hot-reload-api":50,"vueify/lib/insert-css":55}],89:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
 var __vueify_style__ = __vueify_insert__.insert("\n\n")
 'use strict';
@@ -60345,7 +61416,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-46b2f7d7", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":53,"vue-hot-reload-api":50,"vueify/lib/insert-css":54}],88:[function(require,module,exports){
+},{"vue":54,"vue-hot-reload-api":50,"vueify/lib/insert-css":55}],90:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
 var __vueify_style__ = __vueify_insert__.insert("\n\n")
 'use strict';
@@ -60359,6 +61430,7 @@ exports.default = {
 	},
 
 	created: function created() {
+		this.setLanguage();
 		this.getClubHeaderContent(this.clubid);
 	},
 
@@ -60367,7 +61439,9 @@ exports.default = {
 			club: [],
 			follow_status: '',
 			teacher_status: '',
-			request_status: ''
+			request_status: '',
+			lang_mn: [],
+			lang_eng: []
 		};
 	},
 
@@ -60406,11 +61480,37 @@ exports.default = {
 			this.$http.get(this.$env.get('APP_URI') + 'api/club/' + this.club.id + '/request?type=1').then(function (response) {
 				_this4.teacher_status = response.data.type;
 			}, function (response) {});
+		},
+
+		setLanguage: function setLanguage() {
+			this.lang_en = {
+				teacher: 'Teacher request',
+				unteacher: 'Sent',
+				follow: 'Follow',
+				unfollow: 'Followed',
+				trainer: 'Request',
+				untrainer: 'Un Request',
+				manager: 'Manager'
+			};
+
+			this.lang_mn = {
+				teacher: 'Багш болох',
+				unteacher: 'Багш болох хүсэлт илгээсэн',
+				follow: 'Дагах',
+				unfollow: 'Дагсан',
+				trainer: 'Элсэх',
+				untrainer: 'Элсэх хүсэлт илгээсэн',
+				manager: 'Менежер'
+			};
+		},
+
+		getText: function getText(value) {
+			return this.lang_mn[value];
 		}
 	}
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"top-bar hw-default-top-bar\">\n  <div class=\"top-bar-left\">\n    <ul class=\"menu \">\n      <li class=\"menu-text hw-default-logo\">\n      \t{{club.short_name}}</li>\n      <li><a href=\"#\">{{club.short_name}}</a></li>\n      <li><a href=\"#\">{{club.full_name}}</a></li>\n      <li><a href=\"#\">{{club.description}}</a></li>\n      <li><a href=\"#\">Холбоо барих</a></li>\n    </ul>\n  </div>\n  <div class=\"top-bar-right\">\n    <ul class=\"menu\">\n      <li><a @click=\"sentTeacherRequest\" class=\"button btn-fb btn-trans\">{{teacher_status}}</a></li>\n      <li><a @click=\"sentFollow\" class=\"button btn-fb btn-trans\">{{follow_status}}</a></li>\n      <li><a @click=\"sentTrainerRequest\" class=\"button btn-fb btn-trans\">{{request_status}}</a></li>\n    </ul>\n  </div>\n</div>\n<div class=\"parallax-container\">\n  <div class=\"parallax-content\">\n    <div class=\"parallax-back\">\n      <!-- <div class=\"animated-word\">\n        <h1>Үзүүлэлт</h1>\n        <p>Тайлбар Тайлбар Тайлбар Тайлбар Тайлбар Тайлбар Тайлбар Тайлбар Тайлбар Тайлбар Тайлбар Тайлбар Тайлбар Тайлбар </p>\n      </div> -->\n      <p>Гоё уриа үг</p>\n    </div>\n  </div>\n</div>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"top-bar hw-default-top-bar\">\n  <div class=\"top-bar-left\">\n    <ul class=\"menu \">\n      <li class=\"menu-text hw-default-logo\">\n      \t{{club.short_name}}</li>\n      <li><a href=\"#\">{{club.short_name}}</a></li>\n      <li><a href=\"#\">{{club.full_name}}</a></li>\n      <li><a href=\"#\">{{club.description}}</a></li>\n      <li><a href=\"#\">Холбоо барих</a></li>\n    </ul>\n  </div>\n  <div class=\"top-bar-right\">\n  \t{{ trans('passwords.user') }}\n    <ul class=\"menu\">\n      <li><a @click=\"sentTeacherRequest\" class=\"button btn-fb btn-trans\">{{getText(teacher_status)}}</a></li>\n      <li><a @click=\"sentFollow\" class=\"button btn-fb btn-trans\">{{getText(follow_status)}}</a></li>\n      <li><a @click=\"sentTrainerRequest\" class=\"button btn-fb btn-trans\">{{getText(request_status)}}</a></li>\n    </ul>\n  </div>\n</div>\n<div class=\"parallax-container\">\n  <div class=\"parallax-content\">\n    <div class=\"parallax-back\">\n      <!-- <div class=\"animated-word\">\n        <h1>Үзүүлэлт</h1>\n        <p>Тайлбар Тайлбар Тайлбар Тайлбар Тайлбар Тайлбар Тайлбар Тайлбар Тайлбар Тайлбар Тайлбар Тайлбар Тайлбар Тайлбар </p>\n      </div> -->\n      <p>Гоё уриа үг</p>\n    </div>\n  </div>\n</div>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -60425,6 +61525,6 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-41cbb6ee", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":53,"vue-hot-reload-api":50,"vueify/lib/insert-css":54}]},{},[55]);
+},{"vue":54,"vue-hot-reload-api":50,"vueify/lib/insert-css":55}]},{},[56]);
 
 //# sourceMappingURL=app.js.map

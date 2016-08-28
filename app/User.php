@@ -149,11 +149,11 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
         if($this->hasClubRequest($club->id))
         {
             $this->clubRequests()->detach($club->id);
-            return Response::json(['result' => 'Success', 'type' => 'APPROVE']);
+            return Response::json(['result' => 'Success', 'type' => $type == 2 ? 'teacher' : 'trainer']);
         }
 
         $this->clubRequests()->attach($club->id, ['type' => $type, 'description' => $description]);
-        return Response::json(['result' => 'Success', 'type' => 'EXIST']);
+        return Response::json(['result' => 'Success', 'type' => $type == 2 ? 'unteacher' : 'untrainer']);
     }
 
     public function toggleClubFollow($club)
@@ -166,11 +166,11 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
         if($follow->exists) 
         {
             $this->followedClubs()->detach($club->id);
-            return Response::json(['result' => 'Success', 'type' => 'APPROVE']);
+            return Response::json(['result' => 'Success', 'type' => 'follow']);
         } 
 
         $this->followedClubs()->attach($club->id);
-        return Response::json(['result' => 'Success', 'type' => 'FOLLOWER']);
+        return Response::json(['result' => 'Success', 'type' => 'unfollow']);
     }
 
     public function joinClub($club, $type)

@@ -27,6 +27,7 @@ import TrainingDefault from './widgets/content/TrainingDefault.vue';
 
 import CustomModal from './components/CustomModal.vue';
 import CustomToast from './components/CustomToast.vue';
+import locales from './lang/locales';
 
 import Tools from './settings/Tools.js';
 import _env from '../../../env.js';
@@ -41,12 +42,21 @@ Vue.use(Tools);
 
 Vue.http.headers.common['X-CSRF-TOKEN'] = document.querySelector('#_token').getAttribute('value');
 
+
+Vue.config.lang = 'en';
+
+Object.keys(locales).forEach(function (lang) {
+  Vue.locale(lang, locales[lang])
+})
+
 const app = new Vue({
 	el : 'body',
 
 	created: function () {
+		/*Vue.config.lang = 'en';*/
 		this.$env.set('APP_ENV', 'Development');
 		this.$env.set('APP_URI', 'http://localhost/');
+		this.$env.set('APP_LANG', 'en');
 	},
 
 	ready : function () {

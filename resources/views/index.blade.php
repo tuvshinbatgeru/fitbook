@@ -26,7 +26,6 @@
 	</div>
 </header>
 
-
 <br>
 <div class="row column">
 <h4 style="margin: 0;" class="text-center">BREAKING NEWS</h4>
@@ -142,4 +141,8 @@
             <li><a class="btn-floating blue" style="transform: scaleY(0.4) scaleX(0.4) translateY(40px) translateX(0px); opacity: 0;"><i class="fa fa-music"></i></a></li>
           </ul>
   </div>
+
+  <p>@{{ $t("message.hello") }}</p>
+  <p>@{{ $t("message.format.named") }}</p>
+  
 @stop

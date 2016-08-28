@@ -11,10 +11,11 @@
 	    </ul>
 	  </div>
 	  <div class="top-bar-right">
+	  	{{ trans('passwords.user') }}
 	    <ul class="menu">
-	      <li><a @click="sentTeacherRequest" class="button btn-fb btn-trans">{{teacher_status}}</a></li>
-	      <li><a @click="sentFollow" class="button btn-fb btn-trans">{{follow_status}}</a></li>
-	      <li><a @click="sentTrainerRequest" class="button btn-fb btn-trans">{{request_status}}</a></li>
+	      <li><a @click="sentTeacherRequest" class="button btn-fb btn-trans">{{getText(teacher_status)}}</a></li>
+	      <li><a @click="sentFollow" class="button btn-fb btn-trans">{{getText(follow_status)}}</a></li>
+	      <li><a @click="sentTrainerRequest" class="button btn-fb btn-trans">{{getText(request_status)}}</a></li>
 	    </ul>
 	  </div>
 	</div>
@@ -38,6 +39,7 @@
 		},
 
 		created: function () {
+			this.setLanguage();
 		    this.getClubHeaderContent(this.clubid);
 		},
 
@@ -47,6 +49,8 @@
 				follow_status : '',
 				teacher_status : '',
 				request_status : '',
+				lang_mn : [],
+				lang_eng : [],
 			}
 		},
 
@@ -85,6 +89,32 @@
 			    }, (response) => {
 
 			    });
+			},
+
+			setLanguage : function () {
+				this.lang_en = {
+			    	teacher : 'Teacher request',
+			    	unteacher : 'Sent',
+			    	follow : 'Follow',
+			    	unfollow : 'Followed',
+			    	trainer : 'Request',
+			    	untrainer : 'Un Request',
+			    	manager : 'Manager',
+			    };
+
+			    this.lang_mn = {
+			    	teacher : 'Багш болох',
+			    	unteacher : 'Багш болох хүсэлт илгээсэн',
+			    	follow : 'Дагах',
+			    	unfollow : 'Дагсан',
+			    	trainer : 'Элсэх',
+			    	untrainer : 'Элсэх хүсэлт илгээсэн',
+			    	manager : 'Менежер',
+			    };
+			},
+
+			getText : function (value) {
+				return this.lang_mn[value];
 			}
 		}
 	}

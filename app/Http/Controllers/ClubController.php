@@ -16,9 +16,9 @@ class ClubController extends Controller
     	{
     		return Response::json ([
     				'club' => $club,
-    				'teacher_status' => 'APPROVE',
-    				'follow_status' => 'APPROVE',
-    				'request_status' => 'APPROVE'
+    				'teacher_status' => 'teacher',
+    				'follow_status' => 'follow',
+    				'request_status' => 'trainer'
     			]);
     	}
 				
@@ -26,22 +26,22 @@ class ClubController extends Controller
 
     	if($member)
     	{
-    		$follow_status = 'FOLLOWER';
-    		$teacher_status = 'DENIED';
+    		$follow_status = 'unfollow';
+    		$teacher_status = 'deteacher';
 
-    		if(self::isManager($member)) $request_status = 'MANAGER';
-    		if(self::isTeacher($member)) $request_status = 'TEACHER';
+    		if(self::isManager($member)) $request_status = 'manager';
+    		if(self::isTeacher($member)) $request_status = 'teacher';
     		if(self::isMember($member))
     		{
-    			$request_status = 'MEMBER';
-    			$teacher_status = 'APPROVE';
+    			$request_status = 'member';
+    			$teacher_status = 'teacher';
     		}
     	}
     	else
     	{
-	    	$request_status = Auth::user()->hasClubRequest($club->id) ? "EXIST" : "APPROVE";
-	    	$follow_status = Auth::user()->isFollowed($club->id) ? "FOLLOWER" : "APPROVE";
-	    	$teacher_status = "APPROVE";
+	    	$request_status = Auth::user()->hasClubRequest($club->id) ? "untrainer" : "trainer";
+	    	$follow_status = Auth::user()->isFollowed($club->id) ? "unfollow" : "follow";
+	    	$teacher_status = "teacher";
     	}
 
     	return Response::json ([

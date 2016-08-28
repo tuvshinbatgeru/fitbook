@@ -13,6 +13,7 @@ require('./jquery.fileupload');
 require('./foundation');
 require('./jquery.tokenize');
 
+
 /**
  * Vue is a modern JavaScript library for building interactive web interfaces
  * using reactive data binding and reusable components. Vue's API is clean
@@ -21,6 +22,7 @@ require('./jquery.tokenize');
 
 window.Vue = require('vue');
 require('vue-resource');
+Vue.use(require('vue-i18n'));
 
 
 /**

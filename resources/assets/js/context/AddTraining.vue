@@ -2,7 +2,8 @@
 	<custom-modal 
 		:id = "id" 
 		type = "User"
-		title ="Photo chooser" 
+		title_en = "Photo chooser"
+		title ="Зураг сонгох" 
 		usage = "_photo-chooser" 
 		multiple = "true"
 		:items = "pictures"
@@ -14,7 +15,8 @@
 	<custom-modal
 		:id = "id"
 		type = "Club"
-		title = "Teachers"
+		title = "Багш сонгох"
+		title_en = "Teacher chooser"
 		usage = "_teacher-chooser"
 		:items = "teachers"
 		:show.sync = "showTeachers"
@@ -24,22 +26,22 @@
 
 	<form method="POST" accept="">
 		<ul class="tabs" data-tabs id="example-tabs">
-		  <li class="tabs-title is-active"><a href="#main" aria-selected="true">Info</a></li>
-		  <li class="tabs-title "><a href="#photos">Photos</a></li>
-		  <li class="tabs-title"><a href="#teacher">Teacher</a></li>
+		  <li class="tabs-title is-active"><a href="#main" aria-selected="true">{{ $t("info") }}</a></li>
+		  <li class="tabs-title "><a href="#photos">{{ $t("photos") }}</a></li>
+		  <li class="tabs-title"><a href="#teacher">{{ $t("teacher") }}</a></li>
 	    </ul>
 
 	  <div class="tabs-content" data-tabs-content="example-tabs">
 		  <div class="tabs-panel is-active" id="main">
 		    <div class="row">
 			    <div class="medium-6 columns">
-			      <label>Training name
-			        <input type="text" name="name" v-model="name" placeholder="fill training name">
+			      <label>{{ $t("name") }}
+			        <input type="text" name="name" v-model="name" placeholder="">
 			      </label>
 			    </div>
 			    <div class="medium-6 columns">
-			      <label>Description
-			        <textarea type="text" name="description" v-model="description" placeholder="Description ...">
+			      <label>{{ $t("description") }}
+			        <textarea type="text" name="description" v-model="description" placeholder="">
 			        </textarea>
 			      </label>
 			    </div>
@@ -183,6 +185,27 @@
 		},
 
 		components : {
-		}
+		},
+
+		locales: {
+	        en: { 
+	        	info : 'Info',
+	    		photos : 'Add photos',
+	    		teacher : 'Add teachers',
+	    		name : 'Training name',
+	    		description : 'Description',
+	    		name_watermark : 'name ...',
+	    		description_watermark : 'description ...',
+	    	},
+	    	mn : {
+	    		info : 'Инфо',
+	    		photos : 'Зураг оруулах',
+	    		teacher : 'Багш сонгох',
+	    		name : 'Хичээлийн нэр',
+	    		description : 'Тайлбар',
+	    		name_watermark : 'нэр ...',
+	    		description_watermark : 'тайлбар ...',
+	    	},
+	    }
 	}
 </script>

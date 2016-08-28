@@ -1,4 +1,10 @@
 <template>
+  <div class="row small-up-3">
+    <div class="column">
+      <a class="button success">Teacher</a>
+      <a class="button success">Trainer</a>
+    </div>
+  </div>
 	<div>
 		<h3>Club Members</h3>
 		<div class="row small-up-3 medium-up-4 large-up-5">

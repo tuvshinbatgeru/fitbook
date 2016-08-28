@@ -1,6 +1,6 @@
 <template>
 	<div class="row">
-	    <input type="text" name="" placeholder="search ...">
+	    <input type="text" name="" :placeholder="translate('search')">
 	</div>
 	<div class="row small-up-3 medium-up-4 large-up-5" style="background-color:#2d3339; border-radius: 4px;">
 	  	<div class="column ft-teacher-column" style="position: relative;" v-for="teacher in teachers">
@@ -33,10 +33,13 @@
 			return {
 				teachers : [],
 				filterBy : 'all',
+				lang_mn : [],
+				lang_en : [],
 			}			
 		},
 
 		created : function () {
+			this.setLanguage();
 			this.getTeachers();
 		},
 
@@ -84,6 +87,20 @@
 			toggle : function (teacher) {
 				teacher.selected = !teacher.selected;
 			},
+
+			setLanguage : function () {
+				this.lang_en = {
+					search : "search ...",
+				};
+
+				this.lang_mn = {
+					search : "хайх ...",
+				}
+			},
+
+			translate : function (value) {
+				return this.lang_mn[value];
+			}
 		},
 
 		computed : {

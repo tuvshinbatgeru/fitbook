@@ -1,11 +1,11 @@
 <template>
 	<form id="uploader" method="POST" action="/upload" enctype="multipart/form-data">
 		<div class="row small-up-5 medium-up-5 large-up-5" >
-		     <a @click="typeFilter('all')" class="button success">All</a>
-			 <a @click="typeFilter('training')" class="button success">Training</a>
-			 <a @click="typeFilter('plan')" class="button success">Plan</a>
-			 <a @click="typeFilter('profile')" class="button success">Profile</a>
-			 <a @click="typeFilter('selected')" class="button success">Selected</a>
+		     <a @click="typeFilter('all')" class="button success">{{$t('all')}}</a>
+			 <a @click="typeFilter('training')" class="button success">{{$t('training')}}</a>
+			 <a @click="typeFilter('plan')" class="button success">{{$t('plan')}}</a>
+			 <a @click="typeFilter('profile')" class="button success">{{$t('profile')}}</a>
+			 <a @click="typeFilter('selected')" class="button success">{{$t('selected')}}</a>
 			 <span class="button success fileinput-button">
 				<i class="fa fa-cloud"></i>
 				<input id="fileupload" type="file" class="image button success" name="image[]" multiple>
@@ -36,7 +36,7 @@
 		<div class="thumb-back">
 			<ul>
 				<li v-for="tag in file.tags">
-					{{tag.name_en}}
+					{{tag.name}}
 				</li>
 			</ul>
 
@@ -206,7 +206,26 @@
 			'waterfall': Waterfall.waterfall,
     		'waterfall-slot': Waterfall.waterfallSlot,
     		CircleProgressBar
-		}
+		},
+
+		locales: {
+	        en: { 
+	        	title : 'Add Training',
+		    	all : 'All',
+		    	training : 'Training',
+		    	plan : 'Plan',
+		    	profile : 'Profile',
+		    	selected : 'Selected',
+	    	},
+	    	mn : {
+	    		title : 'Хичээл нэмэх',
+		    	all : 'Бүгд',
+		    	training : 'Хичээл',
+		    	plan : 'Төлөвлөгөө',
+		    	profile : 'Нүүр зураг',
+		    	selected : 'Сонгосон',
+	    	},
+	    }
 	}
 </script>
 <style lang="scss">

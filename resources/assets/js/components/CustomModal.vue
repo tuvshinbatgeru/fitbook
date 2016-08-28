@@ -16,7 +16,7 @@
 					  </div>
 					</div>	
 					<div class="row" style="height:50px; text-align: center;">
-						<h4 style="color:#5fcf80;">{{title}}</h4>
+						<h4 style="color:#5fcf80;">{{translate('title')}}</h4>
 					</div>
 				</slot>
 			</div>
@@ -62,6 +62,7 @@
 			type : {default : 'Club'},
 			multiple : {},
 			title : { default: '' },
+			title_en : {default : ''},
 			usage : { default: 'questionable'},
 			context : { 
 				required: true,
@@ -82,8 +83,19 @@
 		    }
 		},
 
+		created : function () {
+			this.setLanguage();
+		},
+
 		ready : function () {			
 
+		},
+
+		data() {
+			return {
+				lang_mn : [],
+				lang_en : []
+			}
 		},
 
 		methods : {
@@ -107,6 +119,20 @@
 				}
 				else
 					this.modalClose();
+			},
+
+			setLanguage : function () {
+				this.lang_en = {
+					title : this.title_en,
+			    };
+
+			    this.lang_mn = {
+			    	title : this.title,
+			    };
+			},
+
+			translate : function(value) {
+				return this.lang_mn[value];
 			}
 		},
 

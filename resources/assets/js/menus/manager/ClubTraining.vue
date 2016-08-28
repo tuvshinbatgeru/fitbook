@@ -8,7 +8,8 @@
 		<custom-modal 
 			:id = "clubid"
 			type = "Club"
-			title = "Add Training" 
+			title = "Хичээл нэмэх" 
+			title_en = "Add Training"
 			usage = "_add-training" 
 			:show.sync = "showAddTraining"
 			save-callback = "saveTraining"
