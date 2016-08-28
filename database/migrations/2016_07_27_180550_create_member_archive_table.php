@@ -14,8 +14,8 @@ class CreateMemberArchiveTable extends Migration
     {
         Schema::create('member_archive', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('club_id')->unsigned();
-            $table->integer('user_id')->unsigned();
+            $table->integer('club_id')->unsigned()->index();
+            $table->integer('user_id')->unsigned()->index();
             $table->tinyInteger('type');
             $table->date('since_date');
             $table->date('left_date');

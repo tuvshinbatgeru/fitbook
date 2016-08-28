@@ -13,8 +13,8 @@ class CreateSubscriptionCouponsTable extends Migration
     public function up()
     {
         Schema::create('subscription_coupon', function (Blueprint $table) {
-            $table->integer('subscription_id')->unsigned();
-            $table->integer('coupon_id')->unsigned();
+            $table->integer('subscription_id')->unsigned()->index();
+            $table->integer('coupon_id')->unsigned()->index();
             $table->decimal('amount', 10);
             $table->timestamps();
         });

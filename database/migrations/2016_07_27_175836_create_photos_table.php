@@ -15,7 +15,7 @@ class CreatePhotosTable extends Migration
         Schema::create('photos', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('type'); //1 - Club, 2 - small 3 - medium, 
-            $table->integer('object_id')->unsigned();
+            $table->integer('object_id')->unsigned()->index();
             $table->string('ext', 10);
             $table->decimal('size', 18);  //as .kb
             $table->float('ratio');

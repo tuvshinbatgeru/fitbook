@@ -13,8 +13,8 @@ class CreateTrainingGenreTable extends Migration
     public function up()
     {
         Schema::create('training_genre', function (Blueprint $table) {
-            $table->integer('training_id')->unsigned();
-            $table->integer('genre_id')->unsigned();
+            $table->integer('training_id')->unsigned()->index();
+            $table->integer('genre_id')->unsigned()->index();
             $table->timestamps();
 
             $table->primary(['training_id', 'genre_id']);

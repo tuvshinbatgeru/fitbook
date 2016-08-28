@@ -13,8 +13,9 @@ class CreateUserActivityTable extends Migration
     public function up()
     {
         Schema::create('user_activity', function (Blueprint $table) {
-            $table->integer('user_id')->unsigned();
-            $table->integer('club_id')->unsigned();
+            $table->integer('user_id')->unsigned()->index();
+            $table->integer('club_id')->unsigned()->index();
+            $table->integer('subscription_id')->unsigned()->index();
             $table->dateTime('start_time');
             $table->dateTime('finish_time');
             $table->integer('duration'); //as a minute

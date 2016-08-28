@@ -13,7 +13,7 @@ class CreatePhonesTable extends Migration
     public function up()
     {
         Schema::create('phones', function (Blueprint $table) {
-            $table->integer('club_id')->unsigned();
+            $table->integer('club_id')->unsigned()->index();
             $table->string('value');
             $table->integer('postal_code')->nullable();
         });

@@ -15,8 +15,8 @@ class CreateCouponTable extends Migration
         Schema::create('coupon', function (Blueprint $table) {
             $table->increments('id');
             $table->string('code')->unique();
-            $table->integer('coupon_id')->unsigned();
-            $table->integer('user_id')->unsigned();
+            $table->integer('coupon_id')->unsigned()->index();
+            $table->integer('user_id')->unsigned()->index();
             $table->string('coupon_type');
             $table->string('coupon_pass');
             $table->enum('is_active', ['Y','N'])->default('Y');

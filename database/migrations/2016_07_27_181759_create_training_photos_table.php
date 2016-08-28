@@ -13,8 +13,8 @@ class CreateTrainingPhotosTable extends Migration
     public function up()
     {
         Schema::create('training_photos', function (Blueprint $table) {
-            $table->integer('training_id')->unsigned();
-            $table->integer('photo_id')->unsigned();
+            $table->integer('training_id')->unsigned()->index();
+            $table->integer('photo_id')->unsigned()->index();
             $table->enum('pinned', ['N','Y'])->default('N');
             $table->timestamps();
         });

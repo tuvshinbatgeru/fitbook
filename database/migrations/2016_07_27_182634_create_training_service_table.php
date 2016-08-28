@@ -13,8 +13,8 @@ class CreateTrainingServiceTable extends Migration
     public function up()
     {
         Schema::create('training_service', function (Blueprint $table) {
-            $table->integer('training_id')->unsigned();
-            $table->integer('service_id')->unsigned();
+            $table->integer('training_id')->unsigned()->index();
+            $table->integer('service_id')->unsigned()->index();
             $table->timestamps();
 
             $table->primary(['training_id', 'service_id']);

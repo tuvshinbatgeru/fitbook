@@ -13,8 +13,8 @@ class CreatePlanTrainingTable extends Migration
     public function up()
     {
         Schema::create('plan_training', function (Blueprint $table) {
-            $table->integer('plan_id')->unsigned();
-            $table->integer('training_id')->unsigned();
+            $table->integer('plan_id')->unsigned()->index();
+            $table->integer('training_id')->unsigned()->index();
             $table->timestamps();
 
             $table->primary(['training_id', 'plan_id']);

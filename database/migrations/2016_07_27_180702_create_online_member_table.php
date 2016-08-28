@@ -13,8 +13,9 @@ class CreateOnlineMemberTable extends Migration
     public function up()
     {
         Schema::create('online_members', function (Blueprint $table) {
-            $table->integer('club_id');
-            $table->integer('user_id');
+            $table->integer('user_id')->unsigned()->index();
+            $table->integer('club_id')->unsigned()->index();
+            $table->integer('subscription_id')->unsigned()->index();
             $table->dateTime('start_time');
             $table->timestamps();
 

@@ -14,7 +14,7 @@ class CreateClubTable extends Migration
     {
         Schema::create('club', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('club_id', 100)->unique();
+            $table->string('club_id', 100)->unique()->index();
             $table->string('short_name', 100);
             $table->string('full_name', 200);
             $table->text('address')->nullable();

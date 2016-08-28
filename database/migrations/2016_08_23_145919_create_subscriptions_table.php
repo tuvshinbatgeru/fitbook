@@ -14,9 +14,9 @@ class CreateSubscriptionsTable extends Migration
     {
         Schema::create('subscriptions', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('club_id')->unsigned();
-            $table->integer('user_id')->unsigned();
-            $table->integer('plan_id')->unsigned();
+            $table->integer('club_id')->unsigned()->index();
+            $table->integer('user_id')->unsigned()->index();
+            $table->integer('plan_id')->unsigned()->index();
             $table->date('begin_date');
             $table->date('end_date');
             $table->timestamps();
