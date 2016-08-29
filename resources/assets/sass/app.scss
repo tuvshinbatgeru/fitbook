@@ -10,4 +10,17 @@
 @include motion-ui-transitions;
 @include foundation-everything;
 
+@import 'bower_components/materialize/scss/components/_mixins.scss';
+@import 'bower_components/materialize/scss/components/_color.scss';
+@import 'bower_components/materialize/scss/components/_variables.scss';
+@import 'bower_components/materialize/scss/components/_buttons.scss';
+@import 'bower_components/materialize/scss/components/_preloader.scss';
+
+
+@import 'foundation/tabs/_settings.scss';
+@import 'bower_components/materialize/scss/components/_tabs.scss';
+@import 'bower_components/materialize/scss/components/forms/_select.scss';
+@import 'bower_components/materialize/scss/components/forms/_checkboxes.scss';
+
+
 
