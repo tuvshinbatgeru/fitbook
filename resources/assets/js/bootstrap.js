@@ -12,7 +12,8 @@ window.$ = window.jQuery = require('jquery');
 require('./jquery.fileupload');
 require('./foundation');
 require('./jquery.tokenize');
-
+require('./vendor/tabs');
+require('./vendor/velocity.min');
 
 /**
  * Vue is a modern JavaScript library for building interactive web interfaces

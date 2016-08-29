@@ -67,7 +67,7 @@
 			},
 
 			sentFollow : function () {
-				this.$http.get(this.$env.get('APP_URI') + 'api/club/'+ this.club.id + '/follow').then((response) => {
+				this.$http.post(this.$env.get('APP_URI') + 'api/club/'+ this.club.id + '/follow').then((response) => {
 					debugger;
 			        this.follow_status = response.data.type;
 			    }, (response) => {

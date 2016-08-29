@@ -5,6 +5,11 @@
 				<i class="fa fa-pencil-square-o"></i>
 		</a>
 
+		<p>
+	      <input type="checkbox" class="filled-in" id="filled-in-box" checked="checked" />
+	      <label for="filled-in-box">Filled in</label>
+	    </p>
+    
 		<custom-modal 
 			:id = "clubid"
 			type = "Club"

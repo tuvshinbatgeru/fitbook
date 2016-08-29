@@ -26,13 +26,20 @@
 	    ]
 	};
 
+	import Followed from '.././components/Followed.vue';
+	import Timeline from '.././components/Timeline.vue';
+	import Activity from '.././components/Activity.vue';
+
 	export default {
 		props: { 
 			title : { default : 'test' },
+			submenu : { default : 'activity'}
 		},
-
+		
 		ready : function () {
-			var myBarChart = new Chart(document.querySelector('#chart').getContext('2d'), {
+			$('ul.tabs').tabs();
+
+			/*var myBarChart = new Chart(document.querySelector('#chart').getContext('2d'), {
 			    type: 'bar',
 			    data: data,
 			     options: {
@@ -42,7 +49,17 @@
 			            }]
 			        }
 			    }
-			});
-		}
+			});*/
+		},
+
+		methods : {
+			setSubMenu : function(menu) {
+				this.submenu = menu;
+			}
+		},
+
+		components : {
+            Followed, Timeline, Activity
+        }
 	}
 </script>

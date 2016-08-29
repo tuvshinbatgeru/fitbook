@@ -45,14 +45,14 @@ use Illuminate\Support\Facades\Storage;
 	/* type - club */
 	Route::post('/api/test','FileManagerController@test');
 	Route::post('/upload', 'FileManagerController@upload');
-	Route::post('/api/user/avatar/{photo}', 'UserController@storeAvatar');
+	
 
 	//Club info APIs
 	Route::group(['prefix' => '/api/club/{club}/'], function () {
 
 		Route::get('club-info', 'ClubController@info');
-		Route::get('follow', 'UserController@toggleFollow');
-		Route::get('request', 'UserController@toggleRequest');
+		Route::post('follow', 'UserController@toggleFollow');
+		Route::post('request', 'UserController@toggleRequest');
 		Route::get('teacher', 'ClubController@getTeachers');
 
 		Route::resource('training', 'TrainingController');
@@ -70,8 +70,15 @@ use Illuminate\Support\Facades\Storage;
 
 	});
 
-	/* type - club */
+	/* type - User */
+	Route::group(['prefix' => '/api/user/{user}/'], function () {
+
+		Route::get('followed', 'UserController@followedClubs');
+
+	});
+
 	Route::get('/api/user/files', 'FileManagerController@files');
+	Route::post('/api/user/avatar/{photo}', 'UserController@storeAvatar');
 
 	Route::get('/create-club', function(Request $request) {
 	    return view('create-club');

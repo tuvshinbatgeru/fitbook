@@ -43,6 +43,20 @@ class UserController extends Controller
             ], 200);
     }
 
+    public function followedClubs(User $user)
+    {
+        $followedClubs = $user->followedClubs;
+
+        foreach ($followedClubs as $club) {
+            $club->state = "unfollow";
+        }
+
+        return Response::json([
+            'result' => 'OK',
+            'data' => $followedClubs,
+        ]);
+    }
+
     public function toggleFollow(Club $club)
     {
     	if(!Auth::check()) return Response::json(['result' => 'Login']);

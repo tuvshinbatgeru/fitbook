@@ -16,12 +16,29 @@
 					  </div>
 					</div>	
 					<div class="row" style="height:50px; text-align: center;">
-						<h4 style="color:#5fcf80;">{{translate('title')}}</h4>
+						<h4 style="color:#5fcf80;">{{title}}</h4>
 					</div>
 				</slot>
 			</div>
 
-            <div class="modal-body">
+
+			<div v-show="loading" class="modal-loader">
+
+				<div class="preloader-wrapper small active">
+	              <div class="spinner-layer spinner-green-only">
+	                <div class="circle-clipper left">
+	                  <div class="circle"></div>
+	                </div><div class="gap-patch">
+	                  <div class="circle"></div>
+	                </div><div class="circle-clipper right">
+	                  <div class="circle"></div>
+	                </div>
+	              </div>
+	            </div>
+
+			</div>
+
+            <div v-show="!loading" class="modal-body">
 	          <slot name="body">
 	          	<component v-ref:context 
 	          			   v-if="type == 'Club'" 
@@ -62,6 +79,10 @@
 			type : {default : 'Club'},
 			multiple : {},
 			title : { default: '' },
+			loading : { 
+				type : Boolean,
+				default : false 
+			},
 			title_en : {default : ''},
 			usage : { default: 'questionable'},
 			context : { 
@@ -84,18 +105,7 @@
 		},
 
 		created : function () {
-			this.setLanguage();
-		},
 
-		ready : function () {			
-
-		},
-
-		data() {
-			return {
-				lang_mn : [],
-				lang_en : []
-			}
 		},
 
 		methods : {
@@ -120,20 +130,18 @@
 				else
 					this.modalClose();
 			},
+		},
 
-			setLanguage : function () {
-				this.lang_en = {
-					title : this.title_en,
-			    };
-
-			    this.lang_mn = {
-			    	title : this.title,
-			    };
+		events : {
+			'startLoading' : function() {
+				debugger;
+				this.loading = true;
 			},
 
-			translate : function(value) {
-				return this.lang_mn[value];
-			}
+			'stopLoading' : function() {
+				debugger;
+				this.loading = false;
+			},
 		},
 
 		components : {
@@ -160,8 +168,6 @@
 	.modal-container {
 		display: block;
 	    z-index: 1006;
-	    padding: 1rem;
-	    border: 1px solid #cacaca;
 	    background-color: #fefefe;
 	    border-radius: 4px;
 	    position: relative;
@@ -175,6 +181,13 @@
 	.modal-header h3 {
 	    margin-top: 0;
 	    color: #42b983;
+	}
+
+	.modal-loader {
+		z-index: 1009;
+		background-color: #fff;
+		height: 100%;
+		width: 100%;
 	}
 
 	.modal-body {

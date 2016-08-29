@@ -141,6 +141,9 @@
 			},
 
 			getFiles : function () {
+
+				this.$dispatch('startLoading');
+
 				var maps = this.objectListToMap(this.selected);
 				this.$http.get(this.$env.get('APP_URI') + 'api/user/files?selected=' + maps).then((response) => 
 				{
@@ -149,8 +152,10 @@
 					this.actualSize = response.data.actualSize;
 					this.maxSize = response.data.maxSize;
 					this.percentage = parseInt(this.actualSize * 100 / this.maxSize);
-				}, (response) => {
 
+					this.$dispatch('stopLoading');
+				}, (response) => {
+					this.$dispatch('stopLoading');
 				});	
 			},
 

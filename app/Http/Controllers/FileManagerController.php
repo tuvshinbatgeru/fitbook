@@ -71,7 +71,8 @@ class FileManagerController extends Controller
         foreach ($photos as $photo) {
            	$photo->tags;
            	$actualSize += $photo->size;
-            $photo->selected = false;
+            $photo->selected = false;   
+            $photo->pinned = false;
 
             if(empty($selected)) {
                 continue;
