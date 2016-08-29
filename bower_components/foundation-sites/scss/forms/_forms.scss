@@ -11,7 +11,7 @@
 $form-spacing: rem-calc(16) !default;
 
 @import 'text';
-@import 'checkbox';
+/* @import 'checkbox'; */
 @import 'label';
 @import 'help-text';
 @import 'input-group';
@@ -24,7 +24,7 @@ $form-spacing: rem-calc(16) !default;
 
 @mixin foundation-forms {
   @include foundation-form-text;
-  @include foundation-form-checkbox;
+  /* @include foundation-form-checkbox; */
   @include foundation-form-label;
   @include foundation-form-helptext;
   @include foundation-form-prepostfix;

@@ -25,14 +25,14 @@
 	</custom-modal>
 
 	<form method="POST" accept="">
-		<ul class="tabs" data-tabs id="example-tabs">
-		  <li class="tabs-title is-active"><a href="#main" aria-selected="true">{{ $t("info") }}</a></li>
-		  <li class="tabs-title "><a href="#photos">{{ $t("photos") }}</a></li>
-		  <li class="tabs-title"><a href="#teacher">{{ $t("teacher") }}</a></li>
-	    </ul>
+	  <ul class="tabs">
+        <li class="tab s3"><a class="active" href="#main">{{ $t("info") }}</a></li>
+        <li class="tab s3"><a href="#photos">{{ $t("photos") }}</a></li>
+        <li class="tab s3"><a href="#teacher">{{ $t("teacher") }}</a></li>
+	  </ul>
 
-	  <div class="tabs-content" data-tabs-content="example-tabs">
-		  <div class="tabs-panel is-active" id="main">
+	  
+		  <div id="main">
 		    <div class="row">
 			    <div class="medium-6 columns">
 			      <label>{{ $t("name") }}
@@ -47,7 +47,7 @@
 			    </div>
 			</div>
 		  </div>
-		  <div class="tabs-panel" id="teacher">
+		  <div id="teacher">
   	  		   <div class="picture-list">
 			  	<div class="row small-up-2 medium-up-3 large-up-4">
 			  		<br>
@@ -73,7 +73,7 @@
 				</div>
 			  </div>
 		  </div>
-		  <div class="tabs-panel" id="photos">
+		  <div id="photos">
 			  <div class="picture-list">
 			  	<div class="row small-up-2 medium-up-3 large-up-4">
 			  		<br>
@@ -99,7 +99,6 @@
 				</div>
 			  </div>
 		  </div>
-	  </div>
 	</form>
 </template>
 <script>
@@ -123,7 +122,7 @@
 		},
 		
 		ready : function () {
-			var tab = new Foundation.Tabs($('#example-tabs'));
+			$('ul.tabs').tabs();
 		},
 
 		events : {

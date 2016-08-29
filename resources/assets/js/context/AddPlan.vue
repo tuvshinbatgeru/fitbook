@@ -24,6 +24,19 @@
 
 	<form method="POST">
 		<div class="row">
+			<div class="small-12">
+				<img :src="pinnedPic">
+			</div>
+		</div>
+		<div class="row small-up-3 medium-up-4 large-up-5">
+			<div class="column">
+				<a @click="showFileManager = true" class="button succes">+</a>
+			</div>
+			<div class="column" v-for="photo in pictures">
+				<img @click="setPinnedPhoto(photo)" :src="photo.url"/>
+			</div>
+		</div>
+		<div class="row">
 		  <fieldset class="large-6 columns">
 		    <legend>Plan schedule</legend>
 		    <input type="radio" name="schedule" value="Daily" id="schDaily" required><label for="schDaily">Daily</label>
@@ -38,9 +51,10 @@
 		</div>
 		<div class="row">
 			<div class="small-4 medium-4 column">
-				<label>Trainerless
-					<input type="checkbox" name="trainerless">
-				</label>
+				<p>
+			      <label for="test5">Trainerless</label>
+			      <input type="checkbox" id="trainerless" name="trainerless"/>
+			    </p>
 			</div>
 			<div class="small-4 medium-4 column">
 				<label>Start
@@ -91,9 +105,10 @@
 			</div>
 			<div class="row">
 				<div class="small-12 medium-6 column">
-					<label>Trainerless
-						<input type="checkbox" v-model="trainerless" name="trainerless">
-					</label>
+					<p>
+				      <input type="checkbox" v-model="trainerless" class="filled-in" id="trainerless"/>
+				      <label for="trainerless">Trainerless</label>
+				    </p>
 				</div>
 				<div class="small-12 medium-6 column">
 					<label>Trainer Count
@@ -133,6 +148,7 @@
 				services : [],
 				showFileManager : false,
 				showTraining : false,
+				pinnedPhoto : null,
 			}
 		},
 		
@@ -171,8 +187,20 @@
 			},
 
 			choosedPictures : function($response) {
+
+				debugger;
 				this.pictures = $response.data;
 				this.showFileManager = false;
+			},
+
+			setPinnedPhoto : function(photo) {
+				photo.pinned = true;
+
+			    if(this.pinnedPhoto && photo != this.pinnedPhoto) {
+					this.pinnedPhoto.pinned = false;
+				}
+
+				this.pinnedPhoto = photo;
 			},
 
 			deletePhoto : function(photo) {
@@ -196,6 +224,17 @@
 
 				return true;
 			},
+
+			filterPinnedPic : function (obj) {
+				return obj.pinned;
+			},
+		},
+
+		computed : {
+			pinnedPic : function () {
+				var pinned = this.pictures.filter(this.filterPinnedPic);
+				return pinned.length == 0 ? this.$env.get('APP_URI') + 'images/site/back.jpg' : pinned[0].url;
+			}
 		},
 
 		components : {

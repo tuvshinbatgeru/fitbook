@@ -5,12 +5,12 @@ select { display: none; }
 select.browser-default { display: block; }
 
 select {
-  background-color: $select-background;
+  background-color: $m-select-background;
   width: 100%;
-  padding: $select-padding;
-  border: $select-border;
-  border-radius: $select-radius;
-  height: $input-height;
+  padding: $m-select-padding;
+  border: $m-select-border;
+  border-radius: $m-select-radius;
+  height: $m-input-height;
 }
 
 .select-label {
@@ -25,13 +25,13 @@ select {
     cursor: pointer;
     background-color: transparent;
     border: none;
-    border-bottom: $input-border;
+    border-bottom: $m-input-border;
     outline: none;
-    height: $input-height;
-    line-height: $input-height;
+    height: $m-input-height;
+    line-height: $m-input-height;
     width: 100%;
-    font-size: $input-font-size;
-    margin: $input-margin;
+    font-size: $m-input-font-size;
+    margin: $m-input-margin;
     padding: 0;
     display: block;
   }
@@ -43,14 +43,14 @@ select {
     top: 16px;
     font-size: 10px;
     &.disabled {
-      color: $input-disabled-color;
+      color: $m-input-disabled-color;
     }
   }
 
   & + label {
     position: absolute;
     top: -14px;
-    font-size: $label-font-size;
+    font-size: $m-label-font-size;
   }
 }
 
@@ -69,13 +69,13 @@ select:disabled {
 }
 
 .select-wrapper i {
-  color: $select-disabled-color;
+  color: $m-select-disabled-color;
 }
 
 .select-dropdown li.disabled,
 .select-dropdown li.disabled > span,
 .select-dropdown li.optgroup {
-  color: $select-disabled-color;
+  color: $m-select-disabled-color;
   background-color: transparent;
 }
 
@@ -91,8 +91,8 @@ select:disabled {
 // Icons
 .select-dropdown li {
   img {
-    height: $dropdown-item-height - 10;
-    width: $dropdown-item-height - 10;
+    height: $m-dropdown-item-height - 10;
+    width: $m-dropdown-item-height - 10;
     margin: 5px 15px;
     float: right;
   }
@@ -100,7 +100,7 @@ select:disabled {
 
 // Optgroup styles
 .select-dropdown li.optgroup {
-  border-top: 1px solid $dropdown-hover-bg-color;
+  border-top: 1px solid $m-dropdown-hover-bg-color;
 
   &.selected > span {
     color: rgba(0, 0, 0, .7);
