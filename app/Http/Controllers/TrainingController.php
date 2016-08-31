@@ -29,7 +29,7 @@ class TrainingController extends Controller
         $trainings = $club->trainings;
 
         foreach ($trainings as $training) {
-            $training->photos;
+            $training->photos = $training->pinnedPhoto();
             $training->teachers;
             $training->selected = false;
         }
@@ -63,7 +63,7 @@ class TrainingController extends Controller
         $training->save();
 
         for ($i = 0; $i < count($decode->pictures); $i++) {
-            $training->photos()->attach(intval($decode->pictures[$i]->id), ['pinned' => 'N']);
+            $training->photos()->attach(intval($decode->pictures[$i]->id), ['pinned' => $decode->pictures[$i]->pinned ? 'Y' : 'N']);
             Photo::attachTagById($decode->pictures[$i]->id, Tag::TRAINING_ID);
         }
 

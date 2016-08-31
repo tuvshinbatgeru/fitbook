@@ -21,6 +21,11 @@ class Training extends Model
     			->withTimestamps();
     }
 
+    public function pinnedPhoto()
+    {
+        return $this->photos()->where('pinned', '=', 'Y')->get();
+    }
+
     public function teachers()
     {
     	return $this->belongsToMany('App\User', 'training_teacher', 'training_id', 'user_id')
