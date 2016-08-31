@@ -46,12 +46,14 @@ class Club extends Model
 
 	public function members()
 	{
-		return $this->belongsToMany('App\User','members','club_id', 'user_id')->withPivot('type', 'since_date')->withTimestamps();
+		return $this->belongsToMany('App\User','members','club_id', 'user_id')
+					->withPivot('type', 'since_date', 'view_order')
+					->withTimestamps();
 	}
 
 	static public function teachers($clubId)
 	{
-		return static::find($clubId)->members()->where('type', '=', 2)->get();
+		return static::find($clubId)->members()->where('type', '=', 1)->get();
 	}
 
 	public function widgets()
@@ -64,5 +66,14 @@ class Club extends Model
 	public function activeWidgets()
 	{
 		return $this->widgets()->where('is_active', '=', 'Y')->get();
+	}
+
+	public function nextTeacherViewOrder()
+	{
+		$query = $this->members()
+					  ->where('type', '=', 1);	
+
+		if(!$query->exists()) return 1;
+		return $query->orderBy('view_order', 'DESC')->first()->pivot->view_order + 1;
 	}
 }

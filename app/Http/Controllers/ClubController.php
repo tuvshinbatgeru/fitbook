@@ -52,6 +52,13 @@ class ClubController extends Controller
     	]);
     }
 
+    public function members(Club $club, $type)
+    {
+        return $club->members()
+                    ->where('type', '=', $type)
+                    ->get();
+    }
+
     public function getTeachers(Club $club, Request $request)
     {
         $selected = explode(',', $request->selected);
@@ -76,12 +83,12 @@ class ClubController extends Controller
 
     private function isManager($member)
     {
-    	return $member->pivot->type == 1 ? true : false;
+    	return $member->pivot->type == 2 ? true : false;
     }
 
     private function isTeacher($member)
     {
-    	return $member->pivot->type == 2 ? true : false;
+    	return $member->pivot->type == 1 ? true : false;
     }
 
     private function isMember($member)

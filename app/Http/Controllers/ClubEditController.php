@@ -38,15 +38,40 @@ class ClubEditController extends Controller
         ]);
     }
 
-    public function member(Club $club)
+    public function members(Club $club, Request $request)
     {
-        return $club->members;
+        $filterType = $request->type;
+
+        $requests_count = $club->requests()->where('type', '=', $filterType)->count();
+
+        $members_count = $club->members()->where('type', '=', $filterType)->count();
+
+        $archive_count = 0;
+
+        return Response::json([
+            'requests_count' => $requests_count,
+            'members_count' => $members_count,
+            'archive_count' => $archive_count,
+        ], 200);
     }
 
-    public function request(Club $club)
+    public function request(Club $club, Request $request)
     {
-        return $club->requests;
+        $type = $request->memberType;
+        return $club->requests()->where('type','=', $type)->get();
     }
+
+    public function teacherToggleViewOrder(Club $club, Request $request)
+    {
+        $id;
+        $otherId;
+
+
+
+        //member.pivot.view_order --;
+        //upper.pivot.view_order ++;
+    }
+
 
     public function requestResponse(Request $request, Club $club, User $user)
     {
@@ -57,7 +82,7 @@ class ClubEditController extends Controller
 
         if($requestType == 'Accepted')
         {
-            $user->joinClub($club, $roleType + 1);
+            $user->joinClub($club, $roleType);
         }
 
         if($requestType == 'Rejected')

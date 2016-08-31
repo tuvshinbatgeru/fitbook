@@ -53,7 +53,6 @@
 	</waterfall>
 </template>
 <script>
-	/*var uploader = require('blueimp-file-upload');*/
 	var Waterfall = require('vue-waterfall')
 	import CircleProgressBar from '../components/CircleProgressBar.vue';
 

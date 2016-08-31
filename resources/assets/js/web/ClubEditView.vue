@@ -1,17 +1,14 @@
 <script>
-	import ClubDashboard from '.././menus/manager/ClubDashboard.vue';
-	import ClubMembers from '.././menus/manager/ClubMembers.vue';
-	import ClubRequests from '.././menus/manager/ClubRequests.vue';
-	import ClubTraining from '.././menus/manager/ClubTraining.vue';
-	import ClubPlan from '.././menus/manager/ClubPlan.vue';
-	import ClubTemplate from '.././menus/manager/ClubTemplate.vue';
-	import autocomplete from '.././components/autocomplete.vue';
+	import ClubDashboard from '.././actors/manager/menus/ClubDashboard.vue';
+	import ClubMembers from '.././actors/manager/menus/ClubMembers.vue';
+	import ClubRegistration from '.././actors/manager/menus/ClubRegistration.vue';
+	import ClubTemplate from '.././actors/manager/menus/ClubTemplate.vue';
 
 	export default {
 
 		props: { 
 			clubid : {},
-			selectedMenu : { default : 'club-plan'},
+			selectedMenu : { default : 'club-registration'},
 		},
 
 		data () {
@@ -57,9 +54,23 @@
 		},
 
 		components : {
-			ClubDashboard, ClubMembers, ClubRequests, 
-			ClubTraining, ClubPlan, autocomplete, 
-			ClubTemplate
-		}
+			ClubDashboard, ClubMembers, 
+			ClubRegistration, ClubTemplate
+		},
+
+		locales: {
+	        en: { 
+	            dashboard : 'Dashboard',
+	            members : 'Members',
+	            registration : 'Registration',
+	            template : 'Template',
+	        },
+	        mn : {
+	            dashboard : 'Хяналт',
+	            members : 'Гишүүнчлэл',
+	            registration : 'Бүртгэл',
+	            template : 'Загвар',
+	        },
+	    }
 	}
 </script>
