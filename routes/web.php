@@ -15,6 +15,9 @@ use Illuminate\Support\Facades\Storage;
 | and give it the controller to call when that URI is requested.
 |
 */
+
+	Auth::loginUsingId(1);
+
 	Route::get('/userout', function() {
 		event(new UserOutTraining(User::find(1)));
 		return "running";
@@ -54,6 +57,7 @@ use Illuminate\Support\Facades\Storage;
 		Route::post('follow', 'UserController@toggleFollow');
 		Route::post('request', 'UserController@toggleRequest');
 		Route::get('teacher', 'ClubController@getTeachers');
+		Route::get('members/{type}', 'ClubController@members');
 
 		Route::resource('training', 'TrainingController');
 		Route::resource('plan', 'PlanController');
@@ -64,10 +68,10 @@ use Illuminate\Support\Facades\Storage;
 	Route::group(['prefix' => '/api/club/edit/{club}/'], function () {
 
 		Route::get('index', 'ClubEditController@index');
-		Route::get('member', 'ClubEditController@member');
+		Route::get('members', 'ClubEditController@members');
 		Route::get('request', 'ClubEditController@request');
 		Route::put('request/{user}', 'ClubEditController@requestResponse');	
-
+		Route::post('vieworder', 'ClubEditController@teacherToggleViewOrder');
 	});
 
 	/* type - User */
