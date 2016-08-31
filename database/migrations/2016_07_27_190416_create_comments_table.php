@@ -14,10 +14,10 @@ class CreateCommentsTable extends Migration
     {
         Schema::create('comments', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('commentable_id')->unsigned()->index();
+            $table->string('commentable_type');
             $table->integer('user_id')->unsigned()->index();
-            $table->tinyInteger('type');
-            $table->integer('object_id')->unsigned()->index();
-            $table->text('message');
+            $table->longText('message');
             $table->timestamps();
         });
     }
