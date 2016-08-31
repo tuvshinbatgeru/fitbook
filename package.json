@@ -23,6 +23,7 @@
     "foundation": "^4.2.1-1",
     "gulp-install": "^0.6.0",
     "laravel-elixir-vueify": "^1.0.6",
+    "moment": "^2.14.1",
     "vue-animated-list": "^1.0.2",
     "vue-i18n": "^4.3.1",
     "vue-waterfall": "^0.2.3"
