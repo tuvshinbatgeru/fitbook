@@ -53992,11 +53992,958 @@ exports.insert = function (css) {
 }
 
 },{}],56:[function(require,module,exports){
+var __vueify_insert__ = require("vueify/lib/insert-css")
+var __vueify_style__ = __vueify_insert__.insert("\n\n")
 'use strict';
 
-var _chart = require('chart.js');
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+exports.default = {
+	props: {
+		id: {
+			required: true
+		}
+	},
 
-var _chart2 = _interopRequireDefault(_chart);
+	created: function created() {
+		this.getTeachers();
+	},
+
+	data: function data() {
+		return {
+			teachers: []
+		};
+	},
+
+	methods: {
+		getTeachers: function getTeachers() {
+			var _this = this;
+
+			this.$http.get(this.$env.get('APP_URI') + 'api/club/' + this.id + '/teacher').then(function (response) {
+				_this.teachers = response.data;
+			}, function (response) {});
+		}
+	}
+};
+if (module.exports.__esModule) module.exports = module.exports.default
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"row small-up-2 medium-up-3 large-up-4 small-centered\">\n\t<div class=\"column\" v-for=\"teacher in teachers\" style=\"background-color:#aecaec\">\n\t\t<img height=\"100\" width=\"100\" v-bind:src=\"teacher.avatar_url\">\n\t\t<div>\n\t\t\t<h4>\n\t\t\t\t{{teacher.username}}\n\t\t\t</h4>\n\t\t</div>\n\t</div>\n</div>\n"
+if (module.hot) {(function () {  module.hot.accept()
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), true)
+  if (!hotAPI.compatible) return
+  module.hot.dispose(function () {
+    __vueify_insert__.cache["\n\n"] = false
+    document.head.removeChild(__vueify_style__)
+  })
+  if (!module.hot.data) {
+    hotAPI.createRecord("_v-45ac052a", module.exports)
+  } else {
+    hotAPI.update("_v-45ac052a", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+  }
+})()}
+},{"vue":54,"vue-hot-reload-api":50,"vueify/lib/insert-css":55}],57:[function(require,module,exports){
+var __vueify_insert__ = require("vueify/lib/insert-css")
+var __vueify_style__ = __vueify_insert__.insert("\n\n")
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+exports.default = {
+	props: {
+		id: {
+			required: true
+		}
+	},
+
+	created: function created() {
+		this.getTrainings();
+	},
+
+	data: function data() {
+		return {
+			trainings: []
+		};
+	},
+
+	methods: {
+		getTrainings: function getTrainings() {
+			var _this = this;
+
+			this.$http.get(this.$env.get('APP_URI') + 'api/club/' + this.id + '/training').then(function (response) {
+				_this.trainings = response.data.result;
+			}, function (response) {});
+		}
+	}
+};
+if (module.exports.__esModule) module.exports = module.exports.default
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"row small-up-2 medium-up-3 large-up-4 small-centered\">\n\t<div class=\"column\" v-for=\"item in trainings\" style=\"background-color:#222222; color:#fff;\">\n\t\t<div>\n\t\t\t<h4>\n\t\t\t\t{{item.name}}\n\t\t\t</h4>\n\t\t\t{{item.description}}\n\t\t</div>\n\n\t\t<div class=\"row small-up-2 medium-up-3 large-up-4 small-centered\">\n\t\t\t<div class=\"column\" v-for=\"teacher in item.teachers\">\n\t\t\t\t{{teacher.username}}\n\t\t\t\t<img height=\"100\" width=\"100\" v-bind:src=\"teacher.avatar_url\">\n\t\t\t</div>\n\t\t</div>\n\n\t\t<div class=\"row small-up-2 medium-up-3 large-up-4 small-centered\">\n\t\t\t<div class=\"column\" v-for=\"photo in item.photos\">\n\t\t\t\t<img height=\"400\" width=\"400\" v-bind:src=\"photo.url\">\n\t\t\t</div>\n\t\t</div>\t\t\t\n\t</div>\n</div>\n"
+if (module.hot) {(function () {  module.hot.accept()
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), true)
+  if (!hotAPI.compatible) return
+  module.hot.dispose(function () {
+    __vueify_insert__.cache["\n\n"] = false
+    document.head.removeChild(__vueify_style__)
+  })
+  if (!module.hot.data) {
+    hotAPI.createRecord("_v-76e7bb4b", module.exports)
+  } else {
+    hotAPI.update("_v-76e7bb4b", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+  }
+})()}
+},{"vue":54,"vue-hot-reload-api":50,"vueify/lib/insert-css":55}],58:[function(require,module,exports){
+var __vueify_insert__ = require("vueify/lib/insert-css")
+var __vueify_style__ = __vueify_insert__.insert("\n\n")
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+exports.default = {
+	props: {
+		clubid: { default: '' }
+	},
+
+	created: function created() {
+		this.setLanguage();
+		this.getClubHeaderContent(this.clubid);
+	},
+
+	data: function data() {
+		return {
+			club: [],
+			follow_status: '',
+			teacher_status: '',
+			request_status: '',
+			lang_mn: [],
+			lang_eng: []
+		};
+	},
+
+	methods: {
+		getClubHeaderContent: function getClubHeaderContent(clubId) {
+			var _this = this;
+
+			this.$http.get(this.$env.get('APP_URI') + 'api/club/' + clubId + '/club-info').then(function (response) {
+				_this.club = response.data.club;
+				_this.follow_status = response.data.follow_status;
+				_this.teacher_status = response.data.teacher_status;
+				_this.request_status = response.data.request_status;
+			}, function (response) {});
+		},
+
+		sentFollow: function sentFollow() {
+			var _this2 = this;
+
+			this.$http.post(this.$env.get('APP_URI') + 'api/club/' + this.club.id + '/follow').then(function (response) {
+				_this2.follow_status = response.data.type;
+			}, function (response) {});
+		},
+
+		sentTrainerRequest: function sentTrainerRequest() {
+			var _this3 = this;
+
+			this.$http.post(this.$env.get('APP_URI') + 'api/club/' + this.club.id + '/request?type=2').then(function (response) {
+				_this3.request_status = response.data.type;
+			}, function (response) {});
+		},
+
+		sentTeacherRequest: function sentTeacherRequest() {
+			var _this4 = this;
+
+			this.$http.post(this.$env.get('APP_URI') + 'api/club/' + this.club.id + '/request?type=1').then(function (response) {
+				_this4.teacher_status = response.data.type;
+			}, function (response) {});
+		},
+
+		setLanguage: function setLanguage() {
+			this.lang_en = {
+				teacher: 'Teacher request',
+				unteacher: 'Sent',
+				follow: 'Follow',
+				unfollow: 'Followed',
+				trainer: 'Request',
+				untrainer: 'Un Request',
+				manager: 'Manager'
+			};
+
+			this.lang_mn = {
+				teacher: 'Багш болох',
+				unteacher: 'Багш болох хүсэлт илгээсэн',
+				follow: 'Дагах',
+				unfollow: 'Дагсан',
+				trainer: 'Элсэх',
+				untrainer: 'Элсэх хүсэлт илгээсэн',
+				manager: 'Менежер'
+			};
+		},
+
+		getText: function getText(value) {
+			return this.lang_mn[value];
+		}
+	}
+};
+if (module.exports.__esModule) module.exports = module.exports.default
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"top-bar hw-default-top-bar\">\n  <div class=\"top-bar-left\">\n    <ul class=\"menu \">\n      <li class=\"menu-text hw-default-logo\">\n      \t{{club.short_name}}</li>\n      <li><a href=\"#\">{{club.short_name}}</a></li>\n      <li><a href=\"#\">{{club.full_name}}</a></li>\n      <li><a href=\"#\">{{club.description}}</a></li>\n      <li><a href=\"#\">Холбоо барих</a></li>\n    </ul>\n  </div>\n  <div class=\"top-bar-right\">\n    <ul class=\"menu\">\n      <li><a @click=\"sentTeacherRequest\" class=\"button btn-fb btn-trans\">{{getText(teacher_status)}}</a></li>\n      <li><a @click=\"sentFollow\" class=\"button btn-fb btn-trans\">{{getText(follow_status)}}</a></li>\n      <li><a @click=\"sentTrainerRequest\" class=\"button btn-fb btn-trans\">{{getText(request_status)}}</a></li>\n    </ul>\n  </div>\n</div>\n<div class=\"parallax-container\">\n  <div class=\"parallax-content\">\n    <div class=\"parallax-back\">\n      <!-- <div class=\"animated-word\">\n        <h1>Үзүүлэлт</h1>\n        <p>Тайлбар Тайлбар Тайлбар Тайлбар Тайлбар Тайлбар Тайлбар Тайлбар Тайлбар Тайлбар Тайлбар Тайлбар Тайлбар Тайлбар </p>\n      </div> -->\n      <p>Гоё уриа үг</p>\n    </div>\n  </div>\n</div>\n"
+if (module.hot) {(function () {  module.hot.accept()
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), true)
+  if (!hotAPI.compatible) return
+  module.hot.dispose(function () {
+    __vueify_insert__.cache["\n\n"] = false
+    document.head.removeChild(__vueify_style__)
+  })
+  if (!module.hot.data) {
+    hotAPI.createRecord("_v-3079ee95", module.exports)
+  } else {
+    hotAPI.update("_v-3079ee95", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+  }
+})()}
+},{"vue":54,"vue-hot-reload-api":50,"vueify/lib/insert-css":55}],59:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.default = {
+
+    props: {
+        id: {},
+        type: {}
+    },
+
+    created: function created() {},
+
+    ready: function ready() {
+        var _this = this;
+
+        this.$on('_MemberTypeChanged', function (memberType) {
+            _this.type = memberType;
+        });
+    },
+
+    methods: {}
+};
+if (module.exports.__esModule) module.exports = module.exports.default
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<h3>Archive Members</h3>\n\n<div class=\"row\">\n    Percentage of lolloloasdsadfsdfl\n</div>\n"
+if (module.hot) {(function () {  module.hot.accept()
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), true)
+  if (!hotAPI.compatible) return
+  if (!module.hot.data) {
+    hotAPI.createRecord("_v-1c02eea7", module.exports)
+  } else {
+    hotAPI.update("_v-1c02eea7", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+  }
+})()}
+},{"vue":54,"vue-hot-reload-api":50}],60:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.default = {
+
+    props: {
+        id: {},
+        type: {}
+    },
+
+    created: function created() {
+        this.getMembers();
+    },
+
+    data: function data() {
+        return {
+            members: [],
+            maxViewOrder: 0
+        };
+    },
+
+    ready: function ready() {
+        var _this = this;
+
+        this.$on('_MemberTypeChanged', function (memberType) {
+            _this.type = memberType;
+            _this.getMembers();
+        });
+    },
+
+    methods: {
+        getMembers: function getMembers() {
+            var _this2 = this;
+
+            this.$http.get(this.$env.get('APP_URI') + 'api/club/' + this.id + '/members/' + this.type).then(function (response) {
+                _this2.members = response.data;
+                _this2.maxViewOrder = 10;
+            }, function (response) {});
+        },
+
+        upperOrder: function upperOrder(member) {
+            var upper = this.findByViewOrder(member.pivot.view_order - 1);
+
+            member.pivot.view_order--;
+            if (upper) upper.pivot.view_order++;
+        },
+
+        downOrder: function downOrder(member) {
+            var down = this.findByViewOrder(member.pivot.view_order + 1);
+            member.pivot.view_order++;
+            if (down) down.pivot.view_order--;
+        },
+
+        findByViewOrder: function findByViewOrder(view_order) {
+            for (var index in this.members) {
+                if (this.members[index].pivot.view_order == view_order) return this.members[index];
+            }
+
+            return null;
+        }
+    }
+};
+if (module.exports.__esModule) module.exports = module.exports.default
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"row\">\n    <div class=\"small-10 columns\">\n         <input type=\"text\" name=\"search\" placeholder=\"search ...\">\n    </div>\n    <div class=\"small-2 columns\">\n        <a class=\"button success\">\n            <i class=\"fa fa-pencil-square-o\">\n                     \n            </i>\n        </a>\n    </div>\n</div>\n\n<form>\n    <ul class=\"row\">\n        <li class=\"small-12\" v-for=\"member in members | orderBy 'pivot.view_order'\">\n            <div class=\"row\">\n                <div class=\"small-1 columns\">\n                    {{member.pivot.view_order}} \n                    <a @click=\"upperOrder(member)\" v-show=\"member.pivot.view_order != 1\">up</a>\n                    <a @click=\"downOrder(member)\" v-show=\"member.pivot.view_order != maxViewOrder\">down</a>  \n                </div>\n                <div class=\"small-9 columns\">\n                    <img v-bind:src=\"member.avatar_url\" height=\"40\" width=\"40\">\n                    {{member.first_name}}\n                    {{member.last_name}}    \n                </div>\n                <div class=\"small-2 columns\">\n                    <a @click=\"rejectRequest(member)\" class=\"button alert\">X</a>   \n                </div>\n            </div>\n        </li>\n    </ul>\n</form>\n"
+if (module.hot) {(function () {  module.hot.accept()
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), true)
+  if (!hotAPI.compatible) return
+  if (!module.hot.data) {
+    hotAPI.createRecord("_v-6dc86ce0", module.exports)
+  } else {
+    hotAPI.update("_v-6dc86ce0", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+  }
+})()}
+},{"vue":54,"vue-hot-reload-api":50}],61:[function(require,module,exports){
+var __vueify_insert__ = require("vueify/lib/insert-css")
+var __vueify_style__ = __vueify_insert__.insert("\n")
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+exports.default = {
+	props: {
+		item: {}
+	}
+};
+if (module.exports.__esModule) module.exports = module.exports.default
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<li style=\"border: 1px solid green;\">\n\t<img :src=\"item.photos[0].url\">\n\t<h3>{{item.name}}</h3>\n\t{{item.description}}\t\n\t<ul>\n\t\t<li v-for=\"teacher in item.teachers\">\n\t\t\t#{{teacher.username}},\n\t\t</li>\n\t</ul>\t\n</li>\n"
+if (module.hot) {(function () {  module.hot.accept()
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), true)
+  if (!hotAPI.compatible) return
+  module.hot.dispose(function () {
+    __vueify_insert__.cache["\n"] = false
+    document.head.removeChild(__vueify_style__)
+  })
+  if (!module.hot.data) {
+    hotAPI.createRecord("_v-3df773f8", module.exports)
+  } else {
+    hotAPI.update("_v-3df773f8", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+  }
+})()}
+},{"vue":54,"vue-hot-reload-api":50,"vueify/lib/insert-css":55}],62:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.default = {
+    props: {
+        id: {}
+    },
+
+    data: function data() {
+        return {
+            planType: 1,
+            panels: [],
+            showTraining: false
+        };
+    },
+
+
+    created: function created() {
+        this.getPanels();
+    },
+
+    ready: function ready() {
+        $('ul.tabs').tabs();
+    },
+
+    methods: {
+        getPanels: function getPanels() {},
+
+        setPlanType: function setPlanType(type) {
+            this.planType = type;
+        }
+    },
+
+    components: {},
+
+    locales: {
+        en: {
+            plan: 'Plan',
+            loyalty: 'Loyalty'
+        },
+        mn: {
+            plan: 'Хөтөлбөр',
+            loyalty: 'Урамшуулал'
+        }
+    }
+};
+if (module.exports.__esModule) module.exports = module.exports.default
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div>\n    <ul class=\"tabs\">\n      <li class=\"tab s3\"><a @click=\"setPlanType(1)\" class=\"active\">{{$t('plan')}} (1)</a></li>\n      <li class=\"tab s3\"><a @click=\"setPlanType(2)\">{{$t('loyalty')}} (1)</a></li>\n    </ul>\n</div>  \n\n<div class=\"row\">\n  <div class=\"small-10 columns\">\n    <input type=\"text\" name=\"search\" placeholder=\"search ...\">\n  </div>\n  <div class=\"small-2 columns\">\n    <div class=\"small-2 columns\">\n          <a @click=\"showTraining = true\" class=\"button success\">\n              <i class=\"fa fa-pencil-square-o\">                       \n              </i>\n          </a>\n    </div>\n  </div>\n</div>\n\n<custom-modal :id=\"id\" type=\"Club\" title=\"Trainings\" usage=\"_training-chooser\" :items=\"trainings\" :show.sync=\"showTraining\" save-callback=\"choosedTrainings\" context=\"trainings\">\n</custom-modal>\n\n"
+if (module.hot) {(function () {  module.hot.accept()
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), true)
+  if (!hotAPI.compatible) return
+  if (!module.hot.data) {
+    hotAPI.createRecord("_v-0084fe4a", module.exports)
+  } else {
+    hotAPI.update("_v-0084fe4a", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+  }
+})()}
+},{"vue":54,"vue-hot-reload-api":50}],63:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.default = {
+
+    props: {
+        id: {},
+        type: {}
+    },
+
+    data: function data() {
+        return {
+            requests: [],
+            requestType: 0
+        };
+    },
+
+
+    created: function created() {
+        this.init();
+    },
+
+    ready: function ready() {
+        var _this = this;
+
+        this.$on('_MemberTypeChanged', function (memberType) {
+            _this.type = memberType;
+            _this.init();
+        });
+    },
+
+    methods: {
+        init: function init() {
+            var _this2 = this;
+
+            this.$http.get(this.$env.get('APP_URI') + 'api/club/edit/' + this.id + '/request?memberType=' + this.type).then(function (response) {
+                _this2.requests = response.data;
+            }, function (response) {});
+        },
+
+        acceptRequest: function acceptRequest($request) {
+            var _this3 = this;
+
+            this.$http.put(this.$env.get('APP_URI') + 'api/club/edit/' + this.id + '/request/' + $request.id, {
+                'roleType': $request.pivot.type,
+                'requestType': 'Accepted'
+            }).then(function (response) {
+                _this3.$dispatch('accept-request', $request);
+                _this3.requests.$remove($request);
+            }, function (response) {});
+        },
+
+        rejectRequest: function rejectRequest($request) {
+            var _this4 = this;
+
+            this.$http.put(this.$env.get('APP_URI') + 'api/club/edit/' + this.id + '/request/' + $request.id, {
+                'roleType': $request.pivot.type,
+                'requestType': 'Rejected'
+            }).then(function (response) {
+                _this4.$dispatch('reject-request', $request);
+                _this4.requests.$remove($request);
+            }, function (response) {});
+        }
+    }
+};
+if (module.exports.__esModule) module.exports = module.exports.default
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"row\">\n    <div class=\"small-12 columns\">\n         <input type=\"text\" name=\"search\" placeholder=\"search ...\">\n    </div>\n</div>\n\n<form>\n    <ul class=\"row\">\n        <li class=\"small-12\" v-for=\"request in requests\">\n                <img v-bind:src=\"request.avatar_url\" height=\"40\" width=\"40\">\n                {{request.first_name}}\n                 {{request.last_name}}\n                 {{request.pivot.created_at}}\n                <a @click=\"acceptRequest(request)\" class=\"button success\">Accept</a>\n                <a @click=\"rejectRequest(request)\" class=\"button alert\">Reject</a>\n        </li>\n    </ul>\n</form>\n\n"
+if (module.hot) {(function () {  module.hot.accept()
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), true)
+  if (!hotAPI.compatible) return
+  if (!module.hot.data) {
+    hotAPI.createRecord("_v-1799aaba", module.exports)
+  } else {
+    hotAPI.update("_v-1799aaba", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+  }
+})()}
+},{"vue":54,"vue-hot-reload-api":50}],64:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.default = {
+    props: {
+        id: {}
+    },
+
+    data: function data() {
+        return {};
+    },
+
+
+    created: function created() {
+        this.init();
+    },
+
+    methods: {
+        init: function init() {}
+    },
+
+    components: {},
+
+    locales: {
+        en: {
+            plan: 'Plan',
+            loyalty: 'Loyalty'
+        },
+        mn: {
+            plan: 'Хөтөлбөр',
+            loyalty: 'Урамшуулал'
+        }
+    }
+};
+if (module.exports.__esModule) module.exports = module.exports.default
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div>\n    <ul class=\"tabs\">\n      <li class=\"tab s3\"><a @click=\"setSubMenu('request-members')\" class=\"active\">{{$t('plan')}} ({{request_count}})</a></li>\n      <li class=\"tab s3\"><a @click=\"setSubMenu('current-members')\">{{$t('loyalty')}} ({{member_count}})</a></li>\n    </ul>\n</div>  \n\n<div class=\"small-9 text-center small-centered columns\">\n    <!-- <component :id=\"clubid\" \n               :type=\"memberType\" \n               :is=\"submenu\">\n    </component> -->\n</div>\n"
+if (module.hot) {(function () {  module.hot.accept()
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), true)
+  if (!hotAPI.compatible) return
+  if (!module.hot.data) {
+    hotAPI.createRecord("_v-387842ff", module.exports)
+  } else {
+    hotAPI.update("_v-387842ff", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+  }
+})()}
+},{"vue":54,"vue-hot-reload-api":50}],65:[function(require,module,exports){
+var __vueify_insert__ = require("vueify/lib/insert-css")
+var __vueify_style__ = __vueify_insert__.insert("@charset \"UTF-8\";\n/* line 2, stdin */\n.picture-list {\n  background-color: #5fcf80;\n  border-radius: 4px; }\n\n/* line 7, stdin */\n.add-button {\n  height: 120px;\n  width: 120px;\n  background-color: #fff;\n  border-radius: 4px;\n  border: 1px solid #53BBB4; }\n\n/* line 15, stdin */\n.figure {\n  margin: 0 10px 10px 0;\n  height: 120px;\n  width: 120px;\n  position: relative; }\n  /* line 22, stdin */\n  .figure:hover .figcaption {\n    opacity: 1; }\n\n/* line 28, stdin */\n.figcaption {\n  border-radius: 4px;\n  background-color: rgba(58, 52, 42, 0.7);\n  -webkit-backface-visibility: hidden;\n  backface-visibility: hidden;\n  position: absolute;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n  color: #fff;\n  padding: 0 25px;\n  display: -webkit-flex;\n  display: -ms-flexbox;\n  display: -webkit-box;\n  display: flex;\n  -webkit-align-items: center;\n  -ms-flex-align: center;\n  -webkit-box-align: center;\n          align-items: center;\n  -webkit-transition: all 0.25s;\n  transition: all 0.25s;\n  opacity: 0; }\n\n/* line 52, stdin */\n.gh-search-submit {\n  opacity: 0.75;\n  z-index: 9999;\n  background-image: url(\"data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgi…KCUM1LjE1NCwxMi44NTUsMi44MjQsMTAuNTI3LDIuODI0LDcuNjY2eiIvPg0KPC9zdmc+DQo=\"); }\n\n/* line 58, stdin */\n.gh-search-reset.show {\n  cursor: pointer;\n  z-index: 9999;\n  opacity: 1;\n  -webkit-transform: translateX(0px);\n  -ms-transform: translateX(0px);\n  transform: translateX(0px);\n  -webkit-transition-delay: .2s;\n  transition-delay: .2s; }\n")
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _FtTraining = require('.././components/FtTraining.vue');
+
+var _FtTraining2 = _interopRequireDefault(_FtTraining);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = {
+    props: {
+        id: {}
+    },
+
+    data: function data() {
+        return {
+            training: [],
+            showAddTraining: false
+        };
+    },
+
+
+    created: function created() {
+        this.getTrainings();
+    },
+
+    events: {
+        'saveTraining': function saveTraining($response) {
+            this.saveTraining($response);
+        }
+    },
+
+    methods: {
+        getTrainings: function getTrainings() {
+            var _this = this;
+
+            this.$http.get(this.$env.get('APP_URI') + 'api/club/' + this.id + '/training').then(function (res) {
+                debugger;
+                _this.training = res.data.result;
+            }).catch(function (err) {});
+        },
+
+        saveTraining: function saveTraining($response) {
+            this.$http.post(this.$env.get('APP_URI') + 'api/club/' + this.id + '/training?data=' + $response.data).then(function (res) {}).catch(function (err) {});
+            this.showAddTraining = false;
+            this.$root.$refs.toast.showMessage('Successfully add new training.');
+        }
+    },
+
+    components: {
+        FtTraining: _FtTraining2.default
+    },
+
+    locales: {
+        en: {
+            plan: 'Plan',
+            loyalty: 'Loyalty'
+        },
+        mn: {
+            plan: 'Хөтөлбөр',
+            loyalty: 'Урамшуулал'
+        }
+    }
+};
+if (module.exports.__esModule) module.exports = module.exports.default
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"row\">\n  <div class=\"small-10 columns\">\n    <input type=\"text\" name=\"search\" placeholder=\"search ...\">\n  </div>\n  <div class=\"small-2 columns\">\n    <div class=\"small-2 columns\">\n          <a @click=\"showAddTraining = true\" class=\"button success\">\n              <i class=\"fa fa-pencil-square-o\">\n                       \n              </i>\n          </a>\n    </div>\n  </div>\n</div>\n\n<custom-modal :id=\"id\" type=\"Club\" title=\"Хичээл нэмэх\" title_en=\"Add Training\" usage=\"_add-training\" :show.sync=\"showAddTraining\" save-callback=\"saveTraining\" validateable=\"Y\" context=\"AddTraining\">\n</custom-modal>\n\n<ft-training :item=\"train\" v-for=\"train in training\">\n    \n</ft-training>\n\n"
+if (module.hot) {(function () {  module.hot.accept()
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), true)
+  if (!hotAPI.compatible) return
+  module.hot.dispose(function () {
+    __vueify_insert__.cache["@charset \"UTF-8\";\n/* line 2, stdin */\n.picture-list {\n  background-color: #5fcf80;\n  border-radius: 4px; }\n\n/* line 7, stdin */\n.add-button {\n  height: 120px;\n  width: 120px;\n  background-color: #fff;\n  border-radius: 4px;\n  border: 1px solid #53BBB4; }\n\n/* line 15, stdin */\n.figure {\n  margin: 0 10px 10px 0;\n  height: 120px;\n  width: 120px;\n  position: relative; }\n  /* line 22, stdin */\n  .figure:hover .figcaption {\n    opacity: 1; }\n\n/* line 28, stdin */\n.figcaption {\n  border-radius: 4px;\n  background-color: rgba(58, 52, 42, 0.7);\n  -webkit-backface-visibility: hidden;\n  backface-visibility: hidden;\n  position: absolute;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n  color: #fff;\n  padding: 0 25px;\n  display: -webkit-flex;\n  display: -ms-flexbox;\n  display: -webkit-box;\n  display: flex;\n  -webkit-align-items: center;\n  -ms-flex-align: center;\n  -webkit-box-align: center;\n          align-items: center;\n  -webkit-transition: all 0.25s;\n  transition: all 0.25s;\n  opacity: 0; }\n\n/* line 52, stdin */\n.gh-search-submit {\n  opacity: 0.75;\n  z-index: 9999;\n  background-image: url(\"data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgi…KCUM1LjE1NCwxMi44NTUsMi44MjQsMTAuNTI3LDIuODI0LDcuNjY2eiIvPg0KPC9zdmc+DQo=\"); }\n\n/* line 58, stdin */\n.gh-search-reset.show {\n  cursor: pointer;\n  z-index: 9999;\n  opacity: 1;\n  -webkit-transform: translateX(0px);\n  -ms-transform: translateX(0px);\n  transform: translateX(0px);\n  -webkit-transition-delay: .2s;\n  transition-delay: .2s; }\n"] = false
+    document.head.removeChild(__vueify_style__)
+  })
+  if (!module.hot.data) {
+    hotAPI.createRecord("_v-34c4336c", module.exports)
+  } else {
+    hotAPI.update("_v-34c4336c", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+  }
+})()}
+},{".././components/FtTraining.vue":61,"vue":54,"vue-hot-reload-api":50,"vueify/lib/insert-css":55}],66:[function(require,module,exports){
+var __vueify_insert__ = require("vueify/lib/insert-css")
+var __vueify_style__ = __vueify_insert__.insert("\n")
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+exports.default = {
+	props: {
+		clubid: {}
+	},
+
+	data: function data() {
+		return {
+			items: []
+		};
+	},
+
+
+	created: function created() {},
+	methods: {}
+};
+if (module.exports.__esModule) module.exports = module.exports.default
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n\t<div>\n\t\t<h3>Club Dashboard</h3>\n\t<div>\n</div></div>"
+if (module.hot) {(function () {  module.hot.accept()
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), true)
+  if (!hotAPI.compatible) return
+  module.hot.dispose(function () {
+    __vueify_insert__.cache["\n"] = false
+    document.head.removeChild(__vueify_style__)
+  })
+  if (!module.hot.data) {
+    hotAPI.createRecord("_v-492704ba", module.exports)
+  } else {
+    hotAPI.update("_v-492704ba", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+  }
+})()}
+},{"vue":54,"vue-hot-reload-api":50,"vueify/lib/insert-css":55}],67:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _ArchiveMembers = require('.././components/ArchiveMembers.vue');
+
+var _ArchiveMembers2 = _interopRequireDefault(_ArchiveMembers);
+
+var _CurrentMembers = require('.././components/CurrentMembers.vue');
+
+var _CurrentMembers2 = _interopRequireDefault(_CurrentMembers);
+
+var _RequestMembers = require('.././components/RequestMembers.vue');
+
+var _RequestMembers2 = _interopRequireDefault(_RequestMembers);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = {
+    props: {
+        clubid: {},
+        memberType: {
+            default: 1
+        }
+    },
+
+    data: function data() {
+        return {
+            submenu: 'request-members',
+            request_count: 0,
+            member_count: 0,
+            archive_count: 0
+        };
+    },
+
+
+    created: function created() {
+        this.init();
+    },
+
+    ready: function ready() {
+        $('ul.tabs').tabs();
+    },
+
+    events: {
+        'accept-request': function acceptRequest($request) {
+            this.decreaseRequests();
+            this.member_count++;
+        },
+
+        'reject-request': function rejectRequest($request) {
+            this.decreaseRequests();
+        }
+    },
+
+    methods: {
+        init: function init() {
+            var _this = this;
+
+            this.$http.get(this.$env.get('APP_URI') + 'api/club/edit/' + this.clubid + '/members?type=' + this.memberType).then(function (response) {
+                _this.request_count = response.data.requests_count;
+                _this.member_count = response.data.members_count;
+                _this.archive_count = response.data.archive_count;
+            }, function (response) {});
+        },
+
+        getMenuToType: function getMenuToType() {
+            switch (this.submenu) {
+                case "request-members":
+                    return 0;
+                case "current-members":
+                    return 1;
+
+            }
+        },
+
+        setMembersType: function setMembersType(type) {
+            this.memberType = type;
+            this.$broadcast('_MemberTypeChanged', this.memberType);
+            this.init();
+        },
+
+        setSubMenu: function setSubMenu(menu) {
+            this.submenu = menu;
+        },
+
+        decreaseRequests: function decreaseRequests() {
+            this.request_count--;
+        }
+    },
+
+    components: {
+        ArchiveMembers: _ArchiveMembers2.default, CurrentMembers: _CurrentMembers2.default, RequestMembers: _RequestMembers2.default
+    },
+
+    locales: {
+        en: {
+            teacher: 'Teachers',
+            manager: 'Managers',
+            reception: 'Receptions',
+            request: 'Requests',
+            current: 'Active Members',
+            archive: 'Archive'
+        },
+        mn: {
+            teacher: 'Багш',
+            manager: 'Менежер',
+            reception: 'Ресепшэн',
+            request: 'Хүсэлтүүд',
+            current: 'Идэвхтэй гишүүд',
+            archive: 'Архив'
+        }
+    }
+};
+if (module.exports.__esModule) module.exports = module.exports.default
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"row small-up-3\">\n  <div class=\"column\">\n    <a @click=\"setMembersType(1)\" class=\"button success\">{{$t('teacher')}}</a>\n    <a @click=\"setMembersType(2)\" class=\"button success\">{{$t('manager')}}</a>\n    <a @click=\"setMembersType(3)\" class=\"button success\">{{$t('reception')}}</a>\n  </div>\n</div>\n\n<div>\n    <ul class=\"tabs\">\n      <li class=\"tab s3\"><a @click=\"setSubMenu('request-members')\" class=\"active\">{{$t('request')}} ({{request_count}})</a></li>\n      <li class=\"tab s3\"><a @click=\"setSubMenu('current-members')\">{{$t('current')}} ({{member_count}})</a></li>\n      <li class=\"tab s3\"><a @click=\"setSubMenu('archive-members')\">{{$t('archive')}} ({{archive_count}})</a></li>\n    </ul>\n</div>  \n\n<div class=\"small-9 text-center small-centered columns\">\n    <component :id=\"clubid\" :type=\"memberType\" :is=\"submenu\">\n    </component>\n</div>\n"
+if (module.hot) {(function () {  module.hot.accept()
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), true)
+  if (!hotAPI.compatible) return
+  if (!module.hot.data) {
+    hotAPI.createRecord("_v-fe3db782", module.exports)
+  } else {
+    hotAPI.update("_v-fe3db782", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+  }
+})()}
+},{".././components/ArchiveMembers.vue":59,".././components/CurrentMembers.vue":60,".././components/RequestMembers.vue":63,"vue":54,"vue-hot-reload-api":50}],68:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _PlanPanel = require('.././components/PlanPanel.vue');
+
+var _PlanPanel2 = _interopRequireDefault(_PlanPanel);
+
+var _TrainingPanel = require('.././components/TrainingPanel.vue');
+
+var _TrainingPanel2 = _interopRequireDefault(_TrainingPanel);
+
+var _ServicePanel = require('.././components/ServicePanel.vue');
+
+var _ServicePanel2 = _interopRequireDefault(_ServicePanel);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = {
+    props: {
+        clubid: {},
+        type: {
+            default: 'plan-panel'
+        }
+    },
+
+    data: function data() {
+        return {
+            submenu: 'request-members',
+            plan_count: 0,
+            training_count: 0,
+            service_count: 0
+        };
+    },
+
+
+    created: function created() {
+        this.init();
+    },
+
+    methods: {
+        init: function init() {
+            /*this.$http.get(this.$env.get('APP_URI') + 'api/club/edit/' + this.clubid + '/members?type=' + this.memberType).then((response) => 
+            {
+                this.request_count = response.data.requests_count;
+                this.member_count = response.data.members_count;
+                this.archive_count = response.data.archive_count;
+            }, (response) => {
+             });     */
+        },
+
+        setRegistrationType: function setRegistrationType(type) {
+            this.type = type;
+        }
+    },
+
+    components: {
+        PlanPanel: _PlanPanel2.default, TrainingPanel: _TrainingPanel2.default, ServicePanel: _ServicePanel2.default
+    },
+
+    locales: {
+        en: {
+            plan: 'Plan',
+            training: 'Training',
+            service: 'Service'
+        },
+        mn: {
+            plan: 'Хөтөлбөр',
+            training: 'Хичээл',
+            service: 'Үйлчилгээ'
+        }
+    }
+};
+if (module.exports.__esModule) module.exports = module.exports.default
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"row small-up-3\">\n  <div class=\"column\">\n    <a @click=\"setRegistrationType('plan-panel')\" class=\"button success\">{{$t('plan')}} ({{plan_count}})</a>\n    <a @click=\"setRegistrationType('training-panel')\" class=\"button success\">{{$t('training')}} ({{training_count}})</a>\n    <a @click=\"setRegistrationType('service-panel')\" class=\"button success\">{{$t('service')}} ({{service_count}})</a>\n  </div>\n</div>\n\n<component :id=\"clubid\" :is=\"type\">\n</component>\n\n"
+if (module.hot) {(function () {  module.hot.accept()
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), true)
+  if (!hotAPI.compatible) return
+  if (!module.hot.data) {
+    hotAPI.createRecord("_v-5773b283", module.exports)
+  } else {
+    hotAPI.update("_v-5773b283", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+  }
+})()}
+},{".././components/PlanPanel.vue":62,".././components/ServicePanel.vue":64,".././components/TrainingPanel.vue":65,"vue":54,"vue-hot-reload-api":50}],69:[function(require,module,exports){
+var __vueify_insert__ = require("vueify/lib/insert-css")
+var __vueify_style__ = __vueify_insert__.insert("\n")
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+exports.default = {
+	props: {
+		clubid: {}
+	},
+
+	data: function data() {
+		return {
+			type: 1,
+			widgets: []
+		};
+	},
+
+
+	created: function created() {
+		this.getWidgets();
+	},
+
+	methods: {
+		getWidgets: function getWidgets() {
+			var _this = this;
+
+			this.$http.get(this.$env.get('APP_URI') + 'api/club/' + this.clubid + '/widgets').then(function (res) {
+				debugger;
+				_this.widgets = res.data;
+			}).catch(function (err) {});
+		},
+
+		setType: function setType(type) {
+			this.type = type;
+		},
+
+		filterByType: function filterByType(obj) {
+			return obj.section_id == this.type;
+		}
+	},
+
+	computed: {
+		filteredWidgets: function filteredWidgets() {
+			return this.widgets.filter(this.filterByType);;
+		}
+	}
+};
+if (module.exports.__esModule) module.exports = module.exports.default
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n\t<div>\n\t\t<h3>Club Template</h3>\n\t\t<a @click=\"setType(1)\" class=\"button success\">\n\t\t\tHeader\n\t\t</a>\n\t\t<a @click=\"setType(2)\" class=\"button success\">\n\t\t\tContent\n\t\t</a>\n\t\t<a @click=\"setType(3)\" class=\"button success\">\n\t\t\tFooter\n\t\t</a>\n\n\t\t<ul>\n\t\t\t<li v-for=\"widget in filteredWidgets\">\n\t\t\t\t{{widget.name}}\t\n\t\t\t</li>\n\t\t</ul>\n\t<div>\n</div></div>"
+if (module.hot) {(function () {  module.hot.accept()
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), true)
+  if (!hotAPI.compatible) return
+  module.hot.dispose(function () {
+    __vueify_insert__.cache["\n"] = false
+    document.head.removeChild(__vueify_style__)
+  })
+  if (!module.hot.data) {
+    hotAPI.createRecord("_v-455676c4", module.exports)
+  } else {
+    hotAPI.update("_v-455676c4", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+  }
+})()}
+},{"vue":54,"vue-hot-reload-api":50,"vueify/lib/insert-css":55}],70:[function(require,module,exports){
+'use strict';
 
 var _VerifyView = require('./web/VerifyView.vue');
 
@@ -54022,37 +54969,17 @@ var _ClubEditView = require('./web/ClubEditView.vue');
 
 var _ClubEditView2 = _interopRequireDefault(_ClubEditView);
 
-var _Default = require('./widgets/header/Default.vue');
+var _Default = require('./actors/application/widgets/header/Default.vue');
 
 var _Default2 = _interopRequireDefault(_Default);
 
-var _TeacherDefault = require('./widgets/content/TeacherDefault.vue');
+var _TeacherDefault = require('./actors/application/widgets/content/TeacherDefault.vue');
 
 var _TeacherDefault2 = _interopRequireDefault(_TeacherDefault);
 
-var _TrainingDefault = require('./widgets/content/TrainingDefault.vue');
+var _TrainingDefault = require('./actors/application/widgets/content/TrainingDefault.vue');
 
 var _TrainingDefault2 = _interopRequireDefault(_TrainingDefault);
-
-var _CustomModal = require('./components/CustomModal.vue');
-
-var _CustomModal2 = _interopRequireDefault(_CustomModal);
-
-var _CustomToast = require('./components/CustomToast.vue');
-
-var _CustomToast2 = _interopRequireDefault(_CustomToast);
-
-var _locales = require('./lang/locales');
-
-var _locales2 = _interopRequireDefault(_locales);
-
-var _Tools = require('./settings/Tools.js');
-
-var _Tools2 = _interopRequireDefault(_Tools);
-
-var _env2 = require('../../../env.js');
-
-var _env3 = _interopRequireDefault(_env2);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -54064,33 +54991,20 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 require('./bootstrap');
 
-/**
- * Next, we will create a fresh Vue application instance and attach it to
- * the body of the page. From here, you may begin adding components to
- * the application, or feel free to tweak this setup for your needs.
- */
+//Application pages
+
+
+//application widgets load
 
 
 Vue.debug = true;
-Vue.component('example', require('./components/Example.vue'));
-Vue.component('CustomModal', _CustomModal2.default);
-Vue.component('CustomToast', _CustomToast2.default);
-Vue.use(require('vue-env'), _env3.default);
-Vue.use(_Tools2.default);
-
 Vue.http.headers.common['X-CSRF-TOKEN'] = document.querySelector('#_token').getAttribute('value');
-
-Vue.config.lang = 'en';
-
-Object.keys(_locales2.default).forEach(function (lang) {
-	Vue.locale(lang, _locales2.default[lang]);
-});
+Vue.config.lang = 'mn';
 
 var app = new Vue({
 	el: 'body',
 
 	created: function created() {
-		/*Vue.config.lang = 'en';*/
 		this.$env.set('APP_ENV', 'Development');
 		this.$env.set('APP_URI', 'http://localhost/');
 		this.$env.set('APP_LANG', 'en');
@@ -54108,8 +55022,34 @@ var app = new Vue({
 	}
 });
 
-},{"../../../env.js":1,"./bootstrap":57,"./components/CustomModal.vue":59,"./components/CustomToast.vue":60,"./components/Example.vue":61,"./lang/locales":73,"./settings/Tools.js":80,"./web/ClubEditView.vue":82,"./web/IndexView.vue":83,"./web/ProfileEditView.vue":84,"./web/ProfileView.vue":85,"./web/SearchView.vue":86,"./web/VerifyView.vue":87,"./widgets/content/TeacherDefault.vue":88,"./widgets/content/TrainingDefault.vue":89,"./widgets/header/Default.vue":90,"chart.js":2,"vue-env":49}],57:[function(require,module,exports){
+},{"./actors/application/widgets/content/TeacherDefault.vue":56,"./actors/application/widgets/content/TrainingDefault.vue":57,"./actors/application/widgets/header/Default.vue":58,"./bootstrap":71,"./web/ClubEditView.vue":92,"./web/IndexView.vue":93,"./web/ProfileEditView.vue":94,"./web/ProfileView.vue":95,"./web/SearchView.vue":96,"./web/VerifyView.vue":97}],71:[function(require,module,exports){
 'use strict';
+
+var _chart = require('chart.js');
+
+var _chart2 = _interopRequireDefault(_chart);
+
+var _CustomModal = require('./components/CustomModal.vue');
+
+var _CustomModal2 = _interopRequireDefault(_CustomModal);
+
+var _CustomToast = require('./components/CustomToast.vue');
+
+var _CustomToast2 = _interopRequireDefault(_CustomToast);
+
+var _Tools = require('./settings/Tools.js');
+
+var _Tools2 = _interopRequireDefault(_Tools);
+
+var _env2 = require('../../../env.js');
+
+var _env3 = _interopRequireDefault(_env2);
+
+var _locales = require('./lang/locales');
+
+var _locales2 = _interopRequireDefault(_locales);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 window._ = require('lodash');
 
@@ -54121,9 +55061,11 @@ window._ = require('lodash');
 
 window.$ = window.jQuery = require('jquery');
 
-require('./jquery.fileupload');
-require('./foundation');
-require('./jquery.tokenize');
+require('./dependency/jquery.fileupload');
+require('./dependency/foundation');
+require('./dependency/jquery.tokenize');
+require('./dependency/tabs');
+require('./dependency/velocity.min');
 
 /**
  * Vue is a modern JavaScript library for building interactive web interfaces
@@ -54134,6 +55076,28 @@ require('./jquery.tokenize');
 window.Vue = require('vue');
 require('vue-resource');
 Vue.use(require('vue-i18n'));
+
+//global components
+
+
+Vue.component('CustomModal', _CustomModal2.default);
+Vue.component('CustomToast', _CustomToast2.default);
+
+//common tools
+
+
+//global storage
+
+
+//language support
+
+
+Object.keys(_locales2.default).forEach(function (lang) {
+  Vue.locale(lang, _locales2.default[lang]);
+});
+
+Vue.use(_Tools2.default);
+Vue.use(require('vue-env'), _env3.default);
 
 /**
  * We'll register a HTTP interceptor to attach the "CSRF" header to each of
@@ -54160,7 +55124,37 @@ Vue.http.interceptors.push((request, next) => {
 //     key: 'your-pusher-key'
 // });
 
-},{"./foundation":70,"./jquery.fileupload":71,"./jquery.tokenize":72,"jquery":45,"lodash":46,"vue":54,"vue-i18n":51,"vue-resource":52}],58:[function(require,module,exports){
+},{"../../../env.js":1,"./components/CustomModal.vue":74,"./components/CustomToast.vue":75,"./dependency/foundation":84,"./dependency/jquery.fileupload":85,"./dependency/jquery.tokenize":86,"./dependency/tabs":88,"./dependency/velocity.min":89,"./lang/locales":90,"./settings/Tools.js":91,"chart.js":2,"jquery":45,"lodash":46,"vue":54,"vue-env":49,"vue-i18n":51,"vue-resource":52}],72:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.default = {
+
+    props: {
+        id: {}
+    },
+
+    created: function created() {},
+
+    ready: function ready() {},
+
+    methods: {}
+};
+if (module.exports.__esModule) module.exports = module.exports.default
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<h3>Activity</h3>\n\n<div class=\"row\">\n    Percentage of lolloloasdsadfsdfl\n</div>\n"
+if (module.hot) {(function () {  module.hot.accept()
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), true)
+  if (!hotAPI.compatible) return
+  if (!module.hot.data) {
+    hotAPI.createRecord("_v-ebf1af24", module.exports)
+  } else {
+    hotAPI.update("_v-ebf1af24", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+  }
+})()}
+},{"vue":54,"vue-hot-reload-api":50}],73:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
 var __vueify_style__ = __vueify_insert__.insert("/* line 8, stdin */\n.progress--circle {\n  position: relative;\n  display: inline-block;\n  margin: 1rem;\n  width: 120px;\n  height: 120px;\n  border-radius: 50%;\n  background-color: #ddd; }\n  /* line 16, stdin */\n  .progress--circle:before {\n    content: '';\n    position: absolute;\n    top: 15px;\n    left: 15px;\n    width: 90px;\n    height: 90px;\n    border-radius: 50%;\n    background-color: white; }\n  /* line 26, stdin */\n  .progress--circle:after {\n    content: '';\n    display: inline-block;\n    width: 100%;\n    height: 100%;\n    border-radius: 50%;\n    background-color: #63B8FF; }\n\n/* line 36, stdin */\n.progress__number {\n  position: absolute;\n  top: 50%;\n  width: 100%;\n  line-height: 1;\n  margin-top: -0.75rem;\n  text-align: center;\n  font-size: 1.5rem;\n  color: #777; }\n\n/* line 52, stdin */\n.progress--bar.progress--0:after {\n  width: 0%; }\n\n/* line 55, stdin */\n.progress--circle.progress--0:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(left, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(90deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--1:after {\n  width: 1%; }\n\n/* line 55, stdin */\n.progress--circle.progress--1:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(356.4deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(93.6deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--2:after {\n  width: 2%; }\n\n/* line 55, stdin */\n.progress--circle.progress--2:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(352.8deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(97.2deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--3:after {\n  width: 3%; }\n\n/* line 55, stdin */\n.progress--circle.progress--3:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(349.2deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(100.8deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--4:after {\n  width: 4%; }\n\n/* line 55, stdin */\n.progress--circle.progress--4:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(345.6deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(104.4deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--5:after {\n  width: 5%; }\n\n/* line 55, stdin */\n.progress--circle.progress--5:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(342deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(108deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--6:after {\n  width: 6%; }\n\n/* line 55, stdin */\n.progress--circle.progress--6:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(338.4deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(111.6deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--7:after {\n  width: 7%; }\n\n/* line 55, stdin */\n.progress--circle.progress--7:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(334.8deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(115.2deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--8:after {\n  width: 8%; }\n\n/* line 55, stdin */\n.progress--circle.progress--8:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(331.2deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(118.8deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--9:after {\n  width: 9%; }\n\n/* line 55, stdin */\n.progress--circle.progress--9:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(327.6deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(122.4deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--10:after {\n  width: 10%; }\n\n/* line 55, stdin */\n.progress--circle.progress--10:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(324deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(126deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--11:after {\n  width: 11%; }\n\n/* line 55, stdin */\n.progress--circle.progress--11:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(320.4deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(129.6deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--12:after {\n  width: 12%; }\n\n/* line 55, stdin */\n.progress--circle.progress--12:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(316.8deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(133.2deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--13:after {\n  width: 13%; }\n\n/* line 55, stdin */\n.progress--circle.progress--13:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(313.2deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(136.8deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--14:after {\n  width: 14%; }\n\n/* line 55, stdin */\n.progress--circle.progress--14:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(309.6deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(140.4deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--15:after {\n  width: 15%; }\n\n/* line 55, stdin */\n.progress--circle.progress--15:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(306deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(144deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--16:after {\n  width: 16%; }\n\n/* line 55, stdin */\n.progress--circle.progress--16:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(302.4deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(147.6deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--17:after {\n  width: 17%; }\n\n/* line 55, stdin */\n.progress--circle.progress--17:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(298.8deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(151.2deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--18:after {\n  width: 18%; }\n\n/* line 55, stdin */\n.progress--circle.progress--18:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(295.2deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(154.8deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--19:after {\n  width: 19%; }\n\n/* line 55, stdin */\n.progress--circle.progress--19:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(291.6deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(158.4deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--20:after {\n  width: 20%; }\n\n/* line 55, stdin */\n.progress--circle.progress--20:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(288deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(162deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--21:after {\n  width: 21%; }\n\n/* line 55, stdin */\n.progress--circle.progress--21:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(284.4deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(165.6deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--22:after {\n  width: 22%; }\n\n/* line 55, stdin */\n.progress--circle.progress--22:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(280.8deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(169.2deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--23:after {\n  width: 23%; }\n\n/* line 55, stdin */\n.progress--circle.progress--23:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(277.2deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(172.8deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--24:after {\n  width: 24%; }\n\n/* line 55, stdin */\n.progress--circle.progress--24:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(273.6deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(176.4deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--25:after {\n  width: 25%; }\n\n/* line 55, stdin */\n.progress--circle.progress--25:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(top, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(180deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--26:after {\n  width: 26%; }\n\n/* line 55, stdin */\n.progress--circle.progress--26:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(266.4deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(183.6deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--27:after {\n  width: 27%; }\n\n/* line 55, stdin */\n.progress--circle.progress--27:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(262.8deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(187.2deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--28:after {\n  width: 28%; }\n\n/* line 55, stdin */\n.progress--circle.progress--28:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(259.2deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(190.8deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--29:after {\n  width: 29%; }\n\n/* line 55, stdin */\n.progress--circle.progress--29:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(255.6deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(194.4deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--30:after {\n  width: 30%; }\n\n/* line 55, stdin */\n.progress--circle.progress--30:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(252deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(198deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--31:after {\n  width: 31%; }\n\n/* line 55, stdin */\n.progress--circle.progress--31:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(248.4deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(201.6deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--32:after {\n  width: 32%; }\n\n/* line 55, stdin */\n.progress--circle.progress--32:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(244.8deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(205.2deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--33:after {\n  width: 33%; }\n\n/* line 55, stdin */\n.progress--circle.progress--33:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(241.2deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(208.8deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--34:after {\n  width: 34%; }\n\n/* line 55, stdin */\n.progress--circle.progress--34:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(237.6deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(212.4deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--35:after {\n  width: 35%; }\n\n/* line 55, stdin */\n.progress--circle.progress--35:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(234deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(216deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--36:after {\n  width: 36%; }\n\n/* line 55, stdin */\n.progress--circle.progress--36:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(230.4deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(219.6deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--37:after {\n  width: 37%; }\n\n/* line 55, stdin */\n.progress--circle.progress--37:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(226.8deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(223.2deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--38:after {\n  width: 38%; }\n\n/* line 55, stdin */\n.progress--circle.progress--38:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(223.2deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(226.8deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--39:after {\n  width: 39%; }\n\n/* line 55, stdin */\n.progress--circle.progress--39:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(219.6deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(230.4deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--40:after {\n  width: 40%; }\n\n/* line 55, stdin */\n.progress--circle.progress--40:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(216deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(234deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--41:after {\n  width: 41%; }\n\n/* line 55, stdin */\n.progress--circle.progress--41:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(212.4deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(237.6deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--42:after {\n  width: 42%; }\n\n/* line 55, stdin */\n.progress--circle.progress--42:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(208.8deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(241.2deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--43:after {\n  width: 43%; }\n\n/* line 55, stdin */\n.progress--circle.progress--43:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(205.2deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(244.8deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--44:after {\n  width: 44%; }\n\n/* line 55, stdin */\n.progress--circle.progress--44:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(201.6deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(248.4deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--45:after {\n  width: 45%; }\n\n/* line 55, stdin */\n.progress--circle.progress--45:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(198deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(252deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--46:after {\n  width: 46%; }\n\n/* line 55, stdin */\n.progress--circle.progress--46:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(194.4deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(255.6deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--47:after {\n  width: 47%; }\n\n/* line 55, stdin */\n.progress--circle.progress--47:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(190.8deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(259.2deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--48:after {\n  width: 48%; }\n\n/* line 55, stdin */\n.progress--circle.progress--48:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(187.2deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(262.8deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--49:after {\n  width: 49%; }\n\n/* line 55, stdin */\n.progress--circle.progress--49:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(183.6deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(266.4deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--50:after {\n  width: 50%; }\n\n/* line 55, stdin */\n.progress--circle.progress--50:after {\n  background-image: -webkit-linear-gradient(right, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(-90deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--51:after {\n  width: 51%; }\n\n/* line 55, stdin */\n.progress--circle.progress--51:after {\n  background-image: -webkit-linear-gradient(176.4deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(-86.4deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--52:after {\n  width: 52%; }\n\n/* line 55, stdin */\n.progress--circle.progress--52:after {\n  background-image: -webkit-linear-gradient(172.8deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(-82.8deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--53:after {\n  width: 53%; }\n\n/* line 55, stdin */\n.progress--circle.progress--53:after {\n  background-image: -webkit-linear-gradient(169.2deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(-79.2deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--54:after {\n  width: 54%; }\n\n/* line 55, stdin */\n.progress--circle.progress--54:after {\n  background-image: -webkit-linear-gradient(165.6deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(-75.6deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--55:after {\n  width: 55%; }\n\n/* line 55, stdin */\n.progress--circle.progress--55:after {\n  background-image: -webkit-linear-gradient(162deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(-72deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--56:after {\n  width: 56%; }\n\n/* line 55, stdin */\n.progress--circle.progress--56:after {\n  background-image: -webkit-linear-gradient(158.4deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(-68.4deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--57:after {\n  width: 57%; }\n\n/* line 55, stdin */\n.progress--circle.progress--57:after {\n  background-image: -webkit-linear-gradient(154.8deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(-64.8deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--58:after {\n  width: 58%; }\n\n/* line 55, stdin */\n.progress--circle.progress--58:after {\n  background-image: -webkit-linear-gradient(151.2deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(-61.2deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--59:after {\n  width: 59%; }\n\n/* line 55, stdin */\n.progress--circle.progress--59:after {\n  background-image: -webkit-linear-gradient(147.6deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(-57.6deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--60:after {\n  width: 60%; }\n\n/* line 55, stdin */\n.progress--circle.progress--60:after {\n  background-image: -webkit-linear-gradient(144deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(-54deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--61:after {\n  width: 61%; }\n\n/* line 55, stdin */\n.progress--circle.progress--61:after {\n  background-image: -webkit-linear-gradient(140.4deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(-50.4deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--62:after {\n  width: 62%; }\n\n/* line 55, stdin */\n.progress--circle.progress--62:after {\n  background-image: -webkit-linear-gradient(136.8deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(-46.8deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--63:after {\n  width: 63%; }\n\n/* line 55, stdin */\n.progress--circle.progress--63:after {\n  background-image: -webkit-linear-gradient(133.2deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(-43.2deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--64:after {\n  width: 64%; }\n\n/* line 55, stdin */\n.progress--circle.progress--64:after {\n  background-image: -webkit-linear-gradient(129.6deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(-39.6deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--65:after {\n  width: 65%; }\n\n/* line 55, stdin */\n.progress--circle.progress--65:after {\n  background-image: -webkit-linear-gradient(126deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(-36deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--66:after {\n  width: 66%; }\n\n/* line 55, stdin */\n.progress--circle.progress--66:after {\n  background-image: -webkit-linear-gradient(122.4deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(-32.4deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--67:after {\n  width: 67%; }\n\n/* line 55, stdin */\n.progress--circle.progress--67:after {\n  background-image: -webkit-linear-gradient(118.8deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(-28.8deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--68:after {\n  width: 68%; }\n\n/* line 55, stdin */\n.progress--circle.progress--68:after {\n  background-image: -webkit-linear-gradient(115.2deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(-25.2deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--69:after {\n  width: 69%; }\n\n/* line 55, stdin */\n.progress--circle.progress--69:after {\n  background-image: -webkit-linear-gradient(111.6deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(-21.6deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--70:after {\n  width: 70%; }\n\n/* line 55, stdin */\n.progress--circle.progress--70:after {\n  background-image: -webkit-linear-gradient(108deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(-18deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--71:after {\n  width: 71%; }\n\n/* line 55, stdin */\n.progress--circle.progress--71:after {\n  background-image: -webkit-linear-gradient(104.4deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(-14.4deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--72:after {\n  width: 72%; }\n\n/* line 55, stdin */\n.progress--circle.progress--72:after {\n  background-image: -webkit-linear-gradient(100.8deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(-10.8deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--73:after {\n  width: 73%; }\n\n/* line 55, stdin */\n.progress--circle.progress--73:after {\n  background-image: -webkit-linear-gradient(97.2deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(-7.2deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--74:after {\n  width: 74%; }\n\n/* line 55, stdin */\n.progress--circle.progress--74:after {\n  background-image: -webkit-linear-gradient(93.6deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(-3.6deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--75:after {\n  width: 75%; }\n\n/* line 55, stdin */\n.progress--circle.progress--75:after {\n  background-image: -webkit-linear-gradient(bottom, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(0deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--76:after {\n  width: 76%; }\n\n/* line 55, stdin */\n.progress--circle.progress--76:after {\n  background-image: -webkit-linear-gradient(86.4deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(3.6deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--77:after {\n  width: 77%; }\n\n/* line 55, stdin */\n.progress--circle.progress--77:after {\n  background-image: -webkit-linear-gradient(82.8deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(7.2deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--78:after {\n  width: 78%; }\n\n/* line 55, stdin */\n.progress--circle.progress--78:after {\n  background-image: -webkit-linear-gradient(79.2deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(10.8deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--79:after {\n  width: 79%; }\n\n/* line 55, stdin */\n.progress--circle.progress--79:after {\n  background-image: -webkit-linear-gradient(75.6deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(14.4deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--80:after {\n  width: 80%; }\n\n/* line 55, stdin */\n.progress--circle.progress--80:after {\n  background-image: -webkit-linear-gradient(72deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(18deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--81:after {\n  width: 81%; }\n\n/* line 55, stdin */\n.progress--circle.progress--81:after {\n  background-image: -webkit-linear-gradient(68.4deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(21.6deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--82:after {\n  width: 82%; }\n\n/* line 55, stdin */\n.progress--circle.progress--82:after {\n  background-image: -webkit-linear-gradient(64.8deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(25.2deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--83:after {\n  width: 83%; }\n\n/* line 55, stdin */\n.progress--circle.progress--83:after {\n  background-image: -webkit-linear-gradient(61.2deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(28.8deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--84:after {\n  width: 84%; }\n\n/* line 55, stdin */\n.progress--circle.progress--84:after {\n  background-image: -webkit-linear-gradient(57.6deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(32.4deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--85:after {\n  width: 85%; }\n\n/* line 55, stdin */\n.progress--circle.progress--85:after {\n  background-image: -webkit-linear-gradient(54deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(36deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--86:after {\n  width: 86%; }\n\n/* line 55, stdin */\n.progress--circle.progress--86:after {\n  background-image: -webkit-linear-gradient(50.4deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(39.6deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--87:after {\n  width: 87%; }\n\n/* line 55, stdin */\n.progress--circle.progress--87:after {\n  background-image: -webkit-linear-gradient(46.8deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(43.2deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--88:after {\n  width: 88%; }\n\n/* line 55, stdin */\n.progress--circle.progress--88:after {\n  background-image: -webkit-linear-gradient(43.2deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(46.8deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--89:after {\n  width: 89%; }\n\n/* line 55, stdin */\n.progress--circle.progress--89:after {\n  background-image: -webkit-linear-gradient(39.6deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(50.4deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--90:after {\n  width: 90%; }\n\n/* line 55, stdin */\n.progress--circle.progress--90:after {\n  background-image: -webkit-linear-gradient(36deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(54deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--91:after {\n  width: 91%; }\n\n/* line 55, stdin */\n.progress--circle.progress--91:after {\n  background-image: -webkit-linear-gradient(32.4deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(57.6deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--92:after {\n  width: 92%; }\n\n/* line 55, stdin */\n.progress--circle.progress--92:after {\n  background-image: -webkit-linear-gradient(28.8deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(61.2deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--93:after {\n  width: 93%; }\n\n/* line 55, stdin */\n.progress--circle.progress--93:after {\n  background-image: -webkit-linear-gradient(25.2deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(64.8deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--94:after {\n  width: 94%; }\n\n/* line 55, stdin */\n.progress--circle.progress--94:after {\n  background-image: -webkit-linear-gradient(21.6deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(68.4deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--95:after {\n  width: 95%; }\n\n/* line 55, stdin */\n.progress--circle.progress--95:after {\n  background-image: -webkit-linear-gradient(18deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(72deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--96:after {\n  width: 96%; }\n\n/* line 55, stdin */\n.progress--circle.progress--96:after {\n  background-image: -webkit-linear-gradient(14.4deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(75.6deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--97:after {\n  width: 97%; }\n\n/* line 55, stdin */\n.progress--circle.progress--97:after {\n  background-image: -webkit-linear-gradient(10.8deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(79.2deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--98:after {\n  width: 98%; }\n\n/* line 55, stdin */\n.progress--circle.progress--98:after {\n  background-image: -webkit-linear-gradient(7.2deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(82.8deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--99:after {\n  width: 99%; }\n\n/* line 55, stdin */\n.progress--circle.progress--99:after {\n  background-image: -webkit-linear-gradient(3.6deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(86.4deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--100:after {\n  width: 100%; }\n\n/* line 55, stdin */\n.progress--circle.progress--100:after {\n  background-image: -webkit-linear-gradient(left, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n")
 'use strict';
@@ -54227,9 +55221,9 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-03cd24e7", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":54,"vue-hot-reload-api":50,"vueify/lib/insert-css":55}],59:[function(require,module,exports){
+},{"vue":54,"vue-hot-reload-api":50,"vueify/lib/insert-css":55}],74:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
-var __vueify_style__ = __vueify_insert__.insert("/* line 2, stdin */\n* {\n  box-sizing: border-box; }\n\n/* line 6, stdin */\n.modal-mask {\n  position: fixed;\n  z-index: 9998;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n  background-color: rgba(0, 0, 0, 0.5);\n  -webkit-transition: opacity .3s ease;\n  transition: opacity .3s ease; }\n\n/* line 17, stdin */\n.modal-container {\n  display: block;\n  z-index: 1006;\n  padding: 1rem;\n  border: 1px solid #cacaca;\n  background-color: #fefefe;\n  border-radius: 4px;\n  position: relative;\n  top: 0px;\n  height: 100%;\n  margin-left: auto;\n  margin-right: auto;\n  overflow-y: auto; }\n\n/* line 32, stdin */\n.modal-header h3 {\n  margin-top: 0;\n  color: #42b983; }\n\n/* line 41, stdin */\n.text-right {\n  text-align: right; }\n\n/* line 45, stdin */\n.form-label {\n  display: block;\n  margin-bottom: 1em; }\n\n/* line 50, stdin */\n.form-label > .form-control {\n  margin-top: 0.5em; }\n\n/* line 54, stdin */\n.form-control {\n  display: block;\n  width: 100%;\n  padding: 0.5em 1em;\n  line-height: 1.5;\n  border: 1px solid #ddd; }\n\n/* line 62, stdin */\n.modal-enter, .modal-leave {\n  opacity: 0; }\n\n/* line 66, stdin */\n.modal-enter .modal-container,\n.modal-leave .modal-container {\n  -webkit-transition: all .3s ease;\n  transition: all .3s ease; }\n\n@media screen and (min-width: 640px) {\n  /* line 72, stdin */\n  .modal-container {\n    width: 600px;\n    max-width: 75rem;\n    top: 50px; } }\n")
+var __vueify_style__ = __vueify_insert__.insert("/* line 2, stdin */\n* {\n  box-sizing: border-box; }\n\n/* line 6, stdin */\n.modal-mask {\n  position: fixed;\n  z-index: 9998;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n  background-color: rgba(0, 0, 0, 0.5);\n  -webkit-transition: opacity .3s ease;\n  transition: opacity .3s ease; }\n\n/* line 17, stdin */\n.modal-container {\n  display: block;\n  z-index: 1006;\n  background-color: #fefefe;\n  border-radius: 4px;\n  position: relative;\n  top: 0px;\n  height: 100%;\n  margin-left: auto;\n  margin-right: auto;\n  overflow-y: auto; }\n\n/* line 30, stdin */\n.modal-header h3 {\n  margin-top: 0;\n  color: #42b983; }\n\n/* line 35, stdin */\n.modal-loader {\n  z-index: 1009;\n  background-color: #fff;\n  height: 100%;\n  width: 100%; }\n\n/* line 46, stdin */\n.text-right {\n  text-align: right; }\n\n/* line 50, stdin */\n.form-label {\n  display: block;\n  margin-bottom: 1em; }\n\n/* line 55, stdin */\n.form-label > .form-control {\n  margin-top: 0.5em; }\n\n/* line 59, stdin */\n.form-control {\n  display: block;\n  width: 100%;\n  padding: 0.5em 1em;\n  line-height: 1.5;\n  border: 1px solid #ddd; }\n\n/* line 67, stdin */\n.modal-enter, .modal-leave {\n  opacity: 0; }\n\n/* line 71, stdin */\n.modal-enter .modal-container,\n.modal-leave .modal-container {\n  -webkit-transition: all .3s ease;\n  transition: all .3s ease; }\n\n@media screen and (min-width: 640px) {\n  /* line 77, stdin */\n  .modal-container {\n    width: 600px;\n    max-width: 75rem;\n    top: 50px; } }\n")
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -54266,6 +55260,10 @@ exports.default = {
 		type: { default: 'Club' },
 		multiple: {},
 		title: { default: '' },
+		loading: {
+			type: Boolean,
+			default: false
+		},
 		title_en: { default: '' },
 		usage: { default: 'questionable' },
 		context: {
@@ -54287,19 +55285,7 @@ exports.default = {
 		}
 	},
 
-	created: function created() {
-		this.setLanguage();
-	},
-
-	ready: function ready() {},
-
-	data: function data() {
-		return {
-			lang_mn: [],
-			lang_en: []
-		};
-	},
-
+	created: function created() {},
 
 	methods: {
 
@@ -54320,20 +55306,18 @@ exports.default = {
 
 				this.$dispatch(this.saveCallback, response);
 			} else this.modalClose();
+		}
+	},
+
+	events: {
+		'startLoading': function startLoading() {
+			debugger;
+			this.loading = true;
 		},
 
-		setLanguage: function setLanguage() {
-			this.lang_en = {
-				title: this.title_en
-			};
-
-			this.lang_mn = {
-				title: this.title
-			};
-		},
-
-		translate: function translate(value) {
-			return this.lang_mn[value];
+		'stopLoading': function stopLoading() {
+			debugger;
+			this.loading = false;
 		}
 	},
 
@@ -54342,13 +55326,13 @@ exports.default = {
 	}
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"modal-mask\" @click=\"modalClose\" v-if=\"show\" transition=\"modal\">\n        <div class=\"modal-container\" @click.stop=\"\">\n            <div class=\"modal-header\">\n\t\t\t\t<slot name=\"header\">\n\t\t\t\t\t<div class=\"row small-up-3 medium-up-3 large-up-3\">\n\t\t\t\t\t  <div class=\"columns\">\n\t\t\t\t\t  \t<button @click=\"modalClose\" class=\"close-button\" type=\"button\">\n\t\t\t\t\t\t\t<span class=\"fa fa-times\" aria-hidden=\"true\"></span>\n\t\t\t\t\t\t</button>\n\t\t\t\t\t  </div>\n\t\t\t\t\t  <div class=\"columns\">\n\t\t\t\t\t  \t<button @click=\"modalSave\" class=\"save-button\" type=\"button\">\n\t\t\t\t\t    \t<span aria-hidden=\"true\" class=\"fa fa-check\"></span>\n\t\t\t\t\t    </button>\n\t\t\t\t\t  </div>\n\t\t\t\t\t</div>\t\n\t\t\t\t\t<div class=\"row\" style=\"height:50px; text-align: center;\">\n\t\t\t\t\t\t<h4 style=\"color:#5fcf80;\">{{translate('title')}}</h4>\n\t\t\t\t\t</div>\n\t\t\t\t</slot>\n\t\t\t</div>\n\n            <div class=\"modal-body\">\n\t          <slot name=\"body\">\n\t          \t<component v-ref:context=\"\" v-if=\"type == 'Club'\" :id=\"id\" :type=\"type\" :is=\"context\" :selected=\"items\">\n\t\t\t\t</component>\n\t\t\t\t<components v-ref:context=\"\" :multiple=\"multiple\" v-else=\"\" :is=\"context\" :selected=\"items\">\n\t\t\t\t</components>\n\t          </slot>\n\t        </div>\n\n            <div class=\"modal-footer\">\n\t          <slot name=\"footer\">\n\t          </slot>\n\t        </div>\n        </div>\n    </div>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"modal-mask\" @click=\"modalClose\" v-if=\"show\" transition=\"modal\">\n        <div class=\"modal-container\" @click.stop=\"\">\n            <div class=\"modal-header\">\n\t\t\t\t<slot name=\"header\">\n\t\t\t\t\t<div class=\"row small-up-3 medium-up-3 large-up-3\">\n\t\t\t\t\t  <div class=\"columns\">\n\t\t\t\t\t  \t<button @click=\"modalClose\" class=\"close-button\" type=\"button\">\n\t\t\t\t\t\t\t<span class=\"fa fa-times\" aria-hidden=\"true\"></span>\n\t\t\t\t\t\t</button>\n\t\t\t\t\t  </div>\n\t\t\t\t\t  <div class=\"columns\">\n\t\t\t\t\t  \t<button @click=\"modalSave\" class=\"save-button\" type=\"button\">\n\t\t\t\t\t    \t<span aria-hidden=\"true\" class=\"fa fa-check\"></span>\n\t\t\t\t\t    </button>\n\t\t\t\t\t  </div>\n\t\t\t\t\t</div>\t\n\t\t\t\t\t<div class=\"row\" style=\"height:50px; text-align: center;\">\n\t\t\t\t\t\t<h4 style=\"color:#5fcf80;\">{{title}}</h4>\n\t\t\t\t\t</div>\n\t\t\t\t</slot>\n\t\t\t</div>\n\n\n\t\t\t<div v-show=\"loading\" class=\"modal-loader\">\n\n\t\t\t\t<div class=\"preloader-wrapper small active\">\n\t              <div class=\"spinner-layer spinner-green-only\">\n\t                <div class=\"circle-clipper left\">\n\t                  <div class=\"circle\"></div>\n\t                </div><div class=\"gap-patch\">\n\t                  <div class=\"circle\"></div>\n\t                </div><div class=\"circle-clipper right\">\n\t                  <div class=\"circle\"></div>\n\t                </div>\n\t              </div>\n\t            </div>\n\n\t\t\t</div>\n\n            <div v-show=\"!loading\" class=\"modal-body\">\n\t          <slot name=\"body\">\n\t          \t<component v-ref:context=\"\" v-if=\"type == 'Club'\" :id=\"id\" :type=\"type\" :is=\"context\" :selected=\"items\">\n\t\t\t\t</component>\n\t\t\t\t<components v-ref:context=\"\" :multiple=\"multiple\" v-else=\"\" :is=\"context\" :selected=\"items\">\n\t\t\t\t</components>\n\t          </slot>\n\t        </div>\n\n            <div class=\"modal-footer\">\n\t          <slot name=\"footer\">\n\t          </slot>\n\t        </div>\n        </div>\n    </div>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
   module.hot.dispose(function () {
-    __vueify_insert__.cache["/* line 2, stdin */\n* {\n  box-sizing: border-box; }\n\n/* line 6, stdin */\n.modal-mask {\n  position: fixed;\n  z-index: 9998;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n  background-color: rgba(0, 0, 0, 0.5);\n  -webkit-transition: opacity .3s ease;\n  transition: opacity .3s ease; }\n\n/* line 17, stdin */\n.modal-container {\n  display: block;\n  z-index: 1006;\n  padding: 1rem;\n  border: 1px solid #cacaca;\n  background-color: #fefefe;\n  border-radius: 4px;\n  position: relative;\n  top: 0px;\n  height: 100%;\n  margin-left: auto;\n  margin-right: auto;\n  overflow-y: auto; }\n\n/* line 32, stdin */\n.modal-header h3 {\n  margin-top: 0;\n  color: #42b983; }\n\n/* line 41, stdin */\n.text-right {\n  text-align: right; }\n\n/* line 45, stdin */\n.form-label {\n  display: block;\n  margin-bottom: 1em; }\n\n/* line 50, stdin */\n.form-label > .form-control {\n  margin-top: 0.5em; }\n\n/* line 54, stdin */\n.form-control {\n  display: block;\n  width: 100%;\n  padding: 0.5em 1em;\n  line-height: 1.5;\n  border: 1px solid #ddd; }\n\n/* line 62, stdin */\n.modal-enter, .modal-leave {\n  opacity: 0; }\n\n/* line 66, stdin */\n.modal-enter .modal-container,\n.modal-leave .modal-container {\n  -webkit-transition: all .3s ease;\n  transition: all .3s ease; }\n\n@media screen and (min-width: 640px) {\n  /* line 72, stdin */\n  .modal-container {\n    width: 600px;\n    max-width: 75rem;\n    top: 50px; } }\n"] = false
+    __vueify_insert__.cache["/* line 2, stdin */\n* {\n  box-sizing: border-box; }\n\n/* line 6, stdin */\n.modal-mask {\n  position: fixed;\n  z-index: 9998;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n  background-color: rgba(0, 0, 0, 0.5);\n  -webkit-transition: opacity .3s ease;\n  transition: opacity .3s ease; }\n\n/* line 17, stdin */\n.modal-container {\n  display: block;\n  z-index: 1006;\n  background-color: #fefefe;\n  border-radius: 4px;\n  position: relative;\n  top: 0px;\n  height: 100%;\n  margin-left: auto;\n  margin-right: auto;\n  overflow-y: auto; }\n\n/* line 30, stdin */\n.modal-header h3 {\n  margin-top: 0;\n  color: #42b983; }\n\n/* line 35, stdin */\n.modal-loader {\n  z-index: 1009;\n  background-color: #fff;\n  height: 100%;\n  width: 100%; }\n\n/* line 46, stdin */\n.text-right {\n  text-align: right; }\n\n/* line 50, stdin */\n.form-label {\n  display: block;\n  margin-bottom: 1em; }\n\n/* line 55, stdin */\n.form-label > .form-control {\n  margin-top: 0.5em; }\n\n/* line 59, stdin */\n.form-control {\n  display: block;\n  width: 100%;\n  padding: 0.5em 1em;\n  line-height: 1.5;\n  border: 1px solid #ddd; }\n\n/* line 67, stdin */\n.modal-enter, .modal-leave {\n  opacity: 0; }\n\n/* line 71, stdin */\n.modal-enter .modal-container,\n.modal-leave .modal-container {\n  -webkit-transition: all .3s ease;\n  transition: all .3s ease; }\n\n@media screen and (min-width: 640px) {\n  /* line 77, stdin */\n  .modal-container {\n    width: 600px;\n    max-width: 75rem;\n    top: 50px; } }\n"] = false
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
@@ -54357,7 +55341,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-df8e52a6", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"../context/AddPlan.vue":65,"../context/AddTraining.vue":66,"../context/FileManager.vue":67,"../context/teachers.vue":68,"../context/trainings.vue":69,"vue":54,"vue-hot-reload-api":50,"vueify/lib/insert-css":55}],60:[function(require,module,exports){
+},{"../context/AddPlan.vue":79,"../context/AddTraining.vue":80,"../context/FileManager.vue":81,"../context/teachers.vue":82,"../context/trainings.vue":83,"vue":54,"vue-hot-reload-api":50,"vueify/lib/insert-css":55}],75:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
 var __vueify_style__ = __vueify_insert__.insert("\n\n.CustomToast {\n    min-width: 250px;\n    margin-left: -125px;\n    background-color: #333;\n    color: #fff;\n    text-align: center;\n    border-radius: 2px;\n    padding: 16px;\n    position: fixed;\n    z-index: 9999;\n    left: 50%;\n    font-size: 17px;\n}\n\n.CustomToast--Top {\n\ttop: 10px;\n}\n\n.CustomToast--Bottom {\n\tbottom: 30px;\n}\n\n.CustomToast--Success {\n\tbackground-color : green;\n}\n\n.CustomToast--Info {\n\tbackground-color : #333;\n}\n\n.CustomToast--Warning {\n\tbackground-color : yellow;\n}\n\n.CustomToast--Error {\n\tbackground-color : red;\n}\n\n\n.fade-transition {\n  display: inline-block; /* otherwise scale animation won't work */\n}\n\n.fade-enter {\n  -webkit-animation: fadein .5s;\n          animation: fadein .5s;\n}\n.fade-leave {\n  -webkit-animation: fadeout .5s;\n          animation: fadeout .5s;\n}\n\n@-webkit-keyframes fadein {\n    from {bottom: 0; opacity: 0;}\n    to {bottom: 30px; opacity: 1;}\n}\n\n@keyframes fadein {\n    from {bottom: 0; opacity: 0;}\n    to {bottom: 30px; opacity: 1;}\n}\n\n@-webkit-keyframes fadeout {\n    from {bottom: 30px; opacity: 1;}\n    to {bottom: 0; opacity: 0;}\n}\n\n@keyframes fadeout {\n    from {bottom: 30px; opacity: 1;}\n    to {bottom: 0; opacity: 0;}\n}\n\n")
 'use strict';
@@ -54435,59 +55419,84 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-1e8d2527", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":54,"vue-hot-reload-api":50,"vueify/lib/insert-css":55}],61:[function(require,module,exports){
+},{"vue":54,"vue-hot-reload-api":50,"vueify/lib/insert-css":55}],76:[function(require,module,exports){
+var __vueify_insert__ = require("vueify/lib/insert-css")
+var __vueify_style__ = __vueify_insert__.insert("/* line 2, stdin */\n.button-follow {\n  line-height: 24px;\n  padding: 0 9px;\n  font-size: 16px;\n  border-radius: 4px;\n  border-style: solid;\n  border-width: 1px solid;\n  font-weight: 600;\n  outline: none;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n  width: 50%;\n  -webkit-appearance: none; }\n\n/* line 18, stdin */\n.button-follow.unfollow {\n  background-color: #5fcf80;\n  color: #fff; }\n\n/* line 23, stdin */\n.button-follow.follow {\n  background-color: #fff;\n  color: #222222; }\n")
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
 exports.default = {
-    ready: function ready() {
-        console.log('Component ready.');
+
+    props: {
+        id: {}
+    },
+
+    created: function created() {
+        this.getFollowedClubs();
+    },
+
+    ready: function ready() {},
+
+    data: function data() {
+        return {
+            clubs: []
+        };
+    },
+
+
+    methods: {
+        getFollowedClubs: function getFollowedClubs() {
+            var _this = this;
+
+            this.$http.get(this.$env.get('APP_URI') + 'api/user/' + this.id + '/followed').then(function (res) {
+                _this.clubs = res.data.data;
+                /*debugger;
+                 for(var i = 0; i < this.clubs.length; i ++) {
+                    this.clubs[i]["state"] = "following";
+                }*/
+            }).catch(function (err) {});
+        },
+
+        toggleState: function toggleState(club) {
+
+            this.$http.post(this.$env.get('APP_URI') + 'api/club/' + club.id + '/follow').then(function (res) {
+                club.state = res.data.type;
+            }).catch(function (err) {
+                club.state = "following";
+            });
+        }
+    },
+
+    locales: {
+        en: {
+            follow: 'Follow',
+            unfollow: 'Following'
+        },
+        mn: {
+            follow: 'Дагах',
+            unfollow: 'Дагсан'
+        }
     }
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"container\">\n    <div class=\"row\">\n        <div class=\"col-md-8 col-md-offset-2\">\n            <div class=\"panel panel-default\">\n                <div class=\"panel-heading\">Example Component</div>\n\n                <div class=\"panel-body\">\n                    I'm an example component!\n                </div>\n            </div>\n        </div>\n    </div>\n</div>\n"
-if (module.hot) {(function () {  module.hot.accept()
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), true)
-  if (!hotAPI.compatible) return
-  if (!module.hot.data) {
-    hotAPI.createRecord("_v-74ad77db", module.exports)
-  } else {
-    hotAPI.update("_v-74ad77db", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
-  }
-})()}
-},{"vue":54,"vue-hot-reload-api":50}],62:[function(require,module,exports){
-var __vueify_insert__ = require("vueify/lib/insert-css")
-var __vueify_style__ = __vueify_insert__.insert("\n")
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
-exports.default = {
-	props: {
-		item: {}
-	}
-};
-if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<li style=\"border: 1px solid green;\">\n\t<h3>{{item.name}}</h3>\n\t{{item.description}}\t\n\t<ul>\n\t\t<li v-for=\"teacher in item.teachers\">\n\t\t\t#{{teacher.username}},\n\t\t</li>\n\t</ul>\t\n\t<ul>\n\t\t\n\t\t<li v-for=\"photo in item.photos\">\n\t\t\t<img height=\"100\" width=\"100\" v-bind:src=\"photo.url\">\n\t\t</li>\n\t\t\n\t</ul>\t\n</li>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"row\" v-for=\"club in clubs\">\n    <div class=\"small-4 columns\">\n        <!-- <img class=\"float-right\" src=\"/images/users/teacher_example.jpg\" style=\"height:30px; width: 30px;\" /> -->\n    </div>\n    <div class=\"small-4 columns\">\n        <p class=\"float-left\">{{club.full_name}}</p>\n    </div>\n    <div class=\"small-4 columns\">\n        <a v-bind:class=\"club.state\" class=\"button-follow float-right\" @click=\"toggleState(club)\">{{$t(club.state)}}</a>\n    </div>\n</div>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
   module.hot.dispose(function () {
-    __vueify_insert__.cache["\n"] = false
+    __vueify_insert__.cache["/* line 2, stdin */\n.button-follow {\n  line-height: 24px;\n  padding: 0 9px;\n  font-size: 16px;\n  border-radius: 4px;\n  border-style: solid;\n  border-width: 1px solid;\n  font-weight: 600;\n  outline: none;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n  width: 50%;\n  -webkit-appearance: none; }\n\n/* line 18, stdin */\n.button-follow.unfollow {\n  background-color: #5fcf80;\n  color: #fff; }\n\n/* line 23, stdin */\n.button-follow.follow {\n  background-color: #fff;\n  color: #222222; }\n"] = false
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
-    hotAPI.createRecord("_v-4f4e86e7", module.exports)
+    hotAPI.createRecord("_v-8f302622", module.exports)
   } else {
-    hotAPI.update("_v-4f4e86e7", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+    hotAPI.update("_v-8f302622", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":54,"vue-hot-reload-api":50,"vueify/lib/insert-css":55}],63:[function(require,module,exports){
+},{"vue":54,"vue-hot-reload-api":50,"vueify/lib/insert-css":55}],77:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
 var __vueify_style__ = __vueify_insert__.insert("\nbutton:focus {outline:0;}\n\n#omnibox {\n    position: absolute;\n    left: 0px;\n    margin: 16px;\n    top: 0px;\n    z-index: 10;\n    -webkit-transition:left 0.5s;\n    transition: left 0.5s;\n    -webkit-transform: translateX(0px);\n    transform: translateX(0px);\n    transition-property: -webkit-transform,transform,visibility,opacity;\n    -webkit-transition-duration: 200ms;\n            transition-duration: 200ms;\n    -webkit-transition-timing-function: cubic-bezier(0.0,0.0,0.2,1);\n            transition-timing-function: cubic-bezier(0.0,0.0,0.2,1);\n}\n\n.vasquette-margin-enabled#rap-card, .vasquette-margin-enabled#omnibox {\n    margin: 8px 0 8px 8px;\n}\n\n.searchbox.suggestions-shown \n{\n    border-radius: 2px 2px 0 0;\n}\n\n.searchbox-shadow \n{\n    box-shadow: 0 2px 4px rgba(0,0,0,0.2),0 -1px 0px rgba(0,0,0,0.02);\n}\n\n.searchbox \n{\n\n    position: relative;\n    background: #fff;\n    border-radius: 2px;\n    box-sizing: border-box;\n    height: 48px;\n    border-bottom: 1px solid transparent;\n    padding: 12px 104px 11px 64px;\n    -webkit-transition-property:background,box-shadow;\n    transition-property: background,box-shadow;\n    -webkit-transition-duration: 0.3s;\n            transition-duration: 0.3s;\n}\n\n.searchbox-searchbutton-container \n{\n    position: absolute;\n    right: 54px;\n    top: 0;\n}\n\n.searchbox-findme\n{\n    position: absolute;\n    right: 0px;\n    top: 0;\n}\n\n.searchbox-searchbutton::before {\n    content: '';\n    display: block;\n    width: 24px;\n    height: 24px;\n    background: url(//maps.gstatic.com/tactile/omnibox/quantum_search_button-20150825-1x.png);\n    background-size: 72px 24px;\n}\n\n.searchbox-searchbutton-container::after {\n    content: \"\";\n    position: absolute;\n    right: 0;\n    top: 10px;\n    border-left: 1px solid #ddd;\n    height: 28px;\n}\n\n.searchbox-searchbutton {\n    display: block;\n    padding: 12px 15px;\n}\n\n.searchbox-input {\n    border: none; \n    padding: 0px; \n    margin: 0px; \n    height: auto; \n    width: 100%; \n    z-index: 6;\n    left: 0px;\n    outline: none;\n    font-size: 15px;\n}\n\n.searchbox-hamburger::before {\n    content: '';\n    display: block;\n    background-image: url(//maps.gstatic.com/tactile/omnibox/quantum_menu-v2-1x.png);\n    background-size: 48px 24px;\n    background-position: 0 0;\n    height: 24px;\n    width: 24px;\n    opacity: .62;\n}\n\n.searchbox-hamburger {\n    display: block;\n    cursor: pointer;\n    padding: 12px 16px;\n}\n\n.searchbox-hamburger-container \n{\n    position: absolute;\n    z-index: 1003;\n    left: 0;\n    top: 0;\n}\n\n/* Pin Hover Box Styles */\n.search-tooltip{\n\tz-index: 11;\n    position: absolute;\n    background-color: #FFFFFF;\n    width: 250px;\n    height: 70px;\n    -webkit-box-shadow: 10px 10px 30px 0px rgba(174,174,174,1);\n    -moz-box-shadow: 10px 10px 30px 0px rgba(174,174,174,1);\n    box-shadow: 10px 10px 30px 0px rgba(174,174,174,1);\n    border-radius: 5px;\n}\n\n.rating {\n  margin: 10px 0;\n}\n\n.rating i {\n  display: inline-block;\n  width: 0;\n  height: 1.5em;\n  border-width: 1.5em / 2;\n  border-style: solid;\n  border-color: #eee;\n  border-radius: .22em;\n  color: white;\n  background: #eee;\n  font-style: normal;\n  line-height: 1.6em;\n  text-indent: -0.5em;\n  text-shadow: 1px 0 1px hsl(0, 0%, 70%);\n}\n/*panel*/\n.pane {\n    /*position: relative;*/\n    display: block;\n}\n\n.pane-holder{\n    width: 408px;\n    height: 100%;\n    position: absolute;\n    z-index: 2;\n    left: 0;\n    top: 0;\n    overflow: hidden;\n}\n\n.pane-holder:hover{\n    overflow-y: scroll;\n}\n\n.pane-header{\n    width: 100%;\n    height: 256px;\n    background-color: #fff;\n}\n.pane-content{\n    width: 100%;\n    height: auto;\n    line-height: 1.5em;\n    background-color: #4285F4;\n    padding: 10px;\n    color: #fff;\n}\n.pane-content h1{\n    font-size: 25px;\n}\n.pane-holder-small{\n    overflow-y: scroll;\n}\n\n.find-mylocation{\n    display: block;\n    padding: 12px 15px;\n}\n\n.reset-button{\n    display: block;\n    padding: 12px 15px;\n}\n.reset-button::before{\n    background-image: url(//maps.gstatic.com/tactile/omnibox/clear-1x-20150504.png);\n    background-size: 96px 24px;\n    height: 24px;\n    width: 24px;\n    cursor: pointer;\n    display: block;\n    content: '';\n}\n\n")
 "use strict";
@@ -54517,53 +55526,37 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-3f3bb728", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":54,"vue-hot-reload-api":50,"vueify/lib/insert-css":55}],64:[function(require,module,exports){
-var __vueify_insert__ = require("vueify/lib/insert-css")
-var __vueify_style__ = __vueify_insert__.insert("\n\tdiv.TokenizeMeasure,\n\tdiv.Tokenize ul li span,\n\tdiv.Tokenize ul.TokensContainer li.TokenSearch input {\n\t    font-size: 50%;\n\t    font-weight: 600;\n    \tcolor: white !important;\n\t}\n\n\tdiv.Tokenize {\n\t    position: relative;\n\t    display: inline-block;\n\t    zoom: 1;\n\t}\n\n\tdiv.Tokenize ul {\n\t    list-style: none;\n\t    padding: 0;\n\t    margin: 0;\n\t}\n\n\tdiv.Tokenize ul li {\n\t    white-space: nowrap;\n\t}\n\n\tdiv.Tokenize ul.TokensContainer {\n\t    cursor: text;\n\t    padding: 0 5px 5px 0;\n\t    height: 100px;\n\t    overflow-y: auto;\n\t    background-color: white;\n\t    -webkit-touch-callout: none;\n\t    -webkit-user-select: none;\n\t    -moz-user-select: none;\n\t    -ms-user-select: none;\n\t    user-select: none;\n\t}\n\n\tdiv.Tokenize ul.TokensContainer.Autosize {\n\t    height: auto;\n\t}\n\n\tdiv.Tokenize.Disabled ul.TokensContainer,\n\tdiv.Tokenize.Disabled ul.TokensContainer input {\n\t    cursor: not-allowed;\n\t}\n\n\tdiv.Tokenize ul.TokensContainer li.Token {\n\t    background-color: red;\n\t    padding: 0 5px;\n\t    line-height: 6px;\n\t    border-radius: 4px;\n\t}\n\n\tdiv.Tokenize ul.TokensContainer.ui-sortable:not(.ui-sortable-disabled) li.Token {\n\t    cursor: move;\n\t}\n\n\tdiv.Tokenize ul.TokensContainer li.Token.MovingShadow  {\n\t    border: 1px solid #fcefa1;\n\t    background-color: #fbf9ee;\n\t}\n\n\tdiv.Tokenize ul.TokensContainer li.Token.PendingDelete {\n\t    opacity : 0.5;\n\t    -moz-opacity : 0.5;\n\t    -ms-filter: \"alpha(opacity=50)\";\n\t    filter : alpha(opacity=50);\n\t}\n\n\tdiv.Tokenize ul.TokensContainer li.Token,\n\tdiv.Tokenize ul.TokensContainer li.TokenSearch {\n\t    margin: 1px 0 0 1px;\n\t    height: 12px;\n\t    float: left;\n\t}\n\n\tdiv.Tokenize ul.TokensContainer li.TokenSearch input {\n\t    margin: 0;\n\t    padding: 1px 0;\n\t    background-color: transparent;\n\t    line-height: 18px;\n\t    border: none;\n\t    outline: none;\n\t    font-weight: 100 !important;\n\t    color: #000 !important;\n\t}\n\n\tdiv.Tokenize ul.TokensContainer li.Placeholder {\n\t    color: #ddd;\n\t    position: absolute;\n\t    line-height: 20px;\n\t    padding: 5px 0 0 5px;\n\t    display: none;\n\t}\n\n\tdiv.Tokenize ul.TokensContainer,\n\tdiv.Tokenize ul.Dropdown {\n\t    border: 1px solid #ccc;\n\t}\n\n\tdiv.Tokenize ul.TokensContainer li.Token a.Close {\n\t    font-family: Arial, Helvetica, sans-serif !important;\n\t    font-size: 9px !important;\n\t    line-height: 10px;\n\t    float: right;\n\t    margin: 1px 0 0 5px;\n\t    padding: 0;\n\t    cursor: pointer;\n\t    color: #ebeced;\n\t}\n\n\tdiv.Tokenize.Disabled ul.TokensContainer li.Token a.Close {\n\t    display: none;\n\t}\n\n\tdiv.Tokenize ul.TokensContainer li.Token a.Close:hover {\n\t    background: transparent;\n\t    text-decoration: none;\n\t}\n\n\tdiv.Tokenize ul.Dropdown {\n\t    -webkit-box-sizing: border-box;\n\t    -moz-box-sizing: border-box;\n\t    -ms-box-sizing: border-box;\n\t    box-sizing: border-box;\n\n\t    display: none;\n\t    width: 100%;\n\t    padding: 5px 0;\n\t    margin: -1px 0 0 0;\n\t    position: absolute;\n\t    background-color: white;\n\t    overflow-y: auto;\n\n\t    -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);\n\t    -moz-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);\n\t    -o-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);\n\t    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);\n\n\t    -webkit-background-clip: padding-box;\n\t    -moz-background-clip: padding;\n\t    background-clip: padding-box;\n\n\t    -webkit-border-radius: 0 0 6px 6px;\n\t    -moz-border-radius: 0 0 6px 6px;\n\t    border-radius: 0 0 6px 6px;\n\n\t    z-index: 20;\n\t}\n\n\tdiv.Tokenize ul.Dropdown li {\n\t    padding: 5px 20px;\n\t    overflow: hidden;\n\t    cursor: pointer;\n\t}\n\n\tdiv.Tokenize ul.Dropdown li.Hover {\n\t    color: white;\n\t    text-decoration: none;\n\t    background-color: #0081c2;\n\t    background-image: -moz-linear-gradient(top, #0088cc, #0077b3);\n\t    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#0088cc), to(#0077b3));\n\t    background-image: -webkit-linear-gradient(top, #0088cc, #0077b3);\n\t    background-image: -o-linear-gradient(top, #0088cc, #0077b3);\n\t    background-image: linear-gradient(to bottom, #0088cc, #0077b3);\n\t    background-repeat: repeat-x;\n\t    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff0088cc', endColorstr='#ff0077b3', GradientType=0);\n\t}\n")
-'use strict';
+},{"vue":54,"vue-hot-reload-api":50,"vueify/lib/insert-css":55}],78:[function(require,module,exports){
+"use strict";
 
 Object.defineProperty(exports, "__esModule", {
-	value: true
+    value: true
 });
 exports.default = {
-	props: {
-		hover: { default: false },
-		club: { default: null }
-	},
 
-	data: function data() {
-		return {
-			instance: null
-		};
-	},
+    props: {
+        id: {}
+    },
 
+    created: function created() {},
 
-	created: function created() {},
+    ready: function ready() {},
 
-	ready: function ready() {
-		this.instance = $('.tokenize').tokenize({ displayDropdownOnFocus: true });
-		this.instance.onDropdownShow = function (e) {
-			alert('show');
-		};
-	}
+    methods: {}
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n\t<select id=\"tokenize\" multiple=\"multiple\" class=\"tokenize\" style=\"width:100px;     margin: 0px;\n    padding: 0px;\n    border: 0px;\n    display: none;\">\n\t    <option value=\"1\">Саун</option>\n\t    <option value=\"2\">Душ</option>\n\t    <option value=\"3\">Ёог</option>\n\t    <option value=\"4\">Шүүгээ</option>\n\t    <option value=\"5\">Eleanor</option>\n\t</select>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<h3>Timeline</h3>\n\n<div class=\"row\">\n    Percentage of lollolol\n</div>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
-  module.hot.dispose(function () {
-    __vueify_insert__.cache["\n\tdiv.TokenizeMeasure,\n\tdiv.Tokenize ul li span,\n\tdiv.Tokenize ul.TokensContainer li.TokenSearch input {\n\t    font-size: 50%;\n\t    font-weight: 600;\n    \tcolor: white !important;\n\t}\n\n\tdiv.Tokenize {\n\t    position: relative;\n\t    display: inline-block;\n\t    zoom: 1;\n\t}\n\n\tdiv.Tokenize ul {\n\t    list-style: none;\n\t    padding: 0;\n\t    margin: 0;\n\t}\n\n\tdiv.Tokenize ul li {\n\t    white-space: nowrap;\n\t}\n\n\tdiv.Tokenize ul.TokensContainer {\n\t    cursor: text;\n\t    padding: 0 5px 5px 0;\n\t    height: 100px;\n\t    overflow-y: auto;\n\t    background-color: white;\n\t    -webkit-touch-callout: none;\n\t    -webkit-user-select: none;\n\t    -moz-user-select: none;\n\t    -ms-user-select: none;\n\t    user-select: none;\n\t}\n\n\tdiv.Tokenize ul.TokensContainer.Autosize {\n\t    height: auto;\n\t}\n\n\tdiv.Tokenize.Disabled ul.TokensContainer,\n\tdiv.Tokenize.Disabled ul.TokensContainer input {\n\t    cursor: not-allowed;\n\t}\n\n\tdiv.Tokenize ul.TokensContainer li.Token {\n\t    background-color: red;\n\t    padding: 0 5px;\n\t    line-height: 6px;\n\t    border-radius: 4px;\n\t}\n\n\tdiv.Tokenize ul.TokensContainer.ui-sortable:not(.ui-sortable-disabled) li.Token {\n\t    cursor: move;\n\t}\n\n\tdiv.Tokenize ul.TokensContainer li.Token.MovingShadow  {\n\t    border: 1px solid #fcefa1;\n\t    background-color: #fbf9ee;\n\t}\n\n\tdiv.Tokenize ul.TokensContainer li.Token.PendingDelete {\n\t    opacity : 0.5;\n\t    -moz-opacity : 0.5;\n\t    -ms-filter: \"alpha(opacity=50)\";\n\t    filter : alpha(opacity=50);\n\t}\n\n\tdiv.Tokenize ul.TokensContainer li.Token,\n\tdiv.Tokenize ul.TokensContainer li.TokenSearch {\n\t    margin: 1px 0 0 1px;\n\t    height: 12px;\n\t    float: left;\n\t}\n\n\tdiv.Tokenize ul.TokensContainer li.TokenSearch input {\n\t    margin: 0;\n\t    padding: 1px 0;\n\t    background-color: transparent;\n\t    line-height: 18px;\n\t    border: none;\n\t    outline: none;\n\t    font-weight: 100 !important;\n\t    color: #000 !important;\n\t}\n\n\tdiv.Tokenize ul.TokensContainer li.Placeholder {\n\t    color: #ddd;\n\t    position: absolute;\n\t    line-height: 20px;\n\t    padding: 5px 0 0 5px;\n\t    display: none;\n\t}\n\n\tdiv.Tokenize ul.TokensContainer,\n\tdiv.Tokenize ul.Dropdown {\n\t    border: 1px solid #ccc;\n\t}\n\n\tdiv.Tokenize ul.TokensContainer li.Token a.Close {\n\t    font-family: Arial, Helvetica, sans-serif !important;\n\t    font-size: 9px !important;\n\t    line-height: 10px;\n\t    float: right;\n\t    margin: 1px 0 0 5px;\n\t    padding: 0;\n\t    cursor: pointer;\n\t    color: #ebeced;\n\t}\n\n\tdiv.Tokenize.Disabled ul.TokensContainer li.Token a.Close {\n\t    display: none;\n\t}\n\n\tdiv.Tokenize ul.TokensContainer li.Token a.Close:hover {\n\t    background: transparent;\n\t    text-decoration: none;\n\t}\n\n\tdiv.Tokenize ul.Dropdown {\n\t    -webkit-box-sizing: border-box;\n\t    -moz-box-sizing: border-box;\n\t    -ms-box-sizing: border-box;\n\t    box-sizing: border-box;\n\n\t    display: none;\n\t    width: 100%;\n\t    padding: 5px 0;\n\t    margin: -1px 0 0 0;\n\t    position: absolute;\n\t    background-color: white;\n\t    overflow-y: auto;\n\n\t    -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);\n\t    -moz-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);\n\t    -o-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);\n\t    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);\n\n\t    -webkit-background-clip: padding-box;\n\t    -moz-background-clip: padding;\n\t    background-clip: padding-box;\n\n\t    -webkit-border-radius: 0 0 6px 6px;\n\t    -moz-border-radius: 0 0 6px 6px;\n\t    border-radius: 0 0 6px 6px;\n\n\t    z-index: 20;\n\t}\n\n\tdiv.Tokenize ul.Dropdown li {\n\t    padding: 5px 20px;\n\t    overflow: hidden;\n\t    cursor: pointer;\n\t}\n\n\tdiv.Tokenize ul.Dropdown li.Hover {\n\t    color: white;\n\t    text-decoration: none;\n\t    background-color: #0081c2;\n\t    background-image: -moz-linear-gradient(top, #0088cc, #0077b3);\n\t    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#0088cc), to(#0077b3));\n\t    background-image: -webkit-linear-gradient(top, #0088cc, #0077b3);\n\t    background-image: -o-linear-gradient(top, #0088cc, #0077b3);\n\t    background-image: linear-gradient(to bottom, #0088cc, #0077b3);\n\t    background-repeat: repeat-x;\n\t    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff0088cc', endColorstr='#ff0077b3', GradientType=0);\n\t}\n"] = false
-    document.head.removeChild(__vueify_style__)
-  })
   if (!module.hot.data) {
-    hotAPI.createRecord("_v-2d605127", module.exports)
+    hotAPI.createRecord("_v-ff47bec0", module.exports)
   } else {
-    hotAPI.update("_v-2d605127", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+    hotAPI.update("_v-ff47bec0", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":54,"vue-hot-reload-api":50,"vueify/lib/insert-css":55}],65:[function(require,module,exports){
+},{"vue":54,"vue-hot-reload-api":50}],79:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -54586,7 +55579,8 @@ exports.default = {
 			pictures: [],
 			services: [],
 			showFileManager: false,
-			showTraining: false
+			showTraining: false,
+			pinnedPhoto: null
 		};
 	},
 
@@ -54626,8 +55620,20 @@ exports.default = {
 		},
 
 		choosedPictures: function choosedPictures($response) {
+
+			debugger;
 			this.pictures = $response.data;
 			this.showFileManager = false;
+		},
+
+		setPinnedPhoto: function setPinnedPhoto(photo) {
+			photo.pinned = true;
+
+			if (this.pinnedPhoto && photo != this.pinnedPhoto) {
+				this.pinnedPhoto.pinned = false;
+			}
+
+			this.pinnedPhoto = photo;
 		},
 
 		deletePhoto: function deletePhoto(photo) {
@@ -54650,13 +55656,24 @@ exports.default = {
 			}
 
 			return true;
+		},
+
+		filterPinnedPic: function filterPinnedPic(obj) {
+			return obj.pinned;
+		}
+	},
+
+	computed: {
+		pinnedPic: function pinnedPic() {
+			var pinned = this.pictures.filter(this.filterPinnedPic);
+			return pinned.length == 0 ? this.$env.get('APP_URI') + 'images/site/back.jpg' : pinned[0].url;
 		}
 	},
 
 	components: {}
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<custom-modal :id=\"id\" type=\"User\" title=\"Photo chooser\" usage=\"_photo-chooser\" multiple=\"true\" :items=\"pictures\" :show.sync=\"showFileManager\" save-callback=\"choosedPictures\" context=\"fileManager\">\n</custom-modal>\n\n<custom-modal :id=\"id\" type=\"Club\" title=\"Trainings\" usage=\"_training-chooser\" :items=\"trainings\" :show.sync=\"showTraining\" save-callback=\"choosedTrainings\" context=\"trainings\">\n</custom-modal>\n\n<form method=\"POST\">\n\t<div class=\"row\">\n\t  <fieldset class=\"large-6 columns\">\n\t    <legend>Plan schedule</legend>\n\t    <input type=\"radio\" name=\"schedule\" value=\"Daily\" id=\"schDaily\" required=\"\"><label for=\"schDaily\">Daily</label>\n\t    <input type=\"radio\" name=\"schedule\" value=\"Weakly\" id=\"schWeakly\"><label for=\"schWeakly\">Weakly</label>\n\t    <input type=\"radio\" name=\"schedule\" value=\"Monthly\" id=\"schMonthly\"><label for=\"schMonthly\">Monthly</label>\n\t    <input type=\"radio\" name=\"schedule\" value=\"Yearly\" id=\"schYearly\"><label for=\"schYearly\">Yearly</label>\n\t  </fieldset>\n\t  <fieldset class=\"large-6 columns\">\n\t    <legend>Duration</legend>\n\t    <input type=\"number\" name=\"length\" value=\"1\">\n\t  </fieldset>\n\t</div>\n\t<div class=\"row\">\n\t\t<div class=\"small-4 medium-4 column\">\n\t\t\t<label>Trainerless\n\t\t\t\t<input type=\"checkbox\" name=\"trainerless\">\n\t\t\t</label>\n\t\t</div>\n\t\t<div class=\"small-4 medium-4 column\">\n\t\t\t<label>Start\n\t\t\t\t<input type=\"number\" name=\"trainercount\">\n\t\t\t</label>\n\t\t</div>\n\t\t<div class=\"small-4 medium-4 column\">\n\t\t\t<label>Finish\n\t\t\t\t<input type=\"number\" name=\"trainercount\">\n\t\t\t</label>\n\t\t</div>\n\t</div>\n\n\t<ul class=\"tabs\" data-tabs=\"\" id=\"plan-tabs\">\n\t  <li class=\"tabs-title is-active\"><a href=\"#main\" aria-selected=\"true\">Info</a></li>\n\t  <li class=\"tabs-title \"><a href=\"#trainer\">Trainer</a></li>\n    </ul>\n\n     <div class=\"tabs-content\" data-tabs-content=\"plan-tabs\">\n\t  <div class=\"tabs-panel is-active\" id=\"main\">\n\t  \t<div class=\"row\">\n\t\t\t<div class=\"small-12 medium-6 column\">\n\t\t\t\t<label>PlanName\n\t\t\t        <input type=\"text\" name=\"name\" v-model=\"name\" placeholder=\"fill training name\">\n\t\t\t    </label>\t\n\t\t\t</div>\n\n\t\t\t<div class=\"small-12 medium-6 column\">\n\t\t\t\t<label>Description\n\t\t\t        <textarea type=\"text\" name=\"description\" v-model=\"description\" placeholder=\"Description ...\">\t\t\t\t        </textarea>\n\t\t\t    </label>\n\t\t\t</div>\n\t\t</div>\n\t\t<div class=\"row\">\n\t\t\t<div class=\"small-12 medium-6 column\">\n\t\t\t\t<label>Price\n\t\t\t        <input type=\"number\" name=\"price\" v-model=\"name\" placeholder=\"Plan price ...\">\n\t\t\t    </label>\t\n\t\t\t</div>\n\n\t\t\t<div class=\"small-12 medium-6 column\">\n\t\t\t\t<label>Description\n\t\t\t        <textarea type=\"text\" name=\"description\" v-model=\"description\" placeholder=\"Description ...\">\t\t\t\t        </textarea>\n\t\t\t    </label>\n\t\t\t</div>\n\t\t</div>\n\t\t<div class=\"row\">\n\t\t\t<div class=\"small-12 medium-6 column\">\n\t\t\t\t<label>Trainerless\n\t\t\t\t\t<input type=\"checkbox\" v-model=\"trainerless\" name=\"trainerless\">\n\t\t\t\t</label>\n\t\t\t</div>\n\t\t\t<div class=\"small-12 medium-6 column\">\n\t\t\t\t<label>Trainer Count\n\t\t\t\t\t<input type=\"number\" :disabled=\"!trainerless\" name=\"trainercount\">\n\t\t\t\t</label>\n\t\t\t</div>\n\t\t</div>\n\t  </div>\n\t  <div class=\"tabs-panel is-active\" id=\"trainer\">\n\t    <div class=\"row\">\n\t    \t<div class=\"small-12 column\" style=\"height:100px\">\n\t    \t\t<a @click=\"showTraining = true\" class=\"button success\">\n\t    \t\t\t<span class=\"fa fa-plus\"></span>\n\t    \t\t</a>\n\t    \t</div>\n\t\t</div>\n\t  </div>\n\t</div>\n</form>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<custom-modal :id=\"id\" type=\"User\" title=\"Photo chooser\" usage=\"_photo-chooser\" multiple=\"true\" :items=\"pictures\" :show.sync=\"showFileManager\" save-callback=\"choosedPictures\" context=\"fileManager\">\n</custom-modal>\n\n<custom-modal :id=\"id\" type=\"Club\" title=\"Trainings\" usage=\"_training-chooser\" :items=\"trainings\" :show.sync=\"showTraining\" save-callback=\"choosedTrainings\" context=\"trainings\">\n</custom-modal>\n\n<form method=\"POST\">\n\t<div class=\"row\">\n\t\t<div class=\"small-12\">\n\t\t\t<img :src=\"pinnedPic\">\n\t\t</div>\n\t</div>\n\t<div class=\"row small-up-3 medium-up-4 large-up-5\">\n\t\t<div class=\"column\">\n\t\t\t<a @click=\"showFileManager = true\" class=\"button succes\">+</a>\n\t\t</div>\n\t\t<div class=\"column\" v-for=\"photo in pictures\">\n\t\t\t<img @click=\"setPinnedPhoto(photo)\" :src=\"photo.url\">\n\t\t</div>\n\t</div>\n\t<div class=\"row\">\n\t  <fieldset class=\"large-6 columns\">\n\t    <legend>Plan schedule</legend>\n\t    <input type=\"radio\" name=\"schedule\" value=\"Daily\" id=\"schDaily\" required=\"\"><label for=\"schDaily\">Daily</label>\n\t    <input type=\"radio\" name=\"schedule\" value=\"Weakly\" id=\"schWeakly\"><label for=\"schWeakly\">Weakly</label>\n\t    <input type=\"radio\" name=\"schedule\" value=\"Monthly\" id=\"schMonthly\"><label for=\"schMonthly\">Monthly</label>\n\t    <input type=\"radio\" name=\"schedule\" value=\"Yearly\" id=\"schYearly\"><label for=\"schYearly\">Yearly</label>\n\t  </fieldset>\n\t  <fieldset class=\"large-6 columns\">\n\t    <legend>Duration</legend>\n\t    <input type=\"number\" name=\"length\" value=\"1\">\n\t  </fieldset>\n\t</div>\n\t<div class=\"row\">\n\t\t<div class=\"small-4 medium-4 column\">\n\t\t\t<p>\n\t\t      <label for=\"test5\">Trainerless</label>\n\t\t      <input type=\"checkbox\" id=\"trainerless\" name=\"trainerless\">\n\t\t    </p>\n\t\t</div>\n\t\t<div class=\"small-4 medium-4 column\">\n\t\t\t<label>Start\n\t\t\t\t<input type=\"number\" name=\"trainercount\">\n\t\t\t</label>\n\t\t</div>\n\t\t<div class=\"small-4 medium-4 column\">\n\t\t\t<label>Finish\n\t\t\t\t<input type=\"number\" name=\"trainercount\">\n\t\t\t</label>\n\t\t</div>\n\t</div>\n\n\t<ul class=\"tabs\" data-tabs=\"\" id=\"plan-tabs\">\n\t  <li class=\"tabs-title is-active\"><a href=\"#main\" aria-selected=\"true\">Info</a></li>\n\t  <li class=\"tabs-title \"><a href=\"#trainer\">Trainer</a></li>\n    </ul>\n\n     <div class=\"tabs-content\" data-tabs-content=\"plan-tabs\">\n\t  <div class=\"tabs-panel is-active\" id=\"main\">\n\t  \t<div class=\"row\">\n\t\t\t<div class=\"small-12 medium-6 column\">\n\t\t\t\t<label>PlanName\n\t\t\t        <input type=\"text\" name=\"name\" v-model=\"name\" placeholder=\"fill training name\">\n\t\t\t    </label>\t\n\t\t\t</div>\n\n\t\t\t<div class=\"small-12 medium-6 column\">\n\t\t\t\t<label>Description\n\t\t\t        <textarea type=\"text\" name=\"description\" v-model=\"description\" placeholder=\"Description ...\">\t\t\t\t        </textarea>\n\t\t\t    </label>\n\t\t\t</div>\n\t\t</div>\n\t\t<div class=\"row\">\n\t\t\t<div class=\"small-12 medium-6 column\">\n\t\t\t\t<label>Price\n\t\t\t        <input type=\"number\" name=\"price\" v-model=\"name\" placeholder=\"Plan price ...\">\n\t\t\t    </label>\t\n\t\t\t</div>\n\n\t\t\t<div class=\"small-12 medium-6 column\">\n\t\t\t\t<label>Description\n\t\t\t        <textarea type=\"text\" name=\"description\" v-model=\"description\" placeholder=\"Description ...\">\t\t\t\t        </textarea>\n\t\t\t    </label>\n\t\t\t</div>\n\t\t</div>\n\t\t<div class=\"row\">\n\t\t\t<div class=\"small-12 medium-6 column\">\n\t\t\t\t<p>\n\t\t\t      <input type=\"checkbox\" v-model=\"trainerless\" class=\"filled-in\" id=\"trainerless\">\n\t\t\t      <label for=\"trainerless\">Trainerless</label>\n\t\t\t    </p>\n\t\t\t</div>\n\t\t\t<div class=\"small-12 medium-6 column\">\n\t\t\t\t<label>Trainer Count\n\t\t\t\t\t<input type=\"number\" :disabled=\"!trainerless\" name=\"trainercount\">\n\t\t\t\t</label>\n\t\t\t</div>\n\t\t</div>\n\t  </div>\n\t  <div class=\"tabs-panel is-active\" id=\"trainer\">\n\t    <div class=\"row\">\n\t    \t<div class=\"small-12 column\" style=\"height:100px\">\n\t    \t\t<a @click=\"showTraining = true\" class=\"button success\">\n\t    \t\t\t<span class=\"fa fa-plus\"></span>\n\t    \t\t</a>\n\t    \t</div>\n\t\t</div>\n\t  </div>\n\t</div>\n</form>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -54667,12 +55684,16 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-4d3e4960", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":54,"vue-hot-reload-api":50}],66:[function(require,module,exports){
+},{"vue":54,"vue-hot-reload-api":50}],80:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
 	value: true
 });
+
+
+var Waterfall = require('vue-waterfall');
+
 exports.default = {
 	props: {
 		id: {},
@@ -54688,13 +55709,14 @@ exports.default = {
 			pictures: [],
 			services: [],
 			showFileManager: false,
-			showTeachers: false
+			showTeachers: false,
+			pinnedPhoto: null
 		};
 	},
 
 
 	ready: function ready() {
-		var tab = new Foundation.Tabs($('#example-tabs'));
+		$('ul.tabs').tabs();
 	},
 
 	events: {
@@ -54713,7 +55735,7 @@ exports.default = {
 				club_id: this.id,
 				name: this.name,
 				description: this.description,
-				pictures: this.$tools.collectionBy(this.pictures, "id|url"),
+				pictures: this.$tools.collectionBy(this.pictures, "id|url|pinned"),
 				teachers: this.$tools.collectionBy(this.teachers, "id")
 			});
 		},
@@ -54729,7 +55751,22 @@ exports.default = {
 
 		choosedPictures: function choosedPictures($response) {
 			this.pictures = $response.data;
+			if (this.pictures.length > 0) {
+				this.pinnedPhoto = this.pictures[0];
+				this.pinnedPhoto.pinned = true;
+			}
 			this.showFileManager = false;
+		},
+
+		setPinnedPhoto: function setPinnedPhoto(photo) {
+
+			photo.pinned = true;
+
+			if (this.pinnedPhoto && photo != this.pinnedPhoto) {
+				this.pinnedPhoto.pinned = false;
+			}
+
+			this.pinnedPhoto = photo;
 		},
 
 		deletePhoto: function deletePhoto(photo) {
@@ -54752,10 +55789,24 @@ exports.default = {
 			}
 
 			return true;
+		},
+
+		filterPinnedPic: function filterPinnedPic(obj) {
+			return obj.pinned;
 		}
 	},
 
-	components: {},
+	computed: {
+		pinnedPic: function pinnedPic() {
+			var pinned = this.pictures.filter(this.filterPinnedPic);
+			return pinned.length == 0 ? this.$env.get('APP_URI') + 'images/site/back.jpg' : pinned[0].url;
+		}
+	},
+
+	components: {
+		'waterfall': Waterfall.waterfall,
+		'waterfall-slot': Waterfall.waterfallSlot
+	},
 
 	locales: {
 		en: {
@@ -54779,7 +55830,7 @@ exports.default = {
 	}
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n\t<custom-modal :id=\"id\" type=\"User\" title_en=\"Photo chooser\" title=\"Зураг сонгох\" usage=\"_photo-chooser\" multiple=\"true\" :items=\"pictures\" :show.sync=\"showFileManager\" save-callback=\"choosedPictures\" context=\"fileManager\">\n\t</custom-modal>\n\n\t<custom-modal :id=\"id\" type=\"Club\" title=\"Багш сонгох\" title_en=\"Teacher chooser\" usage=\"_teacher-chooser\" :items=\"teachers\" :show.sync=\"showTeachers\" save-callback=\"choosedTeachers\" context=\"teachers\">\n\t</custom-modal>\n\n\t<form method=\"POST\" accept=\"\">\n\t\t<ul class=\"tabs\" data-tabs=\"\" id=\"example-tabs\">\n\t\t  <li class=\"tabs-title is-active\"><a href=\"#main\" aria-selected=\"true\">{{ $t(\"info\") }}</a></li>\n\t\t  <li class=\"tabs-title \"><a href=\"#photos\">{{ $t(\"photos\") }}</a></li>\n\t\t  <li class=\"tabs-title\"><a href=\"#teacher\">{{ $t(\"teacher\") }}</a></li>\n\t    </ul>\n\n\t  <div class=\"tabs-content\" data-tabs-content=\"example-tabs\">\n\t\t  <div class=\"tabs-panel is-active\" id=\"main\">\n\t\t    <div class=\"row\">\n\t\t\t    <div class=\"medium-6 columns\">\n\t\t\t      <label>{{ $t(\"name\") }}\n\t\t\t        <input type=\"text\" name=\"name\" v-model=\"name\" placeholder=\"\">\n\t\t\t      </label>\n\t\t\t    </div>\n\t\t\t    <div class=\"medium-6 columns\">\n\t\t\t      <label>{{ $t(\"description\") }}\n\t\t\t        <textarea type=\"text\" name=\"description\" v-model=\"description\" placeholder=\"\">\t\t\t        </textarea>\n\t\t\t      </label>\n\t\t\t    </div>\n\t\t\t</div>\n\t\t  </div>\n\t\t  <div class=\"tabs-panel\" id=\"teacher\">\n  \t  \t\t   <div class=\"picture-list\">\n\t\t\t  \t<div class=\"row small-up-2 medium-up-3 large-up-4\">\n\t\t\t  \t\t<br>\n\t\t\t\t  \t<div class=\"column\" v-for=\"teacher in teachers\">\n\t\t\t\t\t  \t<div class=\"figure\">\n\t\t                    <img v-bind:src=\"teacher.avatar_url\" alt=\"Jeffrey Way\" height=\"120\" width=\"120\" style=\"border-radius:4px;\">\n\t\t                    <div class=\"figcaption\">\n\t\t                        <a @click=\"deleteTeacher(teacher)\" class=\"btn-floating red\" style=\"left: 25%;\">\n\t\t                        \t<i class=\"fa fa-trash\"></i>\n\t\t                        </a>\n\t\t                    </div>\n\t\t                </div>\n\t\t\t\t  \t</div>\n\t\t\t\t  \t<div class=\"column\">\n\t\t\t\t\t  \t<div class=\"figure\">\n\t\t                    <div class=\"figcaption\" style=\"opacity:1;\">\n\t\t                        <a @click=\"showTeachers = true\" class=\"btn-floating red\" style=\"left: 25%;\">\n\t\t                        \t<i class=\"fa fa-plus\"></i>\n\t\t                        </a>\n\t\t                    </div>\n\t\t                </div>\n\t\t\t\t  \t</div>\n\t\t\t\t</div>\n\t\t\t  </div>\n\t\t  </div>\n\t\t  <div class=\"tabs-panel\" id=\"photos\">\n\t\t\t  <div class=\"picture-list\">\n\t\t\t  \t<div class=\"row small-up-2 medium-up-3 large-up-4\">\n\t\t\t  \t\t<br>\n\t\t\t\t  \t<div class=\"column\" v-for=\"photo in pictures\">\n\t\t\t\t\t  \t<div class=\"figure\">\n\t\t                    <img v-bind:src=\"photo.url\" alt=\"Jeffrey Way\" height=\"120\" width=\"120\" style=\"border-radius:4px;\">\n\t\t                    <div class=\"figcaption\">\n\t\t                        <a @click=\"deletePhoto(photo)\" class=\"btn-floating red\" style=\"left: 25%;\">\n\t\t                        \t<i class=\"fa fa-trash\"></i>\n\t\t                        </a>\n\t\t                    </div>\n\t\t                </div>\n\t\t\t\t  \t</div>\n\t\t\t\t  \t<div class=\"column\">\n\t\t\t\t\t  \t<div class=\"figure\">\n\t\t                    <div class=\"figcaption\" style=\"opacity:1;\">\n\t\t                        <a @click=\"triggerPictureBtn\" class=\"btn-floating red\" style=\"left: 25%;\">\n\t\t                        \t<i class=\"fa fa-plus\"></i>\n\t\t                        </a>\n\t\t                    </div>\n\t\t                </div>\n\t\t\t\t  \t</div>\n\t\t\t\t</div>\n\t\t\t  </div>\n\t\t  </div>\n\t  </div>\n\t</form>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n\t<custom-modal :id=\"id\" type=\"User\" title_en=\"Photo chooser\" title=\"Зураг сонгох\" usage=\"_photo-chooser\" multiple=\"true\" :items=\"pictures\" :show.sync=\"showFileManager\" save-callback=\"choosedPictures\" context=\"fileManager\">\n\t</custom-modal>\n\n\t<custom-modal :id=\"id\" type=\"Club\" title=\"Багш сонгох\" title_en=\"Teacher chooser\" usage=\"_teacher-chooser\" :items=\"teachers\" :show.sync=\"showTeachers\" save-callback=\"choosedTeachers\" context=\"teachers\">\n\t</custom-modal>\n\n\t<form method=\"POST\" accept=\"\">\n\n\t  <div class=\"row\">\n\t  \t<div class=\"small-12 columns\">\n\t  \t\t<img :src=\"pinnedPic\">\n\t  \t</div>\t\t\n\t  </div>\n\t  <div class=\"row\">\n\t  \t<waterfall align=\"center\" :watch=\"pictures\" :line-gap=\"50\" :min-line-gap=\"100\" :max-line-gap=\"220\" :single-max-width=\"300\">\n\t\t  <waterfall-slot v-for=\"photo in pictures\" :width=\"photo.ratio * 50\" move-class=\"item-move\" transition=\"wf\" height=\"50\" :order=\"$index\">\n\n\t\t  \t<div>\n\t\t\t    <img v-bind:src=\"photo.url\" style=\"height:100%; width:100%\">\n\n\t\t\t    \t <a @click=\"setPinnedPhoto(photo)\">Pin</a>\n\t\t\t    \t <a @click=\"deletePhoto(photo)\">Delete</a>\n\t\t\t</div>\n\t\t  </waterfall-slot>\n\t\t</waterfall>\n\t\t<div class=\"figure\">\n            <div class=\"figcaption\" style=\"opacity:1;\">\n                <a @click=\"showFileManager = true\" class=\"btn-floating red\" style=\"left: 25%;\">\n                \t<i class=\"fa fa-plus\"></i>\n                </a>\n            </div>\n        </div>\n\t  </div>\n\n\n\t  <ul class=\"tabs\">\n        <li class=\"tab s3\"><a class=\"active\" href=\"#main\">{{ $t(\"info\") }}</a></li>\n        <li class=\"tab s3\"><a href=\"#teacher\">{{ $t(\"teacher\") }}</a></li>\n\t  </ul>\n\t\t  <div id=\"main\">\n\t\t    <div class=\"row\">\n\t\t\t    <div class=\"medium-6 columns\">\n\t\t\t      <label>{{ $t(\"name\") }}\n\t\t\t        <input type=\"text\" name=\"name\" v-model=\"name\" placeholder=\"\">\n\t\t\t      </label>\n\t\t\t    </div>\n\t\t\t    <div class=\"medium-6 columns\">\n\t\t\t      <label>{{ $t(\"description\") }}\n\t\t\t        <textarea type=\"text\" name=\"description\" v-model=\"description\" placeholder=\"\">\t\t\t        </textarea>\n\t\t\t      </label>\n\t\t\t    </div>\n\t\t\t</div>\n\t\t  </div>\n\t\t  <div id=\"teacher\">\n  \t  \t\t   <div class=\"picture-list\">\n\t\t\t  \t<div class=\"row small-up-2 medium-up-3 large-up-4\">\n\t\t\t  \t\t<br>\n\t\t\t\t  \t<div class=\"column\" v-for=\"teacher in teachers\">\n\t\t\t\t\t  \t<div class=\"figure\">\n\t\t                    <img v-bind:src=\"teacher.avatar_url\" alt=\"Jeffrey Way\" height=\"120\" width=\"120\" style=\"border-radius:4px;\">\n\t\t                    <div class=\"figcaption\">\n\t\t                        <a @click=\"deleteTeacher(teacher)\" class=\"btn-floating red\" style=\"left: 25%;\">\n\t\t                        \t<i class=\"fa fa-trash\"></i>\n\t\t                        </a>\n\t\t                    </div>\n\t\t                </div>\n\t\t\t\t  \t</div>\n\t\t\t\t  \t<div class=\"column\">\n\t\t\t\t\t  \t<div class=\"figure\">\n\t\t                    <div class=\"figcaption\" style=\"opacity:1;\">\n\t\t                        <a @click=\"showTeachers = true\" class=\"btn-floating red\" style=\"left: 25%;\">\n\t\t                        \t<i class=\"fa fa-plus\"></i>\n\t\t                        </a>\n\t\t                    </div>\n\t\t                </div>\n\t\t\t\t  \t</div>\n\t\t\t\t</div>\n\t\t\t  </div>\n\t\t  </div>\n\t</form>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -54790,7 +55841,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-2f8a7901", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":54,"vue-hot-reload-api":50}],67:[function(require,module,exports){
+},{"vue":54,"vue-hot-reload-api":50,"vue-waterfall":53}],81:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
 var __vueify_style__ = __vueify_insert__.insert("/* line 3, stdin */\n.thumb-img {\n  position: absolute;\n  top: 5px;\n  left: 5px;\n  right: 5px;\n  bottom: 5px;\n  font-size: 1.2em; }\n\n/* line 12, stdin */\n.vue-waterfall-slot:hover .thumb-back,\n.vue-waterfall-slot:hover ~ .thumb-back {\n  color: #fff;\n  opacity: 1; }\n\n/* line 18, stdin */\n.thumb-back {\n  opacity: 0;\n  border-radius: 4px;\n  background-color: rgba(0, 0, 0, 0.7);\n  position: absolute;\n  top: 5px;\n  left: 5px;\n  right: 5px;\n  bottom: 5px;\n  font-size: 1.2em; }\n\n/* line 30, stdin */\n.thumb-check {\n  top: 50%;\n  left: 50%; }\n\n/* line 35, stdin */\n.thumb-back ul {\n  list-style-type: none; }\n\n/* line 39, stdin */\n.thumb-back ul li {\n  color: #000;\n  background-color: #fff;\n  border-radius: 2px; }\n\n/* line 45, stdin */\n.thumb-img img {\n  width: 100%;\n  height: 100%;\n  display: block;\n  border-radius: 4px; }\n\n/* line 52, stdin */\n.fileinput-button {\n  position: relative;\n  overflow: hidden;\n  display: inline-block; }\n\n/* line 58, stdin */\n.fileinput-button input {\n  position: absolute;\n  top: 0;\n  right: 0;\n  margin: 0;\n  opacity: 0;\n  -ms-filter: 'alpha(opacity=0)';\n  font-size: 200px !important;\n  direction: ltr;\n  cursor: pointer; }\n\n/* line 70, stdin */\n.progress {\n  height: 20px;\n  margin-bottom: 20px;\n  overflow: hidden;\n  background-color: #f5f5f5;\n  border-radius: 4px;\n  -webkit-box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);\n  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1); }\n\n/* line 80, stdin */\n.progress-bar-success {\n  background-color: #5fcf80 !important; }\n\n/* line 84, stdin */\n.progress-bar {\n  float: left;\n  width: 0;\n  height: 100%;\n  font-size: 12px;\n  line-height: 20px;\n  color: #fff;\n  text-align: center;\n  background-color: #428bca;\n  -webkit-box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.15);\n  box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.15);\n  -webkit-transition: width .6s ease;\n  -o-transition: width .6s ease;\n  transition: width .6s ease; }\n\n/* line 100, stdin */\n.item-move {\n  transition: all 0.5s cubic-bezier(0.55, 0, 0.1, 1);\n  -webkit-transition: all 0.5s cubic-bezier(0.55, 0, 0.1, 1); }\n\n/* line 105, stdin */\n.wf-transition {\n  transition: opacity .3s ease;\n  -webkit-transition: opacity .3s ease; }\n\n/* line 110, stdin */\n.wf-enter, .wf-leave {\n  opacity: 0; }\n")
 'use strict';
@@ -54805,7 +55856,6 @@ var _CircleProgressBar2 = _interopRequireDefault(_CircleProgressBar);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-/*var uploader = require('blueimp-file-upload');*/
 var Waterfall = require('vue-waterfall');
 exports.default = {
 
@@ -54887,6 +55937,8 @@ exports.default = {
 		getFiles: function getFiles() {
 			var _this = this;
 
+			this.$dispatch('startLoading');
+
 			var maps = this.objectListToMap(this.selected);
 			this.$http.get(this.$env.get('APP_URI') + 'api/user/files?selected=' + maps).then(function (response) {
 
@@ -54894,7 +55946,11 @@ exports.default = {
 				_this.actualSize = response.data.actualSize;
 				_this.maxSize = response.data.maxSize;
 				_this.percentage = parseInt(_this.actualSize * 100 / _this.maxSize);
-			}, function (response) {});
+
+				_this.$dispatch('stopLoading');
+			}, function (response) {
+				_this.$dispatch('stopLoading');
+			});
 		},
 
 		objectListToMap: function objectListToMap(list) {
@@ -54983,7 +56039,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-1b4eb012", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"../components/CircleProgressBar.vue":58,"vue":54,"vue-hot-reload-api":50,"vue-waterfall":53,"vueify/lib/insert-css":55}],68:[function(require,module,exports){
+},{"../components/CircleProgressBar.vue":73,"vue":54,"vue-hot-reload-api":50,"vue-waterfall":53,"vueify/lib/insert-css":55}],82:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
 var __vueify_style__ = __vueify_insert__.insert("\n\n.ft-teacher-img {\n\t-webkit-transition: box-shadow 200ms ease-in-out;\n\ttransition: box-shadow 200ms ease-in-out;\n    position: absolute;\n    top: 50%;\n    left: 0;\n    width: 32px;\n    height: 32px;\n    border-radius: 32px;\n    display: block;\n    margin-top: -16px;\n}\n\n.ft-teacher-column {\n\tcolor: #fff;\n}\t\n\n")
 'use strict';
@@ -55090,7 +56146,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-5a634b8a", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":54,"vue-hot-reload-api":50,"vueify/lib/insert-css":55}],69:[function(require,module,exports){
+},{"vue":54,"vue-hot-reload-api":50,"vueify/lib/insert-css":55}],83:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
 var __vueify_style__ = __vueify_insert__.insert("\n\n.tr-teacher-box {\n\toverflow: hidden;\n    padding: 10px 0;\n    color: #aecaec;\n}\n\n.training-text {\n\tpadding-left: 10px;\n    padding-top: 5px;\n}\n\n.training img {\n    height: 40px;\n    width: 40px;\n    border-radius: 150px;\n    -webkit-border-radius: 150px;\n    -moz-border-radius: 150px;\n}\n")
 'use strict';
@@ -55181,7 +56237,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-4d1a5842", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":54,"vue-hot-reload-api":50,"vueify/lib/insert-css":55}],70:[function(require,module,exports){
+},{"vue":54,"vue-hot-reload-api":50,"vueify/lib/insert-css":55}],84:[function(require,module,exports){
 'use strict';var _typeof=typeof Symbol==="function"&&typeof Symbol.iterator==="symbol"?function(obj){return typeof obj;}:function(obj){return obj&&typeof Symbol==="function"&&obj.constructor===Symbol?"symbol":typeof obj;};!function($){"use strict";var FOUNDATION_VERSION='6.2.3';// Global Foundation object
 // This is attached to the window, or used as a module for AMD/Browserify
 var Foundation={version:FOUNDATION_VERSION,/**
@@ -57593,7 +58649,7 @@ if(!_this.options.clickOpen){isFocus=false;}return false;}else{_this.show();}}).
    */// Window exports
 Foundation.plugin(Tooltip,'Tooltip');}(jQuery);
 
-},{}],71:[function(require,module,exports){
+},{}],85:[function(require,module,exports){
 'use strict';
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
@@ -57620,7 +58676,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
         define(['jquery', 'jquery-ui/widget'], factory);
     } else if ((typeof exports === 'undefined' ? 'undefined' : _typeof(exports)) === 'object') {
         // Node/CommonJS:
-        factory(require('jquery'), require('./vendor/jquery.ui.widget'));
+        factory(require('jquery'), require('./jquery.ui.widget'));
     } else {
         // Browser globals:
         factory(window.jQuery);
@@ -58923,7 +59979,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
     });
 });
 
-},{"./vendor/jquery.ui.widget":81,"jquery":45}],72:[function(require,module,exports){
+},{"./jquery.ui.widget":87,"jquery":45}],86:[function(require,module,exports){
 'use strict';
 
 /**
@@ -59741,469 +60797,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
     };
 })(jQuery, 'tokenize');
 
-},{}],73:[function(require,module,exports){
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = {
-  en: {
-    message: {
-      hello: 'the world',
-      hoge: 'hoge',
-      format: {
-        named: 'Hello {name}, how are you?',
-        list: 'Hello {0}, how are you?'
-      },
-      fallback: 'this is fallback'
-    },
-    'hello world': 'Hello World',
-    'Hello {0}': 'Hello {0}',
-    'continue-with-new-account': 'continue with new account',
-    underscore: '{hello_msg} world',
-    plurals: {
-      car: 'car | cars',
-      format: {
-        named: 'Hello {name}, how are you? | Hi {name}, you look fine',
-        list: 'Hello {0}, how are you? | Hi {0}, you look fine'
-      },
-      fallback: 'this is fallback | this is a plural fallback'
-    }
-  },
-  ja: {
-    message: {
-      hello: 'ザ・ワールド',
-      hoge: 'ほげ',
-      format: {
-        named: 'こんにちは {name}, ごきげんいかが？',
-        list: 'こんにちは {0}, ごきげんいかが？'
-      },
-      fallback1: 'これはフォールバック'
-    },
-    plurals: {
-      car: 'ザ・ワールド | これはフォールバック',
-      format: {
-        named: 'こんにちは {name}, ごきげんいかが？ | こんにちは {name}, ごきげんいかが？',
-        list: 'こんにちは {0}, ごきげんいかが？| こんにちは {0}, ごきげんいかが？'
-      },
-      fallback: 'これはフォールバック | ザ・ワールド'
-    }
-  }
-};
-
-},{}],74:[function(require,module,exports){
-var __vueify_insert__ = require("vueify/lib/insert-css")
-var __vueify_style__ = __vueify_insert__.insert("\n")
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
-exports.default = {
-	props: {
-		clubid: {}
-	},
-
-	data: function data() {
-		return {
-			items: []
-		};
-	},
-
-
-	created: function created() {},
-	methods: {}
-};
-if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n\t<div>\n\t\t<h3>Club Dashboard</h3>\n\t<div>\n</div></div>"
-if (module.hot) {(function () {  module.hot.accept()
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), true)
-  if (!hotAPI.compatible) return
-  module.hot.dispose(function () {
-    __vueify_insert__.cache["\n"] = false
-    document.head.removeChild(__vueify_style__)
-  })
-  if (!module.hot.data) {
-    hotAPI.createRecord("_v-48e0c687", module.exports)
-  } else {
-    hotAPI.update("_v-48e0c687", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
-  }
-})()}
-},{"vue":54,"vue-hot-reload-api":50,"vueify/lib/insert-css":55}],75:[function(require,module,exports){
-var __vueify_insert__ = require("vueify/lib/insert-css")
-var __vueify_style__ = __vueify_insert__.insert("/* line 12, stdin */\n.card {\n  background: #FFFFFF;\n  border-radius: 4px;\n  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);\n  overflow: hidden;\n  width: 300px;\n  height: 100%;\n  margin-bottom: 10px; }\n  /* line 21, stdin */\n  .card-header {\n    position: relative;\n    background: #303841;\n    height: 200px;\n    text-align: center;\n    overflow: hidden; }\n    /* line 28, stdin */\n    .card-header__avatar {\n      background: #303841;\n      background-position: center 30%;\n      background-size: 100%;\n      height: 100%;\n      width: 100%; }\n    /* line 36, stdin */\n    .card-header__follow {\n      position: absolute;\n      top: 20px;\n      right: 20px;\n      background: #FFFFFF;\n      border-radius: 2px;\n      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);\n      padding: 6px 10px;\n      color: #333333;\n      font-size: 10px;\n      font-weight: 600;\n      line-height: normal;\n      text-decoration: none;\n      text-transform: uppercase; }\n  /* line 53, stdin */\n  .card-content {\n    text-align: center;\n    padding: 30px 20px; }\n    /* line 57, stdin */\n    .card-content__username {\n      margin: 0 0 10px;\n      color: #333333;\n      font-size: 14px;\n      font-weight: 600;\n      text-transform: uppercase; }\n      /* line 64, stdin */\n      .card-content__username .badge {\n        display: inline-block;\n        background: #FCD000;\n        border-radius: 2px;\n        margin: 0 10px 0;\n        padding: 4px;\n        color: #333333;\n        font-size: 10px;\n        font-weight: 600;\n        vertical-align: middle; }\n    /* line 77, stdin */\n    .card-content__bio {\n      color: #666666;\n      font-size: 12px; }\n  /* line 83, stdin */\n  .card-footer {\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-orient: horizontal;\n    -webkit-box-direction: normal;\n        -ms-flex-direction: row;\n            flex-direction: row;\n    -ms-flex-wrap: nowrap;\n        flex-wrap: nowrap;\n    -webkit-box-pack: justify;\n        -ms-flex-pack: justify;\n            justify-content: space-between;\n    background: #F3F3F3;\n    padding: 15px 40px;\n    color: #333333;\n    font-size: 14px;\n    font-weight: 600;\n    text-align: center; }\n    /* line 95, stdin */\n    .card-footer .ft-label {\n      display: block;\n      margin: 4px 0 0;\n      color: #666666;\n      font-size: 10px;\n      font-weight: 400; }\n\n/* line 105, stdin */\n.code {\n  background: rgba(0, 0, 0, 0.1);\n  max-width: 600px;\n  border-radius: 2px;\n  margin: 40px auto 100px;\n  font-family: monospace;\n  overflow: hidden;\n  overflow-x: auto; }\n  /* line 114, stdin */\n  .code:before {\n    content: 'HTML Code';\n    display: block;\n    padding: 20px 20px 0;\n    color: #333333;\n    font-weight: 600; }\n")
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
-exports.default = {
-	props: {
-		clubid: {}
-	},
-
-	data: function data() {
-		return {
-			members: []
-		};
-	},
-
-
-	created: function created() {
-		this.init();
-	},
-
-	filter: {},
-
-	methods: {
-		init: function init() {
-			var _this = this;
-
-			this.$http.get(this.$env.get('APP_URI') + 'api/club/edit/' + this.clubid + '/member').then(function (response) {
-				_this.members = response.data;
-			}, function (response) {});
-		}
-	}
-};
-if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n  <div class=\"row small-up-3\">\n    <div class=\"column\">\n      <a class=\"button success\">Teacher</a>\n      <a class=\"button success\">Trainer</a>\n    </div>\n  </div>\n\t<div>\n\t\t<h3>Club Members</h3>\n\t\t<div class=\"row small-up-3 medium-up-4 large-up-5\">\n\t\t\t<div v-for=\"member in members\">\n\t\t\t\t<div class=\"card column\">\n\t\t\t\t    <!-- Header -->\n\t\t\t\t    <div class=\"card-header\">\n\t\t\t\t      <div class=\"card-header__avatar\" :style=\"{'background-image': 'url(' + member.avatar_url + ')'}\"></div><a href=\"http://codepen.io/andytran\" class=\"card-header__follow\">Follow</a>\n\t\t\t\t    </div>\n\t\t\t\t    <!-- Content-->\n\t\t\t\t    <div class=\"card-content\">\n\t\t\t\t      <div class=\"card-content__username\">{{member.username}}\n\t\t\t\t      <span class=\"badge\">{{member.pivot.type == 1 ? 'Manager' : 'Trainer'}}</span></div>\n\t\t\t\t      <div class=\"card-content__bio\">Always looking for new knowledge :D.</div>\n\t\t\t\t    </div>\n\t\t\t\t    <!-- Footer-->\n\t\t\t\t    <div class=\"card-footer\">\n\t\t\t\t      <div class=\"card-footer__pens\"> <span>84</span>\n\t\t\t\t        <div class=\"ft-label\">Pens</div>\n\t\t\t\t      </div>\n\t\t\t\t      <div class=\"card-footer__followers\"> <span>986</span>\n\t\t\t\t        <div class=\"ft-label\">Followers</div>\n\t\t\t\t      </div>\n\t\t\t\t      <div class=\"card-footer__following\"> <span>33</span>\n\t\t\t\t        <div class=\"ft-label\">Following</div>\n\t\t\t\t      </div>\n\t\t\t\t    </div>\n\t\t\t    </div>\n\t\t\t</div>\n\t\t</div>\n\t<div>\n</div></div>"
-if (module.hot) {(function () {  module.hot.accept()
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), true)
-  if (!hotAPI.compatible) return
-  module.hot.dispose(function () {
-    __vueify_insert__.cache["/* line 12, stdin */\n.card {\n  background: #FFFFFF;\n  border-radius: 4px;\n  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);\n  overflow: hidden;\n  width: 300px;\n  height: 100%;\n  margin-bottom: 10px; }\n  /* line 21, stdin */\n  .card-header {\n    position: relative;\n    background: #303841;\n    height: 200px;\n    text-align: center;\n    overflow: hidden; }\n    /* line 28, stdin */\n    .card-header__avatar {\n      background: #303841;\n      background-position: center 30%;\n      background-size: 100%;\n      height: 100%;\n      width: 100%; }\n    /* line 36, stdin */\n    .card-header__follow {\n      position: absolute;\n      top: 20px;\n      right: 20px;\n      background: #FFFFFF;\n      border-radius: 2px;\n      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);\n      padding: 6px 10px;\n      color: #333333;\n      font-size: 10px;\n      font-weight: 600;\n      line-height: normal;\n      text-decoration: none;\n      text-transform: uppercase; }\n  /* line 53, stdin */\n  .card-content {\n    text-align: center;\n    padding: 30px 20px; }\n    /* line 57, stdin */\n    .card-content__username {\n      margin: 0 0 10px;\n      color: #333333;\n      font-size: 14px;\n      font-weight: 600;\n      text-transform: uppercase; }\n      /* line 64, stdin */\n      .card-content__username .badge {\n        display: inline-block;\n        background: #FCD000;\n        border-radius: 2px;\n        margin: 0 10px 0;\n        padding: 4px;\n        color: #333333;\n        font-size: 10px;\n        font-weight: 600;\n        vertical-align: middle; }\n    /* line 77, stdin */\n    .card-content__bio {\n      color: #666666;\n      font-size: 12px; }\n  /* line 83, stdin */\n  .card-footer {\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-orient: horizontal;\n    -webkit-box-direction: normal;\n        -ms-flex-direction: row;\n            flex-direction: row;\n    -ms-flex-wrap: nowrap;\n        flex-wrap: nowrap;\n    -webkit-box-pack: justify;\n        -ms-flex-pack: justify;\n            justify-content: space-between;\n    background: #F3F3F3;\n    padding: 15px 40px;\n    color: #333333;\n    font-size: 14px;\n    font-weight: 600;\n    text-align: center; }\n    /* line 95, stdin */\n    .card-footer .ft-label {\n      display: block;\n      margin: 4px 0 0;\n      color: #666666;\n      font-size: 10px;\n      font-weight: 400; }\n\n/* line 105, stdin */\n.code {\n  background: rgba(0, 0, 0, 0.1);\n  max-width: 600px;\n  border-radius: 2px;\n  margin: 40px auto 100px;\n  font-family: monospace;\n  overflow: hidden;\n  overflow-x: auto; }\n  /* line 114, stdin */\n  .code:before {\n    content: 'HTML Code';\n    display: block;\n    padding: 20px 20px 0;\n    color: #333333;\n    font-weight: 600; }\n"] = false
-    document.head.removeChild(__vueify_style__)
-  })
-  if (!module.hot.data) {
-    hotAPI.createRecord("_v-d86a1568", module.exports)
-  } else {
-    hotAPI.update("_v-d86a1568", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
-  }
-})()}
-},{"vue":54,"vue-hot-reload-api":50,"vueify/lib/insert-css":55}],76:[function(require,module,exports){
-var __vueify_insert__ = require("vueify/lib/insert-css")
-var __vueify_style__ = __vueify_insert__.insert("\n")
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
-exports.default = {
-	props: {
-		clubid: {}
-	},
-
-	data: function data() {
-		return {
-			plans: null,
-			showAddPlan: false
-		};
-	},
-
-
-	created: function created() {
-		this.getPlans();
-	},
-
-	methods: {
-		getPlans: function getPlans() {
-			var _this = this;
-
-			this.$http.get(this.$env.get('APP_URI') + 'api/club/' + this.clubid + '/plan').then(function (res) {
-				_this.plans = res.data.result;
-			}).catch(function (err) {});
-		},
-
-		savePlan: function savePlan($response) {
-
-			this.$http.post(this.$env.get('APP_URI') + 'api/club/' + this.clubid + '/training?data=' + $response.data).then(function (res) {}).catch(function (err) {});
-
-			this.showAddPlan = false;
-			this.$root.$refs.toast.showMessage('Successfully add new plan.');
-		}
-	}
-};
-if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n\t<div>\n\t\t<h3>Club Plan</h3>\n\t\t<a @click=\"showAddPlan = true\" class=\"button success\">\n\t\t\t\t<i class=\"fa fa-pencil-square-o\"></i>\n\t\t</a>\n\n\t\t<custom-modal :id=\"clubid\" type=\"Club\" title=\"Add Plan\" usage=\"_add-plan\" :show.sync=\"showAddPlan\" save-callback=\"savePlan\" validateable=\"Y\" context=\"AddPlan\">\n\t\t</custom-modal>\n\t<div>\n</div></div>"
-if (module.hot) {(function () {  module.hot.accept()
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), true)
-  if (!hotAPI.compatible) return
-  module.hot.dispose(function () {
-    __vueify_insert__.cache["\n"] = false
-    document.head.removeChild(__vueify_style__)
-  })
-  if (!module.hot.data) {
-    hotAPI.createRecord("_v-5a330106", module.exports)
-  } else {
-    hotAPI.update("_v-5a330106", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
-  }
-})()}
-},{"vue":54,"vue-hot-reload-api":50,"vueify/lib/insert-css":55}],77:[function(require,module,exports){
-var __vueify_insert__ = require("vueify/lib/insert-css")
-var __vueify_style__ = __vueify_insert__.insert("\n")
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
-exports.default = {
-	props: {
-		clubid: {}
-	},
-
-	data: function data() {
-		return {
-			requests: [],
-			requestType: 0
-		};
-	},
-
-
-	created: function created() {
-		this.init();
-	},
-
-	methods: {
-		init: function init() {
-			var _this = this;
-
-			this.$http.get(this.$env.get('APP_URI') + 'api/club/edit/' + this.clubid + '/request').then(function (response) {
-				_this.requests = response.data;
-			}, function (response) {});
-		},
-
-		acceptRequest: function acceptRequest($request) {
-			var _this2 = this;
-
-			this.$http.put(this.$env.get('APP_URI') + 'api/club/edit/' + this.clubid + '/request/' + $request.id, { 'roleType': $request.pivot.type, 'requestType': 'Accepted' }).then(function (response) {
-				_this2.$dispatch('accept-request', $request);
-				_this2.requests.$remove($request);
-			}, function (response) {});
-		},
-
-		rejectRequest: function rejectRequest($request) {
-			var _this3 = this;
-
-			this.$http.put(this.$env.get('APP_URI') + 'api/club/edit/' + this.clubid + '/request/' + $request.id, { 'roleType': $request.pivot.type, 'requestType': 'Rejected' }).then(function (response) {
-				_this3.$dispatch('reject-request', $request);
-				_this3.requests.$remove($request);
-			}, function (response) {});
-		},
-
-		filterByRequestType: function filterByRequestType(obj) {
-			return this.requestType == 0 || obj.pivot.type == this.requestType;
-		}
-	},
-
-	computed: {
-		filteredRequests: function filteredRequests() {
-			return this.requests.filter(this.filterByRequestType);
-		}
-	}
-};
-if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n\t<div>\n\t\t<h3>Club Requests</h3>\n\t\t<p>\n\t      <label for=\"all\">Both\n\t      \t<input name=\"requestType\" type=\"radio\" value=\"0\" id=\"all\" v-model=\"requestType\">\n\t      </label>\n\t    </p>\n\t\t<p>\n\t      <label for=\"teacher\">Teacher\n\t      \t<input name=\"requestType\" type=\"radio\" value=\"1\" id=\"teacher\" v-model=\"requestType\">\n\t      </label>\n\t    </p>\n\t    <p>\n\t      <label for=\"trainer\">Trainer\n\t      \t<input name=\"requestType\" type=\"radio\" value=\"2\" id=\"trainer\" v-model=\"requestType\">\n\t      </label>\n\t    </p>\n\t    <form>\n\t\t\t<ul>\n\t\t\t\t<h3>{{requestType}}</h3>\n\t\t\t\t<li v-for=\"request in filteredRequests\">\n\t\t\t\t\t{{request.username}}\n\t\t\t\t\t{{request.pivot.type}}\n\t\t\t\t\t<img src=\"{{request.avatar_url}}\" height=\"20\" width=\"20\">\n\t\t\t\t\t<a @click=\"acceptRequest(request)\" class=\"button success\">Accept</a>\n\t\t\t\t\t<a @click=\"rejectRequest(request)\" class=\"button alert\">Reject</a>\n\t\t\t\t</li>\n\t\t\t</ul>\n\t\t</form>\n\t<div>\n</div></div>"
-if (module.hot) {(function () {  module.hot.accept()
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), true)
-  if (!hotAPI.compatible) return
-  module.hot.dispose(function () {
-    __vueify_insert__.cache["\n"] = false
-    document.head.removeChild(__vueify_style__)
-  })
-  if (!module.hot.data) {
-    hotAPI.createRecord("_v-188ca5a1", module.exports)
-  } else {
-    hotAPI.update("_v-188ca5a1", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
-  }
-})()}
-},{"vue":54,"vue-hot-reload-api":50,"vueify/lib/insert-css":55}],78:[function(require,module,exports){
-var __vueify_insert__ = require("vueify/lib/insert-css")
-var __vueify_style__ = __vueify_insert__.insert("\n")
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
-exports.default = {
-	props: {
-		clubid: {}
-	},
-
-	data: function data() {
-		return {
-			type: 1,
-			widgets: []
-		};
-	},
-
-
-	created: function created() {
-		this.getWidgets();
-	},
-
-	methods: {
-		getWidgets: function getWidgets() {
-			var _this = this;
-
-			this.$http.get(this.$env.get('APP_URI') + 'api/club/' + this.clubid + '/widgets').then(function (res) {
-				debugger;
-				_this.widgets = res.data;
-			}).catch(function (err) {});
-		},
-
-		setType: function setType(type) {
-			this.type = type;
-		},
-
-		filterByType: function filterByType(obj) {
-			return obj.section_id == this.type;
-		}
-	},
-
-	computed: {
-		filteredWidgets: function filteredWidgets() {
-			return this.widgets.filter(this.filterByType);;
-		}
-	}
-};
-if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n\t<div>\n\t\t<h3>Club Template</h3>\n\t\t<a @click=\"setType(1)\" class=\"button success\">\n\t\t\tHeader\n\t\t</a>\n\t\t<a @click=\"setType(2)\" class=\"button success\">\n\t\t\tContent\n\t\t</a>\n\t\t<a @click=\"setType(3)\" class=\"button success\">\n\t\t\tFooter\n\t\t</a>\n\n\t\t<ul>\n\t\t\t<li v-for=\"widget in filteredWidgets\">\n\t\t\t\t{{widget.name}}\t\n\t\t\t</li>\n\t\t</ul>\n\t<div>\n</div></div>"
-if (module.hot) {(function () {  module.hot.accept()
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), true)
-  if (!hotAPI.compatible) return
-  module.hot.dispose(function () {
-    __vueify_insert__.cache["\n"] = false
-    document.head.removeChild(__vueify_style__)
-  })
-  if (!module.hot.data) {
-    hotAPI.createRecord("_v-e0b27152", module.exports)
-  } else {
-    hotAPI.update("_v-e0b27152", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
-  }
-})()}
-},{"vue":54,"vue-hot-reload-api":50,"vueify/lib/insert-css":55}],79:[function(require,module,exports){
-var __vueify_insert__ = require("vueify/lib/insert-css")
-var __vueify_style__ = __vueify_insert__.insert("@charset \"UTF-8\";\n/* line 3, stdin */\n.picture-list {\n  background-color: #5fcf80;\n  border-radius: 4px; }\n\n/* line 8, stdin */\n.add-button {\n  height: 120px;\n  width: 120px;\n  background-color: #fff;\n  border-radius: 4px;\n  border: 1px solid #53BBB4; }\n\n/* line 16, stdin */\n.figure {\n  margin: 0 10px 10px 0;\n  height: 120px;\n  width: 120px;\n  position: relative; }\n  /* line 23, stdin */\n  .figure:hover .figcaption {\n    opacity: 1; }\n\n/* line 29, stdin */\n.figcaption {\n  border-radius: 4px;\n  background-color: rgba(58, 52, 42, 0.7);\n  -webkit-backface-visibility: hidden;\n  backface-visibility: hidden;\n  position: absolute;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n  color: #fff;\n  padding: 0 25px;\n  display: -webkit-flex;\n  display: -ms-flexbox;\n  display: -webkit-box;\n  display: flex;\n  -webkit-align-items: center;\n  -ms-flex-align: center;\n  -webkit-box-align: center;\n          align-items: center;\n  -webkit-transition: all 0.25s;\n  transition: all 0.25s;\n  opacity: 0; }\n\n/* line 53, stdin */\n.gh-search-submit {\n  opacity: 0.75;\n  z-index: 9999;\n  background-image: url(\"data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgi…KCUM1LjE1NCwxMi44NTUsMi44MjQsMTAuNTI3LDIuODI0LDcuNjY2eiIvPg0KPC9zdmc+DQo=\"); }\n\n/* line 59, stdin */\n.gh-search-reset.show {\n  cursor: pointer;\n  z-index: 9999;\n  opacity: 1;\n  -webkit-transform: translateX(0px);\n  -ms-transform: translateX(0px);\n  transform: translateX(0px);\n  -webkit-transition-delay: .2s;\n  transition-delay: .2s; }\n")
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
-
-var _FtTraining = require('../.././components/FtTraining.vue');
-
-var _FtTraining2 = _interopRequireDefault(_FtTraining);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-exports.default = {
-	props: {
-		clubid: {}
-	},
-
-	data: function data() {
-		return {
-			training: null,
-			showAddTraining: false,
-			showTest: false
-		};
-	},
-
-
-	created: function created() {
-		this.getTrainings();
-	},
-
-	ready: function ready() {},
-
-	events: {
-		'saveTraining': function saveTraining($response) {
-			this.saveTraining($response);
-		}
-	},
-
-	methods: {
-		getTrainings: function getTrainings() {
-			var _this = this;
-
-			this.$http.get(this.$env.get('APP_URI') + 'api/club/' + this.clubid + '/training').then(function (res) {
-				_this.training = res.data.result;
-			}).catch(function (err) {});
-		},
-
-		saveTraining: function saveTraining($response) {
-
-			this.$http.post(this.$env.get('APP_URI') + 'api/club/' + this.clubid + '/training?data=' + $response.data).then(function (res) {}).catch(function (err) {});
-
-			this.showAddTraining = false;
-			this.$root.$refs.toast.showMessage('Successfully add new training.');
-		}
-	},
-
-	components: {
-		FtTraining: _FtTraining2.default
-	}
-};
-if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n\t<div>\n\t\t<h3>Club Training</h3>\n\t\t<p><a @click=\"showAddTraining = true\" class=\"button success\">\n\t\t\t\t<i class=\"fa fa-pencil-square-o\"></i>\n\t\t   </a></p>\n\n\t\t<custom-modal :id=\"clubid\" type=\"Club\" title=\"Хичээл нэмэх\" title_en=\"Add Training\" usage=\"_add-training\" :show.sync=\"showAddTraining\" save-callback=\"saveTraining\" validateable=\"Y\" context=\"AddTraining\">\n\t\t</custom-modal>\n\n\t\t<label>Search Training\n        \t<input type=\"text\" placeholder=\"search ...\">\n        </label>\n\n\t\t<ft-training :item=\"train\" v-for=\"train in training\">\n\t\t\t\n\t\t</ft-training>\n\t\t\n\t\t<h3 v-else=\"\">There is no training registered !</h3>\n\t<div>\n</div></div>"
-if (module.hot) {(function () {  module.hot.accept()
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), true)
-  if (!hotAPI.compatible) return
-  module.hot.dispose(function () {
-    __vueify_insert__.cache["@charset \"UTF-8\";\n/* line 3, stdin */\n.picture-list {\n  background-color: #5fcf80;\n  border-radius: 4px; }\n\n/* line 8, stdin */\n.add-button {\n  height: 120px;\n  width: 120px;\n  background-color: #fff;\n  border-radius: 4px;\n  border: 1px solid #53BBB4; }\n\n/* line 16, stdin */\n.figure {\n  margin: 0 10px 10px 0;\n  height: 120px;\n  width: 120px;\n  position: relative; }\n  /* line 23, stdin */\n  .figure:hover .figcaption {\n    opacity: 1; }\n\n/* line 29, stdin */\n.figcaption {\n  border-radius: 4px;\n  background-color: rgba(58, 52, 42, 0.7);\n  -webkit-backface-visibility: hidden;\n  backface-visibility: hidden;\n  position: absolute;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n  color: #fff;\n  padding: 0 25px;\n  display: -webkit-flex;\n  display: -ms-flexbox;\n  display: -webkit-box;\n  display: flex;\n  -webkit-align-items: center;\n  -ms-flex-align: center;\n  -webkit-box-align: center;\n          align-items: center;\n  -webkit-transition: all 0.25s;\n  transition: all 0.25s;\n  opacity: 0; }\n\n/* line 53, stdin */\n.gh-search-submit {\n  opacity: 0.75;\n  z-index: 9999;\n  background-image: url(\"data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgi…KCUM1LjE1NCwxMi44NTUsMi44MjQsMTAuNTI3LDIuODI0LDcuNjY2eiIvPg0KPC9zdmc+DQo=\"); }\n\n/* line 59, stdin */\n.gh-search-reset.show {\n  cursor: pointer;\n  z-index: 9999;\n  opacity: 1;\n  -webkit-transform: translateX(0px);\n  -ms-transform: translateX(0px);\n  transform: translateX(0px);\n  -webkit-transition-delay: .2s;\n  transition-delay: .2s; }\n"] = false
-    document.head.removeChild(__vueify_style__)
-  })
-  if (!module.hot.data) {
-    hotAPI.createRecord("_v-0ac6d3b7", module.exports)
-  } else {
-    hotAPI.update("_v-0ac6d3b7", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
-  }
-})()}
-},{"../.././components/FtTraining.vue":62,"vue":54,"vue-hot-reload-api":50,"vueify/lib/insert-css":55}],80:[function(require,module,exports){
-'use strict';
-
-module.exports = function () {
-
-    function Tools() {}
-
-    Tools.prototype.collectionBy = function (items, filter) {
-        var arrays = [];
-        var fields = filter.split('|');
-
-        for (var d = 0, len = items.length; d < len; d += 1) {
-            var ret = {};
-            for (var i = 0; i < fields.length; i++) {
-                ret[fields[i]] = items[d][fields[i]];
-            }
-
-            arrays.push(ret);
-        }
-
-        return arrays;
-    };
-
-    Tools.prototype.transformParameters = function (plainArray) {
-        /*var { 
-            x: 5,
-            y: 6 
-        };*/
-
-        return encodeURIComponent(JSON.stringify(plainArray));
-    };
-
-    return function install(Vue) {
-        Vue.prototype.$tools = new Tools();
-    };
-}();
-
-},{}],81:[function(require,module,exports){
+},{}],87:[function(require,module,exports){
 "use strict";
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
@@ -60751,40 +61345,900 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 	var widget = $.widget;
 });
 
-},{"jquery":45}],82:[function(require,module,exports){
+},{"jquery":45}],88:[function(require,module,exports){
+'use strict';
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
+
+(function ($) {
+
+  var methods = {
+    init: function init(options) {
+      var defaults = {
+        onShow: null
+      };
+      options = $.extend(defaults, options);
+
+      return this.each(function () {
+
+        // For each set of tabs, we want to keep track of
+        // which tab is active and its associated content
+        var $this = $(this),
+            window_width = $(window).width();
+
+        $this.width('100%');
+        var $active,
+            $content,
+            $links = $this.find('li.tab a'),
+            $tabs_width = $this.width(),
+            $tab_width = Math.max($tabs_width, $this[0].scrollWidth) / $links.length,
+            $index = 0;
+
+        // If the location.hash matches one of the links, use that as the active tab.
+        $active = $($links.filter('[href="' + location.hash + '"]'));
+
+        // If no match is found, use the first link or any with class 'active' as the initial active tab.
+        if ($active.length === 0) {
+          $active = $(this).find('li.tab a.active').first();
+        }
+        if ($active.length === 0) {
+          $active = $(this).find('li.tab a').first();
+        }
+
+        $active.addClass('active');
+        $index = $links.index($active);
+        if ($index < 0) {
+          $index = 0;
+        }
+
+        if ($active[0] !== undefined) {
+          $content = $($active[0].hash);
+        }
+
+        // append indicator then set indicator width to tab width
+        $this.append('<div class="indicator"></div>');
+        var $indicator = $this.find('.indicator');
+        if ($this.is(":visible")) {
+          $indicator.css({ "right": $tabs_width - ($index + 1) * $tab_width });
+          $indicator.css({ "left": $index * $tab_width });
+        }
+        $(window).resize(function () {
+          $tabs_width = $this.width();
+          $tab_width = Math.max($tabs_width, $this[0].scrollWidth) / $links.length;
+          if ($index < 0) {
+            $index = 0;
+          }
+          if ($tab_width !== 0 && $tabs_width !== 0) {
+            $indicator.css({ "right": $tabs_width - ($index + 1) * $tab_width });
+            $indicator.css({ "left": $index * $tab_width });
+          }
+        });
+
+        // Hide the remaining content
+        $links.not($active).each(function () {
+          $(this.hash).hide();
+        });
+
+        // Bind the click event handler
+        $this.on('click', 'a', function (e) {
+          if ($(this).parent().hasClass('disabled')) {
+            e.preventDefault();
+            return;
+          }
+
+          // Act as regular link if target attribute is specified.
+          if (!!$(this).attr("target")) {
+            return;
+          }
+
+          $tabs_width = $this.width();
+          $tab_width = Math.max($tabs_width, $this[0].scrollWidth) / $links.length;
+
+          // Make the old tab inactive.
+          $active.removeClass('active');
+          if ($content !== undefined) {
+            $content.hide();
+          }
+
+          // Update the variables with the new link and content
+          $active = $(this);
+          $content = $(this.hash);
+          $links = $this.find('li.tab a');
+
+          // Make the tab active.
+          $active.addClass('active');
+          var $prev_index = $index;
+          $index = $links.index($(this));
+          if ($index < 0) {
+            $index = 0;
+          }
+          // Change url to current tab
+          // window.location.hash = $active.attr('href');
+
+          if ($content !== undefined) {
+            $content.show();
+            if (typeof options.onShow === "function") {
+              options.onShow.call(this, $content);
+            }
+          }
+
+          // Update indicator
+          if ($index - $prev_index >= 0) {
+            $indicator.velocity({ "right": $tabs_width - ($index + 1) * $tab_width }, { duration: 300, queue: false, easing: 'easeOutQuad' });
+            $indicator.velocity({ "left": $index * $tab_width }, { duration: 300, queue: false, easing: 'easeOutQuad', delay: 90 });
+          } else {
+            $indicator.velocity({ "left": $index * $tab_width }, { duration: 300, queue: false, easing: 'easeOutQuad' });
+            $indicator.velocity({ "right": $tabs_width - ($index + 1) * $tab_width }, { duration: 300, queue: false, easing: 'easeOutQuad', delay: 90 });
+          }
+
+          // Prevent the anchor's default click action
+          e.preventDefault();
+        });
+      });
+    },
+    select_tab: function select_tab(id) {
+      this.find('a[href="#' + id + '"]').trigger('click');
+    }
+  };
+
+  $.fn.tabs = function (methodOrOptions) {
+    if (methods[methodOrOptions]) {
+      return methods[methodOrOptions].apply(this, Array.prototype.slice.call(arguments, 1));
+    } else if ((typeof methodOrOptions === 'undefined' ? 'undefined' : _typeof(methodOrOptions)) === 'object' || !methodOrOptions) {
+      // Default to "init"
+      return methods.init.apply(this, arguments);
+    } else {
+      $.error('Method ' + methodOrOptions + ' does not exist on jQuery.tooltip');
+    }
+  };
+
+  $(document).ready(function () {
+    $('ul.tabs').tabs();
+  });
+})(jQuery);
+
+},{}],89:[function(require,module,exports){
+"use strict";
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
+
+/*! VelocityJS.org (1.2.3). (C) 2014 Julian Shapiro. MIT @license: en.wikipedia.org/wiki/MIT_License */
+/*! VelocityJS.org jQuery Shim (1.0.1). (C) 2014 The jQuery Foundation. MIT @license: en.wikipedia.org/wiki/MIT_License. */
+/*! Note that this has been modified by Materialize to confirm that Velocity is not already being imported. */
+jQuery.Velocity ? console.log("Velocity is already loaded. You may be needlessly importing Velocity again; note that Materialize includes Velocity.") : (!function (e) {
+  function t(e) {
+    var t = e.length,
+        a = r.type(e);return "function" === a || r.isWindow(e) ? !1 : 1 === e.nodeType && t ? !0 : "array" === a || 0 === t || "number" == typeof t && t > 0 && t - 1 in e;
+  }if (!e.jQuery) {
+    var r = function r(e, t) {
+      return new r.fn.init(e, t);
+    };r.isWindow = function (e) {
+      return null != e && e == e.window;
+    }, r.type = function (e) {
+      return null == e ? e + "" : "object" == (typeof e === "undefined" ? "undefined" : _typeof(e)) || "function" == typeof e ? n[i.call(e)] || "object" : typeof e === "undefined" ? "undefined" : _typeof(e);
+    }, r.isArray = Array.isArray || function (e) {
+      return "array" === r.type(e);
+    }, r.isPlainObject = function (e) {
+      var t;if (!e || "object" !== r.type(e) || e.nodeType || r.isWindow(e)) return !1;try {
+        if (e.constructor && !o.call(e, "constructor") && !o.call(e.constructor.prototype, "isPrototypeOf")) return !1;
+      } catch (a) {
+        return !1;
+      }for (t in e) {}return void 0 === t || o.call(e, t);
+    }, r.each = function (e, r, a) {
+      var n,
+          o = 0,
+          i = e.length,
+          s = t(e);if (a) {
+        if (s) for (; i > o && (n = r.apply(e[o], a), n !== !1); o++) {} else for (o in e) {
+          if (n = r.apply(e[o], a), n === !1) break;
+        }
+      } else if (s) for (; i > o && (n = r.call(e[o], o, e[o]), n !== !1); o++) {} else for (o in e) {
+        if (n = r.call(e[o], o, e[o]), n === !1) break;
+      }return e;
+    }, r.data = function (e, t, n) {
+      if (void 0 === n) {
+        var o = e[r.expando],
+            i = o && a[o];if (void 0 === t) return i;if (i && t in i) return i[t];
+      } else if (void 0 !== t) {
+        var o = e[r.expando] || (e[r.expando] = ++r.uuid);return a[o] = a[o] || {}, a[o][t] = n, n;
+      }
+    }, r.removeData = function (e, t) {
+      var n = e[r.expando],
+          o = n && a[n];o && r.each(t, function (e, t) {
+        delete o[t];
+      });
+    }, r.extend = function () {
+      var e,
+          t,
+          a,
+          n,
+          o,
+          i,
+          s = arguments[0] || {},
+          l = 1,
+          u = arguments.length,
+          c = !1;for ("boolean" == typeof s && (c = s, s = arguments[l] || {}, l++), "object" != (typeof s === "undefined" ? "undefined" : _typeof(s)) && "function" !== r.type(s) && (s = {}), l === u && (s = this, l--); u > l; l++) {
+        if (null != (o = arguments[l])) for (n in o) {
+          e = s[n], a = o[n], s !== a && (c && a && (r.isPlainObject(a) || (t = r.isArray(a))) ? (t ? (t = !1, i = e && r.isArray(e) ? e : []) : i = e && r.isPlainObject(e) ? e : {}, s[n] = r.extend(c, i, a)) : void 0 !== a && (s[n] = a));
+        }
+      }return s;
+    }, r.queue = function (e, a, n) {
+      function o(e, r) {
+        var a = r || [];return null != e && (t(Object(e)) ? !function (e, t) {
+          for (var r = +t.length, a = 0, n = e.length; r > a;) {
+            e[n++] = t[a++];
+          }if (r !== r) for (; void 0 !== t[a];) {
+            e[n++] = t[a++];
+          }return e.length = n, e;
+        }(a, "string" == typeof e ? [e] : e) : [].push.call(a, e)), a;
+      }if (e) {
+        a = (a || "fx") + "queue";var i = r.data(e, a);return n ? (!i || r.isArray(n) ? i = r.data(e, a, o(n)) : i.push(n), i) : i || [];
+      }
+    }, r.dequeue = function (e, t) {
+      r.each(e.nodeType ? [e] : e, function (e, a) {
+        t = t || "fx";var n = r.queue(a, t),
+            o = n.shift();"inprogress" === o && (o = n.shift()), o && ("fx" === t && n.unshift("inprogress"), o.call(a, function () {
+          r.dequeue(a, t);
+        }));
+      });
+    }, r.fn = r.prototype = { init: function init(e) {
+        if (e.nodeType) return this[0] = e, this;throw new Error("Not a DOM node.");
+      }, offset: function offset() {
+        var t = this[0].getBoundingClientRect ? this[0].getBoundingClientRect() : { top: 0, left: 0 };return { top: t.top + (e.pageYOffset || document.scrollTop || 0) - (document.clientTop || 0), left: t.left + (e.pageXOffset || document.scrollLeft || 0) - (document.clientLeft || 0) };
+      }, position: function position() {
+        function e() {
+          for (var e = this.offsetParent || document; e && "html" === !e.nodeType.toLowerCase && "static" === e.style.position;) {
+            e = e.offsetParent;
+          }return e || document;
+        }var t = this[0],
+            e = e.apply(t),
+            a = this.offset(),
+            n = /^(?:body|html)$/i.test(e.nodeName) ? { top: 0, left: 0 } : r(e).offset();return a.top -= parseFloat(t.style.marginTop) || 0, a.left -= parseFloat(t.style.marginLeft) || 0, e.style && (n.top += parseFloat(e.style.borderTopWidth) || 0, n.left += parseFloat(e.style.borderLeftWidth) || 0), { top: a.top - n.top, left: a.left - n.left };
+      } };var a = {};r.expando = "velocity" + new Date().getTime(), r.uuid = 0;for (var n = {}, o = n.hasOwnProperty, i = n.toString, s = "Boolean Number String Function Array Date RegExp Object Error".split(" "), l = 0; l < s.length; l++) {
+      n["[object " + s[l] + "]"] = s[l].toLowerCase();
+    }r.fn.init.prototype = r.fn, e.Velocity = { Utilities: r };
+  }
+}(window), function (e) {
+  "object" == (typeof module === "undefined" ? "undefined" : _typeof(module)) && "object" == _typeof(module.exports) ? module.exports = e() : "function" == typeof define && define.amd ? define(e) : e();
+}(function () {
+  return function (e, t, r, a) {
+    function n(e) {
+      for (var t = -1, r = e ? e.length : 0, a = []; ++t < r;) {
+        var n = e[t];n && a.push(n);
+      }return a;
+    }function o(e) {
+      return m.isWrapped(e) ? e = [].slice.call(e) : m.isNode(e) && (e = [e]), e;
+    }function i(e) {
+      var t = f.data(e, "velocity");return null === t ? a : t;
+    }function s(e) {
+      return function (t) {
+        return Math.round(t * e) * (1 / e);
+      };
+    }function l(e, r, a, n) {
+      function o(e, t) {
+        return 1 - 3 * t + 3 * e;
+      }function i(e, t) {
+        return 3 * t - 6 * e;
+      }function s(e) {
+        return 3 * e;
+      }function l(e, t, r) {
+        return ((o(t, r) * e + i(t, r)) * e + s(t)) * e;
+      }function u(e, t, r) {
+        return 3 * o(t, r) * e * e + 2 * i(t, r) * e + s(t);
+      }function c(t, r) {
+        for (var n = 0; m > n; ++n) {
+          var o = u(r, e, a);if (0 === o) return r;var i = l(r, e, a) - t;r -= i / o;
+        }return r;
+      }function p() {
+        for (var t = 0; b > t; ++t) {
+          w[t] = l(t * x, e, a);
+        }
+      }function f(t, r, n) {
+        var o,
+            i,
+            s = 0;do {
+          i = r + (n - r) / 2, o = l(i, e, a) - t, o > 0 ? n = i : r = i;
+        } while (Math.abs(o) > h && ++s < v);return i;
+      }function d(t) {
+        for (var r = 0, n = 1, o = b - 1; n != o && w[n] <= t; ++n) {
+          r += x;
+        }--n;var i = (t - w[n]) / (w[n + 1] - w[n]),
+            s = r + i * x,
+            l = u(s, e, a);return l >= y ? c(t, s) : 0 == l ? s : f(t, r, r + x);
+      }function g() {
+        V = !0, (e != r || a != n) && p();
+      }var m = 4,
+          y = .001,
+          h = 1e-7,
+          v = 10,
+          b = 11,
+          x = 1 / (b - 1),
+          S = "Float32Array" in t;if (4 !== arguments.length) return !1;for (var P = 0; 4 > P; ++P) {
+        if ("number" != typeof arguments[P] || isNaN(arguments[P]) || !isFinite(arguments[P])) return !1;
+      }e = Math.min(e, 1), a = Math.min(a, 1), e = Math.max(e, 0), a = Math.max(a, 0);var w = S ? new Float32Array(b) : new Array(b),
+          V = !1,
+          C = function C(t) {
+        return V || g(), e === r && a === n ? t : 0 === t ? 0 : 1 === t ? 1 : l(d(t), r, n);
+      };C.getControlPoints = function () {
+        return [{ x: e, y: r }, { x: a, y: n }];
+      };var T = "generateBezier(" + [e, r, a, n] + ")";return C.toString = function () {
+        return T;
+      }, C;
+    }function u(e, t) {
+      var r = e;return m.isString(e) ? b.Easings[e] || (r = !1) : r = m.isArray(e) && 1 === e.length ? s.apply(null, e) : m.isArray(e) && 2 === e.length ? x.apply(null, e.concat([t])) : m.isArray(e) && 4 === e.length ? l.apply(null, e) : !1, r === !1 && (r = b.Easings[b.defaults.easing] ? b.defaults.easing : v), r;
+    }function c(e) {
+      if (e) {
+        var t = new Date().getTime(),
+            r = b.State.calls.length;r > 1e4 && (b.State.calls = n(b.State.calls));for (var o = 0; r > o; o++) {
+          if (b.State.calls[o]) {
+            var s = b.State.calls[o],
+                l = s[0],
+                u = s[2],
+                d = s[3],
+                g = !!d,
+                y = null;d || (d = b.State.calls[o][3] = t - 16);for (var h = Math.min((t - d) / u.duration, 1), v = 0, x = l.length; x > v; v++) {
+              var P = l[v],
+                  V = P.element;if (i(V)) {
+                var C = !1;if (u.display !== a && null !== u.display && "none" !== u.display) {
+                  if ("flex" === u.display) {
+                    var T = ["-webkit-box", "-moz-box", "-ms-flexbox", "-webkit-flex"];f.each(T, function (e, t) {
+                      S.setPropertyValue(V, "display", t);
+                    });
+                  }S.setPropertyValue(V, "display", u.display);
+                }u.visibility !== a && "hidden" !== u.visibility && S.setPropertyValue(V, "visibility", u.visibility);for (var k in P) {
+                  if ("element" !== k) {
+                    var A,
+                        F = P[k],
+                        j = m.isString(F.easing) ? b.Easings[F.easing] : F.easing;if (1 === h) A = F.endValue;else {
+                      var E = F.endValue - F.startValue;if (A = F.startValue + E * j(h, u, E), !g && A === F.currentValue) continue;
+                    }if (F.currentValue = A, "tween" === k) y = A;else {
+                      if (S.Hooks.registered[k]) {
+                        var H = S.Hooks.getRoot(k),
+                            N = i(V).rootPropertyValueCache[H];N && (F.rootPropertyValue = N);
+                      }var L = S.setPropertyValue(V, k, F.currentValue + (0 === parseFloat(A) ? "" : F.unitType), F.rootPropertyValue, F.scrollData);S.Hooks.registered[k] && (i(V).rootPropertyValueCache[H] = S.Normalizations.registered[H] ? S.Normalizations.registered[H]("extract", null, L[1]) : L[1]), "transform" === L[0] && (C = !0);
+                    }
+                  }
+                }u.mobileHA && i(V).transformCache.translate3d === a && (i(V).transformCache.translate3d = "(0px, 0px, 0px)", C = !0), C && S.flushTransformCache(V);
+              }
+            }u.display !== a && "none" !== u.display && (b.State.calls[o][2].display = !1), u.visibility !== a && "hidden" !== u.visibility && (b.State.calls[o][2].visibility = !1), u.progress && u.progress.call(s[1], s[1], h, Math.max(0, d + u.duration - t), d, y), 1 === h && p(o);
+          }
+        }
+      }b.State.isTicking && w(c);
+    }function p(e, t) {
+      if (!b.State.calls[e]) return !1;for (var r = b.State.calls[e][0], n = b.State.calls[e][1], o = b.State.calls[e][2], s = b.State.calls[e][4], l = !1, u = 0, c = r.length; c > u; u++) {
+        var p = r[u].element;if (t || o.loop || ("none" === o.display && S.setPropertyValue(p, "display", o.display), "hidden" === o.visibility && S.setPropertyValue(p, "visibility", o.visibility)), o.loop !== !0 && (f.queue(p)[1] === a || !/\.velocityQueueEntryFlag/i.test(f.queue(p)[1])) && i(p)) {
+          i(p).isAnimating = !1, i(p).rootPropertyValueCache = {};var d = !1;f.each(S.Lists.transforms3D, function (e, t) {
+            var r = /^scale/.test(t) ? 1 : 0,
+                n = i(p).transformCache[t];i(p).transformCache[t] !== a && new RegExp("^\\(" + r + "[^.]").test(n) && (d = !0, delete i(p).transformCache[t]);
+          }), o.mobileHA && (d = !0, delete i(p).transformCache.translate3d), d && S.flushTransformCache(p), S.Values.removeClass(p, "velocity-animating");
+        }if (!t && o.complete && !o.loop && u === c - 1) try {
+          o.complete.call(n, n);
+        } catch (g) {
+          setTimeout(function () {
+            throw g;
+          }, 1);
+        }s && o.loop !== !0 && s(n), i(p) && o.loop === !0 && !t && (f.each(i(p).tweensContainer, function (e, t) {
+          /^rotate/.test(e) && 360 === parseFloat(t.endValue) && (t.endValue = 0, t.startValue = 360), /^backgroundPosition/.test(e) && 100 === parseFloat(t.endValue) && "%" === t.unitType && (t.endValue = 0, t.startValue = 100);
+        }), b(p, "reverse", { loop: !0, delay: o.delay })), o.queue !== !1 && f.dequeue(p, o.queue);
+      }b.State.calls[e] = !1;for (var m = 0, y = b.State.calls.length; y > m; m++) {
+        if (b.State.calls[m] !== !1) {
+          l = !0;break;
+        }
+      }l === !1 && (b.State.isTicking = !1, delete b.State.calls, b.State.calls = []);
+    }var f,
+        d = function () {
+      if (r.documentMode) return r.documentMode;for (var e = 7; e > 4; e--) {
+        var t = r.createElement("div");if (t.innerHTML = "<!--[if IE " + e + "]><span></span><![endif]-->", t.getElementsByTagName("span").length) return t = null, e;
+      }return a;
+    }(),
+        g = function () {
+      var e = 0;return t.webkitRequestAnimationFrame || t.mozRequestAnimationFrame || function (t) {
+        var r,
+            a = new Date().getTime();return r = Math.max(0, 16 - (a - e)), e = a + r, setTimeout(function () {
+          t(a + r);
+        }, r);
+      };
+    }(),
+        m = { isString: function isString(e) {
+        return "string" == typeof e;
+      }, isArray: Array.isArray || function (e) {
+        return "[object Array]" === Object.prototype.toString.call(e);
+      }, isFunction: function isFunction(e) {
+        return "[object Function]" === Object.prototype.toString.call(e);
+      }, isNode: function isNode(e) {
+        return e && e.nodeType;
+      }, isNodeList: function isNodeList(e) {
+        return "object" == (typeof e === "undefined" ? "undefined" : _typeof(e)) && /^\[object (HTMLCollection|NodeList|Object)\]$/.test(Object.prototype.toString.call(e)) && e.length !== a && (0 === e.length || "object" == _typeof(e[0]) && e[0].nodeType > 0);
+      }, isWrapped: function isWrapped(e) {
+        return e && (e.jquery || t.Zepto && t.Zepto.zepto.isZ(e));
+      }, isSVG: function isSVG(e) {
+        return t.SVGElement && e instanceof t.SVGElement;
+      }, isEmptyObject: function isEmptyObject(e) {
+        for (var t in e) {
+          return !1;
+        }return !0;
+      } },
+        y = !1;if (e.fn && e.fn.jquery ? (f = e, y = !0) : f = t.Velocity.Utilities, 8 >= d && !y) throw new Error("Velocity: IE8 and below require jQuery to be loaded before Velocity.");if (7 >= d) return void (jQuery.fn.velocity = jQuery.fn.animate);var h = 400,
+        v = "swing",
+        b = { State: { isMobile: /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent), isAndroid: /Android/i.test(navigator.userAgent), isGingerbread: /Android 2\.3\.[3-7]/i.test(navigator.userAgent), isChrome: t.chrome, isFirefox: /Firefox/i.test(navigator.userAgent), prefixElement: r.createElement("div"), prefixMatches: {}, scrollAnchor: null, scrollPropertyLeft: null, scrollPropertyTop: null, isTicking: !1, calls: [] }, CSS: {}, Utilities: f, Redirects: {}, Easings: {}, Promise: t.Promise, defaults: { queue: "", duration: h, easing: v, begin: a, complete: a, progress: a, display: a, visibility: a, loop: !1, delay: !1, mobileHA: !0, _cacheValues: !0 }, init: function init(e) {
+        f.data(e, "velocity", { isSVG: m.isSVG(e), isAnimating: !1, computedStyle: null, tweensContainer: null, rootPropertyValueCache: {}, transformCache: {} });
+      }, hook: null, mock: !1, version: { major: 1, minor: 2, patch: 2 }, debug: !1 };t.pageYOffset !== a ? (b.State.scrollAnchor = t, b.State.scrollPropertyLeft = "pageXOffset", b.State.scrollPropertyTop = "pageYOffset") : (b.State.scrollAnchor = r.documentElement || r.body.parentNode || r.body, b.State.scrollPropertyLeft = "scrollLeft", b.State.scrollPropertyTop = "scrollTop");var x = function () {
+      function e(e) {
+        return -e.tension * e.x - e.friction * e.v;
+      }function t(t, r, a) {
+        var n = { x: t.x + a.dx * r, v: t.v + a.dv * r, tension: t.tension, friction: t.friction };return { dx: n.v, dv: e(n) };
+      }function r(r, a) {
+        var n = { dx: r.v, dv: e(r) },
+            o = t(r, .5 * a, n),
+            i = t(r, .5 * a, o),
+            s = t(r, a, i),
+            l = 1 / 6 * (n.dx + 2 * (o.dx + i.dx) + s.dx),
+            u = 1 / 6 * (n.dv + 2 * (o.dv + i.dv) + s.dv);return r.x = r.x + l * a, r.v = r.v + u * a, r;
+      }return function a(e, t, n) {
+        var o,
+            i,
+            s,
+            l = { x: -1, v: 0, tension: null, friction: null },
+            u = [0],
+            c = 0,
+            p = 1e-4,
+            f = .016;for (e = parseFloat(e) || 500, t = parseFloat(t) || 20, n = n || null, l.tension = e, l.friction = t, o = null !== n, o ? (c = a(e, t), i = c / n * f) : i = f; s = r(s || l, i), u.push(1 + s.x), c += 16, Math.abs(s.x) > p && Math.abs(s.v) > p;) {}return o ? function (e) {
+          return u[e * (u.length - 1) | 0];
+        } : c;
+      };
+    }();b.Easings = { linear: function linear(e) {
+        return e;
+      }, swing: function swing(e) {
+        return .5 - Math.cos(e * Math.PI) / 2;
+      }, spring: function spring(e) {
+        return 1 - Math.cos(4.5 * e * Math.PI) * Math.exp(6 * -e);
+      } }, f.each([["ease", [.25, .1, .25, 1]], ["ease-in", [.42, 0, 1, 1]], ["ease-out", [0, 0, .58, 1]], ["ease-in-out", [.42, 0, .58, 1]], ["easeInSine", [.47, 0, .745, .715]], ["easeOutSine", [.39, .575, .565, 1]], ["easeInOutSine", [.445, .05, .55, .95]], ["easeInQuad", [.55, .085, .68, .53]], ["easeOutQuad", [.25, .46, .45, .94]], ["easeInOutQuad", [.455, .03, .515, .955]], ["easeInCubic", [.55, .055, .675, .19]], ["easeOutCubic", [.215, .61, .355, 1]], ["easeInOutCubic", [.645, .045, .355, 1]], ["easeInQuart", [.895, .03, .685, .22]], ["easeOutQuart", [.165, .84, .44, 1]], ["easeInOutQuart", [.77, 0, .175, 1]], ["easeInQuint", [.755, .05, .855, .06]], ["easeOutQuint", [.23, 1, .32, 1]], ["easeInOutQuint", [.86, 0, .07, 1]], ["easeInExpo", [.95, .05, .795, .035]], ["easeOutExpo", [.19, 1, .22, 1]], ["easeInOutExpo", [1, 0, 0, 1]], ["easeInCirc", [.6, .04, .98, .335]], ["easeOutCirc", [.075, .82, .165, 1]], ["easeInOutCirc", [.785, .135, .15, .86]]], function (e, t) {
+      b.Easings[t[0]] = l.apply(null, t[1]);
+    });var S = b.CSS = { RegEx: { isHex: /^#([A-f\d]{3}){1,2}$/i, valueUnwrap: /^[A-z]+\((.*)\)$/i, wrappedValueAlreadyExtracted: /[0-9.]+ [0-9.]+ [0-9.]+( [0-9.]+)?/, valueSplit: /([A-z]+\(.+\))|(([A-z0-9#-.]+?)(?=\s|$))/gi }, Lists: { colors: ["fill", "stroke", "stopColor", "color", "backgroundColor", "borderColor", "borderTopColor", "borderRightColor", "borderBottomColor", "borderLeftColor", "outlineColor"], transformsBase: ["translateX", "translateY", "scale", "scaleX", "scaleY", "skewX", "skewY", "rotateZ"], transforms3D: ["transformPerspective", "translateZ", "scaleZ", "rotateX", "rotateY"] }, Hooks: { templates: { textShadow: ["Color X Y Blur", "black 0px 0px 0px"], boxShadow: ["Color X Y Blur Spread", "black 0px 0px 0px 0px"], clip: ["Top Right Bottom Left", "0px 0px 0px 0px"], backgroundPosition: ["X Y", "0% 0%"], transformOrigin: ["X Y Z", "50% 50% 0px"], perspectiveOrigin: ["X Y", "50% 50%"] }, registered: {}, register: function register() {
+          for (var e = 0; e < S.Lists.colors.length; e++) {
+            var t = "color" === S.Lists.colors[e] ? "0 0 0 1" : "255 255 255 1";S.Hooks.templates[S.Lists.colors[e]] = ["Red Green Blue Alpha", t];
+          }var r, a, n;if (d) for (r in S.Hooks.templates) {
+            a = S.Hooks.templates[r], n = a[0].split(" ");var o = a[1].match(S.RegEx.valueSplit);"Color" === n[0] && (n.push(n.shift()), o.push(o.shift()), S.Hooks.templates[r] = [n.join(" "), o.join(" ")]);
+          }for (r in S.Hooks.templates) {
+            a = S.Hooks.templates[r], n = a[0].split(" ");for (var e in n) {
+              var i = r + n[e],
+                  s = e;S.Hooks.registered[i] = [r, s];
+            }
+          }
+        }, getRoot: function getRoot(e) {
+          var t = S.Hooks.registered[e];return t ? t[0] : e;
+        }, cleanRootPropertyValue: function cleanRootPropertyValue(e, t) {
+          return S.RegEx.valueUnwrap.test(t) && (t = t.match(S.RegEx.valueUnwrap)[1]), S.Values.isCSSNullValue(t) && (t = S.Hooks.templates[e][1]), t;
+        }, extractValue: function extractValue(e, t) {
+          var r = S.Hooks.registered[e];if (r) {
+            var a = r[0],
+                n = r[1];return t = S.Hooks.cleanRootPropertyValue(a, t), t.toString().match(S.RegEx.valueSplit)[n];
+          }return t;
+        }, injectValue: function injectValue(e, t, r) {
+          var a = S.Hooks.registered[e];if (a) {
+            var n,
+                o,
+                i = a[0],
+                s = a[1];return r = S.Hooks.cleanRootPropertyValue(i, r), n = r.toString().match(S.RegEx.valueSplit), n[s] = t, o = n.join(" ");
+          }return r;
+        } }, Normalizations: { registered: { clip: function clip(e, t, r) {
+            switch (e) {case "name":
+                return "clip";case "extract":
+                var a;return S.RegEx.wrappedValueAlreadyExtracted.test(r) ? a = r : (a = r.toString().match(S.RegEx.valueUnwrap), a = a ? a[1].replace(/,(\s+)?/g, " ") : r), a;case "inject":
+                return "rect(" + r + ")";}
+          }, blur: function blur(e, t, r) {
+            switch (e) {case "name":
+                return b.State.isFirefox ? "filter" : "-webkit-filter";case "extract":
+                var a = parseFloat(r);if (!a && 0 !== a) {
+                  var n = r.toString().match(/blur\(([0-9]+[A-z]+)\)/i);a = n ? n[1] : 0;
+                }return a;case "inject":
+                return parseFloat(r) ? "blur(" + r + ")" : "none";}
+          }, opacity: function opacity(e, t, r) {
+            if (8 >= d) switch (e) {case "name":
+                return "filter";case "extract":
+                var a = r.toString().match(/alpha\(opacity=(.*)\)/i);return r = a ? a[1] / 100 : 1;case "inject":
+                return t.style.zoom = 1, parseFloat(r) >= 1 ? "" : "alpha(opacity=" + parseInt(100 * parseFloat(r), 10) + ")";} else switch (e) {case "name":
+                return "opacity";case "extract":
+                return r;case "inject":
+                return r;}
+          } }, register: function register() {
+          9 >= d || b.State.isGingerbread || (S.Lists.transformsBase = S.Lists.transformsBase.concat(S.Lists.transforms3D));for (var e = 0; e < S.Lists.transformsBase.length; e++) {
+            !function () {
+              var t = S.Lists.transformsBase[e];S.Normalizations.registered[t] = function (e, r, n) {
+                switch (e) {case "name":
+                    return "transform";case "extract":
+                    return i(r) === a || i(r).transformCache[t] === a ? /^scale/i.test(t) ? 1 : 0 : i(r).transformCache[t].replace(/[()]/g, "");case "inject":
+                    var o = !1;switch (t.substr(0, t.length - 1)) {case "translate":
+                        o = !/(%|px|em|rem|vw|vh|\d)$/i.test(n);break;case "scal":case "scale":
+                        b.State.isAndroid && i(r).transformCache[t] === a && 1 > n && (n = 1), o = !/(\d)$/i.test(n);break;case "skew":
+                        o = !/(deg|\d)$/i.test(n);break;case "rotate":
+                        o = !/(deg|\d)$/i.test(n);}return o || (i(r).transformCache[t] = "(" + n + ")"), i(r).transformCache[t];}
+              };
+            }();
+          }for (var e = 0; e < S.Lists.colors.length; e++) {
+            !function () {
+              var t = S.Lists.colors[e];S.Normalizations.registered[t] = function (e, r, n) {
+                switch (e) {case "name":
+                    return t;case "extract":
+                    var o;if (S.RegEx.wrappedValueAlreadyExtracted.test(n)) o = n;else {
+                      var i,
+                          s = { black: "rgb(0, 0, 0)", blue: "rgb(0, 0, 255)", gray: "rgb(128, 128, 128)", green: "rgb(0, 128, 0)", red: "rgb(255, 0, 0)", white: "rgb(255, 255, 255)" };/^[A-z]+$/i.test(n) ? i = s[n] !== a ? s[n] : s.black : S.RegEx.isHex.test(n) ? i = "rgb(" + S.Values.hexToRgb(n).join(" ") + ")" : /^rgba?\(/i.test(n) || (i = s.black), o = (i || n).toString().match(S.RegEx.valueUnwrap)[1].replace(/,(\s+)?/g, " ");
+                    }return 8 >= d || 3 !== o.split(" ").length || (o += " 1"), o;case "inject":
+                    return 8 >= d ? 4 === n.split(" ").length && (n = n.split(/\s+/).slice(0, 3).join(" ")) : 3 === n.split(" ").length && (n += " 1"), (8 >= d ? "rgb" : "rgba") + "(" + n.replace(/\s+/g, ",").replace(/\.(\d)+(?=,)/g, "") + ")";}
+              };
+            }();
+          }
+        } }, Names: { camelCase: function camelCase(e) {
+          return e.replace(/-(\w)/g, function (e, t) {
+            return t.toUpperCase();
+          });
+        }, SVGAttribute: function SVGAttribute(e) {
+          var t = "width|height|x|y|cx|cy|r|rx|ry|x1|x2|y1|y2";return (d || b.State.isAndroid && !b.State.isChrome) && (t += "|transform"), new RegExp("^(" + t + ")$", "i").test(e);
+        }, prefixCheck: function prefixCheck(e) {
+          if (b.State.prefixMatches[e]) return [b.State.prefixMatches[e], !0];for (var t = ["", "Webkit", "Moz", "ms", "O"], r = 0, a = t.length; a > r; r++) {
+            var n;if (n = 0 === r ? e : t[r] + e.replace(/^\w/, function (e) {
+              return e.toUpperCase();
+            }), m.isString(b.State.prefixElement.style[n])) return b.State.prefixMatches[e] = n, [n, !0];
+          }return [e, !1];
+        } }, Values: { hexToRgb: function hexToRgb(e) {
+          var t,
+              r = /^#?([a-f\d])([a-f\d])([a-f\d])$/i,
+              a = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i;return e = e.replace(r, function (e, t, r, a) {
+            return t + t + r + r + a + a;
+          }), t = a.exec(e), t ? [parseInt(t[1], 16), parseInt(t[2], 16), parseInt(t[3], 16)] : [0, 0, 0];
+        }, isCSSNullValue: function isCSSNullValue(e) {
+          return 0 == e || /^(none|auto|transparent|(rgba\(0, ?0, ?0, ?0\)))$/i.test(e);
+        }, getUnitType: function getUnitType(e) {
+          return (/^(rotate|skew)/i.test(e) ? "deg" : /(^(scale|scaleX|scaleY|scaleZ|alpha|flexGrow|flexHeight|zIndex|fontWeight)$)|((opacity|red|green|blue|alpha)$)/i.test(e) ? "" : "px"
+          );
+        }, getDisplayType: function getDisplayType(e) {
+          var t = e && e.tagName.toString().toLowerCase();return (/^(b|big|i|small|tt|abbr|acronym|cite|code|dfn|em|kbd|strong|samp|var|a|bdo|br|img|map|object|q|script|span|sub|sup|button|input|label|select|textarea)$/i.test(t) ? "inline" : /^(li)$/i.test(t) ? "list-item" : /^(tr)$/i.test(t) ? "table-row" : /^(table)$/i.test(t) ? "table" : /^(tbody)$/i.test(t) ? "table-row-group" : "block"
+          );
+        }, addClass: function addClass(e, t) {
+          e.classList ? e.classList.add(t) : e.className += (e.className.length ? " " : "") + t;
+        }, removeClass: function removeClass(e, t) {
+          e.classList ? e.classList.remove(t) : e.className = e.className.toString().replace(new RegExp("(^|\\s)" + t.split(" ").join("|") + "(\\s|$)", "gi"), " ");
+        } }, getPropertyValue: function getPropertyValue(e, r, n, o) {
+        function s(e, r) {
+          function n() {
+            u && S.setPropertyValue(e, "display", "none");
+          }var l = 0;if (8 >= d) l = f.css(e, r);else {
+            var u = !1;if (/^(width|height)$/.test(r) && 0 === S.getPropertyValue(e, "display") && (u = !0, S.setPropertyValue(e, "display", S.Values.getDisplayType(e))), !o) {
+              if ("height" === r && "border-box" !== S.getPropertyValue(e, "boxSizing").toString().toLowerCase()) {
+                var c = e.offsetHeight - (parseFloat(S.getPropertyValue(e, "borderTopWidth")) || 0) - (parseFloat(S.getPropertyValue(e, "borderBottomWidth")) || 0) - (parseFloat(S.getPropertyValue(e, "paddingTop")) || 0) - (parseFloat(S.getPropertyValue(e, "paddingBottom")) || 0);return n(), c;
+              }if ("width" === r && "border-box" !== S.getPropertyValue(e, "boxSizing").toString().toLowerCase()) {
+                var p = e.offsetWidth - (parseFloat(S.getPropertyValue(e, "borderLeftWidth")) || 0) - (parseFloat(S.getPropertyValue(e, "borderRightWidth")) || 0) - (parseFloat(S.getPropertyValue(e, "paddingLeft")) || 0) - (parseFloat(S.getPropertyValue(e, "paddingRight")) || 0);return n(), p;
+              }
+            }var g;g = i(e) === a ? t.getComputedStyle(e, null) : i(e).computedStyle ? i(e).computedStyle : i(e).computedStyle = t.getComputedStyle(e, null), "borderColor" === r && (r = "borderTopColor"), l = 9 === d && "filter" === r ? g.getPropertyValue(r) : g[r], ("" === l || null === l) && (l = e.style[r]), n();
+          }if ("auto" === l && /^(top|right|bottom|left)$/i.test(r)) {
+            var m = s(e, "position");("fixed" === m || "absolute" === m && /top|left/i.test(r)) && (l = f(e).position()[r] + "px");
+          }return l;
+        }var l;if (S.Hooks.registered[r]) {
+          var u = r,
+              c = S.Hooks.getRoot(u);n === a && (n = S.getPropertyValue(e, S.Names.prefixCheck(c)[0])), S.Normalizations.registered[c] && (n = S.Normalizations.registered[c]("extract", e, n)), l = S.Hooks.extractValue(u, n);
+        } else if (S.Normalizations.registered[r]) {
+          var p, g;p = S.Normalizations.registered[r]("name", e), "transform" !== p && (g = s(e, S.Names.prefixCheck(p)[0]), S.Values.isCSSNullValue(g) && S.Hooks.templates[r] && (g = S.Hooks.templates[r][1])), l = S.Normalizations.registered[r]("extract", e, g);
+        }if (!/^[\d-]/.test(l)) if (i(e) && i(e).isSVG && S.Names.SVGAttribute(r)) {
+          if (/^(height|width)$/i.test(r)) try {
+            l = e.getBBox()[r];
+          } catch (m) {
+            l = 0;
+          } else l = e.getAttribute(r);
+        } else l = s(e, S.Names.prefixCheck(r)[0]);return S.Values.isCSSNullValue(l) && (l = 0), b.debug >= 2 && console.log("Get " + r + ": " + l), l;
+      }, setPropertyValue: function setPropertyValue(e, r, a, n, o) {
+        var s = r;if ("scroll" === r) o.container ? o.container["scroll" + o.direction] = a : "Left" === o.direction ? t.scrollTo(a, o.alternateValue) : t.scrollTo(o.alternateValue, a);else if (S.Normalizations.registered[r] && "transform" === S.Normalizations.registered[r]("name", e)) S.Normalizations.registered[r]("inject", e, a), s = "transform", a = i(e).transformCache[r];else {
+          if (S.Hooks.registered[r]) {
+            var l = r,
+                u = S.Hooks.getRoot(r);n = n || S.getPropertyValue(e, u), a = S.Hooks.injectValue(l, a, n), r = u;
+          }if (S.Normalizations.registered[r] && (a = S.Normalizations.registered[r]("inject", e, a), r = S.Normalizations.registered[r]("name", e)), s = S.Names.prefixCheck(r)[0], 8 >= d) try {
+            e.style[s] = a;
+          } catch (c) {
+            b.debug && console.log("Browser does not support [" + a + "] for [" + s + "]");
+          } else i(e) && i(e).isSVG && S.Names.SVGAttribute(r) ? e.setAttribute(r, a) : e.style[s] = a;b.debug >= 2 && console.log("Set " + r + " (" + s + "): " + a);
+        }return [s, a];
+      }, flushTransformCache: function flushTransformCache(e) {
+        function t(t) {
+          return parseFloat(S.getPropertyValue(e, t));
+        }var r = "";if ((d || b.State.isAndroid && !b.State.isChrome) && i(e).isSVG) {
+          var a = { translate: [t("translateX"), t("translateY")], skewX: [t("skewX")], skewY: [t("skewY")], scale: 1 !== t("scale") ? [t("scale"), t("scale")] : [t("scaleX"), t("scaleY")], rotate: [t("rotateZ"), 0, 0] };f.each(i(e).transformCache, function (e) {
+            /^translate/i.test(e) ? e = "translate" : /^scale/i.test(e) ? e = "scale" : /^rotate/i.test(e) && (e = "rotate"), a[e] && (r += e + "(" + a[e].join(" ") + ") ", delete a[e]);
+          });
+        } else {
+          var n, o;f.each(i(e).transformCache, function (t) {
+            return n = i(e).transformCache[t], "transformPerspective" === t ? (o = n, !0) : (9 === d && "rotateZ" === t && (t = "rotate"), void (r += t + n + " "));
+          }), o && (r = "perspective" + o + " " + r);
+        }S.setPropertyValue(e, "transform", r);
+      } };S.Hooks.register(), S.Normalizations.register(), b.hook = function (e, t, r) {
+      var n = a;return e = o(e), f.each(e, function (e, o) {
+        if (i(o) === a && b.init(o), r === a) n === a && (n = b.CSS.getPropertyValue(o, t));else {
+          var s = b.CSS.setPropertyValue(o, t, r);"transform" === s[0] && b.CSS.flushTransformCache(o), n = s;
+        }
+      }), n;
+    };var P = function P() {
+      function e() {
+        return s ? k.promise || null : l;
+      }function n() {
+        function e(e) {
+          function p(e, t) {
+            var r = a,
+                n = a,
+                i = a;return m.isArray(e) ? (r = e[0], !m.isArray(e[1]) && /^[\d-]/.test(e[1]) || m.isFunction(e[1]) || S.RegEx.isHex.test(e[1]) ? i = e[1] : (m.isString(e[1]) && !S.RegEx.isHex.test(e[1]) || m.isArray(e[1])) && (n = t ? e[1] : u(e[1], s.duration), e[2] !== a && (i = e[2]))) : r = e, t || (n = n || s.easing), m.isFunction(r) && (r = r.call(o, V, w)), m.isFunction(i) && (i = i.call(o, V, w)), [r || 0, n, i];
+          }function d(e, t) {
+            var r, a;return a = (t || "0").toString().toLowerCase().replace(/[%A-z]+$/, function (e) {
+              return r = e, "";
+            }), r || (r = S.Values.getUnitType(e)), [a, r];
+          }function h() {
+            var e = { myParent: o.parentNode || r.body, position: S.getPropertyValue(o, "position"), fontSize: S.getPropertyValue(o, "fontSize") },
+                a = e.position === L.lastPosition && e.myParent === L.lastParent,
+                n = e.fontSize === L.lastFontSize;L.lastParent = e.myParent, L.lastPosition = e.position, L.lastFontSize = e.fontSize;var s = 100,
+                l = {};if (n && a) l.emToPx = L.lastEmToPx, l.percentToPxWidth = L.lastPercentToPxWidth, l.percentToPxHeight = L.lastPercentToPxHeight;else {
+              var u = i(o).isSVG ? r.createElementNS("http://www.w3.org/2000/svg", "rect") : r.createElement("div");b.init(u), e.myParent.appendChild(u), f.each(["overflow", "overflowX", "overflowY"], function (e, t) {
+                b.CSS.setPropertyValue(u, t, "hidden");
+              }), b.CSS.setPropertyValue(u, "position", e.position), b.CSS.setPropertyValue(u, "fontSize", e.fontSize), b.CSS.setPropertyValue(u, "boxSizing", "content-box"), f.each(["minWidth", "maxWidth", "width", "minHeight", "maxHeight", "height"], function (e, t) {
+                b.CSS.setPropertyValue(u, t, s + "%");
+              }), b.CSS.setPropertyValue(u, "paddingLeft", s + "em"), l.percentToPxWidth = L.lastPercentToPxWidth = (parseFloat(S.getPropertyValue(u, "width", null, !0)) || 1) / s, l.percentToPxHeight = L.lastPercentToPxHeight = (parseFloat(S.getPropertyValue(u, "height", null, !0)) || 1) / s, l.emToPx = L.lastEmToPx = (parseFloat(S.getPropertyValue(u, "paddingLeft")) || 1) / s, e.myParent.removeChild(u);
+            }return null === L.remToPx && (L.remToPx = parseFloat(S.getPropertyValue(r.body, "fontSize")) || 16), null === L.vwToPx && (L.vwToPx = parseFloat(t.innerWidth) / 100, L.vhToPx = parseFloat(t.innerHeight) / 100), l.remToPx = L.remToPx, l.vwToPx = L.vwToPx, l.vhToPx = L.vhToPx, b.debug >= 1 && console.log("Unit ratios: " + JSON.stringify(l), o), l;
+          }if (s.begin && 0 === V) try {
+            s.begin.call(g, g);
+          } catch (x) {
+            setTimeout(function () {
+              throw x;
+            }, 1);
+          }if ("scroll" === A) {
+            var P,
+                C,
+                T,
+                F = /^x$/i.test(s.axis) ? "Left" : "Top",
+                j = parseFloat(s.offset) || 0;s.container ? m.isWrapped(s.container) || m.isNode(s.container) ? (s.container = s.container[0] || s.container, P = s.container["scroll" + F], T = P + f(o).position()[F.toLowerCase()] + j) : s.container = null : (P = b.State.scrollAnchor[b.State["scrollProperty" + F]], C = b.State.scrollAnchor[b.State["scrollProperty" + ("Left" === F ? "Top" : "Left")]], T = f(o).offset()[F.toLowerCase()] + j), l = { scroll: { rootPropertyValue: !1, startValue: P, currentValue: P, endValue: T, unitType: "", easing: s.easing, scrollData: { container: s.container, direction: F, alternateValue: C } }, element: o }, b.debug && console.log("tweensContainer (scroll): ", l.scroll, o);
+          } else if ("reverse" === A) {
+            if (!i(o).tweensContainer) return void f.dequeue(o, s.queue);"none" === i(o).opts.display && (i(o).opts.display = "auto"), "hidden" === i(o).opts.visibility && (i(o).opts.visibility = "visible"), i(o).opts.loop = !1, i(o).opts.begin = null, i(o).opts.complete = null, v.easing || delete s.easing, v.duration || delete s.duration, s = f.extend({}, i(o).opts, s);var E = f.extend(!0, {}, i(o).tweensContainer);for (var H in E) {
+              if ("element" !== H) {
+                var N = E[H].startValue;E[H].startValue = E[H].currentValue = E[H].endValue, E[H].endValue = N, m.isEmptyObject(v) || (E[H].easing = s.easing), b.debug && console.log("reverse tweensContainer (" + H + "): " + JSON.stringify(E[H]), o);
+              }
+            }l = E;
+          } else if ("start" === A) {
+            var E;i(o).tweensContainer && i(o).isAnimating === !0 && (E = i(o).tweensContainer), f.each(y, function (e, t) {
+              if (RegExp("^" + S.Lists.colors.join("$|^") + "$").test(e)) {
+                var r = p(t, !0),
+                    n = r[0],
+                    o = r[1],
+                    i = r[2];if (S.RegEx.isHex.test(n)) {
+                  for (var s = ["Red", "Green", "Blue"], l = S.Values.hexToRgb(n), u = i ? S.Values.hexToRgb(i) : a, c = 0; c < s.length; c++) {
+                    var f = [l[c]];o && f.push(o), u !== a && f.push(u[c]), y[e + s[c]] = f;
+                  }delete y[e];
+                }
+              }
+            });for (var z in y) {
+              var O = p(y[z]),
+                  q = O[0],
+                  $ = O[1],
+                  M = O[2];z = S.Names.camelCase(z);var I = S.Hooks.getRoot(z),
+                  B = !1;if (i(o).isSVG || "tween" === I || S.Names.prefixCheck(I)[1] !== !1 || S.Normalizations.registered[I] !== a) {
+                (s.display !== a && null !== s.display && "none" !== s.display || s.visibility !== a && "hidden" !== s.visibility) && /opacity|filter/.test(z) && !M && 0 !== q && (M = 0), s._cacheValues && E && E[z] ? (M === a && (M = E[z].endValue + E[z].unitType), B = i(o).rootPropertyValueCache[I]) : S.Hooks.registered[z] ? M === a ? (B = S.getPropertyValue(o, I), M = S.getPropertyValue(o, z, B)) : B = S.Hooks.templates[I][1] : M === a && (M = S.getPropertyValue(o, z));var W,
+                    G,
+                    Y,
+                    D = !1;if (W = d(z, M), M = W[0], Y = W[1], W = d(z, q), q = W[0].replace(/^([+-\/*])=/, function (e, t) {
+                  return D = t, "";
+                }), G = W[1], M = parseFloat(M) || 0, q = parseFloat(q) || 0, "%" === G && (/^(fontSize|lineHeight)$/.test(z) ? (q /= 100, G = "em") : /^scale/.test(z) ? (q /= 100, G = "") : /(Red|Green|Blue)$/i.test(z) && (q = q / 100 * 255, G = "")), /[\/*]/.test(D)) G = Y;else if (Y !== G && 0 !== M) if (0 === q) G = Y;else {
+                  n = n || h();var Q = /margin|padding|left|right|width|text|word|letter/i.test(z) || /X$/.test(z) || "x" === z ? "x" : "y";switch (Y) {case "%":
+                      M *= "x" === Q ? n.percentToPxWidth : n.percentToPxHeight;break;case "px":
+                      break;default:
+                      M *= n[Y + "ToPx"];}switch (G) {case "%":
+                      M *= 1 / ("x" === Q ? n.percentToPxWidth : n.percentToPxHeight);break;case "px":
+                      break;default:
+                      M *= 1 / n[G + "ToPx"];}
+                }switch (D) {case "+":
+                    q = M + q;break;case "-":
+                    q = M - q;break;case "*":
+                    q = M * q;break;case "/":
+                    q = M / q;}l[z] = { rootPropertyValue: B, startValue: M, currentValue: M, endValue: q, unitType: G, easing: $ }, b.debug && console.log("tweensContainer (" + z + "): " + JSON.stringify(l[z]), o);
+              } else b.debug && console.log("Skipping [" + I + "] due to a lack of browser support.");
+            }l.element = o;
+          }l.element && (S.Values.addClass(o, "velocity-animating"), R.push(l), "" === s.queue && (i(o).tweensContainer = l, i(o).opts = s), i(o).isAnimating = !0, V === w - 1 ? (b.State.calls.push([R, g, s, null, k.resolver]), b.State.isTicking === !1 && (b.State.isTicking = !0, c())) : V++);
+        }var n,
+            o = this,
+            s = f.extend({}, b.defaults, v),
+            l = {};switch (i(o) === a && b.init(o), parseFloat(s.delay) && s.queue !== !1 && f.queue(o, s.queue, function (e) {
+          b.velocityQueueEntryFlag = !0, i(o).delayTimer = { setTimeout: setTimeout(e, parseFloat(s.delay)), next: e };
+        }), s.duration.toString().toLowerCase()) {case "fast":
+            s.duration = 200;break;case "normal":
+            s.duration = h;break;case "slow":
+            s.duration = 600;break;default:
+            s.duration = parseFloat(s.duration) || 1;}b.mock !== !1 && (b.mock === !0 ? s.duration = s.delay = 1 : (s.duration *= parseFloat(b.mock) || 1, s.delay *= parseFloat(b.mock) || 1)), s.easing = u(s.easing, s.duration), s.begin && !m.isFunction(s.begin) && (s.begin = null), s.progress && !m.isFunction(s.progress) && (s.progress = null), s.complete && !m.isFunction(s.complete) && (s.complete = null), s.display !== a && null !== s.display && (s.display = s.display.toString().toLowerCase(), "auto" === s.display && (s.display = b.CSS.Values.getDisplayType(o))), s.visibility !== a && null !== s.visibility && (s.visibility = s.visibility.toString().toLowerCase()), s.mobileHA = s.mobileHA && b.State.isMobile && !b.State.isGingerbread, s.queue === !1 ? s.delay ? setTimeout(e, s.delay) : e() : f.queue(o, s.queue, function (t, r) {
+          return r === !0 ? (k.promise && k.resolver(g), !0) : (b.velocityQueueEntryFlag = !0, void e(t));
+        }), "" !== s.queue && "fx" !== s.queue || "inprogress" === f.queue(o)[0] || f.dequeue(o);
+      }var s,
+          l,
+          d,
+          g,
+          y,
+          v,
+          x = arguments[0] && (arguments[0].p || f.isPlainObject(arguments[0].properties) && !arguments[0].properties.names || m.isString(arguments[0].properties));if (m.isWrapped(this) ? (s = !1, d = 0, g = this, l = this) : (s = !0, d = 1, g = x ? arguments[0].elements || arguments[0].e : arguments[0]), g = o(g)) {
+        x ? (y = arguments[0].properties || arguments[0].p, v = arguments[0].options || arguments[0].o) : (y = arguments[d], v = arguments[d + 1]);var w = g.length,
+            V = 0;if (!/^(stop|finish)$/i.test(y) && !f.isPlainObject(v)) {
+          var C = d + 1;v = {};for (var T = C; T < arguments.length; T++) {
+            m.isArray(arguments[T]) || !/^(fast|normal|slow)$/i.test(arguments[T]) && !/^\d/.test(arguments[T]) ? m.isString(arguments[T]) || m.isArray(arguments[T]) ? v.easing = arguments[T] : m.isFunction(arguments[T]) && (v.complete = arguments[T]) : v.duration = arguments[T];
+          }
+        }var k = { promise: null, resolver: null, rejecter: null };s && b.Promise && (k.promise = new b.Promise(function (e, t) {
+          k.resolver = e, k.rejecter = t;
+        }));var A;switch (y) {case "scroll":
+            A = "scroll";break;case "reverse":
+            A = "reverse";break;case "finish":case "stop":
+            f.each(g, function (e, t) {
+              i(t) && i(t).delayTimer && (clearTimeout(i(t).delayTimer.setTimeout), i(t).delayTimer.next && i(t).delayTimer.next(), delete i(t).delayTimer);
+            });var F = [];return f.each(b.State.calls, function (e, t) {
+              t && f.each(t[1], function (r, n) {
+                var o = v === a ? "" : v;return o === !0 || t[2].queue === o || v === a && t[2].queue === !1 ? void f.each(g, function (r, a) {
+                  a === n && ((v === !0 || m.isString(v)) && (f.each(f.queue(a, m.isString(v) ? v : ""), function (e, t) {
+                    m.isFunction(t) && t(null, !0);
+                  }), f.queue(a, m.isString(v) ? v : "", [])), "stop" === y ? (i(a) && i(a).tweensContainer && o !== !1 && f.each(i(a).tweensContainer, function (e, t) {
+                    t.endValue = t.currentValue;
+                  }), F.push(e)) : "finish" === y && (t[2].duration = 1));
+                }) : !0;
+              });
+            }), "stop" === y && (f.each(F, function (e, t) {
+              p(t, !0);
+            }), k.promise && k.resolver(g)), e();default:
+            if (!f.isPlainObject(y) || m.isEmptyObject(y)) {
+              if (m.isString(y) && b.Redirects[y]) {
+                var j = f.extend({}, v),
+                    E = j.duration,
+                    H = j.delay || 0;return j.backwards === !0 && (g = f.extend(!0, [], g).reverse()), f.each(g, function (e, t) {
+                  parseFloat(j.stagger) ? j.delay = H + parseFloat(j.stagger) * e : m.isFunction(j.stagger) && (j.delay = H + j.stagger.call(t, e, w)), j.drag && (j.duration = parseFloat(E) || (/^(callout|transition)/.test(y) ? 1e3 : h), j.duration = Math.max(j.duration * (j.backwards ? 1 - e / w : (e + 1) / w), .75 * j.duration, 200)), b.Redirects[y].call(t, t, j || {}, e, w, g, k.promise ? k : a);
+                }), e();
+              }var N = "Velocity: First argument (" + y + ") was not a property map, a known action, or a registered redirect. Aborting.";return k.promise ? k.rejecter(new Error(N)) : console.log(N), e();
+            }A = "start";}var L = { lastParent: null, lastPosition: null, lastFontSize: null, lastPercentToPxWidth: null, lastPercentToPxHeight: null, lastEmToPx: null, remToPx: null, vwToPx: null, vhToPx: null },
+            R = [];f.each(g, function (e, t) {
+          m.isNode(t) && n.call(t);
+        });var z,
+            j = f.extend({}, b.defaults, v);if (j.loop = parseInt(j.loop), z = 2 * j.loop - 1, j.loop) for (var O = 0; z > O; O++) {
+          var q = { delay: j.delay, progress: j.progress };O === z - 1 && (q.display = j.display, q.visibility = j.visibility, q.complete = j.complete), P(g, "reverse", q);
+        }return e();
+      }
+    };b = f.extend(P, b), b.animate = P;var w = t.requestAnimationFrame || g;return b.State.isMobile || r.hidden === a || r.addEventListener("visibilitychange", function () {
+      r.hidden ? (w = function w(e) {
+        return setTimeout(function () {
+          e(!0);
+        }, 16);
+      }, c()) : w = t.requestAnimationFrame || g;
+    }), e.Velocity = b, e !== t && (e.fn.velocity = P, e.fn.velocity.defaults = b.defaults), f.each(["Down", "Up"], function (e, t) {
+      b.Redirects["slide" + t] = function (e, r, n, o, i, s) {
+        var l = f.extend({}, r),
+            u = l.begin,
+            c = l.complete,
+            p = { height: "", marginTop: "", marginBottom: "", paddingTop: "", paddingBottom: "" },
+            d = {};l.display === a && (l.display = "Down" === t ? "inline" === b.CSS.Values.getDisplayType(e) ? "inline-block" : "block" : "none"), l.begin = function () {
+          u && u.call(i, i);for (var r in p) {
+            d[r] = e.style[r];var a = b.CSS.getPropertyValue(e, r);p[r] = "Down" === t ? [a, 0] : [0, a];
+          }d.overflow = e.style.overflow, e.style.overflow = "hidden";
+        }, l.complete = function () {
+          for (var t in d) {
+            e.style[t] = d[t];
+          }c && c.call(i, i), s && s.resolver(i);
+        }, b(e, p, l);
+      };
+    }), f.each(["In", "Out"], function (e, t) {
+      b.Redirects["fade" + t] = function (e, r, n, o, i, s) {
+        var l = f.extend({}, r),
+            u = { opacity: "In" === t ? 1 : 0 },
+            c = l.complete;l.complete = n !== o - 1 ? l.begin = null : function () {
+          c && c.call(i, i), s && s.resolver(i);
+        }, l.display === a && (l.display = "In" === t ? "auto" : "none"), b(this, u, l);
+      };
+    }), b;
+  }(window.jQuery || window.Zepto || window, window, document);
+}));
+
+},{}],90:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = {
+  en: {
+    message: {
+      hello: 'the world',
+      hoge: 'hoge',
+      format: {
+        named: 'Hello {name}, how are you?',
+        list: 'Hello {0}, how are you?'
+      },
+      fallback: 'this is fallback'
+    },
+    'hello world': 'Hello World',
+    'Hello {0}': 'Hello {0}',
+    'continue-with-new-account': 'continue with new account',
+    underscore: '{hello_msg} world',
+    plurals: {
+      car: 'car | cars',
+      format: {
+        named: 'Hello {name}, how are you? | Hi {name}, you look fine',
+        list: 'Hello {0}, how are you? | Hi {0}, you look fine'
+      },
+      fallback: 'this is fallback | this is a plural fallback'
+    }
+  },
+  ja: {
+    message: {
+      hello: 'ザ・ワールド',
+      hoge: 'ほげ',
+      format: {
+        named: 'こんにちは {name}, ごきげんいかが？',
+        list: 'こんにちは {0}, ごきげんいかが？'
+      },
+      fallback1: 'これはフォールバック'
+    },
+    plurals: {
+      car: 'ザ・ワールド | これはフォールバック',
+      format: {
+        named: 'こんにちは {name}, ごきげんいかが？ | こんにちは {name}, ごきげんいかが？',
+        list: 'こんにちは {0}, ごきげんいかが？| こんにちは {0}, ごきげんいかが？'
+      },
+      fallback: 'これはフォールバック | ザ・ワールド'
+    }
+  }
+};
+
+},{}],91:[function(require,module,exports){
+'use strict';
+
+module.exports = function () {
+
+    function Tools() {}
+
+    Tools.prototype.collectionBy = function (items, filter) {
+        var arrays = [];
+        var fields = filter.split('|');
+
+        for (var d = 0, len = items.length; d < len; d += 1) {
+            var ret = {};
+            for (var i = 0; i < fields.length; i++) {
+                ret[fields[i]] = items[d][fields[i]];
+            }
+
+            arrays.push(ret);
+        }
+
+        return arrays;
+    };
+
+    Tools.prototype.transformParameters = function (plainArray) {
+        /*var { 
+            x: 5,
+            y: 6 
+        };*/
+
+        return encodeURIComponent(JSON.stringify(plainArray));
+    };
+
+    return function install(Vue) {
+        Vue.prototype.$tools = new Tools();
+    };
+}();
+
+},{}],92:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-var _ClubDashboard = require('.././menus/manager/ClubDashboard.vue');
+var _ClubDashboard = require('.././actors/manager/menus/ClubDashboard.vue');
 
 var _ClubDashboard2 = _interopRequireDefault(_ClubDashboard);
 
-var _ClubMembers = require('.././menus/manager/ClubMembers.vue');
+var _ClubMembers = require('.././actors/manager/menus/ClubMembers.vue');
 
 var _ClubMembers2 = _interopRequireDefault(_ClubMembers);
 
-var _ClubRequests = require('.././menus/manager/ClubRequests.vue');
+var _ClubRegistration = require('.././actors/manager/menus/ClubRegistration.vue');
 
-var _ClubRequests2 = _interopRequireDefault(_ClubRequests);
+var _ClubRegistration2 = _interopRequireDefault(_ClubRegistration);
 
-var _ClubTraining = require('.././menus/manager/ClubTraining.vue');
-
-var _ClubTraining2 = _interopRequireDefault(_ClubTraining);
-
-var _ClubPlan = require('.././menus/manager/ClubPlan.vue');
-
-var _ClubPlan2 = _interopRequireDefault(_ClubPlan);
-
-var _ClubTemplate = require('.././menus/manager/ClubTemplate.vue');
+var _ClubTemplate = require('.././actors/manager/menus/ClubTemplate.vue');
 
 var _ClubTemplate2 = _interopRequireDefault(_ClubTemplate);
-
-var _autocomplete = require('.././components/autocomplete.vue');
-
-var _autocomplete2 = _interopRequireDefault(_autocomplete);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -60792,7 +62246,7 @@ exports.default = {
 
 	props: {
 		clubid: {},
-		selectedMenu: { default: 'club-plan' }
+		selectedMenu: { default: 'club-registration' }
 	},
 
 	data: function data() {
@@ -60836,9 +62290,23 @@ exports.default = {
 	},
 
 	components: {
-		ClubDashboard: _ClubDashboard2.default, ClubMembers: _ClubMembers2.default, ClubRequests: _ClubRequests2.default,
-		ClubTraining: _ClubTraining2.default, ClubPlan: _ClubPlan2.default, autocomplete: _autocomplete2.default,
-		ClubTemplate: _ClubTemplate2.default
+		ClubDashboard: _ClubDashboard2.default, ClubMembers: _ClubMembers2.default,
+		ClubRegistration: _ClubRegistration2.default, ClubTemplate: _ClubTemplate2.default
+	},
+
+	locales: {
+		en: {
+			dashboard: 'Dashboard',
+			members: 'Members',
+			registration: 'Registration',
+			template: 'Template'
+		},
+		mn: {
+			dashboard: 'Хяналт',
+			members: 'Гишүүнчлэл',
+			registration: 'Бүртгэл',
+			template: 'Загвар'
+		}
 	}
 };
 if (module.exports.__esModule) module.exports = module.exports.default
@@ -60852,7 +62320,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-149d772a", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{".././components/autocomplete.vue":64,".././menus/manager/ClubDashboard.vue":74,".././menus/manager/ClubMembers.vue":75,".././menus/manager/ClubPlan.vue":76,".././menus/manager/ClubRequests.vue":77,".././menus/manager/ClubTemplate.vue":78,".././menus/manager/ClubTraining.vue":79,"vue":54,"vue-hot-reload-api":50}],83:[function(require,module,exports){
+},{".././actors/manager/menus/ClubDashboard.vue":66,".././actors/manager/menus/ClubMembers.vue":67,".././actors/manager/menus/ClubRegistration.vue":68,".././actors/manager/menus/ClubTemplate.vue":69,"vue":54,"vue-hot-reload-api":50}],93:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -60900,7 +62368,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-334daf3c", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":54,"vue-hot-reload-api":50}],84:[function(require,module,exports){
+},{"vue":54,"vue-hot-reload-api":50}],94:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -60959,42 +62427,69 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-7b0768ba", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":54,"vue-hot-reload-api":50}],85:[function(require,module,exports){
+},{"vue":54,"vue-hot-reload-api":50}],95:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+	value: true
 });
 
+var _Followed = require(".././components/Followed.vue");
+
+var _Followed2 = _interopRequireDefault(_Followed);
+
+var _Timeline = require(".././components/Timeline.vue");
+
+var _Timeline2 = _interopRequireDefault(_Timeline);
+
+var _Activity = require(".././components/Activity.vue");
+
+var _Activity2 = _interopRequireDefault(_Activity);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 var data = {
-    labels: ["January", "February", "March", "April", "May", "June", "July"],
-    datasets: [{
-        label: "My First dataset",
-        backgroundColor: ['rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(255, 206, 86, 0.2)', 'rgba(75, 192, 192, 0.2)', 'rgba(153, 102, 255, 0.2)', 'rgba(255, 159, 64, 0.2)'],
-        borderColor: ['rgba(255,99,132,1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)', 'rgba(75, 192, 192, 1)', 'rgba(153, 102, 255, 1)', 'rgba(255, 159, 64, 1)'],
-        borderWidth: 1,
-        data: [65, 59, 80, 81, 56, 55, 40]
-    }]
+	labels: ["January", "February", "March", "April", "May", "June", "July"],
+	datasets: [{
+		label: "My First dataset",
+		backgroundColor: ['rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(255, 206, 86, 0.2)', 'rgba(75, 192, 192, 0.2)', 'rgba(153, 102, 255, 0.2)', 'rgba(255, 159, 64, 0.2)'],
+		borderColor: ['rgba(255,99,132,1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)', 'rgba(75, 192, 192, 1)', 'rgba(153, 102, 255, 1)', 'rgba(255, 159, 64, 1)'],
+		borderWidth: 1,
+		data: [65, 59, 80, 81, 56, 55, 40]
+	}]
 };
 
 exports.default = {
-    props: {
-        title: { default: 'test' }
-    },
+	props: {
+		title: { default: 'test' },
+		submenu: { default: 'activity' }
+	},
 
-    ready: function ready() {
-        var myBarChart = new Chart(document.querySelector('#chart').getContext('2d'), {
-            type: 'bar',
-            data: data,
-            options: {
-                scales: {
-                    yAxes: [{
-                        stacked: true
-                    }]
-                }
-            }
-        });
-    }
+	ready: function ready() {
+		$('ul.tabs').tabs();
+
+		/*var myBarChart = new Chart(document.querySelector('#chart').getContext('2d'), {
+      type: 'bar',
+      data: data,
+       options: {
+          scales: {
+              yAxes: [{
+                  stacked: true
+              }]
+          }
+      }
+  });*/
+	},
+
+	methods: {
+		setSubMenu: function setSubMenu(menu) {
+			this.submenu = menu;
+		}
+	},
+
+	components: {
+		Followed: _Followed2.default, Timeline: _Timeline2.default, Activity: _Activity2.default
+	}
 };
 if (module.exports.__esModule) module.exports = module.exports.default
 if (module.hot) {(function () {  module.hot.accept()
@@ -61007,7 +62502,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-4f51e179", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":54,"vue-hot-reload-api":50}],86:[function(require,module,exports){
+},{".././components/Activity.vue":72,".././components/Followed.vue":76,".././components/Timeline.vue":78,"vue":54,"vue-hot-reload-api":50}],96:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -61272,7 +62767,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-333b9032", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{".././components/SearchTooltip.vue":63,"vue":54,"vue-hot-reload-api":50}],87:[function(require,module,exports){
+},{".././components/SearchTooltip.vue":77,"vue":54,"vue-hot-reload-api":50}],97:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -61312,219 +62807,6 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-56035bfa", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":54,"vue-hot-reload-api":50}],88:[function(require,module,exports){
-var __vueify_insert__ = require("vueify/lib/insert-css")
-var __vueify_style__ = __vueify_insert__.insert("\n\n")
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
-exports.default = {
-	props: {
-		id: {
-			required: true
-		}
-	},
-
-	created: function created() {
-		this.getTeachers();
-	},
-
-	data: function data() {
-		return {
-			teachers: []
-		};
-	},
-
-	methods: {
-		getTeachers: function getTeachers() {
-			var _this = this;
-
-			this.$http.get(this.$env.get('APP_URI') + 'api/club/' + this.id + '/teacher').then(function (response) {
-				debugger;
-				_this.teachers = response.data;
-			}, function (response) {});
-		}
-	}
-};
-if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"row small-up-2 medium-up-3 large-up-4 small-centered\">\n\t<div class=\"column\" v-for=\"teacher in teachers\" style=\"background-color:#aecaec\">\n\t\t<img height=\"100\" width=\"100\" v-bind:src=\"teacher.avatar_url\">\n\t\t<div>\n\t\t\t<h4>\n\t\t\t\t{{teacher.username}}\n\t\t\t</h4>\n\t\t</div>\n\t</div>\n</div>\n"
-if (module.hot) {(function () {  module.hot.accept()
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), true)
-  if (!hotAPI.compatible) return
-  module.hot.dispose(function () {
-    __vueify_insert__.cache["\n\n"] = false
-    document.head.removeChild(__vueify_style__)
-  })
-  if (!module.hot.data) {
-    hotAPI.createRecord("_v-67feff5f", module.exports)
-  } else {
-    hotAPI.update("_v-67feff5f", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
-  }
-})()}
-},{"vue":54,"vue-hot-reload-api":50,"vueify/lib/insert-css":55}],89:[function(require,module,exports){
-var __vueify_insert__ = require("vueify/lib/insert-css")
-var __vueify_style__ = __vueify_insert__.insert("\n\n")
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
-exports.default = {
-	props: {
-		id: {
-			required: true
-		}
-	},
-
-	created: function created() {
-		this.getTrainings();
-	},
-
-	data: function data() {
-		return {
-			trainings: []
-		};
-	},
-
-	methods: {
-		getTrainings: function getTrainings() {
-			var _this = this;
-
-			this.$http.get(this.$env.get('APP_URI') + 'api/club/' + this.id + '/training').then(function (response) {
-				debugger;
-				_this.trainings = response.data.result;
-			}, function (response) {});
-		}
-	}
-};
-if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"row small-up-2 medium-up-3 large-up-4 small-centered\">\n\t<div class=\"column\" v-for=\"item in trainings\" style=\"background-color:#222222; color:#fff;\">\n\t\t<div>\n\t\t\t<h4>\n\t\t\t\t{{item.name}}\n\t\t\t</h4>\n\t\t\t{{item.description}}\n\t\t</div>\n\n\t\t<div class=\"row small-up-2 medium-up-3 large-up-4 small-centered\">\n\t\t\t<div class=\"column\" v-for=\"teacher in item.teachers\">\n\t\t\t\t{{teacher.username}}\n\t\t\t\t<img height=\"100\" width=\"100\" v-bind:src=\"teacher.avatar_url\">\n\t\t\t</div>\n\t\t</div>\n\n\t\t<div class=\"row small-up-2 medium-up-3 large-up-4 small-centered\">\n\t\t\t<div class=\"column\" v-for=\"photo in item.photos\">\n\t\t\t\t<img height=\"400\" width=\"400\" v-bind:src=\"photo.url\">\n\t\t\t</div>\n\t\t</div>\t\t\t\n\t</div>\n</div>\n"
-if (module.hot) {(function () {  module.hot.accept()
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), true)
-  if (!hotAPI.compatible) return
-  module.hot.dispose(function () {
-    __vueify_insert__.cache["\n\n"] = false
-    document.head.removeChild(__vueify_style__)
-  })
-  if (!module.hot.data) {
-    hotAPI.createRecord("_v-46b2f7d7", module.exports)
-  } else {
-    hotAPI.update("_v-46b2f7d7", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
-  }
-})()}
-},{"vue":54,"vue-hot-reload-api":50,"vueify/lib/insert-css":55}],90:[function(require,module,exports){
-var __vueify_insert__ = require("vueify/lib/insert-css")
-var __vueify_style__ = __vueify_insert__.insert("\n\n")
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
-exports.default = {
-	props: {
-		clubid: { default: '' }
-	},
-
-	created: function created() {
-		this.setLanguage();
-		this.getClubHeaderContent(this.clubid);
-	},
-
-	data: function data() {
-		return {
-			club: [],
-			follow_status: '',
-			teacher_status: '',
-			request_status: '',
-			lang_mn: [],
-			lang_eng: []
-		};
-	},
-
-	methods: {
-		getClubHeaderContent: function getClubHeaderContent(clubId) {
-			var _this = this;
-
-			this.$http.get(this.$env.get('APP_URI') + 'api/club/' + clubId + '/club-info').then(function (response) {
-				_this.club = response.data.club;
-				_this.follow_status = response.data.follow_status;
-				_this.teacher_status = response.data.teacher_status;
-				_this.request_status = response.data.request_status;
-			}, function (response) {});
-		},
-
-		sentFollow: function sentFollow() {
-			var _this2 = this;
-
-			this.$http.get(this.$env.get('APP_URI') + 'api/club/' + this.club.id + '/follow').then(function (response) {
-				debugger;
-				_this2.follow_status = response.data.type;
-			}, function (response) {});
-		},
-
-		sentTrainerRequest: function sentTrainerRequest() {
-			var _this3 = this;
-
-			this.$http.get(this.$env.get('APP_URI') + 'api/club/' + this.club.id + '/request?type=2').then(function (response) {
-				_this3.request_status = response.data.type;
-			}, function (response) {});
-		},
-
-		sentTeacherRequest: function sentTeacherRequest() {
-			var _this4 = this;
-
-			this.$http.get(this.$env.get('APP_URI') + 'api/club/' + this.club.id + '/request?type=1').then(function (response) {
-				_this4.teacher_status = response.data.type;
-			}, function (response) {});
-		},
-
-		setLanguage: function setLanguage() {
-			this.lang_en = {
-				teacher: 'Teacher request',
-				unteacher: 'Sent',
-				follow: 'Follow',
-				unfollow: 'Followed',
-				trainer: 'Request',
-				untrainer: 'Un Request',
-				manager: 'Manager'
-			};
-
-			this.lang_mn = {
-				teacher: 'Багш болох',
-				unteacher: 'Багш болох хүсэлт илгээсэн',
-				follow: 'Дагах',
-				unfollow: 'Дагсан',
-				trainer: 'Элсэх',
-				untrainer: 'Элсэх хүсэлт илгээсэн',
-				manager: 'Менежер'
-			};
-		},
-
-		getText: function getText(value) {
-			return this.lang_mn[value];
-		}
-	}
-};
-if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"top-bar hw-default-top-bar\">\n  <div class=\"top-bar-left\">\n    <ul class=\"menu \">\n      <li class=\"menu-text hw-default-logo\">\n      \t{{club.short_name}}</li>\n      <li><a href=\"#\">{{club.short_name}}</a></li>\n      <li><a href=\"#\">{{club.full_name}}</a></li>\n      <li><a href=\"#\">{{club.description}}</a></li>\n      <li><a href=\"#\">Холбоо барих</a></li>\n    </ul>\n  </div>\n  <div class=\"top-bar-right\">\n  \t{{ trans('passwords.user') }}\n    <ul class=\"menu\">\n      <li><a @click=\"sentTeacherRequest\" class=\"button btn-fb btn-trans\">{{getText(teacher_status)}}</a></li>\n      <li><a @click=\"sentFollow\" class=\"button btn-fb btn-trans\">{{getText(follow_status)}}</a></li>\n      <li><a @click=\"sentTrainerRequest\" class=\"button btn-fb btn-trans\">{{getText(request_status)}}</a></li>\n    </ul>\n  </div>\n</div>\n<div class=\"parallax-container\">\n  <div class=\"parallax-content\">\n    <div class=\"parallax-back\">\n      <!-- <div class=\"animated-word\">\n        <h1>Үзүүлэлт</h1>\n        <p>Тайлбар Тайлбар Тайлбар Тайлбар Тайлбар Тайлбар Тайлбар Тайлбар Тайлбар Тайлбар Тайлбар Тайлбар Тайлбар Тайлбар </p>\n      </div> -->\n      <p>Гоё уриа үг</p>\n    </div>\n  </div>\n</div>\n"
-if (module.hot) {(function () {  module.hot.accept()
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), true)
-  if (!hotAPI.compatible) return
-  module.hot.dispose(function () {
-    __vueify_insert__.cache["\n\n"] = false
-    document.head.removeChild(__vueify_style__)
-  })
-  if (!module.hot.data) {
-    hotAPI.createRecord("_v-41cbb6ee", module.exports)
-  } else {
-    hotAPI.update("_v-41cbb6ee", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
-  }
-})()}
-},{"vue":54,"vue-hot-reload-api":50,"vueify/lib/insert-css":55}]},{},[56]);
+},{"vue":54,"vue-hot-reload-api":50}]},{},[70]);
 
 //# sourceMappingURL=app.js.map

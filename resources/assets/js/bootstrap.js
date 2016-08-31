@@ -9,11 +9,13 @@ window._ = require('lodash');
 
 window.$ = window.jQuery = require('jquery');
 
-require('./jquery.fileupload');
-require('./foundation');
-require('./jquery.tokenize');
-require('./vendor/tabs');
-require('./vendor/velocity.min');
+require('./dependency/jquery.fileupload');
+require('./dependency/foundation');
+require('./dependency/jquery.tokenize');
+require('./dependency/tabs');
+require('./dependency/velocity.min');
+
+import Chart from 'chart.js';
 
 /**
  * Vue is a modern JavaScript library for building interactive web interfaces
@@ -24,6 +26,32 @@ require('./vendor/velocity.min');
 window.Vue = require('vue');
 require('vue-resource');
 Vue.use(require('vue-i18n'));
+
+//global components
+import CustomModal from './components/CustomModal.vue';
+import CustomToast from './components/CustomToast.vue';
+
+Vue.component('CustomModal', CustomModal);
+Vue.component('CustomToast', CustomToast);
+
+
+//common tools
+import Tools from './settings/Tools.js';
+
+//global storage
+import _env from '../../../env.js';
+
+//language support
+import locales from './lang/locales';
+
+Object.keys(locales).forEach(function (lang) {
+  Vue.locale(lang, locales[lang])
+})
+
+Vue.use(Tools);
+Vue.use(require('vue-env'), _env);
+
+
 
 
 /**

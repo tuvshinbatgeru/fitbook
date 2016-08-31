@@ -110,7 +110,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
 
     public function clubsAsManager()
     {
-        return $this->belongsToMany('App\Club', 'members', 'user_id', 'club_id')->where('type', '=', 1);
+        return $this->belongsToMany('App\Club', 'members', 'user_id', 'club_id')->where('type', '=', 2);
     }
 
     public function activities()
@@ -122,7 +122,9 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
 
     public function clubs()
     {
-        return $this->belongsToMany('App\Club','members','user_id', 'club_id')->withPivot('type', 'since_date')->withTimestamps();
+        return $this->belongsToMany('App\Club','members','user_id', 'club_id')
+                    ->withPivot('type', 'since_date', 'view_order')
+                    ->withTimestamps();
     }
 
     public function hasClubRequest($club_id)
@@ -152,7 +154,11 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
             return Response::json(['result' => 'Success', 'type' => $type == 2 ? 'teacher' : 'trainer']);
         }
 
-        $this->clubRequests()->attach($club->id, ['type' => $type, 'description' => $description]);
+        $this->clubRequests()->attach($club->id, [
+                'type' => $type, 
+                'description' => $description,
+        ]);
+
         return Response::json(['result' => 'Success', 'type' => $type == 2 ? 'unteacher' : 'untrainer']);
     }
 
@@ -175,7 +181,17 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
 
     public function joinClub($club, $type)
     {
-        return $this->clubs()->attach($club->id, ['type' => $type, 'since_date' => Carbon::now()]);
+        $view_order = 0;
+
+        if($type == 1) {
+            $view_order = $club->nextTeacherViewOrder();
+        }
+
+        return $this->clubs()->attach($club->id, [
+            'type' => $type, 
+            'since_date' => Carbon::now(),
+            'view_order' => $view_order,
+        ]);
     }
 
     public function deletePrevAvatar()
