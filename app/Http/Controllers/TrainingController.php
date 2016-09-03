@@ -71,7 +71,12 @@ class TrainingController extends Controller
             $training->teachers()->attach(intval($decode->teachers[$i]->id));    
         }
 
-        return $training;
+        $training->teachers;
+        $training->photos = $training->pinnedPhoto();
+
+        return Response::json([
+            'result' => $training,
+        ], 200);
     }
 
     /**

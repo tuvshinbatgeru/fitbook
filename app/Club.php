@@ -56,6 +56,13 @@ class Club extends Model
 		return static::find($clubId)->members()->where('type', '=', 1)->get();
 	}
 
+	public function services()
+	{
+		return $this->belongsToMany('App\Service', 'club_services', 'club_id', 'service_id')
+					->withPivot('photo_id')
+					->withTimestamps();
+	}
+
 	public function widgets()
 	{
 		return $this->belongsToMany('App\Widget', 'club_widgets', 'club_id', 'widget_id')

@@ -7,5 +7,5 @@ use Illuminate\Database\Eloquent\Model;
 class Socialite extends Model
 {
     //
-    protected $table = 'socialite';
+    c
 }
