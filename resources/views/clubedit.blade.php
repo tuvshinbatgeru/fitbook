@@ -41,7 +41,6 @@
 	</section>
 	<section class="widget-content">
 		<component :clubid="clubid" :is="selectedMenu" >
-				
 		</component>
 	</section>
 </section>
