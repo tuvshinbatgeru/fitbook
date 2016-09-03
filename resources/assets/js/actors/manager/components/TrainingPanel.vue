@@ -23,13 +23,14 @@
         :show.sync = "showAddTraining"
         save-callback = "saveTraining"
         validateable = 'Y'
-        context = "AddTraining"
-        >
+        context = "AddTraining">
   </custom-modal>
 
-  <ft-training :item = "train" v-for = "train in training">
-      
-  </ft-training>
+  <div class="row small-up-3 medium-up-4 large-up-5">
+    <ft-training :item = "train" v-for = "train in training">
+        
+    </ft-training>
+  </div>
 
 </template>
 
@@ -62,7 +63,6 @@
     methods : {
         getTrainings : function () {
             this.$http.get(this.$env.get('APP_URI') + 'api/club/' + this.id + '/training').then(res => {
-              debugger;
                 this.training = res.data.result;
             }).catch(err => {
 
@@ -71,11 +71,13 @@
 
         saveTraining : function($response) {
             this.$http.post(this.$env.get('APP_URI') + 'api/club/' + this.id + '/training?data=' + $response.data).then(res => {
+                this.training.push(res.data.result);
+                this.showAddTraining = false;
+                this.$root.$refs.toast.showMessage('Successfully add new training.');
             }).catch(err => {
-
+                this.$root.$refs.toast.showMessage('Server side error!.');
             });
-            this.showAddTraining = false;
-            this.$root.$refs.toast.showMessage('Successfully add new training.');
+            
         }
     },
 

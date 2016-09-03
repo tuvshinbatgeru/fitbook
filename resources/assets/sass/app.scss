@@ -10,6 +10,8 @@
 @include motion-ui-transitions;
 @include foundation-everything;
 
+@import 'foundation/datepicker/_datepicker.scss';
+
 @import 'bower_components/materialize/scss/components/_mixins.scss';
 @import 'bower_components/materialize/scss/components/_color.scss';
 @import 'bower_components/materialize/scss/components/_variables.scss';
@@ -19,8 +21,8 @@
 
 @import 'foundation/tabs/_settings.scss';
 @import 'bower_components/materialize/scss/components/_tabs.scss';
-@import 'bower_components/materialize/scss/components/forms/_select.scss';
-@import 'bower_components/materialize/scss/components/forms/_checkboxes.scss';
+@import 'bower_components/materialize/scss/components/_dropdown.scss';
+
 
 
 

@@ -65,7 +65,8 @@
 </template>
 
 <script>
-	import AddTraining from '../context/AddTraining.vue'; 
+	import AddTraining from '../context/AddTraining.vue';
+	import services from '../context/services.vue'; 
 	import AddPlan from '../context/AddPlan.vue'; 
 	import FileManager from '../context/FileManager.vue'; 
 	import teachers from '../context/teachers.vue'; 
@@ -145,7 +146,7 @@
 		},
 
 		components : {
-			AddTraining, AddPlan, FileManager, teachers, trainings
+			AddTraining, AddPlan, FileManager, teachers, trainings, services
 		}
 	}
 </script>

@@ -10,10 +10,16 @@ window._ = require('lodash');
 window.$ = window.jQuery = require('jquery');
 
 require('./dependency/jquery.fileupload');
+require('./dependency/jquery-ui.min');
+require('./dependency/jquery.ui.touch-punch');
 require('./dependency/foundation');
 require('./dependency/jquery.tokenize');
 require('./dependency/tabs');
+require('./dependency/dropdown');
 require('./dependency/velocity.min');
+
+/*require('./dependency/datepicker/picker');*/
+/*require('./dependency/datepicker/datepicker');*/
 
 import Chart from 'chart.js';
 
@@ -30,9 +36,11 @@ Vue.use(require('vue-i18n'));
 //global components
 import CustomModal from './components/CustomModal.vue';
 import CustomToast from './components/CustomToast.vue';
+import Multiselect from 'vue-multiselect'
 
 Vue.component('CustomModal', CustomModal);
 Vue.component('CustomToast', CustomToast);
+Vue.component('Multiselect', Multiselect);
 
 
 //common tools

@@ -12,11 +12,6 @@
 			@{{$t('registration')}}
 			<span class="secondary badge">@{{requests_count}}</span>
 		</button>
-		<button class="warning hollow button" @click="setMenu('club-plan')">
-			Plan
-			<span class="warning badge">@{{requests_count}}</span>
-		</button>
-
 		<button class="warning hollow button" @click="setMenu('club-template')">
 			@{{$t('template')}}
 		</button>

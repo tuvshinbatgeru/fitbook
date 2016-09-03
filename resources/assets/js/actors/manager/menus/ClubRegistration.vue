@@ -23,7 +23,7 @@
     props: { 
       clubid : {},
       type : {
-        default : 'plan-panel'
+        default : 'training-panel'
       },
     },
 

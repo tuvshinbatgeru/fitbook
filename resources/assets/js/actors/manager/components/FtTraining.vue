@@ -1,5 +1,5 @@
 <template>
-	<li style="border: 1px solid green;">
+	<div class="column">
 		<img :src="item.photos[0].url"/>
 		<h3>{{item.name}}</h3>
 		{{item.description}}	
@@ -8,7 +8,7 @@
 				#{{teacher.username}},
 			</li>
 		</ul>	
-	</li>
+	</div>
 </template>
 
 <script>

@@ -1,16 +1,38 @@
 <template>
-  <div>
-      <ul class="tabs">
-        <li class="tab s3"><a @click="setSubMenu('request-members')" class="active">{{$t('plan')}} ({{request_count}})</a></li>
-        <li class="tab s3"><a @click="setSubMenu('current-members')">{{$t('loyalty')}} ({{member_count}})</a></li>
-      </ul>
-  </div>  
+  <div class="row">
+    <div class="small-10 columns">
+      <input type="text" name="search" placeholder="search ...">
+    </div>
+    <div class="small-2 columns">
+      <div class="small-2 columns">
+            <a @click="showAddService = true" class="button success">
+                <i class="fa fa-pencil-square-o">
+                         
+                </i>
+            </a>
+      </div>
+    </div>
+  </div>
 
-  <div class="small-9 text-center small-centered columns">
-      <!-- <component :id="clubid" 
-                 :type="memberType" 
-                 :is="submenu">
-      </component> -->
+  <custom-modal 
+        :id = "id"
+        type = "Club"
+        title = "Үйлчилгээ сонгох" 
+        title_en = "Add Service"
+        usage = "_add-service" 
+        :items = "services"
+        :show.sync = "showAddService"
+        save-callback = "chooseService"
+        context = "services">
+  </custom-modal>
+
+  <div class="row small-up-3 medium-up-4 large-up-5">
+    <div class="column" v-for="service in services">
+        <img src="/images/pin.png"/>
+        <h3>
+          {{service.name}}
+        </h3>
+    </div>
   </div>
 </template>
 
@@ -23,18 +45,41 @@
 
     data() {
       return {
-        
+        services : [],
+        showAddService : false
       }
     },
 
     created: function () {
-        this.init();
+        this.getServices();
+    },
+
+    events : {
+        'chooseService' : function($response) {
+          this.chooseService($response);
+        },
     },
 
     methods : {
-        init: function () {
-                  
+        getServices: function () {
+          this.$http.get(this.$env.get('APP_URI') + '/api/club/' + this.id + '/service').then(res => {
+              this.services = res.data.result;
+          }).catch(err => {
+
+          });
         },
+
+        chooseService : function($response) {
+            this.$http.post(this.$env.get('APP_URI') + 'api/club/' + this.id + '/service/edit?data=' + $response.data).then(res => 
+            {
+                debugger;
+                this.services = res.data.result;
+                this.showAddService = false;
+                this.$root.$refs.toast.showMessage('Successfully choose services');
+            }).catch(err => {
+                this.$root.$refs.toast.showMessage('Error');
+            });
+        }
     },
 
     components : {

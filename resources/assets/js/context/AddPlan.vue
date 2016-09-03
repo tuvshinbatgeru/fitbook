@@ -1,15 +1,4 @@
 <template>
-	<custom-modal 
-		:id = "id" 
-		type = "User"
-		title ="Photo chooser" 
-		usage = "_photo-chooser" 
-		multiple = "true"
-		:items = "pictures"
-		:show.sync = "showFileManager"
-		save-callback = "choosedPictures"
-		context = "fileManager">
-	</custom-modal>
 
 	<custom-modal
 		:id = "id"
@@ -23,19 +12,8 @@
 	</custom-modal>
 
 	<form method="POST">
-		<div class="row">
-			<div class="small-12">
-				<img :src="pinnedPic">
-			</div>
-		</div>
-		<div class="row small-up-3 medium-up-4 large-up-5">
-			<div class="column">
-				<a @click="showFileManager = true" class="button succes">+</a>
-			</div>
-			<div class="column" v-for="photo in pictures">
-				<img @click="setPinnedPhoto(photo)" :src="photo.url"/>
-			</div>
-		</div>
+		<photo-slider></photo-slider>
+
 		<div class="row">
 		  <fieldset class="large-6 columns">
 		    <legend>Plan schedule</legend>
@@ -58,23 +36,41 @@
 			</div>
 			<div class="small-4 medium-4 column">
 				<label>Start
-					<input type="number" name="trainercount">
+					<input type="date" class="datepicker">
 				</label>
 			</div>
 			<div class="small-4 medium-4 column">
 				<label>Finish
-					<input type="number" name="trainercount">
+					<input type="date" class="datepicker">
 				</label>
 			</div>
 		</div>
 
-		<ul class="tabs" data-tabs id="plan-tabs">
-		  <li class="tabs-title is-active"><a href="#main" aria-selected="true">Info</a></li>
-		  <li class="tabs-title "><a href="#trainer">Trainer</a></li>
-	    </ul>
+		<div class="row">
+		    <multiselect 
+		    	:options="clubservices" 
+		    	:selected="services" 
+		    	:multiple="true"
+		    	:clear-on-select="false" 
+		    	:close-on-select="false" 
+		    	select-label='сонгох'
+		    	selected-label='сонгосон'	
+		    	deselect-label='устгах'
+		    	:limit="1"
+		    	label="name" 
+		    	:limit-text="limitText"
+		    	key="id" 
+		    	placeholder="хайх ...">
+		    		<span slot="noResult">Илэрц алга ...</span>
+		    </multiselect>
+		</div>
 
-	     <div class="tabs-content" data-tabs-content="plan-tabs">
-		  <div class="tabs-panel is-active" id="main">
+	    <ul class="tabs">
+	        <li class="tab s3"><a class="active" href="#main">{{ $t("info") }}</a></li>
+	        <li class="tab s3"><a href="#trainer">{{ $t("trainer") }}</a></li>
+		</ul>
+
+  	    <div id="main">
 		  	<div class="row">
 				<div class="small-12 medium-6 column">
 					<label>PlanName
@@ -115,9 +111,10 @@
 						<input type="number" :disabled="!trainerless" name="trainercount">
 					</label>
 				</div>
-			</div>
-		  </div>
-		  <div class="tabs-panel is-active" id="trainer">
+  		  </div>
+		</div>
+
+		<div id="trainer">
 		    <div class="row">
 		    	<div class="small-12 column" style="height:100px">
 		    		<a @click="showTraining = true" class="button success">
@@ -125,11 +122,13 @@
 		    		</a>
 		    	</div>
 			</div>
-		  </div>
 		</div>
 	</form>
 </template>
 <script>
+
+	import PhotoSlider from '../actors/application/components/PhotoSlider.vue';
+
 	export default {
 		props: { 
 			id : {},
@@ -144,29 +143,43 @@
 				trainerless : false,
 				price : 0,
 				teachers : [],
-				pictures : [],
 				services : [],
-				showFileManager : false,
+				clubservices : [],
 				showTraining : false,
-				pinnedPhoto : null,
+				isLoading : false,
 			}
 		},
 		
+		created : function () {
+			this.getClubServices();
+		},
+
 		ready : function () {
-			var tab = new Foundation.Tabs($('#plan-tabs'));
+			$('ul.tabs').tabs();
+
+			/*$('.datepicker').pickadate({
+			    firstDay: 1,
+			    selectMonths: true, // Creates a dropdown to control month
+			    selectYears: 1
+			});*/
 		},
 
 		events : {
 			'choosedTrainings' : function($response) {
 				this.choosedTrainings($response);
 			},
-
-			'choosedPictures' : function($response) {
-				this.choosedPictures($response);
-			},
 		},
 
 		methods : {
+			getClubServices : function () {
+				this.$http.get(this.$env.get('APP_URI') + 'api/club/' + this.id + '/service').then(res => {
+				 	this.clubservices = res.data.result;
+				 	debugger;
+				}).catch(err => {
+
+				});
+			},
+
 			getData : function() {
 				return this.$tools.transformParameters({
 					club_id : this.id,
@@ -177,6 +190,10 @@
 			    });
 			},
 
+			limitText : function(count) {
+				return "ба " + count + " бусад"; 
+			},
+
 			choosedTrainings : function($response) {
 				this.teachers = $response.data;
 				this.showTeachers = false;
@@ -184,27 +201,6 @@
 			
 			triggerPictureBtn : function () {
 				this.showFileManager = true;
-			},
-
-			choosedPictures : function($response) {
-
-				debugger;
-				this.pictures = $response.data;
-				this.showFileManager = false;
-			},
-
-			setPinnedPhoto : function(photo) {
-				photo.pinned = true;
-
-			    if(this.pinnedPhoto && photo != this.pinnedPhoto) {
-					this.pinnedPhoto.pinned = false;
-				}
-
-				this.pinnedPhoto = photo;
-			},
-
-			deletePhoto : function(photo) {
-				this.pictures.$remove(photo);				
 			},
 
 			deleteTeacher : function(teacher) {
@@ -224,20 +220,33 @@
 
 				return true;
 			},
-
-			filterPinnedPic : function (obj) {
-				return obj.pinned;
-			},
-		},
-
-		computed : {
-			pinnedPic : function () {
-				var pinned = this.pictures.filter(this.filterPinnedPic);
-				return pinned.length == 0 ? this.$env.get('APP_URI') + 'images/site/back.jpg' : pinned[0].url;
-			}
 		},
 
 		components : {
-		}
+			PhotoSlider
+		},
+
+		locales: {
+	        en: { 
+	        	info : 'Info',
+	    		photos : 'Add photos',
+	    		trainer : 'Add training',
+	    		name : 'Training name',
+	    		description : 'Description',
+	    		name_watermark : 'name ...',
+	    		description_watermark : 'description ...',
+	    	},
+	    	mn : {
+	    		info : 'Инфо',
+	    		photos : 'Зураг оруулах',
+	    		trainer : 'Хичээл сонгох',
+	    		name : 'Хичээлийн нэр',
+	    		description : 'Тайлбар',
+	    		name_watermark : 'нэр ...',
+	    		description_watermark : 'тайлбар ...',
+	    	},
+	    }
 	}
 </script>
+<style lang="scss">
+</style>

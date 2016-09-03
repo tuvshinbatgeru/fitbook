@@ -72,7 +72,7 @@
 
 				this.$http.post(this.$env.get('APP_URI') + 'api/club/' + this.clubid + '/training?data=' + $response.data).then(res => {
 				}).catch(err => {
-
+					
 				});
 
 				this.showAddTraining = false;

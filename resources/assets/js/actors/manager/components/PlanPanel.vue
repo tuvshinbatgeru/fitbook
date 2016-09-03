@@ -12,7 +12,7 @@
     </div>
     <div class="small-2 columns">
       <div class="small-2 columns">
-            <a @click="showTraining = true" class="button success">
+            <a @click="showAddPlan = true" class="button success">
                 <i class="fa fa-pencil-square-o">                       
                 </i>
             </a>
@@ -20,16 +20,26 @@
     </div>
   </div>
 
-  <custom-modal
-    :id = "id"
-    type = "Club"
-    title = "Trainings"
-    usage = "_training-chooser"
-    :items = "trainings"
-    :show.sync = "showTraining"
-    save-callback = "choosedTrainings"
-    context = "trainings">
-  </custom-modal>
+  <label>Select Menu
+    <select>
+      <option value="husker">All</option>
+      <option value="starbuck">Starbuck</option>
+      <option value="hotdog">Hot Dog</option>
+      <option value="apollo">Apollo</option>
+    </select>
+  </label>
+
+  <custom-modal 
+      :id = "id"
+      type = "Club"
+      title = "Add Plan" 
+      usage = "_add-plan" 
+      :show.sync = "showAddPlan"
+      save-callback = "savePlan"
+      validateable = 'Y'
+      context = "AddPlan"
+      >
+    </custom-modal>
 
 </template>
 
@@ -44,7 +54,7 @@
       return {
         planType : 1,
         panels : [],
-        showTraining : false,
+        showAddPlan : false,
       }
     },
 
