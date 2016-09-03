@@ -27,7 +27,6 @@ use Illuminate\Support\Facades\Storage;
     	return view('index');
 	});
 
-	Route::get('/api/search', 'SearchController@search');
 	Route::get('/search', function(Request $request) {
 		    return view('search');
 	});
@@ -44,9 +43,15 @@ use Illuminate\Support\Facades\Storage;
 	    return view('dashboard');
 	});
 
-	/* api cals */
-	/* type - club */
-	Route::post('/api/test','FileManagerController@test');
+	//application api
+	Route::group(['prefix' => '/api'], function () {
+
+		Route::get('/service', 'ServiceController@list');	
+		Route::post('/test','FileManagerController@test');
+		Route::get('/search', 'SearchController@search');
+
+	});
+
 	Route::post('/upload', 'FileManagerController@upload');
 	
 
@@ -62,6 +67,8 @@ use Illuminate\Support\Facades\Storage;
 		Route::resource('training', 'TrainingController');
 		Route::resource('plan', 'PlanController');
 		Route::resource('widgets', 'TemplateController');
+		Route::resource('service', 'ServiceController');
+		Route::post('/service/edit', 'ServiceController@modifyClubServices');
 	});
 
 	//Club edit APIs
