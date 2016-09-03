@@ -21,8 +21,6 @@ class CreateReactionsTable extends Migration
             $table->integer('actionable_id')->unsigned()->index();
             $table->string('actionable_type');
             $table->timestamps();
-
-            $table->primary(['user_id', 'actionable_id']);
         });
     }
 

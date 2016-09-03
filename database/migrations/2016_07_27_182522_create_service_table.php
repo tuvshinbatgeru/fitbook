@@ -14,10 +14,9 @@ class CreateServiceTable extends Migration
     {
         Schema::create('service', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('tag');
-            $table->string('tag_en');
             $table->string('name');
             $table->string('name_en');
+            $table->integer('view_order');
             $table->enum('verified',['N','Y'])->default('N');
             $table->timestamps();
         });

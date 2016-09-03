@@ -15,8 +15,9 @@ class CreatePlanTable extends Migration
         Schema::create('plan', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('club_id')->unsigned()->index();
-            $table->integer('type'); //1. Dayly 2.Monthly 3.Yearly
-            $table->string('plan_type'); //App/ConstantPlan, App/LoyaltyPlan
+            $table->integer('frequency_type'); //1. Dayly 2.Weakly 3.Monthly 4.Yearly
+            $table->integer('planable_id')->unsigned()->index();
+            $table->string('planable_type'); //App/ConstantPlan, App/LoyaltyPlan
             $table->enum('trainerless', ['N', 'Y'])->default('N');
             $table->string('name');
             $table->string('description')->nullable();

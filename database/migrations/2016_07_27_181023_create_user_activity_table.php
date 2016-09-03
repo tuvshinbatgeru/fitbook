@@ -16,8 +16,8 @@ class CreateUserActivityTable extends Migration
             $table->integer('user_id')->unsigned()->index();
             $table->integer('club_id')->unsigned()->index();
             $table->integer('subscription_id')->unsigned()->index();
-            $table->dateTime('start_time');
-            $table->dateTime('finish_time');
+            $table->timestamp('start_time');
+            $table->timestamp('finish_time');
             $table->integer('duration'); //as a minute
             $table->timestamps();
         });

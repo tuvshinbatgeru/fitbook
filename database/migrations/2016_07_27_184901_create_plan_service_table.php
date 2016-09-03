@@ -13,11 +13,11 @@ class CreatePlanServiceTable extends Migration
     public function up()
     {
         Schema::create('plan_service', function (Blueprint $table) {
-            $table->integer('plan_id')->unsigned();
-            $table->integer('service_id')->unsigned();
+            $table->integer('plan_id')->unsigned()->index();
+            $table->integer('club_service_id')->unsigned()->index();
             $table->timestamps();
 
-            $table->primary(['plan_id', 'service_id']);
+            $table->primary(['plan_id', 'club_service_id']);
         });
     }
 
