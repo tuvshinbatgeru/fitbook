@@ -42575,6 +42575,882 @@ if (typeof window !== 'undefined' && window.Vue) {
 module.exports = plugin;
 }).call(this,require('_process'))
 },{"_process":48}],52:[function(require,module,exports){
+"use strict";
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
+
+!function (t, e) {
+  "object" == (typeof exports === "undefined" ? "undefined" : _typeof(exports)) && "object" == (typeof module === "undefined" ? "undefined" : _typeof(module)) ? module.exports = e() : "function" == typeof define && define.amd ? define([], e) : "object" == (typeof exports === "undefined" ? "undefined" : _typeof(exports)) ? exports.VueMultiselect = e() : t.VueMultiselect = e();
+}(undefined, function () {
+  return function (t) {
+    function e(i) {
+      if (n[i]) return n[i].exports;var o = n[i] = { exports: {}, id: i, loaded: !1 };return t[i].call(o.exports, o, o.exports, e), o.loaded = !0, o.exports;
+    }var n = {};return e.m = t, e.c = n, e.p = "/", e(0);
+  }([function (t, e, n) {
+    "use strict";
+    function i(t) {
+      return t && t.__esModule ? t : { "default": t };
+    }Object.defineProperty(e, "__esModule", { value: !0 }), e.deepClone = e.pointerMixin = e.multiselectMixin = e.Multiselect = void 0;var o = n(80),
+        r = i(o),
+        s = n(28),
+        l = i(s),
+        a = n(29),
+        u = i(a),
+        c = n(30),
+        f = i(c);e["default"] = r["default"], e.Multiselect = r["default"], e.multiselectMixin = l["default"], e.pointerMixin = u["default"], e.deepClone = f["default"];
+  }, function (t, e) {
+    var n = t.exports = "undefined" != typeof window && window.Math == Math ? window : "undefined" != typeof self && self.Math == Math ? self : Function("return this")();"number" == typeof __g && (__g = n);
+  }, function (t, e) {
+    var n = {}.hasOwnProperty;t.exports = function (t, e) {
+      return n.call(t, e);
+    };
+  }, function (t, e, n) {
+    var i = n(55),
+        o = n(15);t.exports = function (t) {
+      return i(o(t));
+    };
+  }, function (t, e, n) {
+    t.exports = !n(9)(function () {
+      return 7 != Object.defineProperty({}, "a", { get: function get() {
+          return 7;
+        } }).a;
+    });
+  }, function (t, e, n) {
+    var i = n(6),
+        o = n(13);t.exports = n(4) ? function (t, e, n) {
+      return i.f(t, e, o(1, n));
+    } : function (t, e, n) {
+      return t[e] = n, t;
+    };
+  }, function (t, e, n) {
+    var i = n(11),
+        o = n(34),
+        r = n(25),
+        s = Object.defineProperty;e.f = n(4) ? Object.defineProperty : function (t, e, n) {
+      if (i(t), e = r(e, !0), i(n), o) try {
+        return s(t, e, n);
+      } catch (l) {}if ("get" in n || "set" in n) throw TypeError("Accessors not supported!");return "value" in n && (t[e] = n.value), t;
+    };
+  }, function (t, e, n) {
+    var i = n(23)("wks"),
+        o = n(14),
+        r = n(1).Symbol,
+        s = "function" == typeof r,
+        l = t.exports = function (t) {
+      return i[t] || (i[t] = s && r[t] || (s ? r : o)("Symbol." + t));
+    };l.store = i;
+  }, function (t, e) {
+    var n = t.exports = { version: "2.4.0" };"number" == typeof __e && (__e = n);
+  }, function (t, e) {
+    t.exports = function (t) {
+      try {
+        return !!t();
+      } catch (e) {
+        return !0;
+      }
+    };
+  }, function (t, e, n) {
+    var i = n(39),
+        o = n(16);t.exports = Object.keys || function (t) {
+      return i(t, o);
+    };
+  }, function (t, e, n) {
+    var i = n(12);t.exports = function (t) {
+      if (!i(t)) throw TypeError(t + " is not an object!");return t;
+    };
+  }, function (t, e) {
+    t.exports = function (t) {
+      return "object" == (typeof t === "undefined" ? "undefined" : _typeof(t)) ? null !== t : "function" == typeof t;
+    };
+  }, function (t, e) {
+    t.exports = function (t, e) {
+      return { enumerable: !(1 & t), configurable: !(2 & t), writable: !(4 & t), value: e };
+    };
+  }, function (t, e) {
+    var n = 0,
+        i = Math.random();t.exports = function (t) {
+      return "Symbol(".concat(void 0 === t ? "" : t, ")_", (++n + i).toString(36));
+    };
+  }, function (t, e) {
+    t.exports = function (t) {
+      if (void 0 == t) throw TypeError("Can't call method on  " + t);return t;
+    };
+  }, function (t, e) {
+    t.exports = "constructor,hasOwnProperty,isPrototypeOf,propertyIsEnumerable,toLocaleString,toString,valueOf".split(",");
+  }, function (t, e, n) {
+    var i = n(1),
+        o = n(8),
+        r = n(52),
+        s = n(5),
+        l = "prototype",
+        a = function a(t, e, n) {
+      var u,
+          c,
+          f,
+          p = t & a.F,
+          d = t & a.G,
+          h = t & a.S,
+          m = t & a.P,
+          v = t & a.B,
+          b = t & a.W,
+          g = d ? o : o[e] || (o[e] = {}),
+          y = g[l],
+          x = d ? i : h ? i[e] : (i[e] || {})[l];d && (n = e);for (u in n) {
+        c = !p && x && void 0 !== x[u], c && u in g || (f = c ? x[u] : n[u], g[u] = d && "function" != typeof x[u] ? n[u] : v && c ? r(f, i) : b && x[u] == f ? function (t) {
+          var e = function e(_e, n, i) {
+            if (this instanceof t) {
+              switch (arguments.length) {case 0:
+                  return new t();case 1:
+                  return new t(_e);case 2:
+                  return new t(_e, n);}return new t(_e, n, i);
+            }return t.apply(this, arguments);
+          };return e[l] = t[l], e;
+        }(f) : m && "function" == typeof f ? r(Function.call, f) : f, m && ((g.virtual || (g.virtual = {}))[u] = f, t & a.R && y && !y[u] && s(y, u, f)));
+      }
+    };a.F = 1, a.G = 2, a.S = 4, a.P = 8, a.B = 16, a.W = 32, a.U = 64, a.R = 128, t.exports = a;
+  }, function (t, e) {
+    t.exports = {};
+  }, function (t, e) {
+    t.exports = !0;
+  }, function (t, e) {
+    e.f = {}.propertyIsEnumerable;
+  }, function (t, e, n) {
+    var i = n(6).f,
+        o = n(2),
+        r = n(7)("toStringTag");t.exports = function (t, e, n) {
+      t && !o(t = n ? t : t.prototype, r) && i(t, r, { configurable: !0, value: e });
+    };
+  }, function (t, e, n) {
+    var i = n(23)("keys"),
+        o = n(14);t.exports = function (t) {
+      return i[t] || (i[t] = o(t));
+    };
+  }, function (t, e, n) {
+    var i = n(1),
+        o = "__core-js_shared__",
+        r = i[o] || (i[o] = {});t.exports = function (t) {
+      return r[t] || (r[t] = {});
+    };
+  }, function (t, e) {
+    var n = Math.ceil,
+        i = Math.floor;t.exports = function (t) {
+      return isNaN(t = +t) ? 0 : (t > 0 ? i : n)(t);
+    };
+  }, function (t, e, n) {
+    var i = n(12);t.exports = function (t, e) {
+      if (!i(t)) return t;var n, o;if (e && "function" == typeof (n = t.toString) && !i(o = n.call(t))) return o;if ("function" == typeof (n = t.valueOf) && !i(o = n.call(t))) return o;if (!e && "function" == typeof (n = t.toString) && !i(o = n.call(t))) return o;throw TypeError("Can't convert object to primitive value");
+    };
+  }, function (t, e, n) {
+    var i = n(1),
+        o = n(8),
+        r = n(19),
+        s = n(27),
+        l = n(6).f;t.exports = function (t) {
+      var e = o.Symbol || (o.Symbol = r ? {} : i.Symbol || {});"_" == t.charAt(0) || t in e || l(e, t, { value: s.f(t) });
+    };
+  }, function (t, e, n) {
+    e.f = n(7);
+  }, function (t, e, n) {
+    "use strict";
+    function i(t) {
+      return t && t.__esModule ? t : { "default": t };
+    }var o = n(31),
+        r = i(o),
+        s = n(30),
+        l = i(s);t.exports = { data: function data() {
+        return { search: "", isOpen: !1, value: this.selected ? (0, l["default"])(this.selected) : this.multiple ? [] : null };
+      }, props: { localSearch: { type: Boolean, "default": !0 }, options: { type: Array, required: !0 }, multiple: { type: Boolean, "default": !1 }, selected: {}, key: { type: String, "default": !1 }, label: { type: String, "default": !1 }, searchable: { type: Boolean, "default": !0 }, clearOnSelect: { type: Boolean, "default": !0 }, hideSelected: { type: Boolean, "default": !1 }, placeholder: { type: String, "default": "Select option" }, maxHeight: { type: Number, "default": 300 }, allowEmpty: { type: Boolean, "default": !0 }, resetAfter: { type: Boolean, "default": !1 }, closeOnSelect: { type: Boolean, "default": !0 }, customLabel: { type: Function, "default": !1 }, taggable: { type: Boolean, "default": !1 }, tagPlaceholder: { type: String, "default": "Press enter to create a tag" }, max: { type: Number, "default": !1 }, id: { "default": null } }, created: function created() {
+        this.searchable && this.adjustSearch();
+      }, computed: { filteredOptions: function filteredOptions() {
+          var t = this.search || "",
+              e = this.hideSelected ? this.options.filter(this.isNotSelected) : this.options;return this.localSearch && (e = this.$options.filters.filterBy(e, this.search)), this.taggable && t.length && !this.isExistingOption(t) && e.unshift({ isTag: !0, label: t }), e;
+        }, valueKeys: function valueKeys() {
+          var t = this;return this.key ? this.multiple ? this.value.map(function (e) {
+            return e[t.key];
+          }) : this.value[this.key] : this.value;
+        }, optionKeys: function optionKeys() {
+          var t = this;return this.label ? this.options.map(function (e) {
+            return e[t.label];
+          }) : this.options;
+        }, currentOptionLabel: function currentOptionLabel() {
+          return this.getOptionLabel(this.value);
+        } }, watch: { value: function value() {
+          this.resetAfter && (this.$set("value", null), this.$set("search", null), this.$set("selected", null)), this.adjustSearch();
+        }, search: function search() {
+          this.search !== this.currentOptionLabel && this.$emit("search-change", this.search, this.id);
+        }, selected: function selected(t, e) {
+          this.value = (0, l["default"])(this.selected);
+        } }, methods: { isExistingOption: function isExistingOption(t) {
+          return this.options ? this.optionKeys.indexOf(t) > -1 : !1;
+        }, isSelected: function isSelected(t) {
+          if (!this.value) return !1;var e = this.key ? t[this.key] : t;return this.multiple ? this.valueKeys.indexOf(e) > -1 : this.valueKeys === e;
+        }, isNotSelected: function isNotSelected(t) {
+          return !this.isSelected(t);
+        }, getOptionLabel: function getOptionLabel(t) {
+          return "object" !== ("undefined" == typeof t ? "undefined" : (0, r["default"])(t)) || null === t ? t : this.customLabel ? this.customLabel(t) : this.label && t[this.label] ? t[this.label] : t.label ? t.label : void 0;
+        }, select: function select(t) {
+          if (!this.max || !this.multiple || this.value.length !== this.max) if (t.isTag) this.$emit("tag", t.label, this.id), this.search = "";else {
+            if (this.multiple) this.isNotSelected(t) ? (this.value.push(t), this.$emit("select", (0, l["default"])(t), this.id), this.$emit("update", (0, l["default"])(this.value), this.id)) : this.removeElement(t);else {
+              var e = this.isSelected(t);if (e && !this.allowEmpty) return;this.value = e ? null : t, this.$emit("select", (0, l["default"])(t), this.id), this.$emit("update", (0, l["default"])(this.value), this.id);
+            }this.closeOnSelect && this.deactivate();
+          }
+        }, removeElement: function removeElement(t) {
+          if (this.allowEmpty || !(this.value.length <= 1)) {
+            if (this.multiple && "object" === ("undefined" == typeof t ? "undefined" : (0, r["default"])(t))) {
+              var e = this.valueKeys.indexOf(t[this.key]);this.value.splice(e, 1);
+            } else this.value.$remove(t);this.$emit("remove", (0, l["default"])(t), this.id), this.$emit("update", (0, l["default"])(this.value), this.id);
+          }
+        }, removeLastElement: function removeLastElement() {
+          0 === this.search.length && Array.isArray(this.value) && this.removeElement(this.value[this.value.length - 1]);
+        }, activate: function activate() {
+          this.isOpen || (this.isOpen = !0, this.searchable ? (this.search = "", this.$els.search.focus()) : this.$el.focus(), this.$emit("open", this.id));
+        }, deactivate: function deactivate() {
+          this.isOpen && (this.isOpen = !1, this.searchable ? (this.$els.search.blur(), this.adjustSearch()) : this.$el.blur(), this.$emit("close", (0, l["default"])(this.value), this.id));
+        }, adjustSearch: function adjustSearch() {
+          this.searchable && this.clearOnSelect && (this.search = this.multiple ? "" : this.currentOptionLabel);
+        }, toggle: function toggle() {
+          this.isOpen ? this.deactivate() : this.activate();
+        } } };
+  }, function (t, e) {
+    "use strict";
+    t.exports = { data: function data() {
+        return { pointer: 0, visibleElements: this.maxHeight / this.optionHeight };
+      }, props: { showPointer: { type: Boolean, "default": !0 }, optionHeight: { type: Number, "default": 40 } }, computed: { pointerPosition: function pointerPosition() {
+          return this.pointer * this.optionHeight;
+        } }, watch: { filteredOptions: function filteredOptions() {
+          this.pointerAdjust();
+        } }, methods: { addPointerElement: function addPointerElement() {
+          this.filteredOptions.length > 0 && this.select(this.filteredOptions[this.pointer]), this.pointerReset();
+        }, pointerForward: function pointerForward() {
+          this.pointer < this.filteredOptions.length - 1 && (this.pointer++, this.$els.list.scrollTop <= this.pointerPosition - this.visibleElements * this.optionHeight && (this.$els.list.scrollTop = this.pointerPosition - (this.visibleElements - 1) * this.optionHeight));
+        }, pointerBackward: function pointerBackward() {
+          this.pointer > 0 && (this.pointer--, this.$els.list.scrollTop >= this.pointerPosition && (this.$els.list.scrollTop = this.pointerPosition));
+        }, pointerReset: function pointerReset() {
+          this.closeOnSelect && (this.pointer = 0, this.$els.list && (this.$els.list.scrollTop = 0));
+        }, pointerAdjust: function pointerAdjust() {
+          this.pointer >= this.filteredOptions.length - 1 && (this.pointer = this.filteredOptions.length ? this.filteredOptions.length - 1 : 0);
+        }, pointerSet: function pointerSet(t) {
+          this.pointer = t;
+        } } };
+  }, function (t, e, n) {
+    "use strict";
+    function i(t) {
+      return t && t.__esModule ? t : { "default": t };
+    }var o = n(43),
+        r = i(o),
+        s = n(31),
+        l = i(s),
+        a = function u(t) {
+      if (Array.isArray(t)) return t.map(u);if (t && "object" === ("undefined" == typeof t ? "undefined" : (0, l["default"])(t))) {
+        for (var e = {}, n = (0, r["default"])(t), i = 0, o = n.length; o > i; i++) {
+          var s = n[i];e[s] = u(t[s]);
+        }return e;
+      }return t;
+    };t.exports = a;
+  }, function (t, e, n) {
+    "use strict";
+    function i(t) {
+      return t && t.__esModule ? t : { "default": t };
+    }e.__esModule = !0;var o = n(45),
+        r = i(o),
+        s = n(44),
+        l = i(s),
+        a = "function" == typeof l["default"] && "symbol" == _typeof(r["default"]) ? function (t) {
+      return typeof t === "undefined" ? "undefined" : _typeof(t);
+    } : function (t) {
+      return t && "function" == typeof l["default"] && t.constructor === l["default"] ? "symbol" : typeof t === "undefined" ? "undefined" : _typeof(t);
+    };e["default"] = "function" == typeof l["default"] && "symbol" === a(r["default"]) ? function (t) {
+      return "undefined" == typeof t ? "undefined" : a(t);
+    } : function (t) {
+      return t && "function" == typeof l["default"] && t.constructor === l["default"] ? "symbol" : "undefined" == typeof t ? "undefined" : a(t);
+    };
+  }, function (t, e) {
+    var n = {}.toString;t.exports = function (t) {
+      return n.call(t).slice(8, -1);
+    };
+  }, function (t, e, n) {
+    var i = n(12),
+        o = n(1).document,
+        r = i(o) && i(o.createElement);t.exports = function (t) {
+      return r ? o.createElement(t) : {};
+    };
+  }, function (t, e, n) {
+    t.exports = !n(4) && !n(9)(function () {
+      return 7 != Object.defineProperty(n(33)("div"), "a", { get: function get() {
+          return 7;
+        } }).a;
+    });
+  }, function (t, e, n) {
+    "use strict";
+    var i = n(19),
+        o = n(17),
+        r = n(40),
+        s = n(5),
+        l = n(2),
+        a = n(18),
+        u = n(57),
+        c = n(21),
+        f = n(64),
+        p = n(7)("iterator"),
+        d = !([].keys && "next" in [].keys()),
+        h = "@@iterator",
+        m = "keys",
+        v = "values",
+        b = function b() {
+      return this;
+    };t.exports = function (t, e, n, g, y, x, _) {
+      u(n, e, g);var w,
+          O,
+          S,
+          k = function k(t) {
+        if (!d && t in M) return M[t];switch (t) {case m:
+            return function () {
+              return new n(this, t);
+            };case v:
+            return function () {
+              return new n(this, t);
+            };}return function () {
+          return new n(this, t);
+        };
+      },
+          j = e + " Iterator",
+          E = y == v,
+          P = !1,
+          M = t.prototype,
+          L = M[p] || M[h] || y && M[y],
+          A = L || k(y),
+          T = y ? E ? k("entries") : A : void 0,
+          $ = "Array" == e ? M.entries || L : L;if ($ && (S = f($.call(new t())), S !== Object.prototype && (c(S, j, !0), i || l(S, p) || s(S, p, b))), E && L && L.name !== v && (P = !0, A = function A() {
+        return L.call(this);
+      }), i && !_ || !d && !P && M[p] || s(M, p, A), a[e] = A, a[j] = b, y) if (w = { values: E ? A : k(v), keys: x ? A : k(m), entries: T }, _) for (O in w) {
+        O in M || r(M, O, w[O]);
+      } else o(o.P + o.F * (d || P), e, w);return w;
+    };
+  }, function (t, e, n) {
+    var i = n(11),
+        o = n(61),
+        r = n(16),
+        s = n(22)("IE_PROTO"),
+        l = function l() {},
+        a = "prototype",
+        _u = function u() {
+      var t,
+          e = n(33)("iframe"),
+          i = r.length,
+          o = ">";for (e.style.display = "none", n(54).appendChild(e), e.src = "javascript:", t = e.contentWindow.document, t.open(), t.write("<script>document.F=Object</script" + o), t.close(), _u = t.F; i--;) {
+        delete _u[a][r[i]];
+      }return _u();
+    };t.exports = Object.create || function (t, e) {
+      var n;return null !== t ? (l[a] = i(t), n = new l(), l[a] = null, n[s] = t) : n = _u(), void 0 === e ? n : o(n, e);
+    };
+  }, function (t, e, n) {
+    var i = n(39),
+        o = n(16).concat("length", "prototype");e.f = Object.getOwnPropertyNames || function (t) {
+      return i(t, o);
+    };
+  }, function (t, e) {
+    e.f = Object.getOwnPropertySymbols;
+  }, function (t, e, n) {
+    var i = n(2),
+        o = n(3),
+        r = n(51)(!1),
+        s = n(22)("IE_PROTO");t.exports = function (t, e) {
+      var n,
+          l = o(t),
+          a = 0,
+          u = [];for (n in l) {
+        n != s && i(l, n) && u.push(n);
+      }for (; e.length > a;) {
+        i(l, n = e[a++]) && (~r(u, n) || u.push(n));
+      }return u;
+    };
+  }, function (t, e, n) {
+    t.exports = n(5);
+  }, function (t, e, n) {
+    var i = n(15);t.exports = function (t) {
+      return Object(i(t));
+    };
+  }, function (t, e, n) {
+    "use strict";
+    function i(t) {
+      return t && t.__esModule ? t : { "default": t };
+    }Object.defineProperty(e, "__esModule", { value: !0 });var o = n(28),
+        r = i(o),
+        s = n(29),
+        l = i(s);e["default"] = { mixins: [r["default"], l["default"]], props: { optionPartial: { type: String, "default": "" }, selectLabel: { type: String, "default": "Press enter to select" }, selectedLabel: { type: String, "default": "Selected" }, deselectLabel: { type: String, "default": "Press enter to remove" }, showLabels: { type: Boolean, "default": !0 }, limit: { type: Number, "default": 99999 }, limitText: { type: Function, "default": function _default(t) {
+            return "and " + t + " more";
+          } }, loading: { type: Boolean, "default": !1 }, disabled: { type: Boolean, "default": !1 } }, computed: { visibleValue: function visibleValue() {
+          return this.multiple ? this.value.slice(0, this.limit) : this.value;
+        } }, ready: function ready() {
+        this.showLabels || (this.deselectLabel = this.selectedLabel = this.selectLabel = "");
+      } };
+  }, function (t, e, n) {
+    t.exports = { "default": n(46), __esModule: !0 };
+  }, function (t, e, n) {
+    t.exports = { "default": n(47), __esModule: !0 };
+  }, function (t, e, n) {
+    t.exports = { "default": n(48), __esModule: !0 };
+  }, function (t, e, n) {
+    n(70), t.exports = n(8).Object.keys;
+  }, function (t, e, n) {
+    n(73), n(71), n(74), n(75), t.exports = n(8).Symbol;
+  }, function (t, e, n) {
+    n(72), n(76), t.exports = n(27).f("iterator");
+  }, function (t, e) {
+    t.exports = function (t) {
+      if ("function" != typeof t) throw TypeError(t + " is not a function!");return t;
+    };
+  }, function (t, e) {
+    t.exports = function () {};
+  }, function (t, e, n) {
+    var i = n(3),
+        o = n(68),
+        r = n(67);t.exports = function (t) {
+      return function (e, n, s) {
+        var l,
+            a = i(e),
+            u = o(a.length),
+            c = r(s, u);if (t && n != n) {
+          for (; u > c;) {
+            if (l = a[c++], l != l) return !0;
+          }
+        } else for (; u > c; c++) {
+          if ((t || c in a) && a[c] === n) return t || c || 0;
+        }return !t && -1;
+      };
+    };
+  }, function (t, e, n) {
+    var i = n(49);t.exports = function (t, e, n) {
+      if (i(t), void 0 === e) return t;switch (n) {case 1:
+          return function (n) {
+            return t.call(e, n);
+          };case 2:
+          return function (n, i) {
+            return t.call(e, n, i);
+          };case 3:
+          return function (n, i, o) {
+            return t.call(e, n, i, o);
+          };}return function () {
+        return t.apply(e, arguments);
+      };
+    };
+  }, function (t, e, n) {
+    var i = n(10),
+        o = n(38),
+        r = n(20);t.exports = function (t) {
+      var e = i(t),
+          n = o.f;if (n) for (var s, l = n(t), a = r.f, u = 0; l.length > u;) {
+        a.call(t, s = l[u++]) && e.push(s);
+      }return e;
+    };
+  }, function (t, e, n) {
+    t.exports = n(1).document && document.documentElement;
+  }, function (t, e, n) {
+    var i = n(32);t.exports = Object("z").propertyIsEnumerable(0) ? Object : function (t) {
+      return "String" == i(t) ? t.split("") : Object(t);
+    };
+  }, function (t, e, n) {
+    var i = n(32);t.exports = Array.isArray || function (t) {
+      return "Array" == i(t);
+    };
+  }, function (t, e, n) {
+    "use strict";
+    var i = n(36),
+        o = n(13),
+        r = n(21),
+        s = {};n(5)(s, n(7)("iterator"), function () {
+      return this;
+    }), t.exports = function (t, e, n) {
+      t.prototype = i(s, { next: o(1, n) }), r(t, e + " Iterator");
+    };
+  }, function (t, e) {
+    t.exports = function (t, e) {
+      return { value: e, done: !!t };
+    };
+  }, function (t, e, n) {
+    var i = n(10),
+        o = n(3);t.exports = function (t, e) {
+      for (var n, r = o(t), s = i(r), l = s.length, a = 0; l > a;) {
+        if (r[n = s[a++]] === e) return n;
+      }
+    };
+  }, function (t, e, n) {
+    var i = n(14)("meta"),
+        o = n(12),
+        r = n(2),
+        s = n(6).f,
+        l = 0,
+        a = Object.isExtensible || function () {
+      return !0;
+    },
+        u = !n(9)(function () {
+      return a(Object.preventExtensions({}));
+    }),
+        c = function c(t) {
+      s(t, i, { value: { i: "O" + ++l, w: {} } });
+    },
+        f = function f(t, e) {
+      if (!o(t)) return "symbol" == (typeof t === "undefined" ? "undefined" : _typeof(t)) ? t : ("string" == typeof t ? "S" : "P") + t;if (!r(t, i)) {
+        if (!a(t)) return "F";if (!e) return "E";c(t);
+      }return t[i].i;
+    },
+        p = function p(t, e) {
+      if (!r(t, i)) {
+        if (!a(t)) return !0;if (!e) return !1;c(t);
+      }return t[i].w;
+    },
+        d = function d(t) {
+      return u && h.NEED && a(t) && !r(t, i) && c(t), t;
+    },
+        h = t.exports = { KEY: i, NEED: !1, fastKey: f, getWeak: p, onFreeze: d };
+  }, function (t, e, n) {
+    var i = n(6),
+        o = n(11),
+        r = n(10);t.exports = n(4) ? Object.defineProperties : function (t, e) {
+      o(t);for (var n, s = r(e), l = s.length, a = 0; l > a;) {
+        i.f(t, n = s[a++], e[n]);
+      }return t;
+    };
+  }, function (t, e, n) {
+    var i = n(20),
+        o = n(13),
+        r = n(3),
+        s = n(25),
+        l = n(2),
+        a = n(34),
+        u = Object.getOwnPropertyDescriptor;e.f = n(4) ? u : function (t, e) {
+      if (t = r(t), e = s(e, !0), a) try {
+        return u(t, e);
+      } catch (n) {}return l(t, e) ? o(!i.f.call(t, e), t[e]) : void 0;
+    };
+  }, function (t, e, n) {
+    var i = n(3),
+        o = n(37).f,
+        r = {}.toString,
+        s = "object" == (typeof window === "undefined" ? "undefined" : _typeof(window)) && window && Object.getOwnPropertyNames ? Object.getOwnPropertyNames(window) : [],
+        l = function l(t) {
+      try {
+        return o(t);
+      } catch (e) {
+        return s.slice();
+      }
+    };t.exports.f = function (t) {
+      return s && "[object Window]" == r.call(t) ? l(t) : o(i(t));
+    };
+  }, function (t, e, n) {
+    var i = n(2),
+        o = n(41),
+        r = n(22)("IE_PROTO"),
+        s = Object.prototype;t.exports = Object.getPrototypeOf || function (t) {
+      return t = o(t), i(t, r) ? t[r] : "function" == typeof t.constructor && t instanceof t.constructor ? t.constructor.prototype : t instanceof Object ? s : null;
+    };
+  }, function (t, e, n) {
+    var i = n(17),
+        o = n(8),
+        r = n(9);t.exports = function (t, e) {
+      var n = (o.Object || {})[t] || Object[t],
+          s = {};s[t] = e(n), i(i.S + i.F * r(function () {
+        n(1);
+      }), "Object", s);
+    };
+  }, function (t, e, n) {
+    var i = n(24),
+        o = n(15);t.exports = function (t) {
+      return function (e, n) {
+        var r,
+            s,
+            l = String(o(e)),
+            a = i(n),
+            u = l.length;return 0 > a || a >= u ? t ? "" : void 0 : (r = l.charCodeAt(a), 55296 > r || r > 56319 || a + 1 === u || (s = l.charCodeAt(a + 1)) < 56320 || s > 57343 ? t ? l.charAt(a) : r : t ? l.slice(a, a + 2) : (r - 55296 << 10) + (s - 56320) + 65536);
+      };
+    };
+  }, function (t, e, n) {
+    var i = n(24),
+        o = Math.max,
+        r = Math.min;t.exports = function (t, e) {
+      return t = i(t), 0 > t ? o(t + e, 0) : r(t, e);
+    };
+  }, function (t, e, n) {
+    var i = n(24),
+        o = Math.min;t.exports = function (t) {
+      return t > 0 ? o(i(t), 9007199254740991) : 0;
+    };
+  }, function (t, e, n) {
+    "use strict";
+    var i = n(50),
+        o = n(58),
+        r = n(18),
+        s = n(3);t.exports = n(35)(Array, "Array", function (t, e) {
+      this._t = s(t), this._i = 0, this._k = e;
+    }, function () {
+      var t = this._t,
+          e = this._k,
+          n = this._i++;return !t || n >= t.length ? (this._t = void 0, o(1)) : "keys" == e ? o(0, n) : "values" == e ? o(0, t[n]) : o(0, [n, t[n]]);
+    }, "values"), r.Arguments = r.Array, i("keys"), i("values"), i("entries");
+  }, function (t, e, n) {
+    var i = n(41),
+        o = n(10);n(65)("keys", function () {
+      return function (t) {
+        return o(i(t));
+      };
+    });
+  }, function (t, e) {}, function (t, e, n) {
+    "use strict";
+    var i = n(66)(!0);n(35)(String, "String", function (t) {
+      this._t = String(t), this._i = 0;
+    }, function () {
+      var t,
+          e = this._t,
+          n = this._i;return n >= e.length ? { value: void 0, done: !0 } : (t = i(e, n), this._i += t.length, { value: t, done: !1 });
+    });
+  }, function (t, e, n) {
+    "use strict";
+    var i = n(1),
+        o = n(2),
+        r = n(4),
+        s = n(17),
+        l = n(40),
+        a = n(60).KEY,
+        u = n(9),
+        c = n(23),
+        f = n(21),
+        p = n(14),
+        d = n(7),
+        h = n(27),
+        m = n(26),
+        v = n(59),
+        b = n(53),
+        g = n(56),
+        y = n(11),
+        x = n(3),
+        _ = n(25),
+        w = n(13),
+        O = n(36),
+        S = n(63),
+        k = n(62),
+        j = n(6),
+        E = n(10),
+        P = k.f,
+        M = j.f,
+        L = S.f,
+        _A = i.Symbol,
+        T = i.JSON,
+        $ = T && T.stringify,
+        N = "prototype",
+        B = d("_hidden"),
+        C = d("toPrimitive"),
+        F = {}.propertyIsEnumerable,
+        z = c("symbol-registry"),
+        I = c("symbols"),
+        R = c("op-symbols"),
+        H = Object[N],
+        K = "function" == typeof _A,
+        D = i.QObject,
+        W = !D || !D[N] || !D[N].findChild,
+        J = r && u(function () {
+      return 7 != O(M({}, "a", { get: function get() {
+          return M(this, "a", { value: 7 }).a;
+        } })).a;
+    }) ? function (t, e, n) {
+      var i = P(H, e);i && delete H[e], M(t, e, n), i && t !== H && M(H, e, i);
+    } : M,
+        U = function U(t) {
+      var e = I[t] = O(_A[N]);return e._k = t, e;
+    },
+        V = K && "symbol" == _typeof(_A.iterator) ? function (t) {
+      return "symbol" == (typeof t === "undefined" ? "undefined" : _typeof(t));
+    } : function (t) {
+      return t instanceof _A;
+    },
+        G = function G(t, e, n) {
+      return t === H && G(R, e, n), y(t), e = _(e, !0), y(n), o(I, e) ? (n.enumerable ? (o(t, B) && t[B][e] && (t[B][e] = !1), n = O(n, { enumerable: w(0, !1) })) : (o(t, B) || M(t, B, w(1, {})), t[B][e] = !0), J(t, e, n)) : M(t, e, n);
+    },
+        q = function q(t, e) {
+      y(t);for (var n, i = b(e = x(e)), o = 0, r = i.length; r > o;) {
+        G(t, n = i[o++], e[n]);
+      }return t;
+    },
+        Y = function Y(t, e) {
+      return void 0 === e ? O(t) : q(O(t), e);
+    },
+        Q = function Q(t) {
+      var e = F.call(this, t = _(t, !0));return this === H && o(I, t) && !o(R, t) ? !1 : e || !o(this, t) || !o(I, t) || o(this, B) && this[B][t] ? e : !0;
+    },
+        X = function X(t, e) {
+      if (t = x(t), e = _(e, !0), t !== H || !o(I, e) || o(R, e)) {
+        var n = P(t, e);return !n || !o(I, e) || o(t, B) && t[B][e] || (n.enumerable = !0), n;
+      }
+    },
+        Z = function Z(t) {
+      for (var e, n = L(x(t)), i = [], r = 0; n.length > r;) {
+        o(I, e = n[r++]) || e == B || e == a || i.push(e);
+      }return i;
+    },
+        tt = function tt(t) {
+      for (var e, n = t === H, i = L(n ? R : x(t)), r = [], s = 0; i.length > s;) {
+        o(I, e = i[s++]) && (n ? o(H, e) : !0) && r.push(I[e]);
+      }return r;
+    };K || (_A = function A() {
+      if (this instanceof _A) throw TypeError("Symbol is not a constructor!");var t = p(arguments.length > 0 ? arguments[0] : void 0),
+          e = function e(n) {
+        this === H && e.call(R, n), o(this, B) && o(this[B], t) && (this[B][t] = !1), J(this, t, w(1, n));
+      };return r && W && J(H, t, { configurable: !0, set: e }), U(t);
+    }, l(_A[N], "toString", function () {
+      return this._k;
+    }), k.f = X, j.f = G, n(37).f = S.f = Z, n(20).f = Q, n(38).f = tt, r && !n(19) && l(H, "propertyIsEnumerable", Q, !0), h.f = function (t) {
+      return U(d(t));
+    }), s(s.G + s.W + s.F * !K, { Symbol: _A });for (var et = "hasInstance,isConcatSpreadable,iterator,match,replace,search,species,split,toPrimitive,toStringTag,unscopables".split(","), nt = 0; et.length > nt;) {
+      d(et[nt++]);
+    }for (var et = E(d.store), nt = 0; et.length > nt;) {
+      m(et[nt++]);
+    }s(s.S + s.F * !K, "Symbol", { "for": function _for(t) {
+        return o(z, t += "") ? z[t] : z[t] = _A(t);
+      }, keyFor: function keyFor(t) {
+        if (V(t)) return v(z, t);throw TypeError(t + " is not a symbol!");
+      }, useSetter: function useSetter() {
+        W = !0;
+      }, useSimple: function useSimple() {
+        W = !1;
+      } }), s(s.S + s.F * !K, "Object", { create: Y, defineProperty: G, defineProperties: q, getOwnPropertyDescriptor: X, getOwnPropertyNames: Z, getOwnPropertySymbols: tt }), T && s(s.S + s.F * (!K || u(function () {
+      var t = _A();return "[null]" != $([t]) || "{}" != $({ a: t }) || "{}" != $(Object(t));
+    })), "JSON", { stringify: function stringify(t) {
+        if (void 0 !== t && !V(t)) {
+          for (var e, n, i = [t], o = 1; arguments.length > o;) {
+            i.push(arguments[o++]);
+          }return e = i[1], "function" == typeof e && (n = e), !n && g(e) || (e = function e(t, _e2) {
+            return n && (_e2 = n.call(this, t, _e2)), V(_e2) ? void 0 : _e2;
+          }), i[1] = e, $.apply(T, i);
+        }
+      } }), _A[N][C] || n(5)(_A[N], C, _A[N].valueOf), f(_A, "Symbol"), f(Math, "Math", !0), f(i.JSON, "JSON", !0);
+  }, function (t, e, n) {
+    n(26)("asyncIterator");
+  }, function (t, e, n) {
+    n(26)("observable");
+  }, function (t, e, n) {
+    n(69);for (var i = n(1), o = n(5), r = n(18), s = n(7)("toStringTag"), l = ["NodeList", "DOMTokenList", "MediaList", "StyleSheetList", "CSSRuleList"], a = 0; 5 > a; a++) {
+      var u = l[a],
+          c = i[u],
+          f = c && c.prototype;f && !f[s] && o(f, s, u), r[u] = r.Array;
+    }
+  }, function (t, e, n) {
+    e = t.exports = n(78)(), e.push([t.id, 'fieldset[disabled] .multiselect{pointer-events:none}.multiselect__spinner{position:absolute;right:1px;top:1px;width:48px;height:35px;background:#fff;display:block}.multiselect__spinner:after,.multiselect__spinner:before{position:absolute;content:"";top:50%;left:50%;margin:-8px 0 0 -8px;width:16px;height:16px;border-radius:100%;border-color:#41b883 transparent transparent;border-style:solid;border-width:2px;box-shadow:0 0 0 1px transparent}.multiselect__spinner:before{-webkit-animation:spinning 2.4s cubic-bezier(.41,.26,.2,.62);animation:spinning 2.4s cubic-bezier(.41,.26,.2,.62);-webkit-animation-iteration-count:infinite;animation-iteration-count:infinite}.multiselect__spinner:after{-webkit-animation:spinning 2.4s cubic-bezier(.51,.09,.21,.8);animation:spinning 2.4s cubic-bezier(.51,.09,.21,.8);-webkit-animation-iteration-count:infinite;animation-iteration-count:infinite}.multiselect__loading-transition{-webkit-transition:opacity .4s ease-in-out;transition:opacity .4s ease-in-out;opacity:1}.multiselect__loading-enter,.multiselect__loading-leave{opacity:0}.multiselect,.multiselect__input,.multiselect__single{font-family:inherit;font-size:14px}.multiselect{box-sizing:content-box;display:block;position:relative;width:100%;min-height:40px;text-align:left;color:#35495e}.multiselect *{box-sizing:border-box}.multiselect:focus{outline:none}.multiselect--disabled{pointer-events:none;opacity:.6}.multiselect--active{z-index:50}.multiselect--active .multiselect__current,.multiselect--active .multiselect__input,.multiselect--active .multiselect__tags{border-bottom-left-radius:0;border-bottom-right-radius:0}.multiselect--active .multiselect__select{-webkit-transform:rotate(180deg);transform:rotate(180deg)}.multiselect__input,.multiselect__single{position:relative;display:inline-block;min-height:20px;line-height:20px;border:none;border-radius:5px;background:#fff;padding:1px 0 0 5px;width:100%;-webkit-transition:border .1s ease;transition:border .1s ease;box-sizing:border-box;margin-bottom:8px}.multiselect__tag~.multiselect__input{width:auto}.multiselect__input:hover,.multiselect__single:hover{border-color:#cfcfcf}.multiselect__input:focus,.multiselect__single:focus{border-color:#a8a8a8;outline:none}.multiselect__single{padding-left:6px;margin-bottom:8px}.multiselect__tags{min-height:40px;display:block;padding:8px 40px 0 8px;border-radius:5px;border:1px solid #e8e8e8;background:#fff}.multiselect__tag{position:relative;display:inline-block;padding:4px 26px 4px 10px;border-radius:5px;margin-right:10px;color:#fff;line-height:1;background:#41b883;margin-bottom:8px;white-space:nowrap}.multiselect__tag-icon{cursor:pointer;margin-left:7px;position:absolute;right:0;top:0;bottom:0;font-weight:700;font-style:initial;width:22px;text-align:center;line-height:22px;-webkit-transition:all .2s ease;transition:all .2s ease;border-radius:5px}.multiselect__tag-icon:after{content:"\\D7";color:#266d4d;font-size:14px}.multiselect__tag-icon:focus,.multiselect__tag-icon:hover{background:#369a6e}.multiselect__tag-icon:focus:after,.multiselect__tag-icon:hover:after{color:#fff}.multiselect__current{min-height:40px;overflow:hidden;padding:8px 12px 0;padding-right:30px;white-space:nowrap;border-radius:5px;border:1px solid #e8e8e8}.multiselect__current,.multiselect__select{line-height:16px;box-sizing:border-box;display:block;margin:0;text-decoration:none;cursor:pointer}.multiselect__select{position:absolute;width:40px;height:38px;right:1px;top:1px;padding:4px 8px;text-align:center;-webkit-transition:-webkit-transform .2s ease;transition:-webkit-transform .2s ease;transition:transform .2s ease;transition:transform .2s ease,-webkit-transform .2s ease}.multiselect__select:before{position:relative;right:0;top:65%;color:#999;margin-top:4px;border-style:solid;border-width:5px 5px 0;border-color:#999 transparent transparent;content:""}.multiselect__placeholder{color:#adadad;display:inline-block;margin-bottom:10px;padding-top:2px}.multiselect--active .multiselect__placeholder{display:none}.multiselect__content{position:absolute;list-style:none;display:block;background:#fff;width:100%;max-height:240px;overflow:auto;padding:0;margin:0;border:1px solid #e8e8e8;border-top:none;border-bottom-left-radius:5px;border-bottom-right-radius:5px;z-index:50}.multiselect__content::webkit-scrollbar{display:none}.multiselect__option{display:block;padding:12px;min-height:40px;line-height:16px;text-decoration:none;text-transform:none;vertical-align:middle;position:relative;cursor:pointer;white-space:nowrap}.multiselect__option:after{top:0;right:0;position:absolute;line-height:40px;padding-right:12px;padding-left:20px}.multiselect__option--highlight{background:#41b883;outline:none;color:#fff}.multiselect__option--highlight:after{content:attr(data-select);background:#41b883;color:#fff}.multiselect__option--selected{background:#f3f3f3;color:#35495e;font-weight:700}.multiselect__option--selected:after{content:attr(data-selected);color:silver}.multiselect__option--selected.multiselect__option--highlight{background:#ff6a6a;color:#fff}.multiselect__option--selected.multiselect__option--highlight:after{background:#ff6a6a;content:attr(data-deselect);color:#fff}.multiselect--disabled{background:#ededed;pointer-events:none}.multiselect--disabled .multiselect__current,.multiselect--disabled .multiselect__select,.multiselect__option--disabled{background:#ededed;color:#a6a6a6}.multiselect__option--disabled{cursor:text;pointer-events:none}.multiselect__option--disabled:visited{color:#a6a6a6}.multiselect__option--disabled:focus,.multiselect__option--disabled:hover{background:#3dad7b}.multiselect-transition{-webkit-transition:all .3s ease;transition:all .3s ease}.multiselect-enter,.multiselect-leave{opacity:0;max-height:0!important}@-webkit-keyframes spinning{0%{-webkit-transform:rotate(0);transform:rotate(0)}to{-webkit-transform:rotate(2turn);transform:rotate(2turn)}}@keyframes spinning{0%{-webkit-transform:rotate(0);transform:rotate(0)}to{-webkit-transform:rotate(2turn);transform:rotate(2turn)}}', ""]);
+  }, function (t, e) {
+    t.exports = function () {
+      var t = [];return t.toString = function () {
+        for (var t = [], e = 0; e < this.length; e++) {
+          var n = this[e];n[2] ? t.push("@media " + n[2] + "{" + n[1] + "}") : t.push(n[1]);
+        }return t.join("");
+      }, t.i = function (e, n) {
+        "string" == typeof e && (e = [[null, e, ""]]);for (var i = {}, o = 0; o < this.length; o++) {
+          var r = this[o][0];"number" == typeof r && (i[r] = !0);
+        }for (o = 0; o < e.length; o++) {
+          var s = e[o];"number" == typeof s[0] && i[s[0]] || (n && !s[2] ? s[2] = n : n && (s[2] = "(" + s[2] + ") and (" + n + ")"), t.push(s));
+        }
+      }, t;
+    };
+  }, function (t, e) {
+    t.exports = '<div tabindex=0 :class="{ \'multiselect--active\': isOpen, \'multiselect--disabled\': disabled }" @focus=activate() @blur="searchable ? false : deactivate()" @keydown.self.down.prevent=pointerForward() @keydown.self.up.prevent=pointerBackward() @keydown.enter.stop.prevent.self=addPointerElement() @keyup.esc=deactivate() class=multiselect> <div @mousedown.prevent=toggle() class=multiselect__select></div> <div v-el:tags class=multiselect__tags> <span v-if=multiple v-for="option in visibleValue" track-by=$index onmousedown=event.preventDefault() class=multiselect__tag> <span v-text=getOptionLabel(option)></span> <i aria-hidden=true tabindex=1 @keydown.enter.prevent=removeElement(option) @mousedown.prevent=removeElement(option) class=multiselect__tag-icon> </i> </span> <template v-if="value && value.length > limit"> <strong v-text="limitText(value.length - limit)"></strong> </template> <div v-show=loading transition=multiselect__loading class=multiselect__spinner></div> <input name=search type=text autocomplete=off :placeholder=placeholder v-el:search v-if=searchable v-model=search :disabled=disabled @focus.prevent=activate() @blur.prevent=deactivate() @keyup.esc=deactivate() @keyup.down=pointerForward() @keyup.up=pointerBackward() @keydown.enter.stop.prevent.self=addPointerElement() @keydown.delete=removeLastElement() class=multiselect__input /> <span v-if="!searchable && !multiple" class=multiselect__single v-text="currentOptionLabel || placeholder"> </span> </div> <ul transition=multiselect :style="{ maxHeight: maxHeight + \'px\' }" v-el:list v-show=isOpen class=multiselect__content> <slot name=beforeList></slot> <li v-if="multiple && max === value.length"> <span class=multiselect__option> <slot name=maxElements>Maximum of {{ max }} options selected. First remove a selected option to select another.</slot> </span> </li> <template v-if="!max || value.length < max"> <li v-for="option in filteredOptions" track-by=$index tabindex=0 :class="{ \'multiselect__option--highlight\': $index === pointer && this.showPointer, \'multiselect__option--selected\': !isNotSelected(option) }" class=multiselect__option @mousedown.prevent=select(option) @mouseenter=pointerSet($index) :data-select="option.isTag ? tagPlaceholder : selectLabel" :data-selected=selectedLabel :data-deselect=deselectLabel> <partial :name=optionPartial v-if=optionPartial.length></partial> <span v-else v-text=getOptionLabel(option)></span> </li> </template> <li v-show="filteredOptions.length === 0 && search"> <span class=multiselect__option> <slot name=noResult>No elements found. Consider changing the search query.</slot> </span> </li> <slot name=afterList></slot> </ul> </div>';
+  }, function (t, e, n) {
+    var i, o;n(82), i = n(42), o = n(79), t.exports = i || {}, t.exports.__esModule && (t.exports = t.exports["default"]), o && (("function" == typeof t.exports ? t.exports.options || (t.exports.options = {}) : t.exports).template = o);
+  }, function (t, e, n) {
+    function i(t, e) {
+      for (var n = 0; n < t.length; n++) {
+        var i = t[n],
+            o = f[i.id];if (o) {
+          o.refs++;for (var r = 0; r < o.parts.length; r++) {
+            o.parts[r](i.parts[r]);
+          }for (; r < i.parts.length; r++) {
+            o.parts.push(a(i.parts[r], e));
+          }
+        } else {
+          for (var s = [], r = 0; r < i.parts.length; r++) {
+            s.push(a(i.parts[r], e));
+          }f[i.id] = { id: i.id, refs: 1, parts: s };
+        }
+      }
+    }function o(t) {
+      for (var e = [], n = {}, i = 0; i < t.length; i++) {
+        var o = t[i],
+            r = o[0],
+            s = o[1],
+            l = o[2],
+            a = o[3],
+            u = { css: s, media: l, sourceMap: a };n[r] ? n[r].parts.push(u) : e.push(n[r] = { id: r, parts: [u] });
+      }return e;
+    }function r(t, e) {
+      var n = h(),
+          i = b[b.length - 1];if ("top" === t.insertAt) i ? i.nextSibling ? n.insertBefore(e, i.nextSibling) : n.appendChild(e) : n.insertBefore(e, n.firstChild), b.push(e);else {
+        if ("bottom" !== t.insertAt) throw new Error("Invalid value for parameter 'insertAt'. Must be 'top' or 'bottom'.");n.appendChild(e);
+      }
+    }function s(t) {
+      t.parentNode.removeChild(t);var e = b.indexOf(t);e >= 0 && b.splice(e, 1);
+    }function l(t) {
+      var e = document.createElement("style");return e.type = "text/css", r(t, e), e;
+    }function a(t, e) {
+      var n, i, o;if (e.singleton) {
+        var r = v++;n = m || (m = l(e)), i = u.bind(null, n, r, !1), o = u.bind(null, n, r, !0);
+      } else n = l(e), i = c.bind(null, n), o = function o() {
+        s(n);
+      };return i(t), function (e) {
+        if (e) {
+          if (e.css === t.css && e.media === t.media && e.sourceMap === t.sourceMap) return;i(t = e);
+        } else o();
+      };
+    }function u(t, e, n, i) {
+      var o = n ? "" : i.css;if (t.styleSheet) t.styleSheet.cssText = g(e, o);else {
+        var r = document.createTextNode(o),
+            s = t.childNodes;s[e] && t.removeChild(s[e]), s.length ? t.insertBefore(r, s[e]) : t.appendChild(r);
+      }
+    }function c(t, e) {
+      var n = e.css,
+          i = e.media,
+          o = e.sourceMap;if (i && t.setAttribute("media", i), o && (n += "\n/*# sourceURL=" + o.sources[0] + " */", n += "\n/*# sourceMappingURL=data:application/json;base64," + btoa(unescape(encodeURIComponent(JSON.stringify(o)))) + " */"), t.styleSheet) t.styleSheet.cssText = n;else {
+        for (; t.firstChild;) {
+          t.removeChild(t.firstChild);
+        }t.appendChild(document.createTextNode(n));
+      }
+    }var f = {},
+        p = function p(t) {
+      var e;return function () {
+        return "undefined" == typeof e && (e = t.apply(this, arguments)), e;
+      };
+    },
+        d = p(function () {
+      return (/msie [6-9]\b/.test(window.navigator.userAgent.toLowerCase())
+      );
+    }),
+        h = p(function () {
+      return document.head || document.getElementsByTagName("head")[0];
+    }),
+        m = null,
+        v = 0,
+        b = [];t.exports = function (t, e) {
+      e = e || {}, "undefined" == typeof e.singleton && (e.singleton = d()), "undefined" == typeof e.insertAt && (e.insertAt = "bottom");var n = o(t);return i(n, e), function (t) {
+        for (var r = [], s = 0; s < n.length; s++) {
+          var l = n[s],
+              a = f[l.id];a.refs--, r.push(a);
+        }if (t) {
+          var u = o(t);i(u, e);
+        }for (var s = 0; s < r.length; s++) {
+          var a = r[s];if (0 === a.refs) {
+            for (var c = 0; c < a.parts.length; c++) {
+              a.parts[c]();
+            }delete f[a.id];
+          }
+        }
+      };
+    };var g = function () {
+      var t = [];return function (e, n) {
+        return t[e] = n, t.filter(Boolean).join("\n");
+      };
+    }();
+  }, function (t, e, n) {
+    var i = n(77);"string" == typeof i && (i = [[t.id, i, ""]]);n(81)(i, {});i.locals && (t.exports = i.locals);
+  }]);
+});
+
+
+},{}],53:[function(require,module,exports){
 /*!
  * vue-resource v0.9.3
  * https://github.com/vuejs/vue-resource
@@ -43887,14 +44763,14 @@ if (typeof window !== 'undefined' && window.Vue) {
 }
 
 module.exports = plugin;
-},{}],53:[function(require,module,exports){
+},{}],54:[function(require,module,exports){
 /*!
  * vue-waterfall v0.2.3
  * (c) 2016 MopTym <moptym@163.com>
  * https://github.com/MopTym/vue-waterfall
  */
 !function(t,e){"object"==typeof exports&&"object"==typeof module?module.exports=e():"function"==typeof define&&define.amd?define([],e):"object"==typeof exports?exports.Waterfall=e():t.Waterfall=e()}(this,function(){return function(t){function e(i){if(n[i])return n[i].exports;var r=n[i]={exports:{},id:i,loaded:!1};return t[i].call(r.exports,r,r.exports,e),r.loaded=!0,r.exports}var n={};return e.m=t,e.c=n,e.p="",e(0)}([function(t,e,n){"use strict";function i(t){return t&&t.__esModule?t:{"default":t}}var r=n(1),o=i(r),a=n(8),s=i(a);t.exports={Waterfall:o["default"],WaterfallSlot:s["default"],waterfall:o["default"],waterfallSlot:s["default"]}},function(t,e,n){var i,r;n(2),i=n(6),r=n(7),t.exports=i||{},t.exports.__esModule&&(t.exports=t.exports["default"]),r&&(("function"==typeof t.exports?t.exports.options||(t.exports.options={}):t.exports).template=r)},function(t,e,n){var i=n(3);"string"==typeof i&&(i=[[t.id,i,""]]);n(5)(i,{});i.locals&&(t.exports=i.locals)},function(t,e,n){e=t.exports=n(4)(),e.push([t.id,".vue-waterfall{position:relative}",""])},function(t,e){t.exports=function(){var t=[];return t.toString=function(){for(var t=[],e=0;e<this.length;e++){var n=this[e];n[2]?t.push("@media "+n[2]+"{"+n[1]+"}"):t.push(n[1])}return t.join("")},t.i=function(e,n){"string"==typeof e&&(e=[[null,e,""]]);for(var i={},r=0;r<this.length;r++){var o=this[r][0];"number"==typeof o&&(i[o]=!0)}for(r=0;r<e.length;r++){var a=e[r];"number"==typeof a[0]&&i[a[0]]||(n&&!a[2]?a[2]=n:n&&(a[2]="("+a[2]+") and ("+n+")"),t.push(a))}},t}},function(t,e,n){function i(t,e){for(var n=0;n<t.length;n++){var i=t[n],r=c[i.id];if(r){r.refs++;for(var o=0;o<r.parts.length;o++)r.parts[o](i.parts[o]);for(;o<i.parts.length;o++)r.parts.push(u(i.parts[o],e))}else{for(var a=[],o=0;o<i.parts.length;o++)a.push(u(i.parts[o],e));c[i.id]={id:i.id,refs:1,parts:a}}}}function r(t){for(var e=[],n={},i=0;i<t.length;i++){var r=t[i],o=r[0],a=r[1],s=r[2],u=r[3],l={css:a,media:s,sourceMap:u};n[o]?n[o].parts.push(l):e.push(n[o]={id:o,parts:[l]})}return e}function o(t,e){var n=p(),i=m[m.length-1];if("top"===t.insertAt)i?i.nextSibling?n.insertBefore(e,i.nextSibling):n.appendChild(e):n.insertBefore(e,n.firstChild),m.push(e);else{if("bottom"!==t.insertAt)throw new Error("Invalid value for parameter 'insertAt'. Must be 'top' or 'bottom'.");n.appendChild(e)}}function a(t){t.parentNode.removeChild(t);var e=m.indexOf(t);e>=0&&m.splice(e,1)}function s(t){var e=document.createElement("style");return e.type="text/css",o(t,e),e}function u(t,e){var n,i,r;if(e.singleton){var o=g++;n=v||(v=s(e)),i=l.bind(null,n,o,!1),r=l.bind(null,n,o,!0)}else n=s(e),i=f.bind(null,n),r=function(){a(n)};return i(t),function(e){if(e){if(e.css===t.css&&e.media===t.media&&e.sourceMap===t.sourceMap)return;i(t=e)}else r()}}function l(t,e,n,i){var r=n?"":i.css;if(t.styleSheet)t.styleSheet.cssText=x(e,r);else{var o=document.createTextNode(r),a=t.childNodes;a[e]&&t.removeChild(a[e]),a.length?t.insertBefore(o,a[e]):t.appendChild(o)}}function f(t,e){var n=e.css,i=e.media,r=e.sourceMap;if(i&&t.setAttribute("media",i),r&&(n+="\n/*# sourceURL="+r.sources[0]+" */",n+="\n/*# sourceMappingURL=data:application/json;base64,"+btoa(unescape(encodeURIComponent(JSON.stringify(r))))+" */"),t.styleSheet)t.styleSheet.cssText=n;else{for(;t.firstChild;)t.removeChild(t.firstChild);t.appendChild(document.createTextNode(n))}}var c={},d=function(t){var e;return function(){return"undefined"==typeof e&&(e=t.apply(this,arguments)),e}},h=d(function(){return/msie [6-9]\b/.test(window.navigator.userAgent.toLowerCase())}),p=d(function(){return document.head||document.getElementsByTagName("head")[0]}),v=null,g=0,m=[];t.exports=function(t,e){e=e||{},"undefined"==typeof e.singleton&&(e.singleton=h()),"undefined"==typeof e.insertAt&&(e.insertAt="bottom");var n=r(t);return i(n,e),function(t){for(var o=[],a=0;a<n.length;a++){var s=n[a],u=c[s.id];u.refs--,o.push(u)}if(t){var l=r(t);i(l,e)}for(var a=0;a<o.length;a++){var u=o[a];if(0===u.refs){for(var f=0;f<u.parts.length;f++)u.parts[f]();delete c[u.id]}}}};var x=function(){var t=[];return function(e,n){return t[e]=n,t.filter(Boolean).join("\n")}}()},function(t,e){"use strict";function n(t){t!==!1&&this.autoResize?y(window,"resize",this.reflowHandler,!1):b(window,"resize",this.reflowHandler,!1)}function i(t){var e=t.target,n=e[L];n&&m(e,n)}function r(t){return function(){clearTimeout(t),t=setTimeout(this.reflow,this.interval)}}function o(){var t=this;if(this.$el){var e=this.$el.clientWidth,n=this.$children.map(function(t){return t.getMeta()});n.sort(function(t,e){return t.order-e.order}),this.virtualRects=n.map(function(){return{}}),s(this,n,this.virtualRects),setTimeout(function(){a(t.$el,e)&&s(t,n,t.virtualRects),t.style.overflow="hidden",f(t.virtualRects,n),t.$broadcast("wf-reflowed",[t]),t.$dispatch("wf-reflowed",[t])},0)}}function a(t,e){return e!==t.clientWidth}function s(t,e,n){var i=u(t),r="h"===t.line?W:C;r.calculate(t,i,e,n)}function u(t){return{align:~["left","right","center"].indexOf(t.align)?t.align:"left",line:~["v","h"].indexOf(t.line)?t.line:"v",lineGap:+t.lineGap,minLineGap:t.minLineGap?+t.minLineGap:t.lineGap,maxLineGap:t.maxLineGap?+t.maxLineGap:t.lineGap,singleMaxWidth:Math.max(t.singleMaxWidth||0,t.maxLineGap),fixedHeight:!!t.fixedHeight}}function l(t,e,n){switch(n){case"right":return t-e;case"center":return(t-e)/2;default:return 0}}function f(t,e){var n=e.filter(function(t){return t.moveClass}),i=c(n);d(t,e);var r=c(n);n.forEach(function(t,e){t.node[L]=t.moveClass,h(t.node,i[e],r[e])}),document.body.clientWidth,n.forEach(function(t){g(t.node,t.moveClass),p(t.node)})}function c(t){return t.map(function(t){return t.vm.rect})}function d(t,e){t.forEach(function(t,n){var i=e[n].node.style;e[n].vm.rect=t;for(var r in t)i[r]=t[r]+"px"})}function h(t,e,n){var i=e.left-n.left,r=e.top-n.top,o=e.width/n.width,a=e.height/n.height;t.style.transform=t.style.WebkitTransform="translate("+i+"px,"+r+"px) scale("+o+","+a+")",t.style.transitionDuration="0s"}function p(t){t.style.transform=t.style.WebkitTransform="",t.style.transitionDuration=""}function v(t,e){for(var n="function"==typeof t?function(){return t()}:function(){return t},i=[],r=0;e>r;r++)i[r]=n();return i}function g(t,e){if(!x(t,e)){var n=w(t,"class").trim(),i=(n+" "+e).trim();w(t,"class",i)}}function m(t,e){var n=new RegExp("\\s*\\b"+e+"\\b\\s*","g"),i=w(t,"class").replace(n," ").trim();w(t,"class",i)}function x(t,e){return new RegExp("\\b"+e+"\\b").test(w(t,"class"))}function w(t,e,n){return"undefined"==typeof n?t.getAttribute(e)||"":void t.setAttribute(e,n)}function y(t,e,n){var i=arguments.length<=3||void 0===arguments[3]?!1:arguments[3];t.addEventListener(e,n,i)}function b(t,e,n){var i=arguments.length<=3||void 0===arguments[3]?!1:arguments[3];t.removeEventListener(e,n,i)}Object.defineProperty(e,"__esModule",{value:!0});var G=void 0===window.ontransitionend&&void 0!==window.onwebkittransitionend,M=G?"webkitTransitionEnd":"transitionend",L="_wfMoveClass";e["default"]={props:{autoResize:{"default":!0},interval:{"default":200,validator:function(t){return t>=0}},align:{"default":"left",validator:function(t){return~["left","right","center"].indexOf(t)}},line:{"default":"v",validator:function(t){return~["v","h"].indexOf(t)}},lineGap:{required:!0,validator:function(t){return t>=0}},minLineGap:{validator:function(t){return t>=0}},maxLineGap:{validator:function(t){return t>=0}},singleMaxWidth:{validator:function(t){return t>=0}},fixedHeight:{"default":!1},watch:{"default":{}}},data:function(){return{style:{height:"",overflow:""}}},methods:{autoResizeHandler:n,reflowHandler:r(),reflow:o},events:{"wf-reflow":function(){this.reflowHandler()}},compiled:function(){this.virtualRects=[]},ready:function(){var t=this;this.autoResizeHandler(),this.$watch("autoResize",this.autoResizeHandler),this.$watch(function(){return t.align,t.line,t.lineGap,t.minLineGap,t.maxLineGap,t.singleMaxWidth,t.fixedHeight,t.watch},this.reflowHandler),y(this.$el,M,i,!0)},beforeDestroy:function(){this.autoResizeHandler(!1),b(this.$el,M,i,!0)}};var C=function(){function t(t,n,i,r){var o=t.$el.clientWidth,a=e(o,n),s=v(0,a.count);i.forEach(function(t,e){var i=s.reduce(function(t,e,n){return e<s[t]?n:t},0),o=r[e];o.top=s[i],o.left=a.left+a.width*i,o.width=a.width,o.height=t.height*(n.fixedHeight?1:a.width/t.width),s[i]=s[i]+o.height}),t.style.height=Math.max.apply(null,s)+"px"}function e(t,e){var n=t/e.lineGap,i=void 0;if(e.singleMaxWidth>=t)n=1,i=Math.max(t,e.minLineGap);else{var r=e.maxLineGap*~~n,o=e.minLineGap*~~(n+1),a=r>=t,s=t>=o;a&&s?(n=Math.round(n),i=t/n):a?(n=~~n,i=t/n):s?(n=~~(n+1),i=t/n):(n=~~n,i=e.maxLineGap),1===n&&(i=Math.min(t,e.singleMaxWidth),i=Math.max(i,e.minLineGap))}return{width:i,count:n,left:l(t,i*n,e.align)}}return{calculate:t}}(),W=function(){function t(t,n,i,r){for(var o=t.$el.clientWidth,a=i.length,s=0,u=0;a>u;){for(var l,f,c=e(o,n,i,u),d=0,h=0;d<c.count;d++)l=i[u+d],f=r[u+d],f.top=s,f.left=c.left+h,f.width=l.width*c.height/l.height,f.height=c.height,h+=f.width;u+=c.count,s+=c.height}t.style.height=s+"px"}function e(t,e,o,a){var s=n(t,e.lineGap,o,a),u=Math.max(s-1,1),f=i(t,e,o,a,s),c=i(t,e,o,a,u),d=r(c,f,t),h=d.height,p=d.width;return 1===d.count&&(p=Math.min(e.singleMaxWidth,t),h=o[a].height*p/o[a].width),{left:l(t,p,e.align),count:d.count,height:h}}function n(t,e,n,i){for(var r=0,o=i,a=0;o<n.length&&t>=a;o++)a+=n[o].width*e/n[o].height,r++;return r}function i(t,e,n,i,r){for(var o=0,a=r-1;a>=0;a--){var s=n[i+a];o+=s.width*e.lineGap/s.height}var u=e.lineGap*t/o,l=u<=e.maxLineGap&&u>=e.minLineGap;if(l)return{cost:Math.abs(e.lineGap-u),count:r,width:t,height:u};var f=o>t?e.minLineGap:e.maxLineGap;return{cost:1/0,count:r,width:o*f/e.lineGap,height:f}}function r(t,e,n){return t.cost===1/0&&e.cost===1/0?e.width<n?e:t:e.cost>=t.cost?t:e}return{calculate:t}}()},function(t,e){t.exports="<div class=vue-waterfall :style=style><slot></slot></div>"},function(t,e,n){var i,r;n(9),i=n(11),r=n(12),t.exports=i||{},t.exports.__esModule&&(t.exports=t.exports["default"]),r&&(("function"==typeof t.exports?t.exports.options||(t.exports.options={}):t.exports).template=r)},function(t,e,n){var i=n(10);"string"==typeof i&&(i=[[t.id,i,""]]);n(5)(i,{});i.locals&&(t.exports=i.locals)},function(t,e,n){e=t.exports=n(4)(),e.push([t.id,".vue-waterfall-slot{position:absolute;margin:0;padding:0;box-sizing:border-box}",""])},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e["default"]={data:function(){return{isShow:!1}},props:{width:{required:!0,validator:function(t){return t>=0}},height:{required:!0,validator:function(t){return t>=0}},order:{"default":0},moveClass:{"default":""}},methods:{notify:function(){this.$dispatch("wf-reflow",[this])},getMeta:function(){return{vm:this,node:this.$el,order:this.order,width:this.width,height:this.height,moveClass:this.moveClass}}},compiled:function(){var t=this;this.$watch("width, height",this.notify),this.$once("wf-reflowed",function(){return t.isShow=!0}),this.rect={top:0,left:0,width:0,height:0}},attached:function(){this.notify()},detached:function(){this.notify()}}},function(t,e){t.exports="<div class=vue-waterfall-slot v-show=isShow><slot></slot></div>"}])});
-},{}],54:[function(require,module,exports){
+},{}],55:[function(require,module,exports){
 (function (process,global){
 /*!
  * Vue.js v1.0.26
@@ -53971,7 +54847,7 @@ setTimeout(function () {
 
 module.exports = Vue;
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"_process":48}],55:[function(require,module,exports){
+},{"_process":48}],56:[function(require,module,exports){
 var inserted = exports.cache = {}
 
 exports.insert = function (css) {
@@ -53991,7 +54867,215 @@ exports.insert = function (css) {
   return elem
 }
 
-},{}],56:[function(require,module,exports){
+},{}],57:[function(require,module,exports){
+var __vueify_insert__ = require("vueify/lib/insert-css")
+var __vueify_style__ = __vueify_insert__.insert("/* line 3, stdin */\n.photo-container {\n  top: 5px;\n  left: 5px;\n  right: 5px;\n  bottom: 5px;\n  font-size: 1.2em; }\n\n/* line 11, stdin */\n.coverWrap {\n  display: block;\n  position: relative;\n  height: 315px;\n  overflow: hidden;\n  text-decoration: none; }\n\n/* line 20, stdin */\n.pinned:hover {\n  cursor: move; }\n")
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+
+var Waterfall = require('vue-waterfall');
+
+exports.default = {
+	props: {
+		pictures: {
+			default: function _default() {
+				return [];
+			}
+		}
+	},
+
+	data: function data() {
+		return {
+			showFileManager: false
+		};
+	},
+
+
+	ready: function ready() {
+		var dragContainerWidth = $("#viewContainer").innerWidth() + ($('#draggable').outerWidth() - $("#viewContainer").innerWidth()) * 2;
+		var dragContainerHeight = $("#viewContainer").innerHeight() + ($('#draggable').outerHeight() - $("#viewContainer").innerHeight()) * 2;
+
+		$("#draggableContainer").css("width", dragContainerWidth);
+		$("#draggableContainer").css("height", dragContainerHeight);
+
+		//set up position of draggable container according to view container and draggable size
+
+		var dragContainerOffsetLeft = $("#viewContainer").offset().left + $("#viewContainer").outerWidth() / 2 + $("#viewContainer").innerWidth() / 2 - $('#draggable').outerWidth();
+		var dragContainerOffsetTop = $("#viewContainer").offset().top + $("#viewContainer").outerHeight() / 2 + $("#viewContainer").innerHeight() / 2 - $('#draggable').outerHeight();
+
+		$("#draggableContainer").offset({ left: dragContainerOffsetLeft, top: dragContainerOffsetTop });
+
+		//activate draggable
+		$('#draggable').draggable({
+			axis: "y",
+			containment: "#draggableContainer"
+		});
+	},
+
+	events: {
+		'choosedPictures': function choosedPictures($response) {
+			this.choosedPictures($response);
+		}
+	},
+
+	methods: {
+		choosedPictures: function choosedPictures($response) {
+			this.pictures = $response.data;
+			if (this.pictures.length > 0) {
+				this.pinnedPhoto = this.pictures[0];
+				this.pinnedPhoto.pinned = true;
+			}
+			this.showFileManager = false;
+		},
+
+		setPinnedPhoto: function setPinnedPhoto(photo) {
+			photo.pinned = true;
+
+			if (this.pinnedPhoto && photo != this.pinnedPhoto) {
+				this.pinnedPhoto.pinned = false;
+			}
+
+			this.pinnedPhoto = photo;
+		},
+
+		deletePhoto: function deletePhoto(photo) {
+			this.pictures.$remove(photo);
+		},
+
+		filterPinnedPic: function filterPinnedPic(obj) {
+			return obj.pinned;
+		}
+	},
+
+	computed: {
+		pinnedPic: function pinnedPic() {
+			var pinned = this.pictures.filter(this.filterPinnedPic);
+			return pinned.length == 0 ? this.$env.get('APP_URI') + 'images/site/back.jpg' : pinned[0].url;
+		}
+	},
+
+	components: {
+		'waterfall': Waterfall.waterfall,
+		'waterfall-slot': Waterfall.waterfallSlot
+	},
+
+	locales: {
+		en: {
+			info: 'Info',
+			photos: 'Add photos',
+			teacher: 'Add teachers',
+			name: 'Training name',
+			description: 'Description',
+			name_watermark: 'name ...',
+			description_watermark: 'description ...'
+		},
+		mn: {
+			info: 'Инфо',
+			photos: 'Зураг оруулах',
+			teacher: 'Багш сонгох',
+			name: 'Хичээлийн нэр',
+			description: 'Тайлбар',
+			name_watermark: 'нэр ...',
+			description_watermark: 'тайлбар ...'
+		}
+	}
+};
+if (module.exports.__esModule) module.exports = module.exports.default
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n\n\t<custom-modal :id=\"id\" type=\"User\" title_en=\"Photo chooser\" title=\"Зураг сонгох\" usage=\"_photo-chooser\" multiple=\"true\" :items=\"pictures\" :show.sync=\"showFileManager\" save-callback=\"choosedPictures\" context=\"fileManager\">\n\t</custom-modal>\n\n\t<div id=\"viewContainer\" style=\"width:600px;height:200px;overflow:hidden;\">\n        <div id=\"draggableContainer\" style=\"\">\n\t        <img id=\"draggable\" class=\"pinned\" :src=\"pinnedPic\" style=\"width:100%;height:684px;overflow:hidden;\">\n\t    </div>\n\t</div>\n\n\t<div class=\"row\">\n\t  \t<waterfall align=\"left\" :watch=\"pictures\" line=\"h\" :line-gap=\"50\" :min-line-gap=\"50\" :max-line-gap=\"220\">\n\t\t  <waterfall-slot v-for=\"photo in pictures\" height=\"50\" :width=\"50 / photo.ratio\" move-class=\"item-move\" transition=\"wf\" :order=\"$index\">\n\t\t  \t<div class=\"photo-container\">\n\t\t\t    <img v-bind:src=\"photo.url\" style=\"height:100%; width:100%\">\n\t\t    \t <div style=\"position:absolute; top: 10px;\">\n\t\t\t    \t <a @click=\"setPinnedPhoto(photo)\">Pin</a>\n\t\t\t    \t <a @click=\"deletePhoto(photo)\">Delete</a>\n\t\t    \t </div>\n\t\t\t</div>\n\t\t  </waterfall-slot>\n\t\t</waterfall>\n\t\t<div class=\"figure\">\n            <div class=\"figcaption\" style=\"opacity:1;\">\n                <a @click=\"showFileManager = true\" class=\"btn-floating red\" style=\"left: 25%;\">\n                \t<i class=\"fa fa-plus\"></i>\n                </a>\n            </div>\n        </div>\n\t</div>\n"
+if (module.hot) {(function () {  module.hot.accept()
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), true)
+  if (!hotAPI.compatible) return
+  module.hot.dispose(function () {
+    __vueify_insert__.cache["/* line 3, stdin */\n.photo-container {\n  top: 5px;\n  left: 5px;\n  right: 5px;\n  bottom: 5px;\n  font-size: 1.2em; }\n\n/* line 11, stdin */\n.coverWrap {\n  display: block;\n  position: relative;\n  height: 315px;\n  overflow: hidden;\n  text-decoration: none; }\n\n/* line 20, stdin */\n.pinned:hover {\n  cursor: move; }\n"] = false
+    document.head.removeChild(__vueify_style__)
+  })
+  if (!module.hot.data) {
+    hotAPI.createRecord("_v-07baf5a0", module.exports)
+  } else {
+    hotAPI.update("_v-07baf5a0", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+  }
+})()}
+},{"vue":55,"vue-hot-reload-api":50,"vue-waterfall":54,"vueify/lib/insert-css":56}],58:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+exports.default = {
+	props: {
+		id: {},
+		teachers: {
+			default: function _default() {
+				return [];
+			}
+		}
+	},
+
+	data: function data() {
+		return {
+			showTeachers: false
+		};
+	},
+
+
+	events: {
+		'choosedTeachers': function choosedTeachers($response) {
+			this.choosedTeachers($response);
+		}
+	},
+
+	methods: {
+		choosedTeachers: function choosedTeachers($response) {
+			this.teachers = $response.data;
+			this.showTeachers = false;
+		},
+
+		deleteTeacher: function deleteTeacher(teacher) {
+			this.teachers.$remove(teacher);
+		}
+	},
+
+	components: {},
+
+	locales: {
+		en: {
+			info: 'Info',
+			photos: 'Add photos',
+			teacher: 'Add teachers',
+			name: 'Training name',
+			description: 'Description',
+			name_watermark: 'name ...',
+			description_watermark: 'description ...'
+		},
+		mn: {
+			info: 'Инфо',
+			photos: 'Зураг оруулах',
+			teacher: 'Багш сонгох',
+			name: 'Хичээлийн нэр',
+			description: 'Тайлбар',
+			name_watermark: 'нэр ...',
+			description_watermark: 'тайлбар ...'
+		}
+	}
+};
+if (module.exports.__esModule) module.exports = module.exports.default
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n\n\t<custom-modal :id=\"id\" type=\"Club\" title=\"Багш сонгох\" title_en=\"Teacher chooser\" usage=\"_teacher-chooser\" :items=\"teachers\" :show.sync=\"showTeachers\" save-callback=\"choosedTeachers\" context=\"teachers\">\n\t</custom-modal>\n\n\t<div class=\"picture-list\">\n\t  \t<div class=\"row small-up-2 medium-up-3 large-up-4\">\n\t  \t\t<br>\n\t\t  \t<div class=\"column\" v-for=\"teacher in teachers\">\n\t\t\t  \t<div class=\"figure\">\n                    <img v-bind:src=\"teacher.avatar_url\" alt=\"Jeffrey Way\" height=\"120\" width=\"120\" style=\"border-radius:4px;\">\n                    <div class=\"figcaption\">\n                        <a @click=\"deleteTeacher(teacher)\" class=\"btn-floating red\" style=\"left: 25%;\">\n                        \t<i class=\"fa fa-trash\"></i>\n                        </a>\n                    </div>\n                </div>\n\t\t  \t</div>\n\t\t  \t<div class=\"column\">\n\t\t\t  \t<div class=\"figure\">\n                    <div class=\"figcaption\" style=\"opacity:1;\">\n                        <a @click=\"showTeachers = true\" class=\"btn-floating red\" style=\"left: 25%;\">\n                        \t<i class=\"fa fa-plus\"></i>\n                        </a>\n                    </div>\n                </div>\n\t\t  \t</div>\n\t\t</div>\n\t</div>\n\n"
+if (module.hot) {(function () {  module.hot.accept()
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), true)
+  if (!hotAPI.compatible) return
+  if (!module.hot.data) {
+    hotAPI.createRecord("_v-7055b1a0", module.exports)
+  } else {
+    hotAPI.update("_v-7055b1a0", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+  }
+})()}
+},{"vue":55,"vue-hot-reload-api":50}],59:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
 var __vueify_style__ = __vueify_insert__.insert("\n\n")
 'use strict';
@@ -54042,7 +55126,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-45ac052a", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":54,"vue-hot-reload-api":50,"vueify/lib/insert-css":55}],57:[function(require,module,exports){
+},{"vue":55,"vue-hot-reload-api":50,"vueify/lib/insert-css":56}],60:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
 var __vueify_style__ = __vueify_insert__.insert("\n\n")
 'use strict';
@@ -54093,7 +55177,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-76e7bb4b", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":54,"vue-hot-reload-api":50,"vueify/lib/insert-css":55}],58:[function(require,module,exports){
+},{"vue":55,"vue-hot-reload-api":50,"vueify/lib/insert-css":56}],61:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
 var __vueify_style__ = __vueify_insert__.insert("\n\n")
 'use strict';
@@ -54201,7 +55285,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-3079ee95", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":54,"vue-hot-reload-api":50,"vueify/lib/insert-css":55}],59:[function(require,module,exports){
+},{"vue":55,"vue-hot-reload-api":50,"vueify/lib/insert-css":56}],62:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -54238,7 +55322,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-1c02eea7", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":54,"vue-hot-reload-api":50}],60:[function(require,module,exports){
+},{"vue":55,"vue-hot-reload-api":50}],63:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -54315,7 +55399,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-6dc86ce0", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":54,"vue-hot-reload-api":50}],61:[function(require,module,exports){
+},{"vue":55,"vue-hot-reload-api":50}],64:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
 var __vueify_style__ = __vueify_insert__.insert("\n")
 "use strict";
@@ -54329,7 +55413,7 @@ exports.default = {
 	}
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<li style=\"border: 1px solid green;\">\n\t<img :src=\"item.photos[0].url\">\n\t<h3>{{item.name}}</h3>\n\t{{item.description}}\t\n\t<ul>\n\t\t<li v-for=\"teacher in item.teachers\">\n\t\t\t#{{teacher.username}},\n\t\t</li>\n\t</ul>\t\n</li>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"column\">\n\t<img :src=\"item.photos[0].url\">\n\t<h3>{{item.name}}</h3>\n\t{{item.description}}\t\n\t<ul>\n\t\t<li v-for=\"teacher in item.teachers\">\n\t\t\t#{{teacher.username}},\n\t\t</li>\n\t</ul>\t\n</div>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -54344,7 +55428,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-3df773f8", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":54,"vue-hot-reload-api":50,"vueify/lib/insert-css":55}],62:[function(require,module,exports){
+},{"vue":55,"vue-hot-reload-api":50,"vueify/lib/insert-css":56}],65:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -54359,7 +55443,7 @@ exports.default = {
         return {
             planType: 1,
             panels: [],
-            showTraining: false
+            showAddPlan: false
         };
     },
 
@@ -54394,7 +55478,7 @@ exports.default = {
     }
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div>\n    <ul class=\"tabs\">\n      <li class=\"tab s3\"><a @click=\"setPlanType(1)\" class=\"active\">{{$t('plan')}} (1)</a></li>\n      <li class=\"tab s3\"><a @click=\"setPlanType(2)\">{{$t('loyalty')}} (1)</a></li>\n    </ul>\n</div>  \n\n<div class=\"row\">\n  <div class=\"small-10 columns\">\n    <input type=\"text\" name=\"search\" placeholder=\"search ...\">\n  </div>\n  <div class=\"small-2 columns\">\n    <div class=\"small-2 columns\">\n          <a @click=\"showTraining = true\" class=\"button success\">\n              <i class=\"fa fa-pencil-square-o\">                       \n              </i>\n          </a>\n    </div>\n  </div>\n</div>\n\n<custom-modal :id=\"id\" type=\"Club\" title=\"Trainings\" usage=\"_training-chooser\" :items=\"trainings\" :show.sync=\"showTraining\" save-callback=\"choosedTrainings\" context=\"trainings\">\n</custom-modal>\n\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div>\n    <ul class=\"tabs\">\n      <li class=\"tab s3\"><a @click=\"setPlanType(1)\" class=\"active\">{{$t('plan')}} (1)</a></li>\n      <li class=\"tab s3\"><a @click=\"setPlanType(2)\">{{$t('loyalty')}} (1)</a></li>\n    </ul>\n</div>  \n\n<div class=\"row\">\n  <div class=\"small-10 columns\">\n    <input type=\"text\" name=\"search\" placeholder=\"search ...\">\n  </div>\n  <div class=\"small-2 columns\">\n    <div class=\"small-2 columns\">\n          <a @click=\"showAddPlan = true\" class=\"button success\">\n              <i class=\"fa fa-pencil-square-o\">                       \n              </i>\n          </a>\n    </div>\n  </div>\n</div>\n\n<label>Select Menu\n  <select>\n    <option value=\"husker\">All</option>\n    <option value=\"starbuck\">Starbuck</option>\n    <option value=\"hotdog\">Hot Dog</option>\n    <option value=\"apollo\">Apollo</option>\n  </select>\n</label>\n\n<custom-modal :id=\"id\" type=\"Club\" title=\"Add Plan\" usage=\"_add-plan\" :show.sync=\"showAddPlan\" save-callback=\"savePlan\" validateable=\"Y\" context=\"AddPlan\">\n  </custom-modal>\n\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -54405,7 +55489,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-0084fe4a", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":54,"vue-hot-reload-api":50}],63:[function(require,module,exports){
+},{"vue":55,"vue-hot-reload-api":50}],66:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -54485,7 +55569,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-1799aaba", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":54,"vue-hot-reload-api":50}],64:[function(require,module,exports){
+},{"vue":55,"vue-hot-reload-api":50}],67:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -54497,16 +55581,44 @@ exports.default = {
     },
 
     data: function data() {
-        return {};
+        return {
+            services: [],
+            showAddService: false
+        };
     },
 
 
     created: function created() {
-        this.init();
+        this.getServices();
+    },
+
+    events: {
+        'chooseService': function chooseService($response) {
+            this.chooseService($response);
+        }
     },
 
     methods: {
-        init: function init() {}
+        getServices: function getServices() {
+            var _this = this;
+
+            this.$http.get(this.$env.get('APP_URI') + '/api/club/' + this.id + '/service').then(function (res) {
+                _this.services = res.data.result;
+            }).catch(function (err) {});
+        },
+
+        chooseService: function chooseService($response) {
+            var _this2 = this;
+
+            this.$http.post(this.$env.get('APP_URI') + 'api/club/' + this.id + '/service/edit?data=' + $response.data).then(function (res) {
+                debugger;
+                _this2.services = res.data.result;
+                _this2.showAddService = false;
+                _this2.$root.$refs.toast.showMessage('Successfully choose services');
+            }).catch(function (err) {
+                _this2.$root.$refs.toast.showMessage('Error');
+            });
+        }
     },
 
     components: {},
@@ -54523,7 +55635,7 @@ exports.default = {
     }
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div>\n    <ul class=\"tabs\">\n      <li class=\"tab s3\"><a @click=\"setSubMenu('request-members')\" class=\"active\">{{$t('plan')}} ({{request_count}})</a></li>\n      <li class=\"tab s3\"><a @click=\"setSubMenu('current-members')\">{{$t('loyalty')}} ({{member_count}})</a></li>\n    </ul>\n</div>  \n\n<div class=\"small-9 text-center small-centered columns\">\n    <!-- <component :id=\"clubid\" \n               :type=\"memberType\" \n               :is=\"submenu\">\n    </component> -->\n</div>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"row\">\n  <div class=\"small-10 columns\">\n    <input type=\"text\" name=\"search\" placeholder=\"search ...\">\n  </div>\n  <div class=\"small-2 columns\">\n    <div class=\"small-2 columns\">\n          <a @click=\"showAddService = true\" class=\"button success\">\n              <i class=\"fa fa-pencil-square-o\">\n                       \n              </i>\n          </a>\n    </div>\n  </div>\n</div>\n\n<custom-modal :id=\"id\" type=\"Club\" title=\"Үйлчилгээ сонгох\" title_en=\"Add Service\" usage=\"_add-service\" :items=\"services\" :show.sync=\"showAddService\" save-callback=\"chooseService\" context=\"services\">\n</custom-modal>\n\n<div class=\"row small-up-3 medium-up-4 large-up-5\">\n  <div class=\"column\" v-for=\"service in services\">\n      <img src=\"/images/pin.png\">\n      <h3>\n        {{service.name}}\n      </h3>\n  </div>\n</div>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -54534,7 +55646,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-387842ff", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":54,"vue-hot-reload-api":50}],65:[function(require,module,exports){
+},{"vue":55,"vue-hot-reload-api":50}],68:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
 var __vueify_style__ = __vueify_insert__.insert("@charset \"UTF-8\";\n/* line 2, stdin */\n.picture-list {\n  background-color: #5fcf80;\n  border-radius: 4px; }\n\n/* line 7, stdin */\n.add-button {\n  height: 120px;\n  width: 120px;\n  background-color: #fff;\n  border-radius: 4px;\n  border: 1px solid #53BBB4; }\n\n/* line 15, stdin */\n.figure {\n  margin: 0 10px 10px 0;\n  height: 120px;\n  width: 120px;\n  position: relative; }\n  /* line 22, stdin */\n  .figure:hover .figcaption {\n    opacity: 1; }\n\n/* line 28, stdin */\n.figcaption {\n  border-radius: 4px;\n  background-color: rgba(58, 52, 42, 0.7);\n  -webkit-backface-visibility: hidden;\n  backface-visibility: hidden;\n  position: absolute;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n  color: #fff;\n  padding: 0 25px;\n  display: -webkit-flex;\n  display: -ms-flexbox;\n  display: -webkit-box;\n  display: flex;\n  -webkit-align-items: center;\n  -ms-flex-align: center;\n  -webkit-box-align: center;\n          align-items: center;\n  -webkit-transition: all 0.25s;\n  transition: all 0.25s;\n  opacity: 0; }\n\n/* line 52, stdin */\n.gh-search-submit {\n  opacity: 0.75;\n  z-index: 9999;\n  background-image: url(\"data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgi…KCUM1LjE1NCwxMi44NTUsMi44MjQsMTAuNTI3LDIuODI0LDcuNjY2eiIvPg0KPC9zdmc+DQo=\"); }\n\n/* line 58, stdin */\n.gh-search-reset.show {\n  cursor: pointer;\n  z-index: 9999;\n  opacity: 1;\n  -webkit-transform: translateX(0px);\n  -ms-transform: translateX(0px);\n  transform: translateX(0px);\n  -webkit-transition-delay: .2s;\n  transition-delay: .2s; }\n")
 'use strict';
@@ -54577,15 +55689,20 @@ exports.default = {
             var _this = this;
 
             this.$http.get(this.$env.get('APP_URI') + 'api/club/' + this.id + '/training').then(function (res) {
-                debugger;
                 _this.training = res.data.result;
             }).catch(function (err) {});
         },
 
         saveTraining: function saveTraining($response) {
-            this.$http.post(this.$env.get('APP_URI') + 'api/club/' + this.id + '/training?data=' + $response.data).then(function (res) {}).catch(function (err) {});
-            this.showAddTraining = false;
-            this.$root.$refs.toast.showMessage('Successfully add new training.');
+            var _this2 = this;
+
+            this.$http.post(this.$env.get('APP_URI') + 'api/club/' + this.id + '/training?data=' + $response.data).then(function (res) {
+                _this2.training.push(res.data.result);
+                _this2.showAddTraining = false;
+                _this2.$root.$refs.toast.showMessage('Successfully add new training.');
+            }).catch(function (err) {
+                _this2.$root.$refs.toast.showMessage('Server side error!.');
+            });
         }
     },
 
@@ -54605,7 +55722,7 @@ exports.default = {
     }
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"row\">\n  <div class=\"small-10 columns\">\n    <input type=\"text\" name=\"search\" placeholder=\"search ...\">\n  </div>\n  <div class=\"small-2 columns\">\n    <div class=\"small-2 columns\">\n          <a @click=\"showAddTraining = true\" class=\"button success\">\n              <i class=\"fa fa-pencil-square-o\">\n                       \n              </i>\n          </a>\n    </div>\n  </div>\n</div>\n\n<custom-modal :id=\"id\" type=\"Club\" title=\"Хичээл нэмэх\" title_en=\"Add Training\" usage=\"_add-training\" :show.sync=\"showAddTraining\" save-callback=\"saveTraining\" validateable=\"Y\" context=\"AddTraining\">\n</custom-modal>\n\n<ft-training :item=\"train\" v-for=\"train in training\">\n    \n</ft-training>\n\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"row\">\n  <div class=\"small-10 columns\">\n    <input type=\"text\" name=\"search\" placeholder=\"search ...\">\n  </div>\n  <div class=\"small-2 columns\">\n    <div class=\"small-2 columns\">\n          <a @click=\"showAddTraining = true\" class=\"button success\">\n              <i class=\"fa fa-pencil-square-o\">\n                       \n              </i>\n          </a>\n    </div>\n  </div>\n</div>\n\n<custom-modal :id=\"id\" type=\"Club\" title=\"Хичээл нэмэх\" title_en=\"Add Training\" usage=\"_add-training\" :show.sync=\"showAddTraining\" save-callback=\"saveTraining\" validateable=\"Y\" context=\"AddTraining\">\n</custom-modal>\n\n<div class=\"row small-up-3 medium-up-4 large-up-5\">\n  <ft-training :item=\"train\" v-for=\"train in training\">\n      \n  </ft-training>\n</div>\n\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -54620,7 +55737,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-34c4336c", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{".././components/FtTraining.vue":61,"vue":54,"vue-hot-reload-api":50,"vueify/lib/insert-css":55}],66:[function(require,module,exports){
+},{".././components/FtTraining.vue":64,"vue":55,"vue-hot-reload-api":50,"vueify/lib/insert-css":56}],69:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
 var __vueify_style__ = __vueify_insert__.insert("\n")
 "use strict";
@@ -54659,7 +55776,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-492704ba", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":54,"vue-hot-reload-api":50,"vueify/lib/insert-css":55}],67:[function(require,module,exports){
+},{"vue":55,"vue-hot-reload-api":50,"vueify/lib/insert-css":56}],70:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -54788,7 +55905,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-fe3db782", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{".././components/ArchiveMembers.vue":59,".././components/CurrentMembers.vue":60,".././components/RequestMembers.vue":63,"vue":54,"vue-hot-reload-api":50}],68:[function(require,module,exports){
+},{".././components/ArchiveMembers.vue":62,".././components/CurrentMembers.vue":63,".././components/RequestMembers.vue":66,"vue":55,"vue-hot-reload-api":50}],71:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -54813,7 +55930,7 @@ exports.default = {
     props: {
         clubid: {},
         type: {
-            default: 'plan-panel'
+            default: 'training-panel'
         }
     },
 
@@ -54876,7 +55993,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-5773b283", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{".././components/PlanPanel.vue":62,".././components/ServicePanel.vue":64,".././components/TrainingPanel.vue":65,"vue":54,"vue-hot-reload-api":50}],69:[function(require,module,exports){
+},{".././components/PlanPanel.vue":65,".././components/ServicePanel.vue":67,".././components/TrainingPanel.vue":68,"vue":55,"vue-hot-reload-api":50}],72:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
 var __vueify_style__ = __vueify_insert__.insert("\n")
 'use strict';
@@ -54942,7 +56059,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-455676c4", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":54,"vue-hot-reload-api":50,"vueify/lib/insert-css":55}],70:[function(require,module,exports){
+},{"vue":55,"vue-hot-reload-api":50,"vueify/lib/insert-css":56}],73:[function(require,module,exports){
 'use strict';
 
 var _VerifyView = require('./web/VerifyView.vue');
@@ -55022,7 +56139,7 @@ var app = new Vue({
 	}
 });
 
-},{"./actors/application/widgets/content/TeacherDefault.vue":56,"./actors/application/widgets/content/TrainingDefault.vue":57,"./actors/application/widgets/header/Default.vue":58,"./bootstrap":71,"./web/ClubEditView.vue":92,"./web/IndexView.vue":93,"./web/ProfileEditView.vue":94,"./web/ProfileView.vue":95,"./web/SearchView.vue":96,"./web/VerifyView.vue":97}],71:[function(require,module,exports){
+},{"./actors/application/widgets/content/TeacherDefault.vue":59,"./actors/application/widgets/content/TrainingDefault.vue":60,"./actors/application/widgets/header/Default.vue":61,"./bootstrap":74,"./web/ClubEditView.vue":99,"./web/IndexView.vue":100,"./web/ProfileEditView.vue":101,"./web/ProfileView.vue":102,"./web/SearchView.vue":103,"./web/VerifyView.vue":104}],74:[function(require,module,exports){
 'use strict';
 
 var _chart = require('chart.js');
@@ -55036,6 +56153,10 @@ var _CustomModal2 = _interopRequireDefault(_CustomModal);
 var _CustomToast = require('./components/CustomToast.vue');
 
 var _CustomToast2 = _interopRequireDefault(_CustomToast);
+
+var _vueMultiselect = require('vue-multiselect');
+
+var _vueMultiselect2 = _interopRequireDefault(_vueMultiselect);
 
 var _Tools = require('./settings/Tools.js');
 
@@ -55062,10 +56183,16 @@ window._ = require('lodash');
 window.$ = window.jQuery = require('jquery');
 
 require('./dependency/jquery.fileupload');
+require('./dependency/jquery-ui.min');
+require('./dependency/jquery.ui.touch-punch');
 require('./dependency/foundation');
 require('./dependency/jquery.tokenize');
 require('./dependency/tabs');
+require('./dependency/dropdown');
 require('./dependency/velocity.min');
+
+/*require('./dependency/datepicker/picker');*/
+/*require('./dependency/datepicker/datepicker');*/
 
 /**
  * Vue is a modern JavaScript library for building interactive web interfaces
@@ -55082,6 +56209,7 @@ Vue.use(require('vue-i18n'));
 
 Vue.component('CustomModal', _CustomModal2.default);
 Vue.component('CustomToast', _CustomToast2.default);
+Vue.component('Multiselect', _vueMultiselect2.default);
 
 //common tools
 
@@ -55124,7 +56252,7 @@ Vue.http.interceptors.push((request, next) => {
 //     key: 'your-pusher-key'
 // });
 
-},{"../../../env.js":1,"./components/CustomModal.vue":74,"./components/CustomToast.vue":75,"./dependency/foundation":84,"./dependency/jquery.fileupload":85,"./dependency/jquery.tokenize":86,"./dependency/tabs":88,"./dependency/velocity.min":89,"./lang/locales":90,"./settings/Tools.js":91,"chart.js":2,"jquery":45,"lodash":46,"vue":54,"vue-env":49,"vue-i18n":51,"vue-resource":52}],72:[function(require,module,exports){
+},{"../../../env.js":1,"./components/CustomModal.vue":77,"./components/CustomToast.vue":78,"./dependency/dropdown":88,"./dependency/foundation":89,"./dependency/jquery-ui.min":90,"./dependency/jquery.fileupload":91,"./dependency/jquery.tokenize":92,"./dependency/jquery.ui.touch-punch":93,"./dependency/tabs":95,"./dependency/velocity.min":96,"./lang/locales":97,"./settings/Tools.js":98,"chart.js":2,"jquery":45,"lodash":46,"vue":55,"vue-env":49,"vue-i18n":51,"vue-multiselect":52,"vue-resource":53}],75:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -55154,7 +56282,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-ebf1af24", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":54,"vue-hot-reload-api":50}],73:[function(require,module,exports){
+},{"vue":55,"vue-hot-reload-api":50}],76:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
 var __vueify_style__ = __vueify_insert__.insert("/* line 8, stdin */\n.progress--circle {\n  position: relative;\n  display: inline-block;\n  margin: 1rem;\n  width: 120px;\n  height: 120px;\n  border-radius: 50%;\n  background-color: #ddd; }\n  /* line 16, stdin */\n  .progress--circle:before {\n    content: '';\n    position: absolute;\n    top: 15px;\n    left: 15px;\n    width: 90px;\n    height: 90px;\n    border-radius: 50%;\n    background-color: white; }\n  /* line 26, stdin */\n  .progress--circle:after {\n    content: '';\n    display: inline-block;\n    width: 100%;\n    height: 100%;\n    border-radius: 50%;\n    background-color: #63B8FF; }\n\n/* line 36, stdin */\n.progress__number {\n  position: absolute;\n  top: 50%;\n  width: 100%;\n  line-height: 1;\n  margin-top: -0.75rem;\n  text-align: center;\n  font-size: 1.5rem;\n  color: #777; }\n\n/* line 52, stdin */\n.progress--bar.progress--0:after {\n  width: 0%; }\n\n/* line 55, stdin */\n.progress--circle.progress--0:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(left, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(90deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--1:after {\n  width: 1%; }\n\n/* line 55, stdin */\n.progress--circle.progress--1:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(356.4deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(93.6deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--2:after {\n  width: 2%; }\n\n/* line 55, stdin */\n.progress--circle.progress--2:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(352.8deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(97.2deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--3:after {\n  width: 3%; }\n\n/* line 55, stdin */\n.progress--circle.progress--3:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(349.2deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(100.8deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--4:after {\n  width: 4%; }\n\n/* line 55, stdin */\n.progress--circle.progress--4:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(345.6deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(104.4deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--5:after {\n  width: 5%; }\n\n/* line 55, stdin */\n.progress--circle.progress--5:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(342deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(108deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--6:after {\n  width: 6%; }\n\n/* line 55, stdin */\n.progress--circle.progress--6:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(338.4deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(111.6deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--7:after {\n  width: 7%; }\n\n/* line 55, stdin */\n.progress--circle.progress--7:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(334.8deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(115.2deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--8:after {\n  width: 8%; }\n\n/* line 55, stdin */\n.progress--circle.progress--8:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(331.2deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(118.8deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--9:after {\n  width: 9%; }\n\n/* line 55, stdin */\n.progress--circle.progress--9:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(327.6deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(122.4deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--10:after {\n  width: 10%; }\n\n/* line 55, stdin */\n.progress--circle.progress--10:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(324deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(126deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--11:after {\n  width: 11%; }\n\n/* line 55, stdin */\n.progress--circle.progress--11:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(320.4deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(129.6deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--12:after {\n  width: 12%; }\n\n/* line 55, stdin */\n.progress--circle.progress--12:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(316.8deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(133.2deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--13:after {\n  width: 13%; }\n\n/* line 55, stdin */\n.progress--circle.progress--13:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(313.2deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(136.8deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--14:after {\n  width: 14%; }\n\n/* line 55, stdin */\n.progress--circle.progress--14:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(309.6deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(140.4deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--15:after {\n  width: 15%; }\n\n/* line 55, stdin */\n.progress--circle.progress--15:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(306deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(144deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--16:after {\n  width: 16%; }\n\n/* line 55, stdin */\n.progress--circle.progress--16:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(302.4deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(147.6deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--17:after {\n  width: 17%; }\n\n/* line 55, stdin */\n.progress--circle.progress--17:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(298.8deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(151.2deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--18:after {\n  width: 18%; }\n\n/* line 55, stdin */\n.progress--circle.progress--18:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(295.2deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(154.8deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--19:after {\n  width: 19%; }\n\n/* line 55, stdin */\n.progress--circle.progress--19:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(291.6deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(158.4deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--20:after {\n  width: 20%; }\n\n/* line 55, stdin */\n.progress--circle.progress--20:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(288deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(162deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--21:after {\n  width: 21%; }\n\n/* line 55, stdin */\n.progress--circle.progress--21:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(284.4deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(165.6deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--22:after {\n  width: 22%; }\n\n/* line 55, stdin */\n.progress--circle.progress--22:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(280.8deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(169.2deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--23:after {\n  width: 23%; }\n\n/* line 55, stdin */\n.progress--circle.progress--23:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(277.2deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(172.8deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--24:after {\n  width: 24%; }\n\n/* line 55, stdin */\n.progress--circle.progress--24:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(273.6deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(176.4deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--25:after {\n  width: 25%; }\n\n/* line 55, stdin */\n.progress--circle.progress--25:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(top, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(180deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--26:after {\n  width: 26%; }\n\n/* line 55, stdin */\n.progress--circle.progress--26:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(266.4deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(183.6deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--27:after {\n  width: 27%; }\n\n/* line 55, stdin */\n.progress--circle.progress--27:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(262.8deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(187.2deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--28:after {\n  width: 28%; }\n\n/* line 55, stdin */\n.progress--circle.progress--28:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(259.2deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(190.8deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--29:after {\n  width: 29%; }\n\n/* line 55, stdin */\n.progress--circle.progress--29:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(255.6deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(194.4deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--30:after {\n  width: 30%; }\n\n/* line 55, stdin */\n.progress--circle.progress--30:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(252deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(198deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--31:after {\n  width: 31%; }\n\n/* line 55, stdin */\n.progress--circle.progress--31:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(248.4deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(201.6deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--32:after {\n  width: 32%; }\n\n/* line 55, stdin */\n.progress--circle.progress--32:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(244.8deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(205.2deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--33:after {\n  width: 33%; }\n\n/* line 55, stdin */\n.progress--circle.progress--33:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(241.2deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(208.8deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--34:after {\n  width: 34%; }\n\n/* line 55, stdin */\n.progress--circle.progress--34:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(237.6deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(212.4deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--35:after {\n  width: 35%; }\n\n/* line 55, stdin */\n.progress--circle.progress--35:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(234deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(216deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--36:after {\n  width: 36%; }\n\n/* line 55, stdin */\n.progress--circle.progress--36:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(230.4deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(219.6deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--37:after {\n  width: 37%; }\n\n/* line 55, stdin */\n.progress--circle.progress--37:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(226.8deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(223.2deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--38:after {\n  width: 38%; }\n\n/* line 55, stdin */\n.progress--circle.progress--38:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(223.2deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(226.8deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--39:after {\n  width: 39%; }\n\n/* line 55, stdin */\n.progress--circle.progress--39:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(219.6deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(230.4deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--40:after {\n  width: 40%; }\n\n/* line 55, stdin */\n.progress--circle.progress--40:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(216deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(234deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--41:after {\n  width: 41%; }\n\n/* line 55, stdin */\n.progress--circle.progress--41:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(212.4deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(237.6deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--42:after {\n  width: 42%; }\n\n/* line 55, stdin */\n.progress--circle.progress--42:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(208.8deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(241.2deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--43:after {\n  width: 43%; }\n\n/* line 55, stdin */\n.progress--circle.progress--43:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(205.2deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(244.8deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--44:after {\n  width: 44%; }\n\n/* line 55, stdin */\n.progress--circle.progress--44:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(201.6deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(248.4deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--45:after {\n  width: 45%; }\n\n/* line 55, stdin */\n.progress--circle.progress--45:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(198deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(252deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--46:after {\n  width: 46%; }\n\n/* line 55, stdin */\n.progress--circle.progress--46:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(194.4deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(255.6deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--47:after {\n  width: 47%; }\n\n/* line 55, stdin */\n.progress--circle.progress--47:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(190.8deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(259.2deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--48:after {\n  width: 48%; }\n\n/* line 55, stdin */\n.progress--circle.progress--48:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(187.2deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(262.8deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--49:after {\n  width: 49%; }\n\n/* line 55, stdin */\n.progress--circle.progress--49:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(183.6deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(266.4deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--50:after {\n  width: 50%; }\n\n/* line 55, stdin */\n.progress--circle.progress--50:after {\n  background-image: -webkit-linear-gradient(right, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(-90deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--51:after {\n  width: 51%; }\n\n/* line 55, stdin */\n.progress--circle.progress--51:after {\n  background-image: -webkit-linear-gradient(176.4deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(-86.4deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--52:after {\n  width: 52%; }\n\n/* line 55, stdin */\n.progress--circle.progress--52:after {\n  background-image: -webkit-linear-gradient(172.8deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(-82.8deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--53:after {\n  width: 53%; }\n\n/* line 55, stdin */\n.progress--circle.progress--53:after {\n  background-image: -webkit-linear-gradient(169.2deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(-79.2deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--54:after {\n  width: 54%; }\n\n/* line 55, stdin */\n.progress--circle.progress--54:after {\n  background-image: -webkit-linear-gradient(165.6deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(-75.6deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--55:after {\n  width: 55%; }\n\n/* line 55, stdin */\n.progress--circle.progress--55:after {\n  background-image: -webkit-linear-gradient(162deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(-72deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--56:after {\n  width: 56%; }\n\n/* line 55, stdin */\n.progress--circle.progress--56:after {\n  background-image: -webkit-linear-gradient(158.4deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(-68.4deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--57:after {\n  width: 57%; }\n\n/* line 55, stdin */\n.progress--circle.progress--57:after {\n  background-image: -webkit-linear-gradient(154.8deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(-64.8deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--58:after {\n  width: 58%; }\n\n/* line 55, stdin */\n.progress--circle.progress--58:after {\n  background-image: -webkit-linear-gradient(151.2deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(-61.2deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--59:after {\n  width: 59%; }\n\n/* line 55, stdin */\n.progress--circle.progress--59:after {\n  background-image: -webkit-linear-gradient(147.6deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(-57.6deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--60:after {\n  width: 60%; }\n\n/* line 55, stdin */\n.progress--circle.progress--60:after {\n  background-image: -webkit-linear-gradient(144deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(-54deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--61:after {\n  width: 61%; }\n\n/* line 55, stdin */\n.progress--circle.progress--61:after {\n  background-image: -webkit-linear-gradient(140.4deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(-50.4deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--62:after {\n  width: 62%; }\n\n/* line 55, stdin */\n.progress--circle.progress--62:after {\n  background-image: -webkit-linear-gradient(136.8deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(-46.8deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--63:after {\n  width: 63%; }\n\n/* line 55, stdin */\n.progress--circle.progress--63:after {\n  background-image: -webkit-linear-gradient(133.2deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(-43.2deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--64:after {\n  width: 64%; }\n\n/* line 55, stdin */\n.progress--circle.progress--64:after {\n  background-image: -webkit-linear-gradient(129.6deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(-39.6deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--65:after {\n  width: 65%; }\n\n/* line 55, stdin */\n.progress--circle.progress--65:after {\n  background-image: -webkit-linear-gradient(126deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(-36deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--66:after {\n  width: 66%; }\n\n/* line 55, stdin */\n.progress--circle.progress--66:after {\n  background-image: -webkit-linear-gradient(122.4deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(-32.4deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--67:after {\n  width: 67%; }\n\n/* line 55, stdin */\n.progress--circle.progress--67:after {\n  background-image: -webkit-linear-gradient(118.8deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(-28.8deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--68:after {\n  width: 68%; }\n\n/* line 55, stdin */\n.progress--circle.progress--68:after {\n  background-image: -webkit-linear-gradient(115.2deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(-25.2deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--69:after {\n  width: 69%; }\n\n/* line 55, stdin */\n.progress--circle.progress--69:after {\n  background-image: -webkit-linear-gradient(111.6deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(-21.6deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--70:after {\n  width: 70%; }\n\n/* line 55, stdin */\n.progress--circle.progress--70:after {\n  background-image: -webkit-linear-gradient(108deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(-18deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--71:after {\n  width: 71%; }\n\n/* line 55, stdin */\n.progress--circle.progress--71:after {\n  background-image: -webkit-linear-gradient(104.4deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(-14.4deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--72:after {\n  width: 72%; }\n\n/* line 55, stdin */\n.progress--circle.progress--72:after {\n  background-image: -webkit-linear-gradient(100.8deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(-10.8deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--73:after {\n  width: 73%; }\n\n/* line 55, stdin */\n.progress--circle.progress--73:after {\n  background-image: -webkit-linear-gradient(97.2deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(-7.2deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--74:after {\n  width: 74%; }\n\n/* line 55, stdin */\n.progress--circle.progress--74:after {\n  background-image: -webkit-linear-gradient(93.6deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(-3.6deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--75:after {\n  width: 75%; }\n\n/* line 55, stdin */\n.progress--circle.progress--75:after {\n  background-image: -webkit-linear-gradient(bottom, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(0deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--76:after {\n  width: 76%; }\n\n/* line 55, stdin */\n.progress--circle.progress--76:after {\n  background-image: -webkit-linear-gradient(86.4deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(3.6deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--77:after {\n  width: 77%; }\n\n/* line 55, stdin */\n.progress--circle.progress--77:after {\n  background-image: -webkit-linear-gradient(82.8deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(7.2deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--78:after {\n  width: 78%; }\n\n/* line 55, stdin */\n.progress--circle.progress--78:after {\n  background-image: -webkit-linear-gradient(79.2deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(10.8deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--79:after {\n  width: 79%; }\n\n/* line 55, stdin */\n.progress--circle.progress--79:after {\n  background-image: -webkit-linear-gradient(75.6deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(14.4deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--80:after {\n  width: 80%; }\n\n/* line 55, stdin */\n.progress--circle.progress--80:after {\n  background-image: -webkit-linear-gradient(72deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(18deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--81:after {\n  width: 81%; }\n\n/* line 55, stdin */\n.progress--circle.progress--81:after {\n  background-image: -webkit-linear-gradient(68.4deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(21.6deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--82:after {\n  width: 82%; }\n\n/* line 55, stdin */\n.progress--circle.progress--82:after {\n  background-image: -webkit-linear-gradient(64.8deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(25.2deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--83:after {\n  width: 83%; }\n\n/* line 55, stdin */\n.progress--circle.progress--83:after {\n  background-image: -webkit-linear-gradient(61.2deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(28.8deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--84:after {\n  width: 84%; }\n\n/* line 55, stdin */\n.progress--circle.progress--84:after {\n  background-image: -webkit-linear-gradient(57.6deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(32.4deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--85:after {\n  width: 85%; }\n\n/* line 55, stdin */\n.progress--circle.progress--85:after {\n  background-image: -webkit-linear-gradient(54deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(36deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--86:after {\n  width: 86%; }\n\n/* line 55, stdin */\n.progress--circle.progress--86:after {\n  background-image: -webkit-linear-gradient(50.4deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(39.6deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--87:after {\n  width: 87%; }\n\n/* line 55, stdin */\n.progress--circle.progress--87:after {\n  background-image: -webkit-linear-gradient(46.8deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(43.2deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--88:after {\n  width: 88%; }\n\n/* line 55, stdin */\n.progress--circle.progress--88:after {\n  background-image: -webkit-linear-gradient(43.2deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(46.8deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--89:after {\n  width: 89%; }\n\n/* line 55, stdin */\n.progress--circle.progress--89:after {\n  background-image: -webkit-linear-gradient(39.6deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(50.4deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--90:after {\n  width: 90%; }\n\n/* line 55, stdin */\n.progress--circle.progress--90:after {\n  background-image: -webkit-linear-gradient(36deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(54deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--91:after {\n  width: 91%; }\n\n/* line 55, stdin */\n.progress--circle.progress--91:after {\n  background-image: -webkit-linear-gradient(32.4deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(57.6deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--92:after {\n  width: 92%; }\n\n/* line 55, stdin */\n.progress--circle.progress--92:after {\n  background-image: -webkit-linear-gradient(28.8deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(61.2deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--93:after {\n  width: 93%; }\n\n/* line 55, stdin */\n.progress--circle.progress--93:after {\n  background-image: -webkit-linear-gradient(25.2deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(64.8deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--94:after {\n  width: 94%; }\n\n/* line 55, stdin */\n.progress--circle.progress--94:after {\n  background-image: -webkit-linear-gradient(21.6deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(68.4deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--95:after {\n  width: 95%; }\n\n/* line 55, stdin */\n.progress--circle.progress--95:after {\n  background-image: -webkit-linear-gradient(18deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(72deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--96:after {\n  width: 96%; }\n\n/* line 55, stdin */\n.progress--circle.progress--96:after {\n  background-image: -webkit-linear-gradient(14.4deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(75.6deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--97:after {\n  width: 97%; }\n\n/* line 55, stdin */\n.progress--circle.progress--97:after {\n  background-image: -webkit-linear-gradient(10.8deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(79.2deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--98:after {\n  width: 98%; }\n\n/* line 55, stdin */\n.progress--circle.progress--98:after {\n  background-image: -webkit-linear-gradient(7.2deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(82.8deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--99:after {\n  width: 99%; }\n\n/* line 55, stdin */\n.progress--circle.progress--99:after {\n  background-image: -webkit-linear-gradient(3.6deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(86.4deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--100:after {\n  width: 100%; }\n\n/* line 55, stdin */\n.progress--circle.progress--100:after {\n  background-image: -webkit-linear-gradient(left, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n")
 'use strict';
@@ -55221,7 +56349,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-03cd24e7", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":54,"vue-hot-reload-api":50,"vueify/lib/insert-css":55}],74:[function(require,module,exports){
+},{"vue":55,"vue-hot-reload-api":50,"vueify/lib/insert-css":56}],77:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
 var __vueify_style__ = __vueify_insert__.insert("/* line 2, stdin */\n* {\n  box-sizing: border-box; }\n\n/* line 6, stdin */\n.modal-mask {\n  position: fixed;\n  z-index: 9998;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n  background-color: rgba(0, 0, 0, 0.5);\n  -webkit-transition: opacity .3s ease;\n  transition: opacity .3s ease; }\n\n/* line 17, stdin */\n.modal-container {\n  display: block;\n  z-index: 1006;\n  background-color: #fefefe;\n  border-radius: 4px;\n  position: relative;\n  top: 0px;\n  height: 100%;\n  margin-left: auto;\n  margin-right: auto;\n  overflow-y: auto; }\n\n/* line 30, stdin */\n.modal-header h3 {\n  margin-top: 0;\n  color: #42b983; }\n\n/* line 35, stdin */\n.modal-loader {\n  z-index: 1009;\n  background-color: #fff;\n  height: 100%;\n  width: 100%; }\n\n/* line 46, stdin */\n.text-right {\n  text-align: right; }\n\n/* line 50, stdin */\n.form-label {\n  display: block;\n  margin-bottom: 1em; }\n\n/* line 55, stdin */\n.form-label > .form-control {\n  margin-top: 0.5em; }\n\n/* line 59, stdin */\n.form-control {\n  display: block;\n  width: 100%;\n  padding: 0.5em 1em;\n  line-height: 1.5;\n  border: 1px solid #ddd; }\n\n/* line 67, stdin */\n.modal-enter, .modal-leave {\n  opacity: 0; }\n\n/* line 71, stdin */\n.modal-enter .modal-container,\n.modal-leave .modal-container {\n  -webkit-transition: all .3s ease;\n  transition: all .3s ease; }\n\n@media screen and (min-width: 640px) {\n  /* line 77, stdin */\n  .modal-container {\n    width: 600px;\n    max-width: 75rem;\n    top: 50px; } }\n")
 'use strict';
@@ -55233,6 +56361,10 @@ Object.defineProperty(exports, "__esModule", {
 var _AddTraining = require('../context/AddTraining.vue');
 
 var _AddTraining2 = _interopRequireDefault(_AddTraining);
+
+var _services = require('../context/services.vue');
+
+var _services2 = _interopRequireDefault(_services);
 
 var _AddPlan = require('../context/AddPlan.vue');
 
@@ -55322,7 +56454,7 @@ exports.default = {
 	},
 
 	components: {
-		AddTraining: _AddTraining2.default, AddPlan: _AddPlan2.default, FileManager: _FileManager2.default, teachers: _teachers2.default, trainings: _trainings2.default
+		AddTraining: _AddTraining2.default, AddPlan: _AddPlan2.default, FileManager: _FileManager2.default, teachers: _teachers2.default, trainings: _trainings2.default, services: _services2.default
 	}
 };
 if (module.exports.__esModule) module.exports = module.exports.default
@@ -55341,7 +56473,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-df8e52a6", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"../context/AddPlan.vue":79,"../context/AddTraining.vue":80,"../context/FileManager.vue":81,"../context/teachers.vue":82,"../context/trainings.vue":83,"vue":54,"vue-hot-reload-api":50,"vueify/lib/insert-css":55}],75:[function(require,module,exports){
+},{"../context/AddPlan.vue":82,"../context/AddTraining.vue":83,"../context/FileManager.vue":84,"../context/services.vue":85,"../context/teachers.vue":86,"../context/trainings.vue":87,"vue":55,"vue-hot-reload-api":50,"vueify/lib/insert-css":56}],78:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
 var __vueify_style__ = __vueify_insert__.insert("\n\n.CustomToast {\n    min-width: 250px;\n    margin-left: -125px;\n    background-color: #333;\n    color: #fff;\n    text-align: center;\n    border-radius: 2px;\n    padding: 16px;\n    position: fixed;\n    z-index: 9999;\n    left: 50%;\n    font-size: 17px;\n}\n\n.CustomToast--Top {\n\ttop: 10px;\n}\n\n.CustomToast--Bottom {\n\tbottom: 30px;\n}\n\n.CustomToast--Success {\n\tbackground-color : green;\n}\n\n.CustomToast--Info {\n\tbackground-color : #333;\n}\n\n.CustomToast--Warning {\n\tbackground-color : yellow;\n}\n\n.CustomToast--Error {\n\tbackground-color : red;\n}\n\n\n.fade-transition {\n  display: inline-block; /* otherwise scale animation won't work */\n}\n\n.fade-enter {\n  -webkit-animation: fadein .5s;\n          animation: fadein .5s;\n}\n.fade-leave {\n  -webkit-animation: fadeout .5s;\n          animation: fadeout .5s;\n}\n\n@-webkit-keyframes fadein {\n    from {bottom: 0; opacity: 0;}\n    to {bottom: 30px; opacity: 1;}\n}\n\n@keyframes fadein {\n    from {bottom: 0; opacity: 0;}\n    to {bottom: 30px; opacity: 1;}\n}\n\n@-webkit-keyframes fadeout {\n    from {bottom: 30px; opacity: 1;}\n    to {bottom: 0; opacity: 0;}\n}\n\n@keyframes fadeout {\n    from {bottom: 30px; opacity: 1;}\n    to {bottom: 0; opacity: 0;}\n}\n\n")
 'use strict';
@@ -55419,7 +56551,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-1e8d2527", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":54,"vue-hot-reload-api":50,"vueify/lib/insert-css":55}],76:[function(require,module,exports){
+},{"vue":55,"vue-hot-reload-api":50,"vueify/lib/insert-css":56}],79:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
 var __vueify_style__ = __vueify_insert__.insert("/* line 2, stdin */\n.button-follow {\n  line-height: 24px;\n  padding: 0 9px;\n  font-size: 16px;\n  border-radius: 4px;\n  border-style: solid;\n  border-width: 1px solid;\n  font-weight: 600;\n  outline: none;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n  width: 50%;\n  -webkit-appearance: none; }\n\n/* line 18, stdin */\n.button-follow.unfollow {\n  background-color: #5fcf80;\n  color: #fff; }\n\n/* line 23, stdin */\n.button-follow.follow {\n  background-color: #fff;\n  color: #222222; }\n")
 'use strict';
@@ -55496,7 +56628,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-8f302622", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":54,"vue-hot-reload-api":50,"vueify/lib/insert-css":55}],77:[function(require,module,exports){
+},{"vue":55,"vue-hot-reload-api":50,"vueify/lib/insert-css":56}],80:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
 var __vueify_style__ = __vueify_insert__.insert("\nbutton:focus {outline:0;}\n\n#omnibox {\n    position: absolute;\n    left: 0px;\n    margin: 16px;\n    top: 0px;\n    z-index: 10;\n    -webkit-transition:left 0.5s;\n    transition: left 0.5s;\n    -webkit-transform: translateX(0px);\n    transform: translateX(0px);\n    transition-property: -webkit-transform,transform,visibility,opacity;\n    -webkit-transition-duration: 200ms;\n            transition-duration: 200ms;\n    -webkit-transition-timing-function: cubic-bezier(0.0,0.0,0.2,1);\n            transition-timing-function: cubic-bezier(0.0,0.0,0.2,1);\n}\n\n.vasquette-margin-enabled#rap-card, .vasquette-margin-enabled#omnibox {\n    margin: 8px 0 8px 8px;\n}\n\n.searchbox.suggestions-shown \n{\n    border-radius: 2px 2px 0 0;\n}\n\n.searchbox-shadow \n{\n    box-shadow: 0 2px 4px rgba(0,0,0,0.2),0 -1px 0px rgba(0,0,0,0.02);\n}\n\n.searchbox \n{\n\n    position: relative;\n    background: #fff;\n    border-radius: 2px;\n    box-sizing: border-box;\n    height: 48px;\n    border-bottom: 1px solid transparent;\n    padding: 12px 104px 11px 64px;\n    -webkit-transition-property:background,box-shadow;\n    transition-property: background,box-shadow;\n    -webkit-transition-duration: 0.3s;\n            transition-duration: 0.3s;\n}\n\n.searchbox-searchbutton-container \n{\n    position: absolute;\n    right: 54px;\n    top: 0;\n}\n\n.searchbox-findme\n{\n    position: absolute;\n    right: 0px;\n    top: 0;\n}\n\n.searchbox-searchbutton::before {\n    content: '';\n    display: block;\n    width: 24px;\n    height: 24px;\n    background: url(//maps.gstatic.com/tactile/omnibox/quantum_search_button-20150825-1x.png);\n    background-size: 72px 24px;\n}\n\n.searchbox-searchbutton-container::after {\n    content: \"\";\n    position: absolute;\n    right: 0;\n    top: 10px;\n    border-left: 1px solid #ddd;\n    height: 28px;\n}\n\n.searchbox-searchbutton {\n    display: block;\n    padding: 12px 15px;\n}\n\n.searchbox-input {\n    border: none; \n    padding: 0px; \n    margin: 0px; \n    height: auto; \n    width: 100%; \n    z-index: 6;\n    left: 0px;\n    outline: none;\n    font-size: 15px;\n}\n\n.searchbox-hamburger::before {\n    content: '';\n    display: block;\n    background-image: url(//maps.gstatic.com/tactile/omnibox/quantum_menu-v2-1x.png);\n    background-size: 48px 24px;\n    background-position: 0 0;\n    height: 24px;\n    width: 24px;\n    opacity: .62;\n}\n\n.searchbox-hamburger {\n    display: block;\n    cursor: pointer;\n    padding: 12px 16px;\n}\n\n.searchbox-hamburger-container \n{\n    position: absolute;\n    z-index: 1003;\n    left: 0;\n    top: 0;\n}\n\n/* Pin Hover Box Styles */\n.search-tooltip{\n\tz-index: 11;\n    position: absolute;\n    background-color: #FFFFFF;\n    width: 250px;\n    height: 70px;\n    -webkit-box-shadow: 10px 10px 30px 0px rgba(174,174,174,1);\n    -moz-box-shadow: 10px 10px 30px 0px rgba(174,174,174,1);\n    box-shadow: 10px 10px 30px 0px rgba(174,174,174,1);\n    border-radius: 5px;\n}\n\n.rating {\n  margin: 10px 0;\n}\n\n.rating i {\n  display: inline-block;\n  width: 0;\n  height: 1.5em;\n  border-width: 1.5em / 2;\n  border-style: solid;\n  border-color: #eee;\n  border-radius: .22em;\n  color: white;\n  background: #eee;\n  font-style: normal;\n  line-height: 1.6em;\n  text-indent: -0.5em;\n  text-shadow: 1px 0 1px hsl(0, 0%, 70%);\n}\n/*panel*/\n.pane {\n    /*position: relative;*/\n    display: block;\n}\n\n.pane-holder{\n    width: 408px;\n    height: 100%;\n    position: absolute;\n    z-index: 2;\n    left: 0;\n    top: 0;\n    overflow: hidden;\n}\n\n.pane-holder:hover{\n    overflow-y: scroll;\n}\n\n.pane-header{\n    width: 100%;\n    height: 256px;\n    background-color: #fff;\n}\n.pane-content{\n    width: 100%;\n    height: auto;\n    line-height: 1.5em;\n    background-color: #4285F4;\n    padding: 10px;\n    color: #fff;\n}\n.pane-content h1{\n    font-size: 25px;\n}\n.pane-holder-small{\n    overflow-y: scroll;\n}\n\n.find-mylocation{\n    display: block;\n    padding: 12px 15px;\n}\n\n.reset-button{\n    display: block;\n    padding: 12px 15px;\n}\n.reset-button::before{\n    background-image: url(//maps.gstatic.com/tactile/omnibox/clear-1x-20150504.png);\n    background-size: 96px 24px;\n    height: 24px;\n    width: 24px;\n    cursor: pointer;\n    display: block;\n    content: '';\n}\n\n")
 "use strict";
@@ -55526,7 +56658,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-3f3bb728", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":54,"vue-hot-reload-api":50,"vueify/lib/insert-css":55}],78:[function(require,module,exports){
+},{"vue":55,"vue-hot-reload-api":50,"vueify/lib/insert-css":56}],81:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -55556,12 +56688,19 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-ff47bec0", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":54,"vue-hot-reload-api":50}],79:[function(require,module,exports){
+},{"vue":55,"vue-hot-reload-api":50}],82:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
 	value: true
 });
+
+var _PhotoSlider = require('../actors/application/components/PhotoSlider.vue');
+
+var _PhotoSlider2 = _interopRequireDefault(_PhotoSlider);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 exports.default = {
 	props: {
 		id: {},
@@ -55576,30 +56715,44 @@ exports.default = {
 			trainerless: false,
 			price: 0,
 			teachers: [],
-			pictures: [],
 			services: [],
-			showFileManager: false,
+			clubservices: [],
 			showTraining: false,
-			pinnedPhoto: null
+			isLoading: false
 		};
 	},
 
 
+	created: function created() {
+		this.getClubServices();
+	},
+
 	ready: function ready() {
-		var tab = new Foundation.Tabs($('#plan-tabs'));
+		$('ul.tabs').tabs();
+
+		/*$('.datepicker').pickadate({
+      firstDay: 1,
+      selectMonths: true, // Creates a dropdown to control month
+      selectYears: 1
+  });*/
 	},
 
 	events: {
 		'choosedTrainings': function choosedTrainings($response) {
 			this.choosedTrainings($response);
-		},
-
-		'choosedPictures': function choosedPictures($response) {
-			this.choosedPictures($response);
 		}
 	},
 
 	methods: {
+		getClubServices: function getClubServices() {
+			var _this = this;
+
+			this.$http.get(this.$env.get('APP_URI') + 'api/club/' + this.id + '/service').then(function (res) {
+				_this.clubservices = res.data.result;
+				debugger;
+			}).catch(function (err) {});
+		},
+
 		getData: function getData() {
 			return this.$tools.transformParameters({
 				club_id: this.id,
@@ -55610,6 +56763,10 @@ exports.default = {
 			});
 		},
 
+		limitText: function limitText(count) {
+			return "ба " + count + " бусад";
+		},
+
 		choosedTrainings: function choosedTrainings($response) {
 			this.teachers = $response.data;
 			this.showTeachers = false;
@@ -55617,27 +56774,6 @@ exports.default = {
 
 		triggerPictureBtn: function triggerPictureBtn() {
 			this.showFileManager = true;
-		},
-
-		choosedPictures: function choosedPictures($response) {
-
-			debugger;
-			this.pictures = $response.data;
-			this.showFileManager = false;
-		},
-
-		setPinnedPhoto: function setPinnedPhoto(photo) {
-			photo.pinned = true;
-
-			if (this.pinnedPhoto && photo != this.pinnedPhoto) {
-				this.pinnedPhoto.pinned = false;
-			}
-
-			this.pinnedPhoto = photo;
-		},
-
-		deletePhoto: function deletePhoto(photo) {
-			this.pictures.$remove(photo);
 		},
 
 		deleteTeacher: function deleteTeacher(teacher) {
@@ -55656,24 +56792,36 @@ exports.default = {
 			}
 
 			return true;
+		}
+	},
+
+	components: {
+		PhotoSlider: _PhotoSlider2.default
+	},
+
+	locales: {
+		en: {
+			info: 'Info',
+			photos: 'Add photos',
+			trainer: 'Add training',
+			name: 'Training name',
+			description: 'Description',
+			name_watermark: 'name ...',
+			description_watermark: 'description ...'
 		},
-
-		filterPinnedPic: function filterPinnedPic(obj) {
-			return obj.pinned;
+		mn: {
+			info: 'Инфо',
+			photos: 'Зураг оруулах',
+			trainer: 'Хичээл сонгох',
+			name: 'Хичээлийн нэр',
+			description: 'Тайлбар',
+			name_watermark: 'нэр ...',
+			description_watermark: 'тайлбар ...'
 		}
-	},
-
-	computed: {
-		pinnedPic: function pinnedPic() {
-			var pinned = this.pictures.filter(this.filterPinnedPic);
-			return pinned.length == 0 ? this.$env.get('APP_URI') + 'images/site/back.jpg' : pinned[0].url;
-		}
-	},
-
-	components: {}
+	}
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<custom-modal :id=\"id\" type=\"User\" title=\"Photo chooser\" usage=\"_photo-chooser\" multiple=\"true\" :items=\"pictures\" :show.sync=\"showFileManager\" save-callback=\"choosedPictures\" context=\"fileManager\">\n</custom-modal>\n\n<custom-modal :id=\"id\" type=\"Club\" title=\"Trainings\" usage=\"_training-chooser\" :items=\"trainings\" :show.sync=\"showTraining\" save-callback=\"choosedTrainings\" context=\"trainings\">\n</custom-modal>\n\n<form method=\"POST\">\n\t<div class=\"row\">\n\t\t<div class=\"small-12\">\n\t\t\t<img :src=\"pinnedPic\">\n\t\t</div>\n\t</div>\n\t<div class=\"row small-up-3 medium-up-4 large-up-5\">\n\t\t<div class=\"column\">\n\t\t\t<a @click=\"showFileManager = true\" class=\"button succes\">+</a>\n\t\t</div>\n\t\t<div class=\"column\" v-for=\"photo in pictures\">\n\t\t\t<img @click=\"setPinnedPhoto(photo)\" :src=\"photo.url\">\n\t\t</div>\n\t</div>\n\t<div class=\"row\">\n\t  <fieldset class=\"large-6 columns\">\n\t    <legend>Plan schedule</legend>\n\t    <input type=\"radio\" name=\"schedule\" value=\"Daily\" id=\"schDaily\" required=\"\"><label for=\"schDaily\">Daily</label>\n\t    <input type=\"radio\" name=\"schedule\" value=\"Weakly\" id=\"schWeakly\"><label for=\"schWeakly\">Weakly</label>\n\t    <input type=\"radio\" name=\"schedule\" value=\"Monthly\" id=\"schMonthly\"><label for=\"schMonthly\">Monthly</label>\n\t    <input type=\"radio\" name=\"schedule\" value=\"Yearly\" id=\"schYearly\"><label for=\"schYearly\">Yearly</label>\n\t  </fieldset>\n\t  <fieldset class=\"large-6 columns\">\n\t    <legend>Duration</legend>\n\t    <input type=\"number\" name=\"length\" value=\"1\">\n\t  </fieldset>\n\t</div>\n\t<div class=\"row\">\n\t\t<div class=\"small-4 medium-4 column\">\n\t\t\t<p>\n\t\t      <label for=\"test5\">Trainerless</label>\n\t\t      <input type=\"checkbox\" id=\"trainerless\" name=\"trainerless\">\n\t\t    </p>\n\t\t</div>\n\t\t<div class=\"small-4 medium-4 column\">\n\t\t\t<label>Start\n\t\t\t\t<input type=\"number\" name=\"trainercount\">\n\t\t\t</label>\n\t\t</div>\n\t\t<div class=\"small-4 medium-4 column\">\n\t\t\t<label>Finish\n\t\t\t\t<input type=\"number\" name=\"trainercount\">\n\t\t\t</label>\n\t\t</div>\n\t</div>\n\n\t<ul class=\"tabs\" data-tabs=\"\" id=\"plan-tabs\">\n\t  <li class=\"tabs-title is-active\"><a href=\"#main\" aria-selected=\"true\">Info</a></li>\n\t  <li class=\"tabs-title \"><a href=\"#trainer\">Trainer</a></li>\n    </ul>\n\n     <div class=\"tabs-content\" data-tabs-content=\"plan-tabs\">\n\t  <div class=\"tabs-panel is-active\" id=\"main\">\n\t  \t<div class=\"row\">\n\t\t\t<div class=\"small-12 medium-6 column\">\n\t\t\t\t<label>PlanName\n\t\t\t        <input type=\"text\" name=\"name\" v-model=\"name\" placeholder=\"fill training name\">\n\t\t\t    </label>\t\n\t\t\t</div>\n\n\t\t\t<div class=\"small-12 medium-6 column\">\n\t\t\t\t<label>Description\n\t\t\t        <textarea type=\"text\" name=\"description\" v-model=\"description\" placeholder=\"Description ...\">\t\t\t\t        </textarea>\n\t\t\t    </label>\n\t\t\t</div>\n\t\t</div>\n\t\t<div class=\"row\">\n\t\t\t<div class=\"small-12 medium-6 column\">\n\t\t\t\t<label>Price\n\t\t\t        <input type=\"number\" name=\"price\" v-model=\"name\" placeholder=\"Plan price ...\">\n\t\t\t    </label>\t\n\t\t\t</div>\n\n\t\t\t<div class=\"small-12 medium-6 column\">\n\t\t\t\t<label>Description\n\t\t\t        <textarea type=\"text\" name=\"description\" v-model=\"description\" placeholder=\"Description ...\">\t\t\t\t        </textarea>\n\t\t\t    </label>\n\t\t\t</div>\n\t\t</div>\n\t\t<div class=\"row\">\n\t\t\t<div class=\"small-12 medium-6 column\">\n\t\t\t\t<p>\n\t\t\t      <input type=\"checkbox\" v-model=\"trainerless\" class=\"filled-in\" id=\"trainerless\">\n\t\t\t      <label for=\"trainerless\">Trainerless</label>\n\t\t\t    </p>\n\t\t\t</div>\n\t\t\t<div class=\"small-12 medium-6 column\">\n\t\t\t\t<label>Trainer Count\n\t\t\t\t\t<input type=\"number\" :disabled=\"!trainerless\" name=\"trainercount\">\n\t\t\t\t</label>\n\t\t\t</div>\n\t\t</div>\n\t  </div>\n\t  <div class=\"tabs-panel is-active\" id=\"trainer\">\n\t    <div class=\"row\">\n\t    \t<div class=\"small-12 column\" style=\"height:100px\">\n\t    \t\t<a @click=\"showTraining = true\" class=\"button success\">\n\t    \t\t\t<span class=\"fa fa-plus\"></span>\n\t    \t\t</a>\n\t    \t</div>\n\t\t</div>\n\t  </div>\n\t</div>\n</form>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n\n\t<custom-modal :id=\"id\" type=\"Club\" title=\"Trainings\" usage=\"_training-chooser\" :items=\"trainings\" :show.sync=\"showTraining\" save-callback=\"choosedTrainings\" context=\"trainings\">\n\t</custom-modal>\n\n\t<form method=\"POST\">\n\t\t<photo-slider></photo-slider>\n\n\t\t<div class=\"row\">\n\t\t  <fieldset class=\"large-6 columns\">\n\t\t    <legend>Plan schedule</legend>\n\t\t    <input type=\"radio\" name=\"schedule\" value=\"Daily\" id=\"schDaily\" required=\"\"><label for=\"schDaily\">Daily</label>\n\t\t    <input type=\"radio\" name=\"schedule\" value=\"Weakly\" id=\"schWeakly\"><label for=\"schWeakly\">Weakly</label>\n\t\t    <input type=\"radio\" name=\"schedule\" value=\"Monthly\" id=\"schMonthly\"><label for=\"schMonthly\">Monthly</label>\n\t\t    <input type=\"radio\" name=\"schedule\" value=\"Yearly\" id=\"schYearly\"><label for=\"schYearly\">Yearly</label>\n\t\t  </fieldset>\n\t\t  <fieldset class=\"large-6 columns\">\n\t\t    <legend>Duration</legend>\n\t\t    <input type=\"number\" name=\"length\" value=\"1\">\n\t\t  </fieldset>\n\t\t</div>\n\t\t<div class=\"row\">\n\t\t\t<div class=\"small-4 medium-4 column\">\n\t\t\t\t<p>\n\t\t\t      <label for=\"test5\">Trainerless</label>\n\t\t\t      <input type=\"checkbox\" id=\"trainerless\" name=\"trainerless\">\n\t\t\t    </p>\n\t\t\t</div>\n\t\t\t<div class=\"small-4 medium-4 column\">\n\t\t\t\t<label>Start\n\t\t\t\t\t<input type=\"date\" class=\"datepicker\">\n\t\t\t\t</label>\n\t\t\t</div>\n\t\t\t<div class=\"small-4 medium-4 column\">\n\t\t\t\t<label>Finish\n\t\t\t\t\t<input type=\"date\" class=\"datepicker\">\n\t\t\t\t</label>\n\t\t\t</div>\n\t\t</div>\n\n\t\t<div class=\"row\">\n\t\t    <multiselect :options=\"clubservices\" :selected=\"services\" :multiple=\"true\" :clear-on-select=\"false\" :close-on-select=\"false\" select-label=\"сонгох\" selected-label=\"сонгосон\" deselect-label=\"устгах\" :limit=\"1\" label=\"name\" :limit-text=\"limitText\" key=\"id\" placeholder=\"хайх ...\">\n\t\t    \t\t<span slot=\"noResult\">Илэрц алга ...</span>\n\t\t    </multiselect>\n\t\t</div>\n\n\t    <ul class=\"tabs\">\n\t        <li class=\"tab s3\"><a class=\"active\" href=\"#main\">{{ $t(\"info\") }}</a></li>\n\t        <li class=\"tab s3\"><a href=\"#trainer\">{{ $t(\"trainer\") }}</a></li>\n\t\t</ul>\n\n  \t    <div id=\"main\">\n\t\t  \t<div class=\"row\">\n\t\t\t\t<div class=\"small-12 medium-6 column\">\n\t\t\t\t\t<label>PlanName\n\t\t\t\t        <input type=\"text\" name=\"name\" v-model=\"name\" placeholder=\"fill training name\">\n\t\t\t\t    </label>\t\n\t\t\t\t</div>\n\n\t\t\t\t<div class=\"small-12 medium-6 column\">\n\t\t\t\t\t<label>Description\n\t\t\t\t        <textarea type=\"text\" name=\"description\" v-model=\"description\" placeholder=\"Description ...\">\t\t\t\t        </textarea>\n\t\t\t\t    </label>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t\t<div class=\"row\">\n\t\t\t\t<div class=\"small-12 medium-6 column\">\n\t\t\t\t\t<label>Price\n\t\t\t\t        <input type=\"number\" name=\"price\" v-model=\"name\" placeholder=\"Plan price ...\">\n\t\t\t\t    </label>\t\n\t\t\t\t</div>\n\n\t\t\t\t<div class=\"small-12 medium-6 column\">\n\t\t\t\t\t<label>Description\n\t\t\t\t        <textarea type=\"text\" name=\"description\" v-model=\"description\" placeholder=\"Description ...\">\t\t\t\t        </textarea>\n\t\t\t\t    </label>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t\t<div class=\"row\">\n\t\t\t\t<div class=\"small-12 medium-6 column\">\n\t\t\t\t\t<p>\n\t\t\t\t      <input type=\"checkbox\" v-model=\"trainerless\" class=\"filled-in\" id=\"trainerless\">\n\t\t\t\t      <label for=\"trainerless\">Trainerless</label>\n\t\t\t\t    </p>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"small-12 medium-6 column\">\n\t\t\t\t\t<label>Trainer Count\n\t\t\t\t\t\t<input type=\"number\" :disabled=\"!trainerless\" name=\"trainercount\">\n\t\t\t\t\t</label>\n\t\t\t\t</div>\n  \t\t  </div>\n\t\t</div>\n\n\t\t<div id=\"trainer\">\n\t\t    <div class=\"row\">\n\t\t    \t<div class=\"small-12 column\" style=\"height:100px\">\n\t\t    \t\t<a @click=\"showTraining = true\" class=\"button success\">\n\t\t    \t\t\t<span class=\"fa fa-plus\"></span>\n\t\t    \t\t</a>\n\t\t    \t</div>\n\t\t\t</div>\n\t\t</div>\n\t</form>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -55684,15 +56832,22 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-4d3e4960", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":54,"vue-hot-reload-api":50}],80:[function(require,module,exports){
+},{"../actors/application/components/PhotoSlider.vue":57,"vue":55,"vue-hot-reload-api":50}],83:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
+var _PhotoSlider = require('../actors/application/components/PhotoSlider.vue');
 
-var Waterfall = require('vue-waterfall');
+var _PhotoSlider2 = _interopRequireDefault(_PhotoSlider);
+
+var _TeacherSlider = require('../actors/application/components/TeacherSlider.vue');
+
+var _TeacherSlider2 = _interopRequireDefault(_TeacherSlider);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = {
 	props: {
@@ -55705,28 +56860,22 @@ exports.default = {
 		return {
 			name: '',
 			description: '',
-			teachers: [],
-			pictures: [],
-			services: [],
-			showFileManager: false,
-			showTeachers: false,
-			pinnedPhoto: null
+			services: []
 		};
 	},
 
 
 	ready: function ready() {
 		$('ul.tabs').tabs();
-	},
-
-	events: {
-		'choosedTeachers': function choosedTeachers($response) {
-			this.choosedTeachers($response);
-		},
-
-		'choosedPictures': function choosedPictures($response) {
-			this.choosedPictures($response);
-		}
+		$('.dropdown-button').dropdown({
+			inDuration: 300,
+			outDuration: 225,
+			constrain_width: false, // Does not change width of dropdown to that of the activator
+			hover: true, // Activate on hover
+			gutter: 0, // Spacing from edge
+			belowOrigin: false, // Displays dropdown below the button
+			alignment: 'left' // Displays dropdown with edge aligned to the left of button
+		});
 	},
 
 	methods: {
@@ -55735,46 +56884,9 @@ exports.default = {
 				club_id: this.id,
 				name: this.name,
 				description: this.description,
-				pictures: this.$tools.collectionBy(this.pictures, "id|url|pinned"),
-				teachers: this.$tools.collectionBy(this.teachers, "id")
+				pictures: this.$tools.collectionBy(this.$refs.pslider.pictures, "id|url|pinned"),
+				teachers: this.$tools.collectionBy(this.$refs.tslider.teachers, "id")
 			});
-		},
-
-		choosedTeachers: function choosedTeachers($response) {
-			this.teachers = $response.data;
-			this.showTeachers = false;
-		},
-
-		triggerPictureBtn: function triggerPictureBtn() {
-			this.showFileManager = true;
-		},
-
-		choosedPictures: function choosedPictures($response) {
-			this.pictures = $response.data;
-			if (this.pictures.length > 0) {
-				this.pinnedPhoto = this.pictures[0];
-				this.pinnedPhoto.pinned = true;
-			}
-			this.showFileManager = false;
-		},
-
-		setPinnedPhoto: function setPinnedPhoto(photo) {
-
-			photo.pinned = true;
-
-			if (this.pinnedPhoto && photo != this.pinnedPhoto) {
-				this.pinnedPhoto.pinned = false;
-			}
-
-			this.pinnedPhoto = photo;
-		},
-
-		deletePhoto: function deletePhoto(photo) {
-			this.pictures.$remove(photo);
-		},
-
-		deleteTeacher: function deleteTeacher(teacher) {
-			this.teachers.$remove(teacher);
 		},
 
 		validate: function validate() {
@@ -55789,23 +56901,11 @@ exports.default = {
 			}
 
 			return true;
-		},
-
-		filterPinnedPic: function filterPinnedPic(obj) {
-			return obj.pinned;
-		}
-	},
-
-	computed: {
-		pinnedPic: function pinnedPic() {
-			var pinned = this.pictures.filter(this.filterPinnedPic);
-			return pinned.length == 0 ? this.$env.get('APP_URI') + 'images/site/back.jpg' : pinned[0].url;
 		}
 	},
 
 	components: {
-		'waterfall': Waterfall.waterfall,
-		'waterfall-slot': Waterfall.waterfallSlot
+		PhotoSlider: _PhotoSlider2.default, TeacherSlider: _TeacherSlider2.default
 	},
 
 	locales: {
@@ -55830,7 +56930,7 @@ exports.default = {
 	}
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n\t<custom-modal :id=\"id\" type=\"User\" title_en=\"Photo chooser\" title=\"Зураг сонгох\" usage=\"_photo-chooser\" multiple=\"true\" :items=\"pictures\" :show.sync=\"showFileManager\" save-callback=\"choosedPictures\" context=\"fileManager\">\n\t</custom-modal>\n\n\t<custom-modal :id=\"id\" type=\"Club\" title=\"Багш сонгох\" title_en=\"Teacher chooser\" usage=\"_teacher-chooser\" :items=\"teachers\" :show.sync=\"showTeachers\" save-callback=\"choosedTeachers\" context=\"teachers\">\n\t</custom-modal>\n\n\t<form method=\"POST\" accept=\"\">\n\n\t  <div class=\"row\">\n\t  \t<div class=\"small-12 columns\">\n\t  \t\t<img :src=\"pinnedPic\">\n\t  \t</div>\t\t\n\t  </div>\n\t  <div class=\"row\">\n\t  \t<waterfall align=\"center\" :watch=\"pictures\" :line-gap=\"50\" :min-line-gap=\"100\" :max-line-gap=\"220\" :single-max-width=\"300\">\n\t\t  <waterfall-slot v-for=\"photo in pictures\" :width=\"photo.ratio * 50\" move-class=\"item-move\" transition=\"wf\" height=\"50\" :order=\"$index\">\n\n\t\t  \t<div>\n\t\t\t    <img v-bind:src=\"photo.url\" style=\"height:100%; width:100%\">\n\n\t\t\t    \t <a @click=\"setPinnedPhoto(photo)\">Pin</a>\n\t\t\t    \t <a @click=\"deletePhoto(photo)\">Delete</a>\n\t\t\t</div>\n\t\t  </waterfall-slot>\n\t\t</waterfall>\n\t\t<div class=\"figure\">\n            <div class=\"figcaption\" style=\"opacity:1;\">\n                <a @click=\"showFileManager = true\" class=\"btn-floating red\" style=\"left: 25%;\">\n                \t<i class=\"fa fa-plus\"></i>\n                </a>\n            </div>\n        </div>\n\t  </div>\n\n\n\t  <ul class=\"tabs\">\n        <li class=\"tab s3\"><a class=\"active\" href=\"#main\">{{ $t(\"info\") }}</a></li>\n        <li class=\"tab s3\"><a href=\"#teacher\">{{ $t(\"teacher\") }}</a></li>\n\t  </ul>\n\t\t  <div id=\"main\">\n\t\t    <div class=\"row\">\n\t\t\t    <div class=\"medium-6 columns\">\n\t\t\t      <label>{{ $t(\"name\") }}\n\t\t\t        <input type=\"text\" name=\"name\" v-model=\"name\" placeholder=\"\">\n\t\t\t      </label>\n\t\t\t    </div>\n\t\t\t    <div class=\"medium-6 columns\">\n\t\t\t      <label>{{ $t(\"description\") }}\n\t\t\t        <textarea type=\"text\" name=\"description\" v-model=\"description\" placeholder=\"\">\t\t\t        </textarea>\n\t\t\t      </label>\n\t\t\t    </div>\n\t\t\t</div>\n\t\t  </div>\n\t\t  <div id=\"teacher\">\n  \t  \t\t   <div class=\"picture-list\">\n\t\t\t  \t<div class=\"row small-up-2 medium-up-3 large-up-4\">\n\t\t\t  \t\t<br>\n\t\t\t\t  \t<div class=\"column\" v-for=\"teacher in teachers\">\n\t\t\t\t\t  \t<div class=\"figure\">\n\t\t                    <img v-bind:src=\"teacher.avatar_url\" alt=\"Jeffrey Way\" height=\"120\" width=\"120\" style=\"border-radius:4px;\">\n\t\t                    <div class=\"figcaption\">\n\t\t                        <a @click=\"deleteTeacher(teacher)\" class=\"btn-floating red\" style=\"left: 25%;\">\n\t\t                        \t<i class=\"fa fa-trash\"></i>\n\t\t                        </a>\n\t\t                    </div>\n\t\t                </div>\n\t\t\t\t  \t</div>\n\t\t\t\t  \t<div class=\"column\">\n\t\t\t\t\t  \t<div class=\"figure\">\n\t\t                    <div class=\"figcaption\" style=\"opacity:1;\">\n\t\t                        <a @click=\"showTeachers = true\" class=\"btn-floating red\" style=\"left: 25%;\">\n\t\t                        \t<i class=\"fa fa-plus\"></i>\n\t\t                        </a>\n\t\t                    </div>\n\t\t                </div>\n\t\t\t\t  \t</div>\n\t\t\t\t</div>\n\t\t\t  </div>\n\t\t  </div>\n\t</form>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n\t<form method=\"POST\" accept=\"\">\n\n  \t  <a class=\"dropdown-button\" href=\"#!\" data-activates=\"14\" data-constrainwidth=\"false\">\n            \n      </a>\n\n      <ul id=\"14\" class=\"dropdown-content\">\n\t\t  <li><a href=\"http://myapp.dev/things\">Index</a></li>\n\t\t  <li><a href=\"http://myapp.dev/place/logs\">Logs</a></li>\n\t\t  <li><a href=\"http://myapp.dev/place/create\">Create Thing</a></li>\n\t\t  <li><a href=\"http://myapp.dev/things/manage\">Very Long Menu Item That Should Overflow</a></li>\n\t  </ul>\n\n\t  <photo-slider v-ref:pslider=\"\"></photo-slider>\n\n\t  <ul class=\"tabs\">\n        <li class=\"tab s3\"><a class=\"active\" href=\"#main\">{{ $t(\"info\") }}</a></li>\n        <li class=\"tab s3\"><a href=\"#teacher\">{{ $t(\"teacher\") }}</a></li>\n\t  </ul>\n\t  <div id=\"main\">\n\t    <div class=\"row\">\n\t\t    <div class=\"medium-6 columns\">\n\t\t      <label>{{ $t(\"name\") }}\n\t\t        <input type=\"text\" name=\"name\" v-model=\"name\" placeholder=\"\">\n\t\t      </label>\n\t\t    </div>\n\t\t    <div class=\"medium-6 columns\">\n\t\t      <label>{{ $t(\"description\") }}\n\t\t        <textarea type=\"text\" name=\"description\" v-model=\"description\" placeholder=\"\">\t\t        </textarea>\n\t\t      </label>\n\t\t    </div>\n\t\t</div>\n\t  </div>\n\t  <div id=\"teacher\">\n\t  \t<teacher-slider v-ref:tslider=\"\" :id=\"id\"></teacher-slider>\n\t  </div>\n\t</form>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -55841,7 +56941,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-2f8a7901", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":54,"vue-hot-reload-api":50,"vue-waterfall":53}],81:[function(require,module,exports){
+},{"../actors/application/components/PhotoSlider.vue":57,"../actors/application/components/TeacherSlider.vue":58,"vue":55,"vue-hot-reload-api":50}],84:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
 var __vueify_style__ = __vueify_insert__.insert("/* line 3, stdin */\n.thumb-img {\n  position: absolute;\n  top: 5px;\n  left: 5px;\n  right: 5px;\n  bottom: 5px;\n  font-size: 1.2em; }\n\n/* line 12, stdin */\n.vue-waterfall-slot:hover .thumb-back,\n.vue-waterfall-slot:hover ~ .thumb-back {\n  color: #fff;\n  opacity: 1; }\n\n/* line 18, stdin */\n.thumb-back {\n  opacity: 0;\n  border-radius: 4px;\n  background-color: rgba(0, 0, 0, 0.7);\n  position: absolute;\n  top: 5px;\n  left: 5px;\n  right: 5px;\n  bottom: 5px;\n  font-size: 1.2em; }\n\n/* line 30, stdin */\n.thumb-check {\n  top: 50%;\n  left: 50%; }\n\n/* line 35, stdin */\n.thumb-back ul {\n  list-style-type: none; }\n\n/* line 39, stdin */\n.thumb-back ul li {\n  color: #000;\n  background-color: #fff;\n  border-radius: 2px; }\n\n/* line 45, stdin */\n.thumb-img img {\n  width: 100%;\n  height: 100%;\n  display: block;\n  border-radius: 4px; }\n\n/* line 52, stdin */\n.fileinput-button {\n  position: relative;\n  overflow: hidden;\n  display: inline-block; }\n\n/* line 58, stdin */\n.fileinput-button input {\n  position: absolute;\n  top: 0;\n  right: 0;\n  margin: 0;\n  opacity: 0;\n  -ms-filter: 'alpha(opacity=0)';\n  font-size: 200px !important;\n  direction: ltr;\n  cursor: pointer; }\n\n/* line 70, stdin */\n.progress {\n  height: 20px;\n  margin-bottom: 20px;\n  overflow: hidden;\n  background-color: #f5f5f5;\n  border-radius: 4px;\n  -webkit-box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);\n  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1); }\n\n/* line 80, stdin */\n.progress-bar-success {\n  background-color: #5fcf80 !important; }\n\n/* line 84, stdin */\n.progress-bar {\n  float: left;\n  width: 0;\n  height: 100%;\n  font-size: 12px;\n  line-height: 20px;\n  color: #fff;\n  text-align: center;\n  background-color: #428bca;\n  -webkit-box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.15);\n  box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.15);\n  -webkit-transition: width .6s ease;\n  -o-transition: width .6s ease;\n  transition: width .6s ease; }\n\n/* line 100, stdin */\n.item-move {\n  transition: all 0.5s cubic-bezier(0.55, 0, 0.1, 1);\n  -webkit-transition: all 0.5s cubic-bezier(0.55, 0, 0.1, 1); }\n\n/* line 105, stdin */\n.wf-transition {\n  transition: opacity .3s ease;\n  -webkit-transition: opacity .3s ease; }\n\n/* line 110, stdin */\n.wf-enter, .wf-leave {\n  opacity: 0; }\n")
 'use strict';
@@ -56039,7 +57139,81 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-1b4eb012", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"../components/CircleProgressBar.vue":73,"vue":54,"vue-hot-reload-api":50,"vue-waterfall":53,"vueify/lib/insert-css":55}],82:[function(require,module,exports){
+},{"../components/CircleProgressBar.vue":76,"vue":55,"vue-hot-reload-api":50,"vue-waterfall":54,"vueify/lib/insert-css":56}],85:[function(require,module,exports){
+var __vueify_insert__ = require("vueify/lib/insert-css")
+var __vueify_style__ = __vueify_insert__.insert("\n\n")
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+exports.default = {
+	props: {
+		id: {},
+		type: {},
+		selected: {}
+	},
+
+	data: function data() {
+		return {
+			services: [],
+			filterBy: 'all'
+		};
+	},
+
+
+	created: function created() {
+		this.getServices();
+	},
+
+	ready: function ready() {},
+
+	methods: {
+		// This method should implement all context using as a save-callback 
+		getData: function getData() {
+			return this.$tools.transformParameters({
+				choosed: this.$tools.collectionBy(this.filteredServices, "id")
+			});
+		},
+
+		getServices: function getServices() {
+			var _this = this;
+
+			this.$http.get(this.$env.get('APP_URI') + 'api/service?data=' + this.$tools.transformParameters({
+				selected: this.$tools.collectionBy(this.selected, "id")
+			})).then(function (response) {
+				_this.services = response.data.result;
+			}, function (response) {});
+		},
+
+		filterByType: function filterByType(obj) {
+			return obj.selected;
+		}
+	},
+
+	computed: {
+		filteredServices: function filteredServices() {
+			return this.services.filter(this.filterByType);
+		}
+	}
+};
+if (module.exports.__esModule) module.exports = module.exports.default
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"row\">\n    <input type=\"text\" name=\"search\" placeholder=\"search ...\">\n</div>\n\n<div class=\"row\" v-for=\"service in services\">\n\t<div class=\"small-2 columns\">\n\t\t<input type=\"checkbox\" v-model=\"service.selected\">\n\t</div>\n\t<div class=\"small-10 columns\">\n\t\t{{service.name}}\n\t</div>\n</div>\n"
+if (module.hot) {(function () {  module.hot.accept()
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), true)
+  if (!hotAPI.compatible) return
+  module.hot.dispose(function () {
+    __vueify_insert__.cache["\n\n"] = false
+    document.head.removeChild(__vueify_style__)
+  })
+  if (!module.hot.data) {
+    hotAPI.createRecord("_v-2611a970", module.exports)
+  } else {
+    hotAPI.update("_v-2611a970", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+  }
+})()}
+},{"vue":55,"vue-hot-reload-api":50,"vueify/lib/insert-css":56}],86:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
 var __vueify_style__ = __vueify_insert__.insert("\n\n.ft-teacher-img {\n\t-webkit-transition: box-shadow 200ms ease-in-out;\n\ttransition: box-shadow 200ms ease-in-out;\n    position: absolute;\n    top: 50%;\n    left: 0;\n    width: 32px;\n    height: 32px;\n    border-radius: 32px;\n    display: block;\n    margin-top: -16px;\n}\n\n.ft-teacher-column {\n\tcolor: #fff;\n}\t\n\n")
 'use strict';
@@ -56146,7 +57320,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-5a634b8a", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":54,"vue-hot-reload-api":50,"vueify/lib/insert-css":55}],83:[function(require,module,exports){
+},{"vue":55,"vue-hot-reload-api":50,"vueify/lib/insert-css":56}],87:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
 var __vueify_style__ = __vueify_insert__.insert("\n\n.tr-teacher-box {\n\toverflow: hidden;\n    padding: 10px 0;\n    color: #aecaec;\n}\n\n.training-text {\n\tpadding-left: 10px;\n    padding-top: 5px;\n}\n\n.training img {\n    height: 40px;\n    width: 40px;\n    border-radius: 150px;\n    -webkit-border-radius: 150px;\n    -moz-border-radius: 150px;\n}\n")
 'use strict';
@@ -56237,7 +57411,260 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-4d1a5842", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":54,"vue-hot-reload-api":50,"vueify/lib/insert-css":55}],84:[function(require,module,exports){
+},{"vue":55,"vue-hot-reload-api":50,"vueify/lib/insert-css":56}],88:[function(require,module,exports){
+'use strict';
+
+(function ($) {
+
+  // Add posibility to scroll to selected option
+  // usefull for select for example
+  $.fn.scrollTo = function (elem) {
+    $(this).scrollTop($(this).scrollTop() - $(this).offset().top + $(elem).offset().top);
+    return this;
+  };
+
+  $.fn.dropdown = function (options) {
+    var defaults = {
+      inDuration: 300,
+      outDuration: 225,
+      constrain_width: true, // Constrains width of dropdown to the activator
+      hover: false,
+      gutter: 0, // Spacing from edge
+      belowOrigin: false,
+      alignment: 'left',
+      stopPropagation: false
+    };
+
+    // Open dropdown.
+    if (options === "open") {
+      this.each(function () {
+        $(this).trigger('open');
+      });
+      return false;
+    }
+
+    // Close dropdown.
+    if (options === "close") {
+      this.each(function () {
+        $(this).trigger('close');
+      });
+      return false;
+    }
+
+    this.each(function () {
+      var origin = $(this);
+      var curr_options = $.extend({}, defaults, options);
+      var isFocused = false;
+
+      // Dropdown menu
+      var activates = $("#" + origin.attr('data-activates'));
+
+      function updateOptions() {
+        if (origin.data('induration') !== undefined) curr_options.inDuration = origin.data('induration');
+        if (origin.data('outduration') !== undefined) curr_options.outDuration = origin.data('outduration');
+        if (origin.data('constrainwidth') !== undefined) curr_options.constrain_width = origin.data('constrainwidth');
+        if (origin.data('hover') !== undefined) curr_options.hover = origin.data('hover');
+        if (origin.data('gutter') !== undefined) curr_options.gutter = origin.data('gutter');
+        if (origin.data('beloworigin') !== undefined) curr_options.belowOrigin = origin.data('beloworigin');
+        if (origin.data('alignment') !== undefined) curr_options.alignment = origin.data('alignment');
+        if (origin.data('stoppropagation') !== undefined) curr_options.stopPropagation = origin.data('stoppropagation');
+      }
+
+      updateOptions();
+
+      // Attach dropdown to its activator
+      origin.after(activates);
+
+      /*
+        Helper function to position and resize dropdown.
+        Used in hover and click handler.
+      */
+      function placeDropdown(eventType) {
+        // Check for simultaneous focus and click events.
+        if (eventType === 'focus') {
+          isFocused = true;
+        }
+
+        // Check html data attributes
+        updateOptions();
+
+        // Set Dropdown state
+        activates.addClass('active');
+        origin.addClass('active');
+
+        // Constrain width
+        if (curr_options.constrain_width === true) {
+          activates.css('width', origin.outerWidth());
+        } else {
+          activates.css('white-space', 'nowrap');
+        }
+
+        // Offscreen detection
+        var windowHeight = window.innerHeight;
+        var originHeight = origin.innerHeight();
+        var offsetLeft = origin.offset().left;
+        var offsetTop = origin.offset().top - $(window).scrollTop();
+        var currAlignment = curr_options.alignment;
+        var gutterSpacing = 0;
+        var leftPosition = 0;
+
+        // Below Origin
+        var verticalOffset = 0;
+        if (curr_options.belowOrigin === true) {
+          verticalOffset = originHeight;
+        }
+
+        // Check for scrolling positioned container.
+        var scrollYOffset = 0;
+        var scrollXOffset = 0;
+        var wrapper = origin.parent();
+        if (!wrapper.is('body')) {
+          if (wrapper[0].scrollHeight > wrapper[0].clientHeight) {
+            scrollYOffset = wrapper[0].scrollTop;
+          }
+          if (wrapper[0].scrollWidth > wrapper[0].clientWidth) {
+            scrollXOffset = wrapper[0].scrollLeft;
+          }
+        }
+
+        if (offsetLeft + activates.innerWidth() > $(window).width()) {
+          // Dropdown goes past screen on right, force right alignment
+          currAlignment = 'right';
+        } else if (offsetLeft - activates.innerWidth() + origin.innerWidth() < 0) {
+          // Dropdown goes past screen on left, force left alignment
+          currAlignment = 'left';
+        }
+        // Vertical bottom offscreen detection
+        if (offsetTop + activates.innerHeight() > windowHeight) {
+          // If going upwards still goes offscreen, just crop height of dropdown.
+          if (offsetTop + originHeight - activates.innerHeight() < 0) {
+            var adjustedHeight = windowHeight - offsetTop - verticalOffset;
+            activates.css('max-height', adjustedHeight);
+          } else {
+            // Flow upwards.
+            if (!verticalOffset) {
+              verticalOffset += originHeight;
+            }
+            verticalOffset -= activates.innerHeight();
+          }
+        }
+
+        // Handle edge alignment
+        if (currAlignment === 'left') {
+          gutterSpacing = curr_options.gutter;
+          leftPosition = origin.position().left + gutterSpacing;
+        } else if (currAlignment === 'right') {
+          var offsetRight = origin.position().left + origin.outerWidth() - activates.outerWidth();
+          gutterSpacing = -curr_options.gutter;
+          leftPosition = offsetRight + gutterSpacing;
+        }
+
+        // Position dropdown
+        activates.css({
+          position: 'absolute',
+          top: origin.position().top + verticalOffset + scrollYOffset,
+          left: leftPosition + scrollXOffset
+        });
+
+        // Show dropdown
+        activates.stop(true, true).css('opacity', 0).slideDown({
+          queue: false,
+          duration: curr_options.inDuration,
+          easing: 'easeOutCubic',
+          complete: function complete() {
+            $(this).css('height', '');
+          }
+        }).animate({ opacity: 1 }, { queue: false, duration: curr_options.inDuration, easing: 'easeOutSine' });
+      }
+
+      function hideDropdown() {
+        // Check for simultaneous focus and click events.
+        isFocused = false;
+        activates.fadeOut(curr_options.outDuration);
+        activates.removeClass('active');
+        origin.removeClass('active');
+        setTimeout(function () {
+          activates.css('max-height', '');
+        }, curr_options.outDuration);
+      }
+
+      // Hover
+      if (curr_options.hover) {
+        var open = false;
+        origin.unbind('click.' + origin.attr('id'));
+        // Hover handler to show dropdown
+        origin.on('mouseenter', function (e) {
+          // Mouse over
+          if (open === false) {
+            placeDropdown();
+            open = true;
+          }
+        });
+        origin.on('mouseleave', function (e) {
+          // If hover on origin then to something other than dropdown content, then close
+          var toEl = e.toElement || e.relatedTarget; // added browser compatibility for target element
+          if (!$(toEl).closest('.dropdown-content').is(activates)) {
+            activates.stop(true, true);
+            hideDropdown();
+            open = false;
+          }
+        });
+
+        activates.on('mouseleave', function (e) {
+          // Mouse out
+          var toEl = e.toElement || e.relatedTarget;
+          if (!$(toEl).closest('.dropdown-button').is(origin)) {
+            activates.stop(true, true);
+            hideDropdown();
+            open = false;
+          }
+        });
+
+        // Click
+      } else {
+        // Click handler to show dropdown
+        origin.unbind('click.' + origin.attr('id'));
+        origin.bind('click.' + origin.attr('id'), function (e) {
+          if (!isFocused) {
+            if (origin[0] == e.currentTarget && !origin.hasClass('active') && $(e.target).closest('.dropdown-content').length === 0) {
+              e.preventDefault(); // Prevents button click from moving window
+              if (curr_options.stopPropagation) {
+                e.stopPropagation();
+              }
+              placeDropdown('click');
+            }
+            // If origin is clicked and menu is open, close menu
+            else if (origin.hasClass('active')) {
+                hideDropdown();
+                $(document).unbind('click.' + activates.attr('id') + ' touchstart.' + activates.attr('id'));
+              }
+            // If menu open, add click close handler to document
+            if (activates.hasClass('active')) {
+              $(document).bind('click.' + activates.attr('id') + ' touchstart.' + activates.attr('id'), function (e) {
+                if (!activates.is(e.target) && !origin.is(e.target) && !origin.find(e.target).length) {
+                  hideDropdown();
+                  $(document).unbind('click.' + activates.attr('id') + ' touchstart.' + activates.attr('id'));
+                }
+              });
+            }
+          }
+        });
+      } // End else
+
+      // Listen to open and close event - useful for select component
+      origin.on('open', function (e, eventType) {
+        placeDropdown(eventType);
+      });
+      origin.on('close', hideDropdown);
+    });
+  }; // End dropdown plugin
+
+  $(document).ready(function () {
+    $('.dropdown-button').dropdown();
+  });
+})(jQuery);
+
+},{}],89:[function(require,module,exports){
 'use strict';var _typeof=typeof Symbol==="function"&&typeof Symbol.iterator==="symbol"?function(obj){return typeof obj;}:function(obj){return obj&&typeof Symbol==="function"&&obj.constructor===Symbol?"symbol":typeof obj;};!function($){"use strict";var FOUNDATION_VERSION='6.2.3';// Global Foundation object
 // This is attached to the window, or used as a module for AMD/Browserify
 var Foundation={version:FOUNDATION_VERSION,/**
@@ -58649,7 +60076,1159 @@ if(!_this.options.clickOpen){isFocus=false;}return false;}else{_this.show();}}).
    */// Window exports
 Foundation.plugin(Tooltip,'Tooltip');}(jQuery);
 
-},{}],85:[function(require,module,exports){
+},{}],90:[function(require,module,exports){
+"use strict";
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
+
+/*! jQuery UI - v1.12.0 - 2016-09-01
+* http://jqueryui.com
+* Includes: widget.js, data.js, disable-selection.js, scroll-parent.js, widgets/draggable.js, widgets/droppable.js, widgets/resizable.js, widgets/selectable.js, widgets/mouse.js, effect.js
+* Copyright jQuery Foundation and other contributors; Licensed MIT */
+
+(function (t) {
+  "function" == typeof define && define.amd ? define(["jquery"], t) : t(jQuery);
+})(function (t) {
+  t.ui = t.ui || {}, t.ui.version = "1.12.0";var e = 0,
+      i = Array.prototype.slice;t.cleanData = function (e) {
+    return function (i) {
+      var s, n, o;for (o = 0; null != (n = i[o]); o++) {
+        try {
+          s = t._data(n, "events"), s && s.remove && t(n).triggerHandler("remove");
+        } catch (a) {}
+      }e(i);
+    };
+  }(t.cleanData), t.widget = function (e, i, s) {
+    var n,
+        o,
+        a,
+        r = {},
+        l = e.split(".")[0];e = e.split(".")[1];var h = l + "-" + e;return s || (s = i, i = t.Widget), t.isArray(s) && (s = t.extend.apply(null, [{}].concat(s))), t.expr[":"][h.toLowerCase()] = function (e) {
+      return !!t.data(e, h);
+    }, t[l] = t[l] || {}, n = t[l][e], o = t[l][e] = function (t, e) {
+      return this._createWidget ? (arguments.length && this._createWidget(t, e), void 0) : new o(t, e);
+    }, t.extend(o, n, { version: s.version, _proto: t.extend({}, s), _childConstructors: [] }), a = new i(), a.options = t.widget.extend({}, a.options), t.each(s, function (e, s) {
+      return t.isFunction(s) ? (r[e] = function () {
+        function t() {
+          return i.prototype[e].apply(this, arguments);
+        }function n(t) {
+          return i.prototype[e].apply(this, t);
+        }return function () {
+          var e,
+              i = this._super,
+              o = this._superApply;return this._super = t, this._superApply = n, e = s.apply(this, arguments), this._super = i, this._superApply = o, e;
+        };
+      }(), void 0) : (r[e] = s, void 0);
+    }), o.prototype = t.widget.extend(a, { widgetEventPrefix: n ? a.widgetEventPrefix || e : e }, r, { constructor: o, namespace: l, widgetName: e, widgetFullName: h }), n ? (t.each(n._childConstructors, function (e, i) {
+      var s = i.prototype;t.widget(s.namespace + "." + s.widgetName, o, i._proto);
+    }), delete n._childConstructors) : i._childConstructors.push(o), t.widget.bridge(e, o), o;
+  }, t.widget.extend = function (e) {
+    for (var s, n, o = i.call(arguments, 1), a = 0, r = o.length; r > a; a++) {
+      for (s in o[a]) {
+        n = o[a][s], o[a].hasOwnProperty(s) && void 0 !== n && (e[s] = t.isPlainObject(n) ? t.isPlainObject(e[s]) ? t.widget.extend({}, e[s], n) : t.widget.extend({}, n) : n);
+      }
+    }return e;
+  }, t.widget.bridge = function (e, s) {
+    var n = s.prototype.widgetFullName || e;t.fn[e] = function (o) {
+      var a = "string" == typeof o,
+          r = i.call(arguments, 1),
+          l = this;return a ? this.each(function () {
+        var i,
+            s = t.data(this, n);return "instance" === o ? (l = s, !1) : s ? t.isFunction(s[o]) && "_" !== o.charAt(0) ? (i = s[o].apply(s, r), i !== s && void 0 !== i ? (l = i && i.jquery ? l.pushStack(i.get()) : i, !1) : void 0) : t.error("no such method '" + o + "' for " + e + " widget instance") : t.error("cannot call methods on " + e + " prior to initialization; " + "attempted to call method '" + o + "'");
+      }) : (r.length && (o = t.widget.extend.apply(null, [o].concat(r))), this.each(function () {
+        var e = t.data(this, n);e ? (e.option(o || {}), e._init && e._init()) : t.data(this, n, new s(o, this));
+      })), l;
+    };
+  }, t.Widget = function () {}, t.Widget._childConstructors = [], t.Widget.prototype = { widgetName: "widget", widgetEventPrefix: "", defaultElement: "<div>", options: { classes: {}, disabled: !1, create: null }, _createWidget: function _createWidget(i, s) {
+      s = t(s || this.defaultElement || this)[0], this.element = t(s), this.uuid = e++, this.eventNamespace = "." + this.widgetName + this.uuid, this.bindings = t(), this.hoverable = t(), this.focusable = t(), this.classesElementLookup = {}, s !== this && (t.data(s, this.widgetFullName, this), this._on(!0, this.element, { remove: function remove(t) {
+          t.target === s && this.destroy();
+        } }), this.document = t(s.style ? s.ownerDocument : s.document || s), this.window = t(this.document[0].defaultView || this.document[0].parentWindow)), this.options = t.widget.extend({}, this.options, this._getCreateOptions(), i), this._create(), this.options.disabled && this._setOptionDisabled(this.options.disabled), this._trigger("create", null, this._getCreateEventData()), this._init();
+    }, _getCreateOptions: function _getCreateOptions() {
+      return {};
+    }, _getCreateEventData: t.noop, _create: t.noop, _init: t.noop, destroy: function destroy() {
+      var e = this;this._destroy(), t.each(this.classesElementLookup, function (t, i) {
+        e._removeClass(i, t);
+      }), this.element.off(this.eventNamespace).removeData(this.widgetFullName), this.widget().off(this.eventNamespace).removeAttr("aria-disabled"), this.bindings.off(this.eventNamespace);
+    }, _destroy: t.noop, widget: function widget() {
+      return this.element;
+    }, option: function option(e, i) {
+      var s,
+          n,
+          o,
+          a = e;if (0 === arguments.length) return t.widget.extend({}, this.options);if ("string" == typeof e) if (a = {}, s = e.split("."), e = s.shift(), s.length) {
+        for (n = a[e] = t.widget.extend({}, this.options[e]), o = 0; s.length - 1 > o; o++) {
+          n[s[o]] = n[s[o]] || {}, n = n[s[o]];
+        }if (e = s.pop(), 1 === arguments.length) return void 0 === n[e] ? null : n[e];n[e] = i;
+      } else {
+        if (1 === arguments.length) return void 0 === this.options[e] ? null : this.options[e];a[e] = i;
+      }return this._setOptions(a), this;
+    }, _setOptions: function _setOptions(t) {
+      var e;for (e in t) {
+        this._setOption(e, t[e]);
+      }return this;
+    }, _setOption: function _setOption(t, e) {
+      return "classes" === t && this._setOptionClasses(e), this.options[t] = e, "disabled" === t && this._setOptionDisabled(e), this;
+    }, _setOptionClasses: function _setOptionClasses(e) {
+      var i, s, n;for (i in e) {
+        n = this.classesElementLookup[i], e[i] !== this.options.classes[i] && n && n.length && (s = t(n.get()), this._removeClass(n, i), s.addClass(this._classes({ element: s, keys: i, classes: e, add: !0 })));
+      }
+    }, _setOptionDisabled: function _setOptionDisabled(t) {
+      this._toggleClass(this.widget(), this.widgetFullName + "-disabled", null, !!t), t && (this._removeClass(this.hoverable, null, "ui-state-hover"), this._removeClass(this.focusable, null, "ui-state-focus"));
+    }, enable: function enable() {
+      return this._setOptions({ disabled: !1 });
+    }, disable: function disable() {
+      return this._setOptions({ disabled: !0 });
+    }, _classes: function _classes(e) {
+      function i(i, o) {
+        var a, r;for (r = 0; i.length > r; r++) {
+          a = n.classesElementLookup[i[r]] || t(), a = e.add ? t(t.unique(a.get().concat(e.element.get()))) : t(a.not(e.element).get()), n.classesElementLookup[i[r]] = a, s.push(i[r]), o && e.classes[i[r]] && s.push(e.classes[i[r]]);
+        }
+      }var s = [],
+          n = this;return e = t.extend({ element: this.element, classes: this.options.classes || {} }, e), e.keys && i(e.keys.match(/\S+/g) || [], !0), e.extra && i(e.extra.match(/\S+/g) || []), s.join(" ");
+    }, _removeClass: function _removeClass(t, e, i) {
+      return this._toggleClass(t, e, i, !1);
+    }, _addClass: function _addClass(t, e, i) {
+      return this._toggleClass(t, e, i, !0);
+    }, _toggleClass: function _toggleClass(t, e, i, s) {
+      s = "boolean" == typeof s ? s : i;var n = "string" == typeof t || null === t,
+          o = { extra: n ? e : i, keys: n ? t : e, element: n ? this.element : t, add: s };return o.element.toggleClass(this._classes(o), s), this;
+    }, _on: function _on(e, i, s) {
+      var n,
+          o = this;"boolean" != typeof e && (s = i, i = e, e = !1), s ? (i = n = t(i), this.bindings = this.bindings.add(i)) : (s = i, i = this.element, n = this.widget()), t.each(s, function (s, a) {
+        function r() {
+          return e || o.options.disabled !== !0 && !t(this).hasClass("ui-state-disabled") ? ("string" == typeof a ? o[a] : a).apply(o, arguments) : void 0;
+        }"string" != typeof a && (r.guid = a.guid = a.guid || r.guid || t.guid++);var l = s.match(/^([\w:-]*)\s*(.*)$/),
+            h = l[1] + o.eventNamespace,
+            c = l[2];c ? n.on(h, c, r) : i.on(h, r);
+      });
+    }, _off: function _off(e, i) {
+      i = (i || "").split(" ").join(this.eventNamespace + " ") + this.eventNamespace, e.off(i).off(i), this.bindings = t(this.bindings.not(e).get()), this.focusable = t(this.focusable.not(e).get()), this.hoverable = t(this.hoverable.not(e).get());
+    }, _delay: function _delay(t, e) {
+      function i() {
+        return ("string" == typeof t ? s[t] : t).apply(s, arguments);
+      }var s = this;return setTimeout(i, e || 0);
+    }, _hoverable: function _hoverable(e) {
+      this.hoverable = this.hoverable.add(e), this._on(e, { mouseenter: function mouseenter(e) {
+          this._addClass(t(e.currentTarget), null, "ui-state-hover");
+        }, mouseleave: function mouseleave(e) {
+          this._removeClass(t(e.currentTarget), null, "ui-state-hover");
+        } });
+    }, _focusable: function _focusable(e) {
+      this.focusable = this.focusable.add(e), this._on(e, { focusin: function focusin(e) {
+          this._addClass(t(e.currentTarget), null, "ui-state-focus");
+        }, focusout: function focusout(e) {
+          this._removeClass(t(e.currentTarget), null, "ui-state-focus");
+        } });
+    }, _trigger: function _trigger(e, i, s) {
+      var n,
+          o,
+          a = this.options[e];if (s = s || {}, i = t.Event(i), i.type = (e === this.widgetEventPrefix ? e : this.widgetEventPrefix + e).toLowerCase(), i.target = this.element[0], o = i.originalEvent) for (n in o) {
+        n in i || (i[n] = o[n]);
+      }return this.element.trigger(i, s), !(t.isFunction(a) && a.apply(this.element[0], [i].concat(s)) === !1 || i.isDefaultPrevented());
+    } }, t.each({ show: "fadeIn", hide: "fadeOut" }, function (e, i) {
+    t.Widget.prototype["_" + e] = function (s, n, o) {
+      "string" == typeof n && (n = { effect: n });var a,
+          r = n ? n === !0 || "number" == typeof n ? i : n.effect || i : e;n = n || {}, "number" == typeof n && (n = { duration: n }), a = !t.isEmptyObject(n), n.complete = o, n.delay && s.delay(n.delay), a && t.effects && t.effects.effect[r] ? s[e](n) : r !== e && s[r] ? s[r](n.duration, n.easing, o) : s.queue(function (i) {
+        t(this)[e](), o && o.call(s[0]), i();
+      });
+    };
+  }), t.widget, t.extend(t.expr[":"], { data: t.expr.createPseudo ? t.expr.createPseudo(function (e) {
+      return function (i) {
+        return !!t.data(i, e);
+      };
+    }) : function (e, i, s) {
+      return !!t.data(e, s[3]);
+    } }), t.fn.extend({ disableSelection: function () {
+      var t = "onselectstart" in document.createElement("div") ? "selectstart" : "mousedown";return function () {
+        return this.on(t + ".ui-disableSelection", function (t) {
+          t.preventDefault();
+        });
+      };
+    }(), enableSelection: function enableSelection() {
+      return this.off(".ui-disableSelection");
+    } }), t.fn.scrollParent = function (e) {
+    var i = this.css("position"),
+        s = "absolute" === i,
+        n = e ? /(auto|scroll|hidden)/ : /(auto|scroll)/,
+        o = this.parents().filter(function () {
+      var e = t(this);return s && "static" === e.css("position") ? !1 : n.test(e.css("overflow") + e.css("overflow-y") + e.css("overflow-x"));
+    }).eq(0);return "fixed" !== i && o.length ? o : t(this[0].ownerDocument || document);
+  }, t.ui.ie = !!/msie [\w.]+/.exec(navigator.userAgent.toLowerCase());var s = !1;t(document).on("mouseup", function () {
+    s = !1;
+  }), t.widget("ui.mouse", { version: "1.12.0", options: { cancel: "input, textarea, button, select, option", distance: 1, delay: 0 }, _mouseInit: function _mouseInit() {
+      var e = this;this.element.on("mousedown." + this.widgetName, function (t) {
+        return e._mouseDown(t);
+      }).on("click." + this.widgetName, function (i) {
+        return !0 === t.data(i.target, e.widgetName + ".preventClickEvent") ? (t.removeData(i.target, e.widgetName + ".preventClickEvent"), i.stopImmediatePropagation(), !1) : void 0;
+      }), this.started = !1;
+    }, _mouseDestroy: function _mouseDestroy() {
+      this.element.off("." + this.widgetName), this._mouseMoveDelegate && this.document.off("mousemove." + this.widgetName, this._mouseMoveDelegate).off("mouseup." + this.widgetName, this._mouseUpDelegate);
+    }, _mouseDown: function _mouseDown(e) {
+      if (!s) {
+        this._mouseMoved = !1, this._mouseStarted && this._mouseUp(e), this._mouseDownEvent = e;var i = this,
+            n = 1 === e.which,
+            o = "string" == typeof this.options.cancel && e.target.nodeName ? t(e.target).closest(this.options.cancel).length : !1;return n && !o && this._mouseCapture(e) ? (this.mouseDelayMet = !this.options.delay, this.mouseDelayMet || (this._mouseDelayTimer = setTimeout(function () {
+          i.mouseDelayMet = !0;
+        }, this.options.delay)), this._mouseDistanceMet(e) && this._mouseDelayMet(e) && (this._mouseStarted = this._mouseStart(e) !== !1, !this._mouseStarted) ? (e.preventDefault(), !0) : (!0 === t.data(e.target, this.widgetName + ".preventClickEvent") && t.removeData(e.target, this.widgetName + ".preventClickEvent"), this._mouseMoveDelegate = function (t) {
+          return i._mouseMove(t);
+        }, this._mouseUpDelegate = function (t) {
+          return i._mouseUp(t);
+        }, this.document.on("mousemove." + this.widgetName, this._mouseMoveDelegate).on("mouseup." + this.widgetName, this._mouseUpDelegate), e.preventDefault(), s = !0, !0)) : !0;
+      }
+    }, _mouseMove: function _mouseMove(e) {
+      if (this._mouseMoved) {
+        if (t.ui.ie && (!document.documentMode || 9 > document.documentMode) && !e.button) return this._mouseUp(e);if (!e.which) if (e.originalEvent.altKey || e.originalEvent.ctrlKey || e.originalEvent.metaKey || e.originalEvent.shiftKey) this.ignoreMissingWhich = !0;else if (!this.ignoreMissingWhich) return this._mouseUp(e);
+      }return (e.which || e.button) && (this._mouseMoved = !0), this._mouseStarted ? (this._mouseDrag(e), e.preventDefault()) : (this._mouseDistanceMet(e) && this._mouseDelayMet(e) && (this._mouseStarted = this._mouseStart(this._mouseDownEvent, e) !== !1, this._mouseStarted ? this._mouseDrag(e) : this._mouseUp(e)), !this._mouseStarted);
+    }, _mouseUp: function _mouseUp(e) {
+      this.document.off("mousemove." + this.widgetName, this._mouseMoveDelegate).off("mouseup." + this.widgetName, this._mouseUpDelegate), this._mouseStarted && (this._mouseStarted = !1, e.target === this._mouseDownEvent.target && t.data(e.target, this.widgetName + ".preventClickEvent", !0), this._mouseStop(e)), this._mouseDelayTimer && (clearTimeout(this._mouseDelayTimer), delete this._mouseDelayTimer), this.ignoreMissingWhich = !1, s = !1, e.preventDefault();
+    }, _mouseDistanceMet: function _mouseDistanceMet(t) {
+      return Math.max(Math.abs(this._mouseDownEvent.pageX - t.pageX), Math.abs(this._mouseDownEvent.pageY - t.pageY)) >= this.options.distance;
+    }, _mouseDelayMet: function _mouseDelayMet() {
+      return this.mouseDelayMet;
+    }, _mouseStart: function _mouseStart() {}, _mouseDrag: function _mouseDrag() {}, _mouseStop: function _mouseStop() {}, _mouseCapture: function _mouseCapture() {
+      return !0;
+    } }), t.ui.plugin = { add: function add(e, i, s) {
+      var n,
+          o = t.ui[e].prototype;for (n in s) {
+        o.plugins[n] = o.plugins[n] || [], o.plugins[n].push([i, s[n]]);
+      }
+    }, call: function call(t, e, i, s) {
+      var n,
+          o = t.plugins[e];if (o && (s || t.element[0].parentNode && 11 !== t.element[0].parentNode.nodeType)) for (n = 0; o.length > n; n++) {
+        t.options[o[n][0]] && o[n][1].apply(t.element, i);
+      }
+    } }, t.ui.safeActiveElement = function (t) {
+    var e;try {
+      e = t.activeElement;
+    } catch (i) {
+      e = t.body;
+    }return e || (e = t.body), e.nodeName || (e = t.body), e;
+  }, t.ui.safeBlur = function (e) {
+    e && "body" !== e.nodeName.toLowerCase() && t(e).trigger("blur");
+  }, t.widget("ui.draggable", t.ui.mouse, { version: "1.12.0", widgetEventPrefix: "drag", options: { addClasses: !0, appendTo: "parent", axis: !1, connectToSortable: !1, containment: !1, cursor: "auto", cursorAt: !1, grid: !1, handle: !1, helper: "original", iframeFix: !1, opacity: !1, refreshPositions: !1, revert: !1, revertDuration: 500, scope: "default", scroll: !0, scrollSensitivity: 20, scrollSpeed: 20, snap: !1, snapMode: "both", snapTolerance: 20, stack: !1, zIndex: !1, drag: null, start: null, stop: null }, _create: function _create() {
+      "original" === this.options.helper && this._setPositionRelative(), this.options.addClasses && this._addClass("ui-draggable"), this._setHandleClassName(), this._mouseInit();
+    }, _setOption: function _setOption(t, e) {
+      this._super(t, e), "handle" === t && (this._removeHandleClassName(), this._setHandleClassName());
+    }, _destroy: function _destroy() {
+      return (this.helper || this.element).is(".ui-draggable-dragging") ? (this.destroyOnClear = !0, void 0) : (this._removeHandleClassName(), this._mouseDestroy(), void 0);
+    }, _mouseCapture: function _mouseCapture(e) {
+      var i = this.options;return this._blurActiveElement(e), this.helper || i.disabled || t(e.target).closest(".ui-resizable-handle").length > 0 ? !1 : (this.handle = this._getHandle(e), this.handle ? (this._blockFrames(i.iframeFix === !0 ? "iframe" : i.iframeFix), !0) : !1);
+    }, _blockFrames: function _blockFrames(e) {
+      this.iframeBlocks = this.document.find(e).map(function () {
+        var e = t(this);return t("<div>").css("position", "absolute").appendTo(e.parent()).outerWidth(e.outerWidth()).outerHeight(e.outerHeight()).offset(e.offset())[0];
+      });
+    }, _unblockFrames: function _unblockFrames() {
+      this.iframeBlocks && (this.iframeBlocks.remove(), delete this.iframeBlocks);
+    }, _blurActiveElement: function _blurActiveElement(e) {
+      var i = t.ui.safeActiveElement(this.document[0]),
+          s = t(e.target);this._getHandle(e) && s.closest(i).length || t.ui.safeBlur(i);
+    }, _mouseStart: function _mouseStart(e) {
+      var i = this.options;return this.helper = this._createHelper(e), this._addClass(this.helper, "ui-draggable-dragging"), this._cacheHelperProportions(), t.ui.ddmanager && (t.ui.ddmanager.current = this), this._cacheMargins(), this.cssPosition = this.helper.css("position"), this.scrollParent = this.helper.scrollParent(!0), this.offsetParent = this.helper.offsetParent(), this.hasFixedAncestor = this.helper.parents().filter(function () {
+        return "fixed" === t(this).css("position");
+      }).length > 0, this.positionAbs = this.element.offset(), this._refreshOffsets(e), this.originalPosition = this.position = this._generatePosition(e, !1), this.originalPageX = e.pageX, this.originalPageY = e.pageY, i.cursorAt && this._adjustOffsetFromHelper(i.cursorAt), this._setContainment(), this._trigger("start", e) === !1 ? (this._clear(), !1) : (this._cacheHelperProportions(), t.ui.ddmanager && !i.dropBehaviour && t.ui.ddmanager.prepareOffsets(this, e), this._mouseDrag(e, !0), t.ui.ddmanager && t.ui.ddmanager.dragStart(this, e), !0);
+    }, _refreshOffsets: function _refreshOffsets(t) {
+      this.offset = { top: this.positionAbs.top - this.margins.top, left: this.positionAbs.left - this.margins.left, scroll: !1, parent: this._getParentOffset(), relative: this._getRelativeOffset() }, this.offset.click = { left: t.pageX - this.offset.left, top: t.pageY - this.offset.top };
+    }, _mouseDrag: function _mouseDrag(e, i) {
+      if (this.hasFixedAncestor && (this.offset.parent = this._getParentOffset()), this.position = this._generatePosition(e, !0), this.positionAbs = this._convertPositionTo("absolute"), !i) {
+        var s = this._uiHash();if (this._trigger("drag", e, s) === !1) return this._mouseUp(new t.Event("mouseup", e)), !1;this.position = s.position;
+      }return this.helper[0].style.left = this.position.left + "px", this.helper[0].style.top = this.position.top + "px", t.ui.ddmanager && t.ui.ddmanager.drag(this, e), !1;
+    }, _mouseStop: function _mouseStop(e) {
+      var i = this,
+          s = !1;return t.ui.ddmanager && !this.options.dropBehaviour && (s = t.ui.ddmanager.drop(this, e)), this.dropped && (s = this.dropped, this.dropped = !1), "invalid" === this.options.revert && !s || "valid" === this.options.revert && s || this.options.revert === !0 || t.isFunction(this.options.revert) && this.options.revert.call(this.element, s) ? t(this.helper).animate(this.originalPosition, parseInt(this.options.revertDuration, 10), function () {
+        i._trigger("stop", e) !== !1 && i._clear();
+      }) : this._trigger("stop", e) !== !1 && this._clear(), !1;
+    }, _mouseUp: function _mouseUp(e) {
+      return this._unblockFrames(), t.ui.ddmanager && t.ui.ddmanager.dragStop(this, e), this.handleElement.is(e.target) && this.element.trigger("focus"), t.ui.mouse.prototype._mouseUp.call(this, e);
+    }, cancel: function cancel() {
+      return this.helper.is(".ui-draggable-dragging") ? this._mouseUp(new t.Event("mouseup", { target: this.element[0] })) : this._clear(), this;
+    }, _getHandle: function _getHandle(e) {
+      return this.options.handle ? !!t(e.target).closest(this.element.find(this.options.handle)).length : !0;
+    }, _setHandleClassName: function _setHandleClassName() {
+      this.handleElement = this.options.handle ? this.element.find(this.options.handle) : this.element, this._addClass(this.handleElement, "ui-draggable-handle");
+    }, _removeHandleClassName: function _removeHandleClassName() {
+      this._removeClass(this.handleElement, "ui-draggable-handle");
+    }, _createHelper: function _createHelper(e) {
+      var i = this.options,
+          s = t.isFunction(i.helper),
+          n = s ? t(i.helper.apply(this.element[0], [e])) : "clone" === i.helper ? this.element.clone().removeAttr("id") : this.element;return n.parents("body").length || n.appendTo("parent" === i.appendTo ? this.element[0].parentNode : i.appendTo), s && n[0] === this.element[0] && this._setPositionRelative(), n[0] === this.element[0] || /(fixed|absolute)/.test(n.css("position")) || n.css("position", "absolute"), n;
+    }, _setPositionRelative: function _setPositionRelative() {
+      /^(?:r|a|f)/.test(this.element.css("position")) || (this.element[0].style.position = "relative");
+    }, _adjustOffsetFromHelper: function _adjustOffsetFromHelper(e) {
+      "string" == typeof e && (e = e.split(" ")), t.isArray(e) && (e = { left: +e[0], top: +e[1] || 0 }), "left" in e && (this.offset.click.left = e.left + this.margins.left), "right" in e && (this.offset.click.left = this.helperProportions.width - e.right + this.margins.left), "top" in e && (this.offset.click.top = e.top + this.margins.top), "bottom" in e && (this.offset.click.top = this.helperProportions.height - e.bottom + this.margins.top);
+    }, _isRootNode: function _isRootNode(t) {
+      return (/(html|body)/i.test(t.tagName) || t === this.document[0]
+      );
+    }, _getParentOffset: function _getParentOffset() {
+      var e = this.offsetParent.offset(),
+          i = this.document[0];return "absolute" === this.cssPosition && this.scrollParent[0] !== i && t.contains(this.scrollParent[0], this.offsetParent[0]) && (e.left += this.scrollParent.scrollLeft(), e.top += this.scrollParent.scrollTop()), this._isRootNode(this.offsetParent[0]) && (e = { top: 0, left: 0 }), { top: e.top + (parseInt(this.offsetParent.css("borderTopWidth"), 10) || 0), left: e.left + (parseInt(this.offsetParent.css("borderLeftWidth"), 10) || 0) };
+    }, _getRelativeOffset: function _getRelativeOffset() {
+      if ("relative" !== this.cssPosition) return { top: 0, left: 0 };var t = this.element.position(),
+          e = this._isRootNode(this.scrollParent[0]);return { top: t.top - (parseInt(this.helper.css("top"), 10) || 0) + (e ? 0 : this.scrollParent.scrollTop()), left: t.left - (parseInt(this.helper.css("left"), 10) || 0) + (e ? 0 : this.scrollParent.scrollLeft()) };
+    }, _cacheMargins: function _cacheMargins() {
+      this.margins = { left: parseInt(this.element.css("marginLeft"), 10) || 0, top: parseInt(this.element.css("marginTop"), 10) || 0, right: parseInt(this.element.css("marginRight"), 10) || 0, bottom: parseInt(this.element.css("marginBottom"), 10) || 0 };
+    }, _cacheHelperProportions: function _cacheHelperProportions() {
+      this.helperProportions = { width: this.helper.outerWidth(), height: this.helper.outerHeight() };
+    }, _setContainment: function _setContainment() {
+      var e,
+          i,
+          s,
+          n = this.options,
+          o = this.document[0];return this.relativeContainer = null, n.containment ? "window" === n.containment ? (this.containment = [t(window).scrollLeft() - this.offset.relative.left - this.offset.parent.left, t(window).scrollTop() - this.offset.relative.top - this.offset.parent.top, t(window).scrollLeft() + t(window).width() - this.helperProportions.width - this.margins.left, t(window).scrollTop() + (t(window).height() || o.body.parentNode.scrollHeight) - this.helperProportions.height - this.margins.top], void 0) : "document" === n.containment ? (this.containment = [0, 0, t(o).width() - this.helperProportions.width - this.margins.left, (t(o).height() || o.body.parentNode.scrollHeight) - this.helperProportions.height - this.margins.top], void 0) : n.containment.constructor === Array ? (this.containment = n.containment, void 0) : ("parent" === n.containment && (n.containment = this.helper[0].parentNode), i = t(n.containment), s = i[0], s && (e = /(scroll|auto)/.test(i.css("overflow")), this.containment = [(parseInt(i.css("borderLeftWidth"), 10) || 0) + (parseInt(i.css("paddingLeft"), 10) || 0), (parseInt(i.css("borderTopWidth"), 10) || 0) + (parseInt(i.css("paddingTop"), 10) || 0), (e ? Math.max(s.scrollWidth, s.offsetWidth) : s.offsetWidth) - (parseInt(i.css("borderRightWidth"), 10) || 0) - (parseInt(i.css("paddingRight"), 10) || 0) - this.helperProportions.width - this.margins.left - this.margins.right, (e ? Math.max(s.scrollHeight, s.offsetHeight) : s.offsetHeight) - (parseInt(i.css("borderBottomWidth"), 10) || 0) - (parseInt(i.css("paddingBottom"), 10) || 0) - this.helperProportions.height - this.margins.top - this.margins.bottom], this.relativeContainer = i), void 0) : (this.containment = null, void 0);
+    }, _convertPositionTo: function _convertPositionTo(t, e) {
+      e || (e = this.position);var i = "absolute" === t ? 1 : -1,
+          s = this._isRootNode(this.scrollParent[0]);return { top: e.top + this.offset.relative.top * i + this.offset.parent.top * i - ("fixed" === this.cssPosition ? -this.offset.scroll.top : s ? 0 : this.offset.scroll.top) * i, left: e.left + this.offset.relative.left * i + this.offset.parent.left * i - ("fixed" === this.cssPosition ? -this.offset.scroll.left : s ? 0 : this.offset.scroll.left) * i };
+    }, _generatePosition: function _generatePosition(t, e) {
+      var i,
+          s,
+          n,
+          o,
+          a = this.options,
+          r = this._isRootNode(this.scrollParent[0]),
+          l = t.pageX,
+          h = t.pageY;return r && this.offset.scroll || (this.offset.scroll = { top: this.scrollParent.scrollTop(), left: this.scrollParent.scrollLeft() }), e && (this.containment && (this.relativeContainer ? (s = this.relativeContainer.offset(), i = [this.containment[0] + s.left, this.containment[1] + s.top, this.containment[2] + s.left, this.containment[3] + s.top]) : i = this.containment, t.pageX - this.offset.click.left < i[0] && (l = i[0] + this.offset.click.left), t.pageY - this.offset.click.top < i[1] && (h = i[1] + this.offset.click.top), t.pageX - this.offset.click.left > i[2] && (l = i[2] + this.offset.click.left), t.pageY - this.offset.click.top > i[3] && (h = i[3] + this.offset.click.top)), a.grid && (n = a.grid[1] ? this.originalPageY + Math.round((h - this.originalPageY) / a.grid[1]) * a.grid[1] : this.originalPageY, h = i ? n - this.offset.click.top >= i[1] || n - this.offset.click.top > i[3] ? n : n - this.offset.click.top >= i[1] ? n - a.grid[1] : n + a.grid[1] : n, o = a.grid[0] ? this.originalPageX + Math.round((l - this.originalPageX) / a.grid[0]) * a.grid[0] : this.originalPageX, l = i ? o - this.offset.click.left >= i[0] || o - this.offset.click.left > i[2] ? o : o - this.offset.click.left >= i[0] ? o - a.grid[0] : o + a.grid[0] : o), "y" === a.axis && (l = this.originalPageX), "x" === a.axis && (h = this.originalPageY)), { top: h - this.offset.click.top - this.offset.relative.top - this.offset.parent.top + ("fixed" === this.cssPosition ? -this.offset.scroll.top : r ? 0 : this.offset.scroll.top), left: l - this.offset.click.left - this.offset.relative.left - this.offset.parent.left + ("fixed" === this.cssPosition ? -this.offset.scroll.left : r ? 0 : this.offset.scroll.left) };
+    }, _clear: function _clear() {
+      this._removeClass(this.helper, "ui-draggable-dragging"), this.helper[0] === this.element[0] || this.cancelHelperRemoval || this.helper.remove(), this.helper = null, this.cancelHelperRemoval = !1, this.destroyOnClear && this.destroy();
+    }, _trigger: function _trigger(e, i, s) {
+      return s = s || this._uiHash(), t.ui.plugin.call(this, e, [i, s, this], !0), /^(drag|start|stop)/.test(e) && (this.positionAbs = this._convertPositionTo("absolute"), s.offset = this.positionAbs), t.Widget.prototype._trigger.call(this, e, i, s);
+    }, plugins: {}, _uiHash: function _uiHash() {
+      return { helper: this.helper, position: this.position, originalPosition: this.originalPosition, offset: this.positionAbs };
+    } }), t.ui.plugin.add("draggable", "connectToSortable", { start: function start(e, i, s) {
+      var n = t.extend({}, i, { item: s.element });s.sortables = [], t(s.options.connectToSortable).each(function () {
+        var i = t(this).sortable("instance");i && !i.options.disabled && (s.sortables.push(i), i.refreshPositions(), i._trigger("activate", e, n));
+      });
+    }, stop: function stop(e, i, s) {
+      var n = t.extend({}, i, { item: s.element });s.cancelHelperRemoval = !1, t.each(s.sortables, function () {
+        var t = this;t.isOver ? (t.isOver = 0, s.cancelHelperRemoval = !0, t.cancelHelperRemoval = !1, t._storedCSS = { position: t.placeholder.css("position"), top: t.placeholder.css("top"), left: t.placeholder.css("left") }, t._mouseStop(e), t.options.helper = t.options._helper) : (t.cancelHelperRemoval = !0, t._trigger("deactivate", e, n));
+      });
+    }, drag: function drag(e, i, s) {
+      t.each(s.sortables, function () {
+        var n = !1,
+            o = this;o.positionAbs = s.positionAbs, o.helperProportions = s.helperProportions, o.offset.click = s.offset.click, o._intersectsWith(o.containerCache) && (n = !0, t.each(s.sortables, function () {
+          return this.positionAbs = s.positionAbs, this.helperProportions = s.helperProportions, this.offset.click = s.offset.click, this !== o && this._intersectsWith(this.containerCache) && t.contains(o.element[0], this.element[0]) && (n = !1), n;
+        })), n ? (o.isOver || (o.isOver = 1, s._parent = i.helper.parent(), o.currentItem = i.helper.appendTo(o.element).data("ui-sortable-item", !0), o.options._helper = o.options.helper, o.options.helper = function () {
+          return i.helper[0];
+        }, e.target = o.currentItem[0], o._mouseCapture(e, !0), o._mouseStart(e, !0, !0), o.offset.click.top = s.offset.click.top, o.offset.click.left = s.offset.click.left, o.offset.parent.left -= s.offset.parent.left - o.offset.parent.left, o.offset.parent.top -= s.offset.parent.top - o.offset.parent.top, s._trigger("toSortable", e), s.dropped = o.element, t.each(s.sortables, function () {
+          this.refreshPositions();
+        }), s.currentItem = s.element, o.fromOutside = s), o.currentItem && (o._mouseDrag(e), i.position = o.position)) : o.isOver && (o.isOver = 0, o.cancelHelperRemoval = !0, o.options._revert = o.options.revert, o.options.revert = !1, o._trigger("out", e, o._uiHash(o)), o._mouseStop(e, !0), o.options.revert = o.options._revert, o.options.helper = o.options._helper, o.placeholder && o.placeholder.remove(), i.helper.appendTo(s._parent), s._refreshOffsets(e), i.position = s._generatePosition(e, !0), s._trigger("fromSortable", e), s.dropped = !1, t.each(s.sortables, function () {
+          this.refreshPositions();
+        }));
+      });
+    } }), t.ui.plugin.add("draggable", "cursor", { start: function start(e, i, s) {
+      var n = t("body"),
+          o = s.options;n.css("cursor") && (o._cursor = n.css("cursor")), n.css("cursor", o.cursor);
+    }, stop: function stop(e, i, s) {
+      var n = s.options;n._cursor && t("body").css("cursor", n._cursor);
+    } }), t.ui.plugin.add("draggable", "opacity", { start: function start(e, i, s) {
+      var n = t(i.helper),
+          o = s.options;n.css("opacity") && (o._opacity = n.css("opacity")), n.css("opacity", o.opacity);
+    }, stop: function stop(e, i, s) {
+      var n = s.options;n._opacity && t(i.helper).css("opacity", n._opacity);
+    } }), t.ui.plugin.add("draggable", "scroll", { start: function start(t, e, i) {
+      i.scrollParentNotHidden || (i.scrollParentNotHidden = i.helper.scrollParent(!1)), i.scrollParentNotHidden[0] !== i.document[0] && "HTML" !== i.scrollParentNotHidden[0].tagName && (i.overflowOffset = i.scrollParentNotHidden.offset());
+    }, drag: function drag(e, i, s) {
+      var n = s.options,
+          o = !1,
+          a = s.scrollParentNotHidden[0],
+          r = s.document[0];a !== r && "HTML" !== a.tagName ? (n.axis && "x" === n.axis || (s.overflowOffset.top + a.offsetHeight - e.pageY < n.scrollSensitivity ? a.scrollTop = o = a.scrollTop + n.scrollSpeed : e.pageY - s.overflowOffset.top < n.scrollSensitivity && (a.scrollTop = o = a.scrollTop - n.scrollSpeed)), n.axis && "y" === n.axis || (s.overflowOffset.left + a.offsetWidth - e.pageX < n.scrollSensitivity ? a.scrollLeft = o = a.scrollLeft + n.scrollSpeed : e.pageX - s.overflowOffset.left < n.scrollSensitivity && (a.scrollLeft = o = a.scrollLeft - n.scrollSpeed))) : (n.axis && "x" === n.axis || (e.pageY - t(r).scrollTop() < n.scrollSensitivity ? o = t(r).scrollTop(t(r).scrollTop() - n.scrollSpeed) : t(window).height() - (e.pageY - t(r).scrollTop()) < n.scrollSensitivity && (o = t(r).scrollTop(t(r).scrollTop() + n.scrollSpeed))), n.axis && "y" === n.axis || (e.pageX - t(r).scrollLeft() < n.scrollSensitivity ? o = t(r).scrollLeft(t(r).scrollLeft() - n.scrollSpeed) : t(window).width() - (e.pageX - t(r).scrollLeft()) < n.scrollSensitivity && (o = t(r).scrollLeft(t(r).scrollLeft() + n.scrollSpeed)))), o !== !1 && t.ui.ddmanager && !n.dropBehaviour && t.ui.ddmanager.prepareOffsets(s, e);
+    } }), t.ui.plugin.add("draggable", "snap", { start: function start(e, i, s) {
+      var n = s.options;s.snapElements = [], t(n.snap.constructor !== String ? n.snap.items || ":data(ui-draggable)" : n.snap).each(function () {
+        var e = t(this),
+            i = e.offset();this !== s.element[0] && s.snapElements.push({ item: this, width: e.outerWidth(), height: e.outerHeight(), top: i.top, left: i.left });
+      });
+    }, drag: function drag(e, i, s) {
+      var n,
+          o,
+          a,
+          r,
+          l,
+          h,
+          c,
+          u,
+          d,
+          p,
+          f = s.options,
+          g = f.snapTolerance,
+          m = i.offset.left,
+          _ = m + s.helperProportions.width,
+          v = i.offset.top,
+          b = v + s.helperProportions.height;for (d = s.snapElements.length - 1; d >= 0; d--) {
+        l = s.snapElements[d].left - s.margins.left, h = l + s.snapElements[d].width, c = s.snapElements[d].top - s.margins.top, u = c + s.snapElements[d].height, l - g > _ || m > h + g || c - g > b || v > u + g || !t.contains(s.snapElements[d].item.ownerDocument, s.snapElements[d].item) ? (s.snapElements[d].snapping && s.options.snap.release && s.options.snap.release.call(s.element, e, t.extend(s._uiHash(), { snapItem: s.snapElements[d].item })), s.snapElements[d].snapping = !1) : ("inner" !== f.snapMode && (n = g >= Math.abs(c - b), o = g >= Math.abs(u - v), a = g >= Math.abs(l - _), r = g >= Math.abs(h - m), n && (i.position.top = s._convertPositionTo("relative", { top: c - s.helperProportions.height, left: 0 }).top), o && (i.position.top = s._convertPositionTo("relative", { top: u, left: 0 }).top), a && (i.position.left = s._convertPositionTo("relative", { top: 0, left: l - s.helperProportions.width }).left), r && (i.position.left = s._convertPositionTo("relative", { top: 0, left: h }).left)), p = n || o || a || r, "outer" !== f.snapMode && (n = g >= Math.abs(c - v), o = g >= Math.abs(u - b), a = g >= Math.abs(l - m), r = g >= Math.abs(h - _), n && (i.position.top = s._convertPositionTo("relative", { top: c, left: 0 }).top), o && (i.position.top = s._convertPositionTo("relative", { top: u - s.helperProportions.height, left: 0 }).top), a && (i.position.left = s._convertPositionTo("relative", { top: 0, left: l }).left), r && (i.position.left = s._convertPositionTo("relative", { top: 0, left: h - s.helperProportions.width }).left)), !s.snapElements[d].snapping && (n || o || a || r || p) && s.options.snap.snap && s.options.snap.snap.call(s.element, e, t.extend(s._uiHash(), { snapItem: s.snapElements[d].item })), s.snapElements[d].snapping = n || o || a || r || p);
+      }
+    } }), t.ui.plugin.add("draggable", "stack", { start: function start(e, i, s) {
+      var n,
+          o = s.options,
+          a = t.makeArray(t(o.stack)).sort(function (e, i) {
+        return (parseInt(t(e).css("zIndex"), 10) || 0) - (parseInt(t(i).css("zIndex"), 10) || 0);
+      });a.length && (n = parseInt(t(a[0]).css("zIndex"), 10) || 0, t(a).each(function (e) {
+        t(this).css("zIndex", n + e);
+      }), this.css("zIndex", n + a.length));
+    } }), t.ui.plugin.add("draggable", "zIndex", { start: function start(e, i, s) {
+      var n = t(i.helper),
+          o = s.options;n.css("zIndex") && (o._zIndex = n.css("zIndex")), n.css("zIndex", o.zIndex);
+    }, stop: function stop(e, i, s) {
+      var n = s.options;n._zIndex && t(i.helper).css("zIndex", n._zIndex);
+    } }), t.ui.draggable, t.widget("ui.droppable", { version: "1.12.0", widgetEventPrefix: "drop", options: { accept: "*", addClasses: !0, greedy: !1, scope: "default", tolerance: "intersect", activate: null, deactivate: null, drop: null, out: null, over: null }, _create: function _create() {
+      var e,
+          i = this.options,
+          s = i.accept;this.isover = !1, this.isout = !0, this.accept = t.isFunction(s) ? s : function (t) {
+        return t.is(s);
+      }, this.proportions = function () {
+        return arguments.length ? (e = arguments[0], void 0) : e ? e : e = { width: this.element[0].offsetWidth, height: this.element[0].offsetHeight };
+      }, this._addToManager(i.scope), i.addClasses && this._addClass("ui-droppable");
+    }, _addToManager: function _addToManager(e) {
+      t.ui.ddmanager.droppables[e] = t.ui.ddmanager.droppables[e] || [], t.ui.ddmanager.droppables[e].push(this);
+    }, _splice: function _splice(t) {
+      for (var e = 0; t.length > e; e++) {
+        t[e] === this && t.splice(e, 1);
+      }
+    }, _destroy: function _destroy() {
+      var e = t.ui.ddmanager.droppables[this.options.scope];this._splice(e);
+    }, _setOption: function _setOption(e, i) {
+      if ("accept" === e) this.accept = t.isFunction(i) ? i : function (t) {
+        return t.is(i);
+      };else if ("scope" === e) {
+        var s = t.ui.ddmanager.droppables[this.options.scope];this._splice(s), this._addToManager(i);
+      }this._super(e, i);
+    }, _activate: function _activate(e) {
+      var i = t.ui.ddmanager.current;this._addActiveClass(), i && this._trigger("activate", e, this.ui(i));
+    }, _deactivate: function _deactivate(e) {
+      var i = t.ui.ddmanager.current;this._removeActiveClass(), i && this._trigger("deactivate", e, this.ui(i));
+    }, _over: function _over(e) {
+      var i = t.ui.ddmanager.current;i && (i.currentItem || i.element)[0] !== this.element[0] && this.accept.call(this.element[0], i.currentItem || i.element) && (this._addHoverClass(), this._trigger("over", e, this.ui(i)));
+    }, _out: function _out(e) {
+      var i = t.ui.ddmanager.current;i && (i.currentItem || i.element)[0] !== this.element[0] && this.accept.call(this.element[0], i.currentItem || i.element) && (this._removeHoverClass(), this._trigger("out", e, this.ui(i)));
+    }, _drop: function _drop(e, i) {
+      var s = i || t.ui.ddmanager.current,
+          o = !1;return s && (s.currentItem || s.element)[0] !== this.element[0] ? (this.element.find(":data(ui-droppable)").not(".ui-draggable-dragging").each(function () {
+        var i = t(this).droppable("instance");return i.options.greedy && !i.options.disabled && i.options.scope === s.options.scope && i.accept.call(i.element[0], s.currentItem || s.element) && n(s, t.extend(i, { offset: i.element.offset() }), i.options.tolerance, e) ? (o = !0, !1) : void 0;
+      }), o ? !1 : this.accept.call(this.element[0], s.currentItem || s.element) ? (this._removeActiveClass(), this._removeHoverClass(), this._trigger("drop", e, this.ui(s)), this.element) : !1) : !1;
+    }, ui: function ui(t) {
+      return { draggable: t.currentItem || t.element, helper: t.helper, position: t.position, offset: t.positionAbs };
+    }, _addHoverClass: function _addHoverClass() {
+      this._addClass("ui-droppable-hover");
+    }, _removeHoverClass: function _removeHoverClass() {
+      this._removeClass("ui-droppable-hover");
+    }, _addActiveClass: function _addActiveClass() {
+      this._addClass("ui-droppable-active");
+    }, _removeActiveClass: function _removeActiveClass() {
+      this._removeClass("ui-droppable-active");
+    } });var n = t.ui.intersect = function () {
+    function t(t, e, i) {
+      return t >= e && e + i > t;
+    }return function (e, i, s, n) {
+      if (!i.offset) return !1;var o = (e.positionAbs || e.position.absolute).left + e.margins.left,
+          a = (e.positionAbs || e.position.absolute).top + e.margins.top,
+          r = o + e.helperProportions.width,
+          l = a + e.helperProportions.height,
+          h = i.offset.left,
+          c = i.offset.top,
+          u = h + i.proportions().width,
+          d = c + i.proportions().height;switch (s) {case "fit":
+          return o >= h && u >= r && a >= c && d >= l;case "intersect":
+          return o + e.helperProportions.width / 2 > h && u > r - e.helperProportions.width / 2 && a + e.helperProportions.height / 2 > c && d > l - e.helperProportions.height / 2;case "pointer":
+          return t(n.pageY, c, i.proportions().height) && t(n.pageX, h, i.proportions().width);case "touch":
+          return (a >= c && d >= a || l >= c && d >= l || c > a && l > d) && (o >= h && u >= o || r >= h && u >= r || h > o && r > u);default:
+          return !1;}
+    };
+  }();t.ui.ddmanager = { current: null, droppables: { "default": [] }, prepareOffsets: function prepareOffsets(e, i) {
+      var s,
+          n,
+          o = t.ui.ddmanager.droppables[e.options.scope] || [],
+          a = i ? i.type : null,
+          r = (e.currentItem || e.element).find(":data(ui-droppable)").addBack();t: for (s = 0; o.length > s; s++) {
+        if (!(o[s].options.disabled || e && !o[s].accept.call(o[s].element[0], e.currentItem || e.element))) {
+          for (n = 0; r.length > n; n++) {
+            if (r[n] === o[s].element[0]) {
+              o[s].proportions().height = 0;continue t;
+            }
+          }o[s].visible = "none" !== o[s].element.css("display"), o[s].visible && ("mousedown" === a && o[s]._activate.call(o[s], i), o[s].offset = o[s].element.offset(), o[s].proportions({ width: o[s].element[0].offsetWidth, height: o[s].element[0].offsetHeight }));
+        }
+      }
+    }, drop: function drop(e, i) {
+      var s = !1;return t.each((t.ui.ddmanager.droppables[e.options.scope] || []).slice(), function () {
+        this.options && (!this.options.disabled && this.visible && n(e, this, this.options.tolerance, i) && (s = this._drop.call(this, i) || s), !this.options.disabled && this.visible && this.accept.call(this.element[0], e.currentItem || e.element) && (this.isout = !0, this.isover = !1, this._deactivate.call(this, i)));
+      }), s;
+    }, dragStart: function dragStart(e, i) {
+      e.element.parentsUntil("body").on("scroll.droppable", function () {
+        e.options.refreshPositions || t.ui.ddmanager.prepareOffsets(e, i);
+      });
+    }, drag: function drag(e, i) {
+      e.options.refreshPositions && t.ui.ddmanager.prepareOffsets(e, i), t.each(t.ui.ddmanager.droppables[e.options.scope] || [], function () {
+        if (!this.options.disabled && !this.greedyChild && this.visible) {
+          var s,
+              o,
+              a,
+              r = n(e, this, this.options.tolerance, i),
+              l = !r && this.isover ? "isout" : r && !this.isover ? "isover" : null;l && (this.options.greedy && (o = this.options.scope, a = this.element.parents(":data(ui-droppable)").filter(function () {
+            return t(this).droppable("instance").options.scope === o;
+          }), a.length && (s = t(a[0]).droppable("instance"), s.greedyChild = "isover" === l)), s && "isover" === l && (s.isover = !1, s.isout = !0, s._out.call(s, i)), this[l] = !0, this["isout" === l ? "isover" : "isout"] = !1, this["isover" === l ? "_over" : "_out"].call(this, i), s && "isout" === l && (s.isout = !1, s.isover = !0, s._over.call(s, i)));
+        }
+      });
+    }, dragStop: function dragStop(e, i) {
+      e.element.parentsUntil("body").off("scroll.droppable"), e.options.refreshPositions || t.ui.ddmanager.prepareOffsets(e, i);
+    } }, t.uiBackCompat !== !1 && t.widget("ui.droppable", t.ui.droppable, { options: { hoverClass: !1, activeClass: !1 }, _addActiveClass: function _addActiveClass() {
+      this._super(), this.options.activeClass && this.element.addClass(this.options.activeClass);
+    }, _removeActiveClass: function _removeActiveClass() {
+      this._super(), this.options.activeClass && this.element.removeClass(this.options.activeClass);
+    }, _addHoverClass: function _addHoverClass() {
+      this._super(), this.options.hoverClass && this.element.addClass(this.options.hoverClass);
+    }, _removeHoverClass: function _removeHoverClass() {
+      this._super(), this.options.hoverClass && this.element.removeClass(this.options.hoverClass);
+    } }), t.ui.droppable, t.widget("ui.resizable", t.ui.mouse, { version: "1.12.0", widgetEventPrefix: "resize", options: { alsoResize: !1, animate: !1, animateDuration: "slow", animateEasing: "swing", aspectRatio: !1, autoHide: !1, classes: { "ui-resizable-se": "ui-icon ui-icon-gripsmall-diagonal-se" }, containment: !1, ghost: !1, grid: !1, handles: "e,s,se", helper: !1, maxHeight: null, maxWidth: null, minHeight: 10, minWidth: 10, zIndex: 90, resize: null, start: null, stop: null }, _num: function _num(t) {
+      return parseFloat(t) || 0;
+    }, _isNumber: function _isNumber(t) {
+      return !isNaN(parseFloat(t));
+    }, _hasScroll: function _hasScroll(e, i) {
+      if ("hidden" === t(e).css("overflow")) return !1;var s = i && "left" === i ? "scrollLeft" : "scrollTop",
+          n = !1;return e[s] > 0 ? !0 : (e[s] = 1, n = e[s] > 0, e[s] = 0, n);
+    }, _create: function _create() {
+      var e,
+          i = this.options,
+          s = this;this._addClass("ui-resizable"), t.extend(this, { _aspectRatio: !!i.aspectRatio, aspectRatio: i.aspectRatio, originalElement: this.element, _proportionallyResizeElements: [], _helper: i.helper || i.ghost || i.animate ? i.helper || "ui-resizable-helper" : null }), this.element[0].nodeName.match(/^(canvas|textarea|input|select|button|img)$/i) && (this.element.wrap(t("<div class='ui-wrapper' style='overflow: hidden;'></div>").css({ position: this.element.css("position"), width: this.element.outerWidth(), height: this.element.outerHeight(), top: this.element.css("top"), left: this.element.css("left") })), this.element = this.element.parent().data("ui-resizable", this.element.resizable("instance")), this.elementIsWrapper = !0, e = { marginTop: this.originalElement.css("marginTop"), marginRight: this.originalElement.css("marginRight"), marginBottom: this.originalElement.css("marginBottom"), marginLeft: this.originalElement.css("marginLeft") }, this.element.css(e), this.originalElement.css("margin", 0), this.originalResizeStyle = this.originalElement.css("resize"), this.originalElement.css("resize", "none"), this._proportionallyResizeElements.push(this.originalElement.css({ position: "static", zoom: 1, display: "block" })), this.originalElement.css(e), this._proportionallyResize()), this._setupHandles(), i.autoHide && t(this.element).on("mouseenter", function () {
+        i.disabled || (s._removeClass("ui-resizable-autohide"), s._handles.show());
+      }).on("mouseleave", function () {
+        i.disabled || s.resizing || (s._addClass("ui-resizable-autohide"), s._handles.hide());
+      }), this._mouseInit();
+    }, _destroy: function _destroy() {
+      this._mouseDestroy();var e,
+          i = function i(e) {
+        t(e).removeData("resizable").removeData("ui-resizable").off(".resizable").find(".ui-resizable-handle").remove();
+      };return this.elementIsWrapper && (i(this.element), e = this.element, this.originalElement.css({ position: e.css("position"), width: e.outerWidth(), height: e.outerHeight(), top: e.css("top"), left: e.css("left") }).insertAfter(e), e.remove()), this.originalElement.css("resize", this.originalResizeStyle), i(this.originalElement), this;
+    }, _setOption: function _setOption(t, e) {
+      switch (this._super(t, e), t) {case "handles":
+          this._removeHandles(), this._setupHandles();break;default:}
+    }, _setupHandles: function _setupHandles() {
+      var e,
+          i,
+          s,
+          n,
+          o,
+          a = this.options,
+          r = this;if (this.handles = a.handles || (t(".ui-resizable-handle", this.element).length ? { n: ".ui-resizable-n", e: ".ui-resizable-e", s: ".ui-resizable-s", w: ".ui-resizable-w", se: ".ui-resizable-se", sw: ".ui-resizable-sw", ne: ".ui-resizable-ne", nw: ".ui-resizable-nw" } : "e,s,se"), this._handles = t(), this.handles.constructor === String) for ("all" === this.handles && (this.handles = "n,e,s,w,se,sw,ne,nw"), s = this.handles.split(","), this.handles = {}, i = 0; s.length > i; i++) {
+        e = t.trim(s[i]), n = "ui-resizable-" + e, o = t("<div>"), this._addClass(o, "ui-resizable-handle " + n), o.css({ zIndex: a.zIndex }), this.handles[e] = ".ui-resizable-" + e, this.element.append(o);
+      }this._renderAxis = function (e) {
+        var i, s, n, o;e = e || this.element;for (i in this.handles) {
+          this.handles[i].constructor === String ? this.handles[i] = this.element.children(this.handles[i]).first().show() : (this.handles[i].jquery || this.handles[i].nodeType) && (this.handles[i] = t(this.handles[i]), this._on(this.handles[i], { mousedown: r._mouseDown })), this.elementIsWrapper && this.originalElement[0].nodeName.match(/^(textarea|input|select|button)$/i) && (s = t(this.handles[i], this.element), o = /sw|ne|nw|se|n|s/.test(i) ? s.outerHeight() : s.outerWidth(), n = ["padding", /ne|nw|n/.test(i) ? "Top" : /se|sw|s/.test(i) ? "Bottom" : /^e$/.test(i) ? "Right" : "Left"].join(""), e.css(n, o), this._proportionallyResize()), this._handles = this._handles.add(this.handles[i]);
+        }
+      }, this._renderAxis(this.element), this._handles = this._handles.add(this.element.find(".ui-resizable-handle")), this._handles.disableSelection(), this._handles.on("mouseover", function () {
+        r.resizing || (this.className && (o = this.className.match(/ui-resizable-(se|sw|ne|nw|n|e|s|w)/i)), r.axis = o && o[1] ? o[1] : "se");
+      }), a.autoHide && (this._handles.hide(), this._addClass("ui-resizable-autohide"));
+    }, _removeHandles: function _removeHandles() {
+      this._handles.remove();
+    }, _mouseCapture: function _mouseCapture(e) {
+      var i,
+          s,
+          n = !1;for (i in this.handles) {
+        s = t(this.handles[i])[0], (s === e.target || t.contains(s, e.target)) && (n = !0);
+      }return !this.options.disabled && n;
+    }, _mouseStart: function _mouseStart(e) {
+      var i,
+          s,
+          n,
+          o = this.options,
+          a = this.element;return this.resizing = !0, this._renderProxy(), i = this._num(this.helper.css("left")), s = this._num(this.helper.css("top")), o.containment && (i += t(o.containment).scrollLeft() || 0, s += t(o.containment).scrollTop() || 0), this.offset = this.helper.offset(), this.position = { left: i, top: s }, this.size = this._helper ? { width: this.helper.width(), height: this.helper.height() } : { width: a.width(), height: a.height() }, this.originalSize = this._helper ? { width: a.outerWidth(), height: a.outerHeight() } : { width: a.width(), height: a.height() }, this.sizeDiff = { width: a.outerWidth() - a.width(), height: a.outerHeight() - a.height() }, this.originalPosition = { left: i, top: s }, this.originalMousePosition = { left: e.pageX, top: e.pageY }, this.aspectRatio = "number" == typeof o.aspectRatio ? o.aspectRatio : this.originalSize.width / this.originalSize.height || 1, n = t(".ui-resizable-" + this.axis).css("cursor"), t("body").css("cursor", "auto" === n ? this.axis + "-resize" : n), this._addClass("ui-resizable-resizing"), this._propagate("start", e), !0;
+    }, _mouseDrag: function _mouseDrag(e) {
+      var i,
+          s,
+          n = this.originalMousePosition,
+          o = this.axis,
+          a = e.pageX - n.left || 0,
+          r = e.pageY - n.top || 0,
+          l = this._change[o];return this._updatePrevProperties(), l ? (i = l.apply(this, [e, a, r]), this._updateVirtualBoundaries(e.shiftKey), (this._aspectRatio || e.shiftKey) && (i = this._updateRatio(i, e)), i = this._respectSize(i, e), this._updateCache(i), this._propagate("resize", e), s = this._applyChanges(), !this._helper && this._proportionallyResizeElements.length && this._proportionallyResize(), t.isEmptyObject(s) || (this._updatePrevProperties(), this._trigger("resize", e, this.ui()), this._applyChanges()), !1) : !1;
+    }, _mouseStop: function _mouseStop(e) {
+      this.resizing = !1;var i,
+          s,
+          n,
+          o,
+          a,
+          r,
+          l,
+          h = this.options,
+          c = this;return this._helper && (i = this._proportionallyResizeElements, s = i.length && /textarea/i.test(i[0].nodeName), n = s && this._hasScroll(i[0], "left") ? 0 : c.sizeDiff.height, o = s ? 0 : c.sizeDiff.width, a = { width: c.helper.width() - o, height: c.helper.height() - n }, r = parseFloat(c.element.css("left")) + (c.position.left - c.originalPosition.left) || null, l = parseFloat(c.element.css("top")) + (c.position.top - c.originalPosition.top) || null, h.animate || this.element.css(t.extend(a, { top: l, left: r })), c.helper.height(c.size.height), c.helper.width(c.size.width), this._helper && !h.animate && this._proportionallyResize()), t("body").css("cursor", "auto"), this._removeClass("ui-resizable-resizing"), this._propagate("stop", e), this._helper && this.helper.remove(), !1;
+    }, _updatePrevProperties: function _updatePrevProperties() {
+      this.prevPosition = { top: this.position.top, left: this.position.left }, this.prevSize = { width: this.size.width, height: this.size.height };
+    }, _applyChanges: function _applyChanges() {
+      var t = {};return this.position.top !== this.prevPosition.top && (t.top = this.position.top + "px"), this.position.left !== this.prevPosition.left && (t.left = this.position.left + "px"), this.size.width !== this.prevSize.width && (t.width = this.size.width + "px"), this.size.height !== this.prevSize.height && (t.height = this.size.height + "px"), this.helper.css(t), t;
+    }, _updateVirtualBoundaries: function _updateVirtualBoundaries(t) {
+      var e,
+          i,
+          s,
+          n,
+          o,
+          a = this.options;o = { minWidth: this._isNumber(a.minWidth) ? a.minWidth : 0, maxWidth: this._isNumber(a.maxWidth) ? a.maxWidth : 1 / 0, minHeight: this._isNumber(a.minHeight) ? a.minHeight : 0, maxHeight: this._isNumber(a.maxHeight) ? a.maxHeight : 1 / 0 }, (this._aspectRatio || t) && (e = o.minHeight * this.aspectRatio, s = o.minWidth / this.aspectRatio, i = o.maxHeight * this.aspectRatio, n = o.maxWidth / this.aspectRatio, e > o.minWidth && (o.minWidth = e), s > o.minHeight && (o.minHeight = s), o.maxWidth > i && (o.maxWidth = i), o.maxHeight > n && (o.maxHeight = n)), this._vBoundaries = o;
+    }, _updateCache: function _updateCache(t) {
+      this.offset = this.helper.offset(), this._isNumber(t.left) && (this.position.left = t.left), this._isNumber(t.top) && (this.position.top = t.top), this._isNumber(t.height) && (this.size.height = t.height), this._isNumber(t.width) && (this.size.width = t.width);
+    }, _updateRatio: function _updateRatio(t) {
+      var e = this.position,
+          i = this.size,
+          s = this.axis;return this._isNumber(t.height) ? t.width = t.height * this.aspectRatio : this._isNumber(t.width) && (t.height = t.width / this.aspectRatio), "sw" === s && (t.left = e.left + (i.width - t.width), t.top = null), "nw" === s && (t.top = e.top + (i.height - t.height), t.left = e.left + (i.width - t.width)), t;
+    }, _respectSize: function _respectSize(t) {
+      var e = this._vBoundaries,
+          i = this.axis,
+          s = this._isNumber(t.width) && e.maxWidth && e.maxWidth < t.width,
+          n = this._isNumber(t.height) && e.maxHeight && e.maxHeight < t.height,
+          o = this._isNumber(t.width) && e.minWidth && e.minWidth > t.width,
+          a = this._isNumber(t.height) && e.minHeight && e.minHeight > t.height,
+          r = this.originalPosition.left + this.originalSize.width,
+          l = this.originalPosition.top + this.originalSize.height,
+          h = /sw|nw|w/.test(i),
+          c = /nw|ne|n/.test(i);return o && (t.width = e.minWidth), a && (t.height = e.minHeight), s && (t.width = e.maxWidth), n && (t.height = e.maxHeight), o && h && (t.left = r - e.minWidth), s && h && (t.left = r - e.maxWidth), a && c && (t.top = l - e.minHeight), n && c && (t.top = l - e.maxHeight), t.width || t.height || t.left || !t.top ? t.width || t.height || t.top || !t.left || (t.left = null) : t.top = null, t;
+    }, _getPaddingPlusBorderDimensions: function _getPaddingPlusBorderDimensions(t) {
+      for (var e = 0, i = [], s = [t.css("borderTopWidth"), t.css("borderRightWidth"), t.css("borderBottomWidth"), t.css("borderLeftWidth")], n = [t.css("paddingTop"), t.css("paddingRight"), t.css("paddingBottom"), t.css("paddingLeft")]; 4 > e; e++) {
+        i[e] = parseFloat(s[e]) || 0, i[e] += parseFloat(n[e]) || 0;
+      }return { height: i[0] + i[2], width: i[1] + i[3] };
+    }, _proportionallyResize: function _proportionallyResize() {
+      if (this._proportionallyResizeElements.length) for (var t, e = 0, i = this.helper || this.element; this._proportionallyResizeElements.length > e; e++) {
+        t = this._proportionallyResizeElements[e], this.outerDimensions || (this.outerDimensions = this._getPaddingPlusBorderDimensions(t)), t.css({ height: i.height() - this.outerDimensions.height || 0, width: i.width() - this.outerDimensions.width || 0 });
+      }
+    }, _renderProxy: function _renderProxy() {
+      var e = this.element,
+          i = this.options;this.elementOffset = e.offset(), this._helper ? (this.helper = this.helper || t("<div style='overflow:hidden;'></div>"), this._addClass(this.helper, this._helper), this.helper.css({ width: this.element.outerWidth(), height: this.element.outerHeight(), position: "absolute", left: this.elementOffset.left + "px", top: this.elementOffset.top + "px", zIndex: ++i.zIndex }), this.helper.appendTo("body").disableSelection()) : this.helper = this.element;
+    }, _change: { e: function e(t, _e) {
+        return { width: this.originalSize.width + _e };
+      }, w: function w(t, e) {
+        var i = this.originalSize,
+            s = this.originalPosition;return { left: s.left + e, width: i.width - e };
+      }, n: function n(t, e, i) {
+        var s = this.originalSize,
+            n = this.originalPosition;return { top: n.top + i, height: s.height - i };
+      }, s: function s(t, e, i) {
+        return { height: this.originalSize.height + i };
+      }, se: function se(e, i, s) {
+        return t.extend(this._change.s.apply(this, arguments), this._change.e.apply(this, [e, i, s]));
+      }, sw: function sw(e, i, s) {
+        return t.extend(this._change.s.apply(this, arguments), this._change.w.apply(this, [e, i, s]));
+      }, ne: function ne(e, i, s) {
+        return t.extend(this._change.n.apply(this, arguments), this._change.e.apply(this, [e, i, s]));
+      }, nw: function nw(e, i, s) {
+        return t.extend(this._change.n.apply(this, arguments), this._change.w.apply(this, [e, i, s]));
+      } }, _propagate: function _propagate(e, i) {
+      t.ui.plugin.call(this, e, [i, this.ui()]), "resize" !== e && this._trigger(e, i, this.ui());
+    }, plugins: {}, ui: function ui() {
+      return { originalElement: this.originalElement, element: this.element, helper: this.helper, position: this.position, size: this.size, originalSize: this.originalSize, originalPosition: this.originalPosition };
+    } }), t.ui.plugin.add("resizable", "animate", { stop: function stop(e) {
+      var i = t(this).resizable("instance"),
+          s = i.options,
+          n = i._proportionallyResizeElements,
+          o = n.length && /textarea/i.test(n[0].nodeName),
+          a = o && i._hasScroll(n[0], "left") ? 0 : i.sizeDiff.height,
+          r = o ? 0 : i.sizeDiff.width,
+          l = { width: i.size.width - r, height: i.size.height - a },
+          h = parseFloat(i.element.css("left")) + (i.position.left - i.originalPosition.left) || null,
+          c = parseFloat(i.element.css("top")) + (i.position.top - i.originalPosition.top) || null;i.element.animate(t.extend(l, c && h ? { top: c, left: h } : {}), { duration: s.animateDuration, easing: s.animateEasing, step: function step() {
+          var s = { width: parseFloat(i.element.css("width")), height: parseFloat(i.element.css("height")), top: parseFloat(i.element.css("top")), left: parseFloat(i.element.css("left")) };n && n.length && t(n[0]).css({ width: s.width, height: s.height }), i._updateCache(s), i._propagate("resize", e);
+        } });
+    } }), t.ui.plugin.add("resizable", "containment", { start: function start() {
+      var e,
+          i,
+          s,
+          n,
+          o,
+          a,
+          r,
+          l = t(this).resizable("instance"),
+          h = l.options,
+          c = l.element,
+          u = h.containment,
+          d = u instanceof t ? u.get(0) : /parent/.test(u) ? c.parent().get(0) : u;d && (l.containerElement = t(d), /document/.test(u) || u === document ? (l.containerOffset = { left: 0, top: 0 }, l.containerPosition = { left: 0, top: 0 }, l.parentData = { element: t(document), left: 0, top: 0, width: t(document).width(), height: t(document).height() || document.body.parentNode.scrollHeight }) : (e = t(d), i = [], t(["Top", "Right", "Left", "Bottom"]).each(function (t, s) {
+        i[t] = l._num(e.css("padding" + s));
+      }), l.containerOffset = e.offset(), l.containerPosition = e.position(), l.containerSize = { height: e.innerHeight() - i[3], width: e.innerWidth() - i[1] }, s = l.containerOffset, n = l.containerSize.height, o = l.containerSize.width, a = l._hasScroll(d, "left") ? d.scrollWidth : o, r = l._hasScroll(d) ? d.scrollHeight : n, l.parentData = { element: d, left: s.left, top: s.top, width: a, height: r }));
+    }, resize: function resize(e) {
+      var i,
+          s,
+          n,
+          o,
+          a = t(this).resizable("instance"),
+          r = a.options,
+          l = a.containerOffset,
+          h = a.position,
+          c = a._aspectRatio || e.shiftKey,
+          u = { top: 0, left: 0 },
+          d = a.containerElement,
+          p = !0;d[0] !== document && /static/.test(d.css("position")) && (u = l), h.left < (a._helper ? l.left : 0) && (a.size.width = a.size.width + (a._helper ? a.position.left - l.left : a.position.left - u.left), c && (a.size.height = a.size.width / a.aspectRatio, p = !1), a.position.left = r.helper ? l.left : 0), h.top < (a._helper ? l.top : 0) && (a.size.height = a.size.height + (a._helper ? a.position.top - l.top : a.position.top), c && (a.size.width = a.size.height * a.aspectRatio, p = !1), a.position.top = a._helper ? l.top : 0), n = a.containerElement.get(0) === a.element.parent().get(0), o = /relative|absolute/.test(a.containerElement.css("position")), n && o ? (a.offset.left = a.parentData.left + a.position.left, a.offset.top = a.parentData.top + a.position.top) : (a.offset.left = a.element.offset().left, a.offset.top = a.element.offset().top), i = Math.abs(a.sizeDiff.width + (a._helper ? a.offset.left - u.left : a.offset.left - l.left)), s = Math.abs(a.sizeDiff.height + (a._helper ? a.offset.top - u.top : a.offset.top - l.top)), i + a.size.width >= a.parentData.width && (a.size.width = a.parentData.width - i, c && (a.size.height = a.size.width / a.aspectRatio, p = !1)), s + a.size.height >= a.parentData.height && (a.size.height = a.parentData.height - s, c && (a.size.width = a.size.height * a.aspectRatio, p = !1)), p || (a.position.left = a.prevPosition.left, a.position.top = a.prevPosition.top, a.size.width = a.prevSize.width, a.size.height = a.prevSize.height);
+    }, stop: function stop() {
+      var e = t(this).resizable("instance"),
+          i = e.options,
+          s = e.containerOffset,
+          n = e.containerPosition,
+          o = e.containerElement,
+          a = t(e.helper),
+          r = a.offset(),
+          l = a.outerWidth() - e.sizeDiff.width,
+          h = a.outerHeight() - e.sizeDiff.height;e._helper && !i.animate && /relative/.test(o.css("position")) && t(this).css({ left: r.left - n.left - s.left, width: l, height: h }), e._helper && !i.animate && /static/.test(o.css("position")) && t(this).css({ left: r.left - n.left - s.left, width: l, height: h });
+    } }), t.ui.plugin.add("resizable", "alsoResize", { start: function start() {
+      var e = t(this).resizable("instance"),
+          i = e.options;t(i.alsoResize).each(function () {
+        var e = t(this);e.data("ui-resizable-alsoresize", { width: parseFloat(e.width()), height: parseFloat(e.height()), left: parseFloat(e.css("left")), top: parseFloat(e.css("top")) });
+      });
+    }, resize: function resize(e, i) {
+      var s = t(this).resizable("instance"),
+          n = s.options,
+          o = s.originalSize,
+          a = s.originalPosition,
+          r = { height: s.size.height - o.height || 0, width: s.size.width - o.width || 0, top: s.position.top - a.top || 0, left: s.position.left - a.left || 0 };t(n.alsoResize).each(function () {
+        var e = t(this),
+            s = t(this).data("ui-resizable-alsoresize"),
+            n = {},
+            o = e.parents(i.originalElement[0]).length ? ["width", "height"] : ["width", "height", "top", "left"];t.each(o, function (t, e) {
+          var i = (s[e] || 0) + (r[e] || 0);i && i >= 0 && (n[e] = i || null);
+        }), e.css(n);
+      });
+    }, stop: function stop() {
+      t(this).removeData("ui-resizable-alsoresize");
+    } }), t.ui.plugin.add("resizable", "ghost", { start: function start() {
+      var e = t(this).resizable("instance"),
+          i = e.size;e.ghost = e.originalElement.clone(), e.ghost.css({ opacity: .25, display: "block", position: "relative", height: i.height, width: i.width, margin: 0, left: 0, top: 0 }), e._addClass(e.ghost, "ui-resizable-ghost"), t.uiBackCompat !== !1 && "string" == typeof e.options.ghost && e.ghost.addClass(this.options.ghost), e.ghost.appendTo(e.helper);
+    }, resize: function resize() {
+      var e = t(this).resizable("instance");e.ghost && e.ghost.css({ position: "relative", height: e.size.height, width: e.size.width });
+    }, stop: function stop() {
+      var e = t(this).resizable("instance");e.ghost && e.helper && e.helper.get(0).removeChild(e.ghost.get(0));
+    } }), t.ui.plugin.add("resizable", "grid", { resize: function resize() {
+      var e,
+          i = t(this).resizable("instance"),
+          s = i.options,
+          n = i.size,
+          o = i.originalSize,
+          a = i.originalPosition,
+          r = i.axis,
+          l = "number" == typeof s.grid ? [s.grid, s.grid] : s.grid,
+          h = l[0] || 1,
+          c = l[1] || 1,
+          u = Math.round((n.width - o.width) / h) * h,
+          d = Math.round((n.height - o.height) / c) * c,
+          p = o.width + u,
+          f = o.height + d,
+          g = s.maxWidth && p > s.maxWidth,
+          m = s.maxHeight && f > s.maxHeight,
+          _ = s.minWidth && s.minWidth > p,
+          v = s.minHeight && s.minHeight > f;s.grid = l, _ && (p += h), v && (f += c), g && (p -= h), m && (f -= c), /^(se|s|e)$/.test(r) ? (i.size.width = p, i.size.height = f) : /^(ne)$/.test(r) ? (i.size.width = p, i.size.height = f, i.position.top = a.top - d) : /^(sw)$/.test(r) ? (i.size.width = p, i.size.height = f, i.position.left = a.left - u) : ((0 >= f - c || 0 >= p - h) && (e = i._getPaddingPlusBorderDimensions(this)), f - c > 0 ? (i.size.height = f, i.position.top = a.top - d) : (f = c - e.height, i.size.height = f, i.position.top = a.top + o.height - f), p - h > 0 ? (i.size.width = p, i.position.left = a.left - u) : (p = h - e.width, i.size.width = p, i.position.left = a.left + o.width - p));
+    } }), t.ui.resizable, t.widget("ui.selectable", t.ui.mouse, { version: "1.12.0", options: { appendTo: "body", autoRefresh: !0, distance: 0, filter: "*", tolerance: "touch", selected: null, selecting: null, start: null, stop: null, unselected: null, unselecting: null }, _create: function _create() {
+      var e = this;this._addClass("ui-selectable"), this.dragged = !1, this.refresh = function () {
+        e.elementPos = t(e.element[0]).offset(), e.selectees = t(e.options.filter, e.element[0]), e._addClass(e.selectees, "ui-selectee"), e.selectees.each(function () {
+          var i = t(this),
+              s = i.offset(),
+              n = { left: s.left - e.elementPos.left, top: s.top - e.elementPos.top };t.data(this, "selectable-item", { element: this, $element: i, left: n.left, top: n.top, right: n.left + i.outerWidth(), bottom: n.top + i.outerHeight(), startselected: !1, selected: i.hasClass("ui-selected"), selecting: i.hasClass("ui-selecting"), unselecting: i.hasClass("ui-unselecting") });
+        });
+      }, this.refresh(), this._mouseInit(), this.helper = t("<div>"), this._addClass(this.helper, "ui-selectable-helper");
+    }, _destroy: function _destroy() {
+      this.selectees.removeData("selectable-item"), this._mouseDestroy();
+    }, _mouseStart: function _mouseStart(e) {
+      var i = this,
+          s = this.options;this.opos = [e.pageX, e.pageY], this.elementPos = t(this.element[0]).offset(), this.options.disabled || (this.selectees = t(s.filter, this.element[0]), this._trigger("start", e), t(s.appendTo).append(this.helper), this.helper.css({ left: e.pageX, top: e.pageY, width: 0, height: 0 }), s.autoRefresh && this.refresh(), this.selectees.filter(".ui-selected").each(function () {
+        var s = t.data(this, "selectable-item");s.startselected = !0, e.metaKey || e.ctrlKey || (i._removeClass(s.$element, "ui-selected"), s.selected = !1, i._addClass(s.$element, "ui-unselecting"), s.unselecting = !0, i._trigger("unselecting", e, { unselecting: s.element }));
+      }), t(e.target).parents().addBack().each(function () {
+        var s,
+            n = t.data(this, "selectable-item");return n ? (s = !e.metaKey && !e.ctrlKey || !n.$element.hasClass("ui-selected"), i._removeClass(n.$element, s ? "ui-unselecting" : "ui-selected")._addClass(n.$element, s ? "ui-selecting" : "ui-unselecting"), n.unselecting = !s, n.selecting = s, n.selected = s, s ? i._trigger("selecting", e, { selecting: n.element }) : i._trigger("unselecting", e, { unselecting: n.element }), !1) : void 0;
+      }));
+    }, _mouseDrag: function _mouseDrag(e) {
+      if (this.dragged = !0, !this.options.disabled) {
+        var i,
+            s = this,
+            n = this.options,
+            o = this.opos[0],
+            a = this.opos[1],
+            r = e.pageX,
+            l = e.pageY;return o > r && (i = r, r = o, o = i), a > l && (i = l, l = a, a = i), this.helper.css({ left: o, top: a, width: r - o, height: l - a }), this.selectees.each(function () {
+          var i = t.data(this, "selectable-item"),
+              h = !1,
+              c = {};i && i.element !== s.element[0] && (c.left = i.left + s.elementPos.left, c.right = i.right + s.elementPos.left, c.top = i.top + s.elementPos.top, c.bottom = i.bottom + s.elementPos.top, "touch" === n.tolerance ? h = !(c.left > r || o > c.right || c.top > l || a > c.bottom) : "fit" === n.tolerance && (h = c.left > o && r > c.right && c.top > a && l > c.bottom), h ? (i.selected && (s._removeClass(i.$element, "ui-selected"), i.selected = !1), i.unselecting && (s._removeClass(i.$element, "ui-unselecting"), i.unselecting = !1), i.selecting || (s._addClass(i.$element, "ui-selecting"), i.selecting = !0, s._trigger("selecting", e, { selecting: i.element }))) : (i.selecting && ((e.metaKey || e.ctrlKey) && i.startselected ? (s._removeClass(i.$element, "ui-selecting"), i.selecting = !1, s._addClass(i.$element, "ui-selected"), i.selected = !0) : (s._removeClass(i.$element, "ui-selecting"), i.selecting = !1, i.startselected && (s._addClass(i.$element, "ui-unselecting"), i.unselecting = !0), s._trigger("unselecting", e, { unselecting: i.element }))), i.selected && (e.metaKey || e.ctrlKey || i.startselected || (s._removeClass(i.$element, "ui-selected"), i.selected = !1, s._addClass(i.$element, "ui-unselecting"), i.unselecting = !0, s._trigger("unselecting", e, { unselecting: i.element })))));
+        }), !1;
+      }
+    }, _mouseStop: function _mouseStop(e) {
+      var i = this;return this.dragged = !1, t(".ui-unselecting", this.element[0]).each(function () {
+        var s = t.data(this, "selectable-item");i._removeClass(s.$element, "ui-unselecting"), s.unselecting = !1, s.startselected = !1, i._trigger("unselected", e, { unselected: s.element });
+      }), t(".ui-selecting", this.element[0]).each(function () {
+        var s = t.data(this, "selectable-item");i._removeClass(s.$element, "ui-selecting")._addClass(s.$element, "ui-selected"), s.selecting = !1, s.selected = !0, s.startselected = !0, i._trigger("selected", e, { selected: s.element });
+      }), this._trigger("stop", e), this.helper.remove(), !1;
+    } });var o = "ui-effects-",
+      a = "ui-effects-style",
+      r = "ui-effects-animated",
+      l = t;t.effects = { effect: {} }, function (t, e) {
+    function i(t, e, i) {
+      var s = u[e.type] || {};return null == t ? i || !e.def ? null : e.def : (t = s.floor ? ~~t : parseFloat(t), isNaN(t) ? e.def : s.mod ? (t + s.mod) % s.mod : 0 > t ? 0 : t > s.max ? s.max : t);
+    }function s(i) {
+      var s = h(),
+          n = s._rgba = [];return i = i.toLowerCase(), f(l, function (t, o) {
+        var a,
+            r = o.re.exec(i),
+            l = r && o.parse(r),
+            h = o.space || "rgba";return l ? (a = s[h](l), s[c[h].cache] = a[c[h].cache], n = s._rgba = a._rgba, !1) : e;
+      }), n.length ? ("0,0,0,0" === n.join() && t.extend(n, o.transparent), s) : o[i];
+    }function n(t, e, i) {
+      return i = (i + 1) % 1, 1 > 6 * i ? t + 6 * (e - t) * i : 1 > 2 * i ? e : 2 > 3 * i ? t + 6 * (e - t) * (2 / 3 - i) : t;
+    }var o,
+        a = "backgroundColor borderBottomColor borderLeftColor borderRightColor borderTopColor color columnRuleColor outlineColor textDecorationColor textEmphasisColor",
+        r = /^([\-+])=\s*(\d+\.?\d*)/,
+        l = [{ re: /rgba?\(\s*(\d{1,3})\s*,\s*(\d{1,3})\s*,\s*(\d{1,3})\s*(?:,\s*(\d?(?:\.\d+)?)\s*)?\)/, parse: function parse(t) {
+        return [t[1], t[2], t[3], t[4]];
+      } }, { re: /rgba?\(\s*(\d+(?:\.\d+)?)\%\s*,\s*(\d+(?:\.\d+)?)\%\s*,\s*(\d+(?:\.\d+)?)\%\s*(?:,\s*(\d?(?:\.\d+)?)\s*)?\)/, parse: function parse(t) {
+        return [2.55 * t[1], 2.55 * t[2], 2.55 * t[3], t[4]];
+      } }, { re: /#([a-f0-9]{2})([a-f0-9]{2})([a-f0-9]{2})/, parse: function parse(t) {
+        return [parseInt(t[1], 16), parseInt(t[2], 16), parseInt(t[3], 16)];
+      } }, { re: /#([a-f0-9])([a-f0-9])([a-f0-9])/, parse: function parse(t) {
+        return [parseInt(t[1] + t[1], 16), parseInt(t[2] + t[2], 16), parseInt(t[3] + t[3], 16)];
+      } }, { re: /hsla?\(\s*(\d+(?:\.\d+)?)\s*,\s*(\d+(?:\.\d+)?)\%\s*,\s*(\d+(?:\.\d+)?)\%\s*(?:,\s*(\d?(?:\.\d+)?)\s*)?\)/, space: "hsla", parse: function parse(t) {
+        return [t[1], t[2] / 100, t[3] / 100, t[4]];
+      } }],
+        h = t.Color = function (e, i, s, n) {
+      return new t.Color.fn.parse(e, i, s, n);
+    },
+        c = { rgba: { props: { red: { idx: 0, type: "byte" }, green: { idx: 1, type: "byte" }, blue: { idx: 2, type: "byte" } } }, hsla: { props: { hue: { idx: 0, type: "degrees" }, saturation: { idx: 1, type: "percent" }, lightness: { idx: 2, type: "percent" } } } },
+        u = { "byte": { floor: !0, max: 255 }, percent: { max: 1 }, degrees: { mod: 360, floor: !0 } },
+        d = h.support = {},
+        p = t("<p>")[0],
+        f = t.each;p.style.cssText = "background-color:rgba(1,1,1,.5)", d.rgba = p.style.backgroundColor.indexOf("rgba") > -1, f(c, function (t, e) {
+      e.cache = "_" + t, e.props.alpha = { idx: 3, type: "percent", def: 1 };
+    }), h.fn = t.extend(h.prototype, { parse: function parse(n, a, r, l) {
+        if (n === e) return this._rgba = [null, null, null, null], this;(n.jquery || n.nodeType) && (n = t(n).css(a), a = e);var u = this,
+            d = t.type(n),
+            p = this._rgba = [];return a !== e && (n = [n, a, r, l], d = "array"), "string" === d ? this.parse(s(n) || o._default) : "array" === d ? (f(c.rgba.props, function (t, e) {
+          p[e.idx] = i(n[e.idx], e);
+        }), this) : "object" === d ? (n instanceof h ? f(c, function (t, e) {
+          n[e.cache] && (u[e.cache] = n[e.cache].slice());
+        }) : f(c, function (e, s) {
+          var o = s.cache;f(s.props, function (t, e) {
+            if (!u[o] && s.to) {
+              if ("alpha" === t || null == n[t]) return;u[o] = s.to(u._rgba);
+            }u[o][e.idx] = i(n[t], e, !0);
+          }), u[o] && 0 > t.inArray(null, u[o].slice(0, 3)) && (u[o][3] = 1, s.from && (u._rgba = s.from(u[o])));
+        }), this) : e;
+      }, is: function is(t) {
+        var i = h(t),
+            s = !0,
+            n = this;return f(c, function (t, o) {
+          var a,
+              r = i[o.cache];return r && (a = n[o.cache] || o.to && o.to(n._rgba) || [], f(o.props, function (t, i) {
+            return null != r[i.idx] ? s = r[i.idx] === a[i.idx] : e;
+          })), s;
+        }), s;
+      }, _space: function _space() {
+        var t = [],
+            e = this;return f(c, function (i, s) {
+          e[s.cache] && t.push(i);
+        }), t.pop();
+      }, transition: function transition(t, e) {
+        var s = h(t),
+            n = s._space(),
+            o = c[n],
+            a = 0 === this.alpha() ? h("transparent") : this,
+            r = a[o.cache] || o.to(a._rgba),
+            l = r.slice();return s = s[o.cache], f(o.props, function (t, n) {
+          var o = n.idx,
+              a = r[o],
+              h = s[o],
+              c = u[n.type] || {};null !== h && (null === a ? l[o] = h : (c.mod && (h - a > c.mod / 2 ? a += c.mod : a - h > c.mod / 2 && (a -= c.mod)), l[o] = i((h - a) * e + a, n)));
+        }), this[n](l);
+      }, blend: function blend(e) {
+        if (1 === this._rgba[3]) return this;var i = this._rgba.slice(),
+            s = i.pop(),
+            n = h(e)._rgba;return h(t.map(i, function (t, e) {
+          return (1 - s) * n[e] + s * t;
+        }));
+      }, toRgbaString: function toRgbaString() {
+        var e = "rgba(",
+            i = t.map(this._rgba, function (t, e) {
+          return null == t ? e > 2 ? 1 : 0 : t;
+        });return 1 === i[3] && (i.pop(), e = "rgb("), e + i.join() + ")";
+      }, toHslaString: function toHslaString() {
+        var e = "hsla(",
+            i = t.map(this.hsla(), function (t, e) {
+          return null == t && (t = e > 2 ? 1 : 0), e && 3 > e && (t = Math.round(100 * t) + "%"), t;
+        });return 1 === i[3] && (i.pop(), e = "hsl("), e + i.join() + ")";
+      }, toHexString: function toHexString(e) {
+        var i = this._rgba.slice(),
+            s = i.pop();return e && i.push(~~(255 * s)), "#" + t.map(i, function (t) {
+          return t = (t || 0).toString(16), 1 === t.length ? "0" + t : t;
+        }).join("");
+      }, toString: function toString() {
+        return 0 === this._rgba[3] ? "transparent" : this.toRgbaString();
+      } }), h.fn.parse.prototype = h.fn, c.hsla.to = function (t) {
+      if (null == t[0] || null == t[1] || null == t[2]) return [null, null, null, t[3]];var e,
+          i,
+          s = t[0] / 255,
+          n = t[1] / 255,
+          o = t[2] / 255,
+          a = t[3],
+          r = Math.max(s, n, o),
+          l = Math.min(s, n, o),
+          h = r - l,
+          c = r + l,
+          u = .5 * c;return e = l === r ? 0 : s === r ? 60 * (n - o) / h + 360 : n === r ? 60 * (o - s) / h + 120 : 60 * (s - n) / h + 240, i = 0 === h ? 0 : .5 >= u ? h / c : h / (2 - c), [Math.round(e) % 360, i, u, null == a ? 1 : a];
+    }, c.hsla.from = function (t) {
+      if (null == t[0] || null == t[1] || null == t[2]) return [null, null, null, t[3]];var e = t[0] / 360,
+          i = t[1],
+          s = t[2],
+          o = t[3],
+          a = .5 >= s ? s * (1 + i) : s + i - s * i,
+          r = 2 * s - a;return [Math.round(255 * n(r, a, e + 1 / 3)), Math.round(255 * n(r, a, e)), Math.round(255 * n(r, a, e - 1 / 3)), o];
+    }, f(c, function (s, n) {
+      var o = n.props,
+          a = n.cache,
+          l = n.to,
+          c = n.from;
+      h.fn[s] = function (s) {
+        if (l && !this[a] && (this[a] = l(this._rgba)), s === e) return this[a].slice();var n,
+            r = t.type(s),
+            u = "array" === r || "object" === r ? s : arguments,
+            d = this[a].slice();return f(o, function (t, e) {
+          var s = u["object" === r ? t : e.idx];null == s && (s = d[e.idx]), d[e.idx] = i(s, e);
+        }), c ? (n = h(c(d)), n[a] = d, n) : h(d);
+      }, f(o, function (e, i) {
+        h.fn[e] || (h.fn[e] = function (n) {
+          var o,
+              a = t.type(n),
+              l = "alpha" === e ? this._hsla ? "hsla" : "rgba" : s,
+              h = this[l](),
+              c = h[i.idx];return "undefined" === a ? c : ("function" === a && (n = n.call(this, c), a = t.type(n)), null == n && i.empty ? this : ("string" === a && (o = r.exec(n), o && (n = c + parseFloat(o[2]) * ("+" === o[1] ? 1 : -1))), h[i.idx] = n, this[l](h)));
+        });
+      });
+    }), h.hook = function (e) {
+      var i = e.split(" ");f(i, function (e, i) {
+        t.cssHooks[i] = { set: function set(e, n) {
+            var o,
+                a,
+                r = "";if ("transparent" !== n && ("string" !== t.type(n) || (o = s(n)))) {
+              if (n = h(o || n), !d.rgba && 1 !== n._rgba[3]) {
+                for (a = "backgroundColor" === i ? e.parentNode : e; ("" === r || "transparent" === r) && a && a.style;) {
+                  try {
+                    r = t.css(a, "backgroundColor"), a = a.parentNode;
+                  } catch (l) {}
+                }n = n.blend(r && "transparent" !== r ? r : "_default");
+              }n = n.toRgbaString();
+            }try {
+              e.style[i] = n;
+            } catch (l) {}
+          } }, t.fx.step[i] = function (e) {
+          e.colorInit || (e.start = h(e.elem, i), e.end = h(e.end), e.colorInit = !0), t.cssHooks[i].set(e.elem, e.start.transition(e.end, e.pos));
+        };
+      });
+    }, h.hook(a), t.cssHooks.borderColor = { expand: function expand(t) {
+        var e = {};return f(["Top", "Right", "Bottom", "Left"], function (i, s) {
+          e["border" + s + "Color"] = t;
+        }), e;
+      } }, o = t.Color.names = { aqua: "#00ffff", black: "#000000", blue: "#0000ff", fuchsia: "#ff00ff", gray: "#808080", green: "#008000", lime: "#00ff00", maroon: "#800000", navy: "#000080", olive: "#808000", purple: "#800080", red: "#ff0000", silver: "#c0c0c0", teal: "#008080", white: "#ffffff", yellow: "#ffff00", transparent: [null, null, null, 0], _default: "#ffffff" };
+  }(l), function () {
+    function e(e) {
+      var i,
+          s,
+          n = e.ownerDocument.defaultView ? e.ownerDocument.defaultView.getComputedStyle(e, null) : e.currentStyle,
+          o = {};if (n && n.length && n[0] && n[n[0]]) for (s = n.length; s--;) {
+        i = n[s], "string" == typeof n[i] && (o[t.camelCase(i)] = n[i]);
+      } else for (i in n) {
+        "string" == typeof n[i] && (o[i] = n[i]);
+      }return o;
+    }function i(e, i) {
+      var s,
+          o,
+          a = {};for (s in i) {
+        o = i[s], e[s] !== o && (n[s] || (t.fx.step[s] || !isNaN(parseFloat(o))) && (a[s] = o));
+      }return a;
+    }var s = ["add", "remove", "toggle"],
+        n = { border: 1, borderBottom: 1, borderColor: 1, borderLeft: 1, borderRight: 1, borderTop: 1, borderWidth: 1, margin: 1, padding: 1 };t.each(["borderLeftStyle", "borderRightStyle", "borderBottomStyle", "borderTopStyle"], function (e, i) {
+      t.fx.step[i] = function (t) {
+        ("none" !== t.end && !t.setAttr || 1 === t.pos && !t.setAttr) && (l.style(t.elem, i, t.end), t.setAttr = !0);
+      };
+    }), t.fn.addBack || (t.fn.addBack = function (t) {
+      return this.add(null == t ? this.prevObject : this.prevObject.filter(t));
+    }), t.effects.animateClass = function (n, o, a, r) {
+      var l = t.speed(o, a, r);return this.queue(function () {
+        var o,
+            a = t(this),
+            r = a.attr("class") || "",
+            h = l.children ? a.find("*").addBack() : a;h = h.map(function () {
+          var i = t(this);return { el: i, start: e(this) };
+        }), o = function o() {
+          t.each(s, function (t, e) {
+            n[e] && a[e + "Class"](n[e]);
+          });
+        }, o(), h = h.map(function () {
+          return this.end = e(this.el[0]), this.diff = i(this.start, this.end), this;
+        }), a.attr("class", r), h = h.map(function () {
+          var e = this,
+              i = t.Deferred(),
+              s = t.extend({}, l, { queue: !1, complete: function complete() {
+              i.resolve(e);
+            } });return this.el.animate(this.diff, s), i.promise();
+        }), t.when.apply(t, h.get()).done(function () {
+          o(), t.each(arguments, function () {
+            var e = this.el;t.each(this.diff, function (t) {
+              e.css(t, "");
+            });
+          }), l.complete.call(a[0]);
+        });
+      });
+    }, t.fn.extend({ addClass: function (e) {
+        return function (i, s, n, o) {
+          return s ? t.effects.animateClass.call(this, { add: i }, s, n, o) : e.apply(this, arguments);
+        };
+      }(t.fn.addClass), removeClass: function (e) {
+        return function (i, s, n, o) {
+          return arguments.length > 1 ? t.effects.animateClass.call(this, { remove: i }, s, n, o) : e.apply(this, arguments);
+        };
+      }(t.fn.removeClass), toggleClass: function (e) {
+        return function (i, s, n, o, a) {
+          return "boolean" == typeof s || void 0 === s ? n ? t.effects.animateClass.call(this, s ? { add: i } : { remove: i }, n, o, a) : e.apply(this, arguments) : t.effects.animateClass.call(this, { toggle: i }, s, n, o);
+        };
+      }(t.fn.toggleClass), switchClass: function switchClass(e, i, s, n, o) {
+        return t.effects.animateClass.call(this, { add: i, remove: e }, s, n, o);
+      } });
+  }(), function () {
+    function e(e, i, s, n) {
+      return t.isPlainObject(e) && (i = e, e = e.effect), e = { effect: e }, null == i && (i = {}), t.isFunction(i) && (n = i, s = null, i = {}), ("number" == typeof i || t.fx.speeds[i]) && (n = s, s = i, i = {}), t.isFunction(s) && (n = s, s = null), i && t.extend(e, i), s = s || i.duration, e.duration = t.fx.off ? 0 : "number" == typeof s ? s : s in t.fx.speeds ? t.fx.speeds[s] : t.fx.speeds._default, e.complete = n || i.complete, e;
+    }function i(e) {
+      return !e || "number" == typeof e || t.fx.speeds[e] ? !0 : "string" != typeof e || t.effects.effect[e] ? t.isFunction(e) ? !0 : "object" != (typeof e === "undefined" ? "undefined" : _typeof(e)) || e.effect ? !1 : !0 : !0;
+    }function s(t, e) {
+      var i = e.outerWidth(),
+          s = e.outerHeight(),
+          n = /^rect\((-?\d*\.?\d*px|-?\d+%|auto),?\s*(-?\d*\.?\d*px|-?\d+%|auto),?\s*(-?\d*\.?\d*px|-?\d+%|auto),?\s*(-?\d*\.?\d*px|-?\d+%|auto)\)$/,
+          o = n.exec(t) || ["", 0, i, s, 0];return { top: parseFloat(o[1]) || 0, right: "auto" === o[2] ? i : parseFloat(o[2]), bottom: "auto" === o[3] ? s : parseFloat(o[3]), left: parseFloat(o[4]) || 0 };
+    }t.expr && t.expr.filters && t.expr.filters.animated && (t.expr.filters.animated = function (e) {
+      return function (i) {
+        return !!t(i).data(r) || e(i);
+      };
+    }(t.expr.filters.animated)), t.uiBackCompat !== !1 && t.extend(t.effects, { save: function save(t, e) {
+        for (var i = 0, s = e.length; s > i; i++) {
+          null !== e[i] && t.data(o + e[i], t[0].style[e[i]]);
+        }
+      }, restore: function restore(t, e) {
+        for (var i, s = 0, n = e.length; n > s; s++) {
+          null !== e[s] && (i = t.data(o + e[s]), t.css(e[s], i));
+        }
+      }, setMode: function setMode(t, e) {
+        return "toggle" === e && (e = t.is(":hidden") ? "show" : "hide"), e;
+      }, createWrapper: function createWrapper(e) {
+        if (e.parent().is(".ui-effects-wrapper")) return e.parent();var i = { width: e.outerWidth(!0), height: e.outerHeight(!0), "float": e.css("float") },
+            s = t("<div></div>").addClass("ui-effects-wrapper").css({ fontSize: "100%", background: "transparent", border: "none", margin: 0, padding: 0 }),
+            n = { width: e.width(), height: e.height() },
+            o = document.activeElement;try {
+          o.id;
+        } catch (a) {
+          o = document.body;
+        }return e.wrap(s), (e[0] === o || t.contains(e[0], o)) && t(o).trigger("focus"), s = e.parent(), "static" === e.css("position") ? (s.css({ position: "relative" }), e.css({ position: "relative" })) : (t.extend(i, { position: e.css("position"), zIndex: e.css("z-index") }), t.each(["top", "left", "bottom", "right"], function (t, s) {
+          i[s] = e.css(s), isNaN(parseInt(i[s], 10)) && (i[s] = "auto");
+        }), e.css({ position: "relative", top: 0, left: 0, right: "auto", bottom: "auto" })), e.css(n), s.css(i).show();
+      }, removeWrapper: function removeWrapper(e) {
+        var i = document.activeElement;return e.parent().is(".ui-effects-wrapper") && (e.parent().replaceWith(e), (e[0] === i || t.contains(e[0], i)) && t(i).trigger("focus")), e;
+      } }), t.extend(t.effects, { version: "1.12.0", define: function define(e, i, s) {
+        return s || (s = i, i = "effect"), t.effects.effect[e] = s, t.effects.effect[e].mode = i, s;
+      }, scaledDimensions: function scaledDimensions(t, e, i) {
+        if (0 === e) return { height: 0, width: 0, outerHeight: 0, outerWidth: 0 };var s = "horizontal" !== i ? (e || 100) / 100 : 1,
+            n = "vertical" !== i ? (e || 100) / 100 : 1;return { height: t.height() * n, width: t.width() * s, outerHeight: t.outerHeight() * n, outerWidth: t.outerWidth() * s };
+      }, clipToBox: function clipToBox(t) {
+        return { width: t.clip.right - t.clip.left, height: t.clip.bottom - t.clip.top, left: t.clip.left, top: t.clip.top };
+      }, unshift: function unshift(t, e, i) {
+        var s = t.queue();e > 1 && s.splice.apply(s, [1, 0].concat(s.splice(e, i))), t.dequeue();
+      }, saveStyle: function saveStyle(t) {
+        t.data(a, t[0].style.cssText);
+      }, restoreStyle: function restoreStyle(t) {
+        t[0].style.cssText = t.data(a) || "", t.removeData(a);
+      }, mode: function mode(t, e) {
+        var i = t.is(":hidden");return "toggle" === e && (e = i ? "show" : "hide"), (i ? "hide" === e : "show" === e) && (e = "none"), e;
+      }, getBaseline: function getBaseline(t, e) {
+        var i, s;switch (t[0]) {case "top":
+            i = 0;break;case "middle":
+            i = .5;break;case "bottom":
+            i = 1;break;default:
+            i = t[0] / e.height;}switch (t[1]) {case "left":
+            s = 0;break;case "center":
+            s = .5;break;case "right":
+            s = 1;break;default:
+            s = t[1] / e.width;}return { x: s, y: i };
+      }, createPlaceholder: function createPlaceholder(e) {
+        var i,
+            s = e.css("position"),
+            n = e.position();return e.css({ marginTop: e.css("marginTop"), marginBottom: e.css("marginBottom"), marginLeft: e.css("marginLeft"), marginRight: e.css("marginRight") }).outerWidth(e.outerWidth()).outerHeight(e.outerHeight()), /^(static|relative)/.test(s) && (s = "absolute", i = t("<" + e[0].nodeName + ">").insertAfter(e).css({ display: /^(inline|ruby)/.test(e.css("display")) ? "inline-block" : "block", visibility: "hidden", marginTop: e.css("marginTop"), marginBottom: e.css("marginBottom"), marginLeft: e.css("marginLeft"), marginRight: e.css("marginRight"), "float": e.css("float") }).outerWidth(e.outerWidth()).outerHeight(e.outerHeight()).addClass("ui-effects-placeholder"), e.data(o + "placeholder", i)), e.css({ position: s, left: n.left, top: n.top }), i;
+      }, removePlaceholder: function removePlaceholder(t) {
+        var e = o + "placeholder",
+            i = t.data(e);i && (i.remove(), t.removeData(e));
+      }, cleanUp: function cleanUp(e) {
+        t.effects.restoreStyle(e), t.effects.removePlaceholder(e);
+      }, setTransition: function setTransition(e, i, s, n) {
+        return n = n || {}, t.each(i, function (t, i) {
+          var o = e.cssUnit(i);o[0] > 0 && (n[i] = o[0] * s + o[1]);
+        }), n;
+      } }), t.fn.extend({ effect: function effect() {
+        function i(e) {
+          function i() {
+            l.removeData(r), t.effects.cleanUp(l), "hide" === s.mode && l.hide(), a();
+          }function a() {
+            t.isFunction(h) && h.call(l[0]), t.isFunction(e) && e();
+          }var l = t(this);s.mode = u.shift(), t.uiBackCompat === !1 || o ? "none" === s.mode ? (l[c](), a()) : n.call(l[0], s, i) : (l.is(":hidden") ? "hide" === c : "show" === c) ? (l[c](), a()) : n.call(l[0], s, a);
+        }var s = e.apply(this, arguments),
+            n = t.effects.effect[s.effect],
+            o = n.mode,
+            a = s.queue,
+            l = a || "fx",
+            h = s.complete,
+            c = s.mode,
+            u = [],
+            d = function d(e) {
+          var i = t(this),
+              s = t.effects.mode(i, c) || o;i.data(r, !0), u.push(s), o && ("show" === s || s === o && "hide" === s) && i.show(), o && "none" === s || t.effects.saveStyle(i), t.isFunction(e) && e();
+        };return t.fx.off || !n ? c ? this[c](s.duration, h) : this.each(function () {
+          h && h.call(this);
+        }) : a === !1 ? this.each(d).each(i) : this.queue(l, d).queue(l, i);
+      }, show: function (t) {
+        return function (s) {
+          if (i(s)) return t.apply(this, arguments);var n = e.apply(this, arguments);return n.mode = "show", this.effect.call(this, n);
+        };
+      }(t.fn.show), hide: function (t) {
+        return function (s) {
+          if (i(s)) return t.apply(this, arguments);var n = e.apply(this, arguments);return n.mode = "hide", this.effect.call(this, n);
+        };
+      }(t.fn.hide), toggle: function (t) {
+        return function (s) {
+          if (i(s) || "boolean" == typeof s) return t.apply(this, arguments);var n = e.apply(this, arguments);return n.mode = "toggle", this.effect.call(this, n);
+        };
+      }(t.fn.toggle), cssUnit: function cssUnit(e) {
+        var i = this.css(e),
+            s = [];return t.each(["em", "px", "%", "pt"], function (t, e) {
+          i.indexOf(e) > 0 && (s = [parseFloat(i), e]);
+        }), s;
+      }, cssClip: function cssClip(t) {
+        return t ? this.css("clip", "rect(" + t.top + "px " + t.right + "px " + t.bottom + "px " + t.left + "px)") : s(this.css("clip"), this);
+      }, transfer: function transfer(e, i) {
+        var s = t(this),
+            n = t(e.to),
+            o = "fixed" === n.css("position"),
+            a = t("body"),
+            r = o ? a.scrollTop() : 0,
+            l = o ? a.scrollLeft() : 0,
+            h = n.offset(),
+            c = { top: h.top - r, left: h.left - l, height: n.innerHeight(), width: n.innerWidth() },
+            u = s.offset(),
+            d = t("<div class='ui-effects-transfer'></div>").appendTo("body").addClass(e.className).css({ top: u.top - r, left: u.left - l, height: s.innerHeight(), width: s.innerWidth(), position: o ? "fixed" : "absolute" }).animate(c, e.duration, e.easing, function () {
+          d.remove(), t.isFunction(i) && i();
+        });
+      } }), t.fx.step.clip = function (e) {
+      e.clipInit || (e.start = t(e.elem).cssClip(), "string" == typeof e.end && (e.end = s(e.end, e.elem)), e.clipInit = !0), t(e.elem).cssClip({ top: e.pos * (e.end.top - e.start.top) + e.start.top, right: e.pos * (e.end.right - e.start.right) + e.start.right, bottom: e.pos * (e.end.bottom - e.start.bottom) + e.start.bottom, left: e.pos * (e.end.left - e.start.left) + e.start.left });
+    };
+  }(), function () {
+    var e = {};t.each(["Quad", "Cubic", "Quart", "Quint", "Expo"], function (t, i) {
+      e[i] = function (e) {
+        return Math.pow(e, t + 2);
+      };
+    }), t.extend(e, { Sine: function Sine(t) {
+        return 1 - Math.cos(t * Math.PI / 2);
+      }, Circ: function Circ(t) {
+        return 1 - Math.sqrt(1 - t * t);
+      }, Elastic: function Elastic(t) {
+        return 0 === t || 1 === t ? t : -Math.pow(2, 8 * (t - 1)) * Math.sin((80 * (t - 1) - 7.5) * Math.PI / 15);
+      }, Back: function Back(t) {
+        return t * t * (3 * t - 2);
+      }, Bounce: function Bounce(t) {
+        for (var e, i = 4; ((e = Math.pow(2, --i)) - 1) / 11 > t;) {}return 1 / Math.pow(4, 3 - i) - 7.5625 * Math.pow((3 * e - 2) / 22 - t, 2);
+      } }), t.each(e, function (e, i) {
+      t.easing["easeIn" + e] = i, t.easing["easeOut" + e] = function (t) {
+        return 1 - i(1 - t);
+      }, t.easing["easeInOut" + e] = function (t) {
+        return .5 > t ? i(2 * t) / 2 : 1 - i(-2 * t + 2) / 2;
+      };
+    });
+  }(), t.effects;
+});
+
+},{}],91:[function(require,module,exports){
 'use strict';
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
@@ -59979,7 +62558,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
     });
 });
 
-},{"./jquery.ui.widget":87,"jquery":45}],86:[function(require,module,exports){
+},{"./jquery.ui.widget":94,"jquery":45}],92:[function(require,module,exports){
 'use strict';
 
 /**
@@ -60797,7 +63376,189 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
     };
 })(jQuery, 'tokenize');
 
-},{}],87:[function(require,module,exports){
+},{}],93:[function(require,module,exports){
+'use strict';
+
+/*!
+ * jQuery UI Touch Punch 0.2.3
+ *
+ * Copyright 2011–2014, Dave Furfero
+ * Dual licensed under the MIT or GPL Version 2 licenses.
+ *
+ * Depends:
+ *  jquery.ui.widget.js
+ *  jquery.ui.mouse.js
+ */
+(function ($) {
+
+  // Detect touch support
+  $.support.touch = 'ontouchend' in document;
+
+  // Ignore browsers without touch support
+  if (!$.support.touch) {
+    return;
+  }
+
+  var mouseProto = $.ui.mouse.prototype,
+      _mouseInit = mouseProto._mouseInit,
+      _mouseDestroy = mouseProto._mouseDestroy,
+      touchHandled;
+
+  /**
+   * Simulate a mouse event based on a corresponding touch event
+   * @param {Object} event A touch event
+   * @param {String} simulatedType The corresponding mouse event
+   */
+  function simulateMouseEvent(event, simulatedType) {
+
+    // Ignore multi-touch events
+    if (event.originalEvent.touches.length > 1) {
+      return;
+    }
+
+    event.preventDefault();
+
+    var touch = event.originalEvent.changedTouches[0],
+        simulatedEvent = document.createEvent('MouseEvents');
+
+    // Initialize the simulated mouse event using the touch event's coordinates
+    simulatedEvent.initMouseEvent(simulatedType, // type
+    true, // bubbles                    
+    true, // cancelable                 
+    window, // view                       
+    1, // detail                     
+    touch.screenX, // screenX                    
+    touch.screenY, // screenY                    
+    touch.clientX, // clientX                    
+    touch.clientY, // clientY                    
+    false, // ctrlKey                    
+    false, // altKey                     
+    false, // shiftKey                   
+    false, // metaKey                    
+    0, // button                     
+    null // relatedTarget              
+    );
+
+    // Dispatch the simulated event to the target element
+    event.target.dispatchEvent(simulatedEvent);
+  }
+
+  /**
+   * Handle the jQuery UI widget's touchstart events
+   * @param {Object} event The widget element's touchstart event
+   */
+  mouseProto._touchStart = function (event) {
+
+    var self = this;
+
+    // Ignore the event if another widget is already being handled
+    if (touchHandled || !self._mouseCapture(event.originalEvent.changedTouches[0])) {
+      return;
+    }
+
+    // Set the flag to prevent other widgets from inheriting the touch event
+    touchHandled = true;
+
+    // Track movement to determine if interaction was a click
+    self._touchMoved = false;
+
+    // Simulate the mouseover event
+    simulateMouseEvent(event, 'mouseover');
+
+    // Simulate the mousemove event
+    simulateMouseEvent(event, 'mousemove');
+
+    // Simulate the mousedown event
+    simulateMouseEvent(event, 'mousedown');
+  };
+
+  /**
+   * Handle the jQuery UI widget's touchmove events
+   * @param {Object} event The document's touchmove event
+   */
+  mouseProto._touchMove = function (event) {
+
+    // Ignore event if not handled
+    if (!touchHandled) {
+      return;
+    }
+
+    // Interaction was not a click
+    this._touchMoved = true;
+
+    // Simulate the mousemove event
+    simulateMouseEvent(event, 'mousemove');
+  };
+
+  /**
+   * Handle the jQuery UI widget's touchend events
+   * @param {Object} event The document's touchend event
+   */
+  mouseProto._touchEnd = function (event) {
+
+    // Ignore event if not handled
+    if (!touchHandled) {
+      return;
+    }
+
+    // Simulate the mouseup event
+    simulateMouseEvent(event, 'mouseup');
+
+    // Simulate the mouseout event
+    simulateMouseEvent(event, 'mouseout');
+
+    // If the touch interaction did not move, it should trigger a click
+    if (!this._touchMoved) {
+
+      // Simulate the click event
+      simulateMouseEvent(event, 'click');
+    }
+
+    // Unset the flag to allow other widgets to inherit the touch event
+    touchHandled = false;
+  };
+
+  /**
+   * A duck punch of the $.ui.mouse _mouseInit method to support touch events.
+   * This method extends the widget with bound touch event handlers that
+   * translate touch events to mouse events and pass them to the widget's
+   * original mouse event handling methods.
+   */
+  mouseProto._mouseInit = function () {
+
+    var self = this;
+
+    // Delegate the touch handlers to the widget's element
+    self.element.bind({
+      touchstart: $.proxy(self, '_touchStart'),
+      touchmove: $.proxy(self, '_touchMove'),
+      touchend: $.proxy(self, '_touchEnd')
+    });
+
+    // Call the original $.ui.mouse init method
+    _mouseInit.call(self);
+  };
+
+  /**
+   * Remove the touch event handlers
+   */
+  mouseProto._mouseDestroy = function () {
+
+    var self = this;
+
+    // Delegate the touch handlers to the widget's element
+    self.element.unbind({
+      touchstart: $.proxy(self, '_touchStart'),
+      touchmove: $.proxy(self, '_touchMove'),
+      touchend: $.proxy(self, '_touchEnd')
+    });
+
+    // Call the original $.ui.mouse destroy method
+    _mouseDestroy.call(self);
+  };
+})(jQuery);
+
+},{}],94:[function(require,module,exports){
 "use strict";
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
@@ -61345,7 +64106,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 	var widget = $.widget;
 });
 
-},{"jquery":45}],88:[function(require,module,exports){
+},{"jquery":45}],95:[function(require,module,exports){
 'use strict';
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
@@ -61497,7 +64258,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
   });
 })(jQuery);
 
-},{}],89:[function(require,module,exports){
+},{}],96:[function(require,module,exports){
 "use strict";
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
@@ -62129,7 +64890,7 @@ jQuery.Velocity ? console.log("Velocity is already loaded. You may be needlessly
   }(window.jQuery || window.Zepto || window, window, document);
 }));
 
-},{}],90:[function(require,module,exports){
+},{}],97:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -62180,7 +64941,7 @@ exports.default = {
   }
 };
 
-},{}],91:[function(require,module,exports){
+},{}],98:[function(require,module,exports){
 'use strict';
 
 module.exports = function () {
@@ -62217,7 +64978,7 @@ module.exports = function () {
     };
 }();
 
-},{}],92:[function(require,module,exports){
+},{}],99:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -62320,7 +65081,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-149d772a", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{".././actors/manager/menus/ClubDashboard.vue":66,".././actors/manager/menus/ClubMembers.vue":67,".././actors/manager/menus/ClubRegistration.vue":68,".././actors/manager/menus/ClubTemplate.vue":69,"vue":54,"vue-hot-reload-api":50}],93:[function(require,module,exports){
+},{".././actors/manager/menus/ClubDashboard.vue":69,".././actors/manager/menus/ClubMembers.vue":70,".././actors/manager/menus/ClubRegistration.vue":71,".././actors/manager/menus/ClubTemplate.vue":72,"vue":55,"vue-hot-reload-api":50}],100:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -62368,7 +65129,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-334daf3c", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":54,"vue-hot-reload-api":50}],94:[function(require,module,exports){
+},{"vue":55,"vue-hot-reload-api":50}],101:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -62427,7 +65188,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-7b0768ba", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":54,"vue-hot-reload-api":50}],95:[function(require,module,exports){
+},{"vue":55,"vue-hot-reload-api":50}],102:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -62502,7 +65263,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-4f51e179", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{".././components/Activity.vue":72,".././components/Followed.vue":76,".././components/Timeline.vue":78,"vue":54,"vue-hot-reload-api":50}],96:[function(require,module,exports){
+},{".././components/Activity.vue":75,".././components/Followed.vue":79,".././components/Timeline.vue":81,"vue":55,"vue-hot-reload-api":50}],103:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -62767,7 +65528,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-333b9032", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{".././components/SearchTooltip.vue":77,"vue":54,"vue-hot-reload-api":50}],97:[function(require,module,exports){
+},{".././components/SearchTooltip.vue":80,"vue":55,"vue-hot-reload-api":50}],104:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -62807,6 +65568,6 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-56035bfa", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":54,"vue-hot-reload-api":50}]},{},[70]);
+},{"vue":55,"vue-hot-reload-api":50}]},{},[73]);
 
 //# sourceMappingURL=app.js.map
