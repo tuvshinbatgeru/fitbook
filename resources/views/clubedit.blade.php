@@ -1,23 +1,48 @@
 @extends('layouts.club-edit-layout', ['currentView' => 'club-edit-view'])
 @section('content')
-	<div>
-		<button class="button hollow" @click="setMenu('club-dashboard')">@{{$t('dashboard')}}
-		<span class="secondary badge">2</span>
-		</button>
-		<button class="success hollow button" @click="setMenu('club-members')">
-			@{{$t('members')}}
-			<span class="success badge">@{{members_count}}</span>
-		</button>
-		<button class="secondary hollow button" @click="setMenu('club-registration')">
-			@{{$t('registration')}}
-			<span class="secondary badge">@{{requests_count}}</span>
-		</button>
-		<button class="warning hollow button" @click="setMenu('club-template')">
-			@{{$t('template')}}
-		</button>
+<section class="container">
+	<section class="sidebar">
+		<menu class="setting-menu">
+			<li>
+				<a @click="setMenu('club-dashboard')">
+					<i class="fa fa-dashboard"></i>
+					<br/>
+					@{{$t('dashboard')}}
+				</a>
+				<span class="secondary badge">2</span>
+			</li>
+			<li>
+				<a @click="setMenu('club-members')">
+					<i class="fa fa-users"></i>
+					<br/>
+					@{{$t('members')}}
+				</a>
+				<span class="success badge">@{{members_count}}</span>
+			</li>
+			<li>
+				<a @click="setMenu('club-registration')">
+					<i class="fa fa-pencil-square-o"></i>
+					<br/>
+					@{{$t('registration')}}
+				</a>
+				<span class="secondary badge">@{{requests_count}}</span>
+			</li>
+			<li>
+				<a @click="setMenu('club-template')">
+					<i class="fa fa-object-ungroup"></i>
+					<br/>
+					@{{$t('template')}}
+				</a>
+			</li>
+		</menu>
+		<section class="widget">
 
-		<component :clubid="clubid" :is="selectedMenu">
-			
+		</section>
+	</section>
+	<section class="widget-content">
+		<component :clubid="clubid" :is="selectedMenu" >
+				
 		</component>
-	</div>
+	</section>
+</section>
 @stop

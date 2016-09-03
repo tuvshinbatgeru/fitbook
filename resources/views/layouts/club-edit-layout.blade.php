@@ -9,17 +9,10 @@
 </head>
 <body>
     <custom-toast v-ref:toast></custom-toast>
-    <div class="container body">
-      <div>
-        <component clubid = "{{$club->id}}" is="club-edit-view" inline-template>
-          @yield('content')      
-        </component>
-    	</div>
-      <div>
-    	</div>
-    </div>
+    <component clubid = "{{$club->id}}" is="club-edit-view" inline-template>
+      @yield('content')      
+    </component>
    <!-- FOR WIDGET ANIMATION -->
-   
-   <script src="{{ elixir('js/app.js') }}"></script>
+    <script src="{{ elixir('js/app.js') }}"></script>
 </body>
 </html>
