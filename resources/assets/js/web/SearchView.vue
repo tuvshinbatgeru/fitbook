@@ -13,7 +13,6 @@
 				map: {},
 				me : null,
 				currentPos : null,
-				circleTool : {},
 				clubs : [],
 				clubMarkers : [],
 				tooltipHover : false,
@@ -21,6 +20,7 @@
 				bounds : null,
 				center : { lat: 47.9118309, lng: 106.8276077 },
 				searchOptions : null,
+				locationTool : null,
 			}
 		},
 
@@ -51,18 +51,12 @@
 		          },
 		        });
 
-		        this.circleTool = new google.maps.Circle({
-		            strokeColor: '#FF0000',
-		            strokeOpacity: 0.8,
-		            strokeWeight: 2,
-		            fillColor: '#FF0000',
-		            fillOpacity: 0.35,
-		            map: this.map,
-		            center: {lat: 47.9118309, lng: 106.8276077},
-		            radius: 100,
-		            editable : true,
-		            draggable : true,
-		        });	
+		        this.locationTool = new google.maps.Marker({
+				        position: this.center,
+				        map: this.map,
+				        animation: google.maps.Animation.DROP,
+				        draggable : true,
+				});
 			},
 
 			getGeolocation : function () {

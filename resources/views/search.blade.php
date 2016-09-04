@@ -78,7 +78,6 @@
 	</div>
 	<div id="map" style="height: 100%;">
 	</div>
-	<h4 style="position:absolute; z-index:999; top: 100px; left: 10px;">
-	radius = @{{searchOptions.userCircleDetector}}</h4>
+	<input type="text" v-model="nearby" style="position:absolute; z-index:999; top: 100px; left: 10px; width:100px;"/>
 	<script type="text/javascript" src="{{asset('js/jquery.min.js')}}"></script>
 @stop

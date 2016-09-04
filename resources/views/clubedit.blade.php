@@ -1,7 +1,7 @@
 @extends('layouts.club-edit-layout', ['currentView' => 'club-edit-view'])
 @section('content')
 <section class="container">
-	<section class="sidebar">
+	<section class="sidebar" v-cloak>
 		<menu class="setting-menu">
 			<li>
 				<a @click="setMenu('club-dashboard')">
@@ -36,7 +36,6 @@
 			</li>
 		</menu>
 		<section class="widget">
-
 		</section>
 	</section>
 	<section class="widget-content">
