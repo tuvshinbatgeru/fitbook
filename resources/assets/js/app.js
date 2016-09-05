@@ -22,7 +22,7 @@ import TrainingDefault from './actors/application/widgets/content/TrainingDefaul
 
 Vue.debug = true;
 Vue.http.headers.common['X-CSRF-TOKEN'] = document.querySelector('#_token').getAttribute('value');
-Vue.config.lang = 'mn';
+Vue.config.lang = 'en';
 
 const app = new Vue({
 	el : 'body',
