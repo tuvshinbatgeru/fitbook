@@ -1,5 +1,4 @@
 <template>
-
 	<custom-modal
 		:id = "id"
 		type = "Club"

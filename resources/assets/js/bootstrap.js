@@ -17,6 +17,8 @@ require('./dependency/jquery.tokenize');
 require('./dependency/tabs');
 require('./dependency/dropdown');
 require('./dependency/velocity.min');
+require('./dependency/bootstrap-datetimepicker');
+
 
 /*require('./dependency/datepicker/picker');*/
 /*require('./dependency/datepicker/datepicker');*/

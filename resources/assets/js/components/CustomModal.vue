@@ -1,6 +1,6 @@
 <template>
 <div class="modal-mask" @click="modalClose" v-if="show" transition="modal">
-        <div class="modal-container" @click.stop>
+        <div class="modal-container autoscroll" @click.stop>
             <div class="modal-header">
 				<slot name="header">
 					<div class="row small-up-3 medium-up-3 large-up-3">

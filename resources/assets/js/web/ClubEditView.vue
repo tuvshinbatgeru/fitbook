@@ -3,12 +3,17 @@
 	import ClubMembers from '.././actors/manager/menus/ClubMembers.vue';
 	import ClubRegistration from '.././actors/manager/menus/ClubRegistration.vue';
 	import ClubTemplate from '.././actors/manager/menus/ClubTemplate.vue';
+	import PlanPanel from '.././actors/manager/components/PlanPanel.vue';
+	import TrainingPanel from '.././actors/manager/components/TrainingPanel.vue';
+	import ServicePanel from '.././actors/manager/components/ServicePanel.vue';
+	import AllMembers from '.././actors/manager/components/AllMembers.vue';
 
 	export default {
 
 		props: { 
 			clubid : {},
 			selectedMenu : { default : 'club-registration'},
+			content : {default : 'training-panel'},
 		},
 
 		data () {
@@ -27,6 +32,15 @@
 		},
 
 		events: {
+			'member-changed' : function ($request) {
+				this.$broadcast('_MemberTypeChanged', $request.content);
+			},
+
+			'content-changed' : function($request) {
+				debugger;
+				this.content = $request.content;
+			},
+
 			'accept-request' : function($request) {
 				this.requests_count --;
 				this.members_count ++;
@@ -50,12 +64,27 @@
 
 			setMenu : function(menu) {
 				this.selectedMenu = menu;
+
+				switch(this.selectedMenu) {
+					case 'club-registration':
+						this.content = 'training-panel';
+						break;
+					case 'club-members':
+						this.content = 'all-members';
+						break;
+					case 'club-dashboard':
+						this.content = 'training-panel';
+						break;
+					default : 
+						this.content = 'all-members';
+				}
 			},
 		},
 
 		components : {
 			ClubDashboard, ClubMembers, 
-			ClubRegistration, ClubTemplate
+			ClubRegistration, ClubTemplate, PlanPanel, 
+			TrainingPanel, ServicePanel, AllMembers
 		},
 
 		locales: {

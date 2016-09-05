@@ -6,18 +6,9 @@
       <a @click="setRegistrationType('service-panel')" class="button success">{{$t('service')}} ({{service_count}})</a>
     </div>
   </div>
-
-  <component :id="clubid" 
-             :is="type">
-  </component>
-  
 </template>
 
 <script>
-
-  import PlanPanel from '.././components/PlanPanel.vue';
-  import TrainingPanel from '.././components/TrainingPanel.vue';
-  import ServicePanel from '.././components/ServicePanel.vue';
 
   export default {
     props: { 
@@ -54,11 +45,13 @@
 
         setRegistrationType : function (type) {
             this.type = type;
+            this.$dispatch('content-changed', {
+                content : this.type,
+            });
         },
     },
 
     components : {
-        PlanPanel, TrainingPanel, ServicePanel
     },
 
     locales: {
