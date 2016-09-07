@@ -71,15 +71,17 @@
 			// This method should implement all context using as a save-callback 
 			getData : function () {
 				this.filterBy = "selected";
-				return this.filteredTeachers;
+				return this.filteredTrainings;
 			},
 
 			getTrainings: function() {
-				/*var maps = this.objectListToMap(this.selected);*/
-				this.$http.get(this.$env.get('APP_URI') + 'api/club/' + this.id + '/training').then((response) => 
+				debugger;
+				var ids = this.$tools.arrayBy(this.selected, 'id');
+				this.$http.get(this.$env.get('APP_URI') + 'api/club/' + this.id + '/training?data=' + this.$tools.transformParameters({
+					selected : ids,
+			    })).then((response) => 
 				{
 					this.trainings = response.data.result;
-					debugger;
 				}, (response) => {
 
 				});			   
@@ -111,8 +113,8 @@
 		},
 
 		computed : {
-			filteredTeachers : function () {
-		        return this.teachers.filter(this.filterByType);
+			filteredTrainings : function () {
+		        return this.trainings.filter(this.filterByType);
 		    },
 		}		
 	}
