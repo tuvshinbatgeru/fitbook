@@ -130,7 +130,7 @@
 	</div>
 
     <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
-    <a class="btn-floating red" style="width: 55.5px; height: 55.5px;">
+    <a href="/search" class="btn-floating red" style="width: 55.5px; height: 55.5px;">
             <i style="line-height: 55.5px;" class="fa fa-cog"></i>
     </a>
     <ul style="padding: 0;
