@@ -1,10 +1,15 @@
 <template>
   <div>
       <ul class="tabs">
-        <li class="tab s3"><a @click="setPlanType(1)" class="active">{{$t('plan')}} (1)</a></li>
-        <li class="tab s3"><a @click="setPlanType(2)">{{$t('loyalty')}} (1)</a></li>
+        <li class="tab s3"><a @click="setContent('primary-plan')" class="active">{{$t('plan')}} (1)</a></li>
+        <li class="tab s3"><a @click="setContent('loyalty-plan')">{{$t('loyalty')}} (1)</a></li>
       </ul>
   </div>  
+
+  <component :id="id" :is="content">
+      
+  </component>
+
 
   <div class="row">
     <div class="small-10 columns">
@@ -44,6 +49,8 @@
 </template>
 
 <script>
+  import PrimaryPlan from './PrimaryPlan.vue';
+  import LoyaltyPlan from './LoyaltyPlan.vue';
 
   export default {
     props: { 
@@ -53,31 +60,44 @@
     data() {
       return {
         planType : 1,
-        panels : [],
+        content : 'primary-plan',
+        plans : [],
         showAddPlan : false,
       }
     },
 
     created : function () {
-        this.getPanels();
+        
     },
 
     ready : function () {
       $('ul.tabs').tabs();
     },
 
+    events : {
+        'savePlan' : function($response) {
+          this.savePlan($response);
+        },
+    },
+
     methods : {
-        getPanels: function () {
-                         
+        savePlan : function($response) {
+            this.$http.post(this.$env.get('APP_URI') + 'api/club/' + this.id + '/plan?data=' + $response.data).then(res => {
+                this.plans.push(res.data.result);
+                this.showAddPlan = false;
+                this.$root.$refs.toast.showMessage('Successfully add new plan.');
+            }).catch(err => {
+                this.$root.$refs.toast.showMessage('Server side error!.');
+            });
         },
 
-        setPlanType : function (type) {
-            this.planType = type;
+        setContent : function (content) {
+            this.content = content;
         }
     },
 
     components : {
-        
+        PrimaryPlan, LoyaltyPlan
     },
 
     locales: {

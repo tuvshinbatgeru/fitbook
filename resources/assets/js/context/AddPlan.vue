@@ -4,6 +4,7 @@
 		type = "Club"
 		title = "Trainings"
 		usage = "_training-chooser"
+		:selected = ""
 		:items = "trainings"
 		:show.sync = "showTraining"
 		save-callback = "choosedTrainings"
@@ -11,38 +12,20 @@
 	</custom-modal>
 
 	<form method="POST">
-		<photo-slider></photo-slider>
+		<photo-slider v-ref:pslider></photo-slider>
 
 		<div class="row">
 		  <fieldset class="large-6 columns">
 		    <legend>Plan schedule</legend>
-		    <input type="radio" name="schedule" value="Daily" id="schDaily" required><label for="schDaily">Daily</label>
-		    <input type="radio" name="schedule" value="Weakly" id="schWeakly"><label for="schWeakly">Weakly</label>
-		    <input type="radio" name="schedule" value="Monthly" id="schMonthly"><label for="schMonthly">Monthly</label>
-		    <input type="radio" name="schedule" value="Yearly" id="schYearly"><label for="schYearly">Yearly</label>
+		    <input type="radio" name="schedule" value="1" v-model="freq" id="schDaily" required><label for="schDaily">Daily</label>
+		    <input type="radio" name="schedule" value="2" v-model="freq" id="schWeakly"><label for="schWeakly">Weakly</label>
+		    <input type="radio" name="schedule" value="3" v-model="freq" id="schMonthly"><label for="schMonthly">Monthly</label>
+		    <input type="radio" name="schedule" value="4" v-model="freq" id="schYearly"><label for="schYearly">Yearly</label>
 		  </fieldset>
 		  <fieldset class="large-6 columns">
 		    <legend>Duration</legend>
-		    <input type="number" name="length" value="1">
+		    <input type="number" v-model="length">
 		  </fieldset>
-		</div>
-		<div class="row">
-			<div class="small-4 medium-4 column">
-				<p>
-			      <label for="test5">Trainerless</label>
-			      <input type="checkbox" id="trainerless" name="trainerless"/>
-			    </p>
-			</div>
-			<div class="small-4 medium-4 column">
-				<label>Start
-					<input type="date" class="datepicker">
-				</label>
-			</div>
-			<div class="small-4 medium-4 column">
-				<label>Finish
-					<input type="date" class="datepicker">
-				</label>
-			</div>
 		</div>
 
 		<div class="row">
@@ -56,6 +39,7 @@
 		    	selected-label='сонгосон'	
 		    	deselect-label='устгах'
 		    	:limit="1"
+		    	@update="updateServices"
 		    	label="name" 
 		    	:limit-text="limitText"
 		    	key="id" 
@@ -73,27 +57,13 @@
 		  	<div class="row">
 				<div class="small-12 medium-6 column">
 					<label>PlanName
-				        <input type="text" name="name" v-model="name" placeholder="fill training name">
+				        <input type="text" v-model="name" placeholder="fill training name">
 				    </label>	
 				</div>
 
 				<div class="small-12 medium-6 column">
 					<label>Description
-				        <textarea type="text" name="description" v-model="description" placeholder="Description ...">
-				        </textarea>
-				    </label>
-				</div>
-			</div>
-			<div class="row">
-				<div class="small-12 medium-6 column">
-					<label>Price
-				        <input type="number" name="price" v-model="name" placeholder="Plan price ...">
-				    </label>	
-				</div>
-
-				<div class="small-12 medium-6 column">
-					<label>Description
-				        <textarea type="text" name="description" v-model="description" placeholder="Description ...">
+				        <textarea type="text" v-model="description" placeholder="Description ...">
 				        </textarea>
 				    </label>
 				</div>
@@ -107,26 +77,76 @@
 				</div>
 				<div class="small-12 medium-6 column">
 					<label>Trainer Count
-						<input type="number" :disabled="!trainerless" name="trainercount">
+						<input type="number" :disabled="!trainerless" v-model="trainerCount">
 					</label>
 				</div>
   		  </div>
+
+  		  <div class="row">
+  		  	<div class="small-12 medium-6 column">
+  		  		<a @click="isPrimary = true" class="button success">Primary</a>
+  		  	</div>
+  		  	<div class="small-12 medium-6 column">
+  		  		<a @click="isPrimary = false" class="button success">Loyalty</a>
+  		  	</div>
+  		  </div>
+  		  <div class="row">
+			<div class="small-6 medium-6 column">
+				<label>Start
+					<input type="date" class="datepicker">
+				</label>
+			</div>
+			<div class="small-6 medium-6 column">
+				<label v-show="isPrimary">Finish
+					<input type="date" class="datepicker">
+				</label>
+
+				<label v-show="!isPrimary">
+					Until now
+				</label>
+			</div>
+		  </div>
+		  <div class="row">
+			<div class="small-6 medium-6 column">
+				<label>Price
+					<input type="number" v-model="price">
+				</label>
+			</div>
+			<div v-show="!isPrimary" class="small-6 medium-6 column">
+				<label>Discount
+					<input type="number" v-model="discount">
+				</label>
+			</div>
+		  </div>
 		</div>
 
 		<div id="trainer">
-		    <div class="row">
-		    	<div class="small-12 column" style="height:100px">
+		    <div class="row small-up-3 medium-up-4">
+		    	<div class="columns" v-for="train in trainings">
+		    		{{train.name}}
+		    	</div>
+		    	<div class="columns">
 		    		<a @click="showTraining = true" class="button success">
 		    			<span class="fa fa-plus"></span>
 		    		</a>
 		    	</div>
 			</div>
+			<div class="row small-up-3 medium-up-4 large-up-5">
+				<teacher-slider v-ref:tslider :id="id" :teachers.sync="teachers"></teacher-slider>
+				<div>
+					<a @click="showTeacher = true" class="fa fa-save">+</a>
+				</div>
+			</div>
 		</div>
+
+		<div class="row" style="height:50px"></div>
+		<div class="row"></div>
 	</form>
 </template>
 <script>
 
 	import PhotoSlider from '../actors/application/components/PhotoSlider.vue';
+	import TeacherSlider from '../actors/application/components/TeacherSlider.vue';
 
 	export default {
 		props: { 
@@ -140,11 +160,18 @@
 				name : '',
 				description : '',
 				trainerless : false,
+				trainerCount : 0,
+				freq : 3,
+				length : 1,
+				isPrimary : true,
 				price : 0,
+				discount : 0,
 				teachers : [],
+				trainings : [],
 				services : [],
 				clubservices : [],
 				showTraining : false,
+				showTeacher : false,
 				isLoading : false,
 			}
 		},
@@ -173,7 +200,6 @@
 			getClubServices : function () {
 				this.$http.get(this.$env.get('APP_URI') + 'api/club/' + this.id + '/service').then(res => {
 				 	this.clubservices = res.data.result;
-				 	debugger;
 				}).catch(err => {
 
 				});
@@ -184,8 +210,17 @@
 					club_id : this.id,
 					name : this.name,
 					description : this.description,
-					pictures : this.$tools.collectionBy(this.pictures, "id|url"),
-					teachers : this.$tools.collectionBy(this.teachers, "id"),
+					freq : this.freq,
+					length : this.length,
+					trainerless : this.trainerless,
+					trainerCount : this.trainerCount,
+					isPrimary : this.isPrimary,
+					price : this.price,
+					discount : this.discount,
+					teachers : this.$tools.arrayBy(this.teachers,'id'),
+					trainings : this.$tools.arrayBy(this.trainings,'id'),
+					services : this.$tools.arrayBy(this.services,'id'),
+					pictures : this.$tools.collectionBy(this.$refs.pslider.pictures, "id|url|pinned"),
 			    });
 			},
 
@@ -194,16 +229,27 @@
 			},
 
 			choosedTrainings : function($response) {
-				this.teachers = $response.data;
-				this.showTeachers = false;
+				this.trainings = $response.data;
+
+				for(var i = 0; i < this.trainings.length; i++)
+				{
+					for(var j = 0; j < this.trainings[i].teachers.length; j++)
+					{
+						if(!this.containsTeachers(this.trainings[i].teachers[j]))
+							this.teachers.push(this.trainings[i].teachers[j]);
+					}
+				}
+
+				debugger;
+				this.showTraining = false;
 			},
 			
-			triggerPictureBtn : function () {
-				this.showFileManager = true;
-			},
-
 			deleteTeacher : function(teacher) {
 				this.teachers.$remove(teacher);
+			},
+
+			updateServices : function (services) {
+				this.services = services;
 			},
 
 			validate : function () {
@@ -219,10 +265,21 @@
 
 				return true;
 			},
+
+			containsTeachers : function(data) {
+				var found = false;
+				for(var i = 0; i < this.teachers.length; i++) {
+				    if (this.teachers[i].id == data.id) {
+				        found = true;
+				        break;
+				    }
+				}
+				return found;
+			}
 		},
 
 		components : {
-			PhotoSlider
+			PhotoSlider, TeacherSlider
 		},
 
 		locales: {
