@@ -49,7 +49,7 @@ use Illuminate\Support\Facades\Storage;
 		Route::get('/service', 'ServiceController@list');	
 		Route::post('/test','FileManagerController@test');
 		Route::get('/search', 'SearchController@search');
-
+		Route::resource('/genre', 'GenreController');
 	});
 
 	Route::post('/upload', 'FileManagerController@upload');
