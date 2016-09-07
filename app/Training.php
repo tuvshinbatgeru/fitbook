@@ -31,4 +31,10 @@ class Training extends Model
     	return $this->belongsToMany('App\User', 'training_teacher', 'training_id', 'user_id')
     			->withTimestamps();
     }
+
+    public function genres()
+    {
+        return $this->belongsToMany('App\Genre', 'training_genre', 'training_id', 'genre_id')
+                ->withTimestamps();
+    }
 }

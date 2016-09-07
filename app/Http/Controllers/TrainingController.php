@@ -24,14 +24,24 @@ class TrainingController extends Controller
     }
 
     
-    public function index(Club $club)
+    public function index(Club $club, Request $request)
     {
+        $decode = json_decode($request->data);
         $trainings = $club->trainings;
 
         foreach ($trainings as $training) {
             $training->photos = $training->pinnedPhoto();
             $training->teachers;
             $training->selected = false;
+
+            if(empty($decode->selected)) {
+                continue;
+            }
+
+            for($i = 0; $i < count($decode->selected); $i ++) {
+                if($decode->selected[$i] == $training->id)
+                    $training->selected = true;
+            }
         }
 
         return Response::json([
@@ -70,6 +80,8 @@ class TrainingController extends Controller
         for ($i = 0; $i < count($decode->teachers); $i ++) { 
             $training->teachers()->attach(intval($decode->teachers[$i]->id));    
         }
+
+        $training->genres()->sync($decode->genres);
 
         $training->teachers;
         $training->photos = $training->pinnedPhoto();
