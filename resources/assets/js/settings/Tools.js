@@ -4,6 +4,17 @@ module.exports = (function () {
 
     }
 
+    Tools.prototype.arrayBy = function(items, filter) {
+        var arrays = [];
+
+        for (var d = 0, len = items.length; d < len; d += 1) {
+            var ret = {};
+            arrays.push(items[d][filter]);
+        }    
+
+        return arrays;
+    };
+
     Tools.prototype.collectionBy = function (items, filter) {
         var arrays = [];
         var fields = filter.split('|');
