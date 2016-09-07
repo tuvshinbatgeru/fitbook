@@ -55291,6 +55291,135 @@ if (module.hot) {(function () {  module.hot.accept()
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+
+var _ArchiveMembers = require('../components/ArchiveMembers.vue');
+
+var _ArchiveMembers2 = _interopRequireDefault(_ArchiveMembers);
+
+var _CurrentMembers = require('../components/CurrentMembers.vue');
+
+var _CurrentMembers2 = _interopRequireDefault(_CurrentMembers);
+
+var _RequestMembers = require('../components/RequestMembers.vue');
+
+var _RequestMembers2 = _interopRequireDefault(_RequestMembers);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = {
+    props: {
+        id: {},
+        type: {},
+        memberType: { default: 1 }
+    },
+
+    data: function data() {
+        return {
+            request_count: 0,
+            member_count: 0,
+            archive_count: 0,
+            submenu: { default: 'request-members' }
+        };
+    },
+
+
+    created: function created() {
+        this.init();
+    },
+
+    ready: function ready() {
+        $('ul.tabs').tabs();
+    },
+
+    events: {
+        'accept-request': function acceptRequest($request) {
+            this.decreaseRequests();
+            this.member_count++;
+        },
+
+        'reject-request': function rejectRequest($request) {
+            this.decreaseRequests();
+        }
+    },
+
+    methods: {
+        init: function init() {
+            var _this = this;
+
+            this.$http.get(this.$env.get('APP_URI') + 'api/club/edit/' + this.clubid + '/members?type=' + this.memberType).then(function (response) {
+                _this.request_count = response.data.requests_count;
+                _this.member_count = response.data.members_count;
+                _this.archive_count = response.data.archive_count;
+            }, function (response) {});
+        },
+
+        getMenuToType: function getMenuToType() {
+            switch (this.submenu) {
+                case "request-members":
+                    return 0;
+                case "current-members":
+                    return 1;
+
+            }
+        },
+
+        setMembersType: function setMembersType(type) {
+            this.$broadcast('_MemberTypeChanged', this.memberType);
+            this.init();
+        },
+
+        setSubMenu: function setSubMenu(menu) {
+            this.submenu = menu;
+        },
+
+        decreaseRequests: function decreaseRequests() {
+            this.request_count--;
+        }
+    },
+
+    components: {
+        ArchiveMembers: _ArchiveMembers2.default,
+        CurrentMembers: _CurrentMembers2.default,
+        RequestMembers: _RequestMembers2.default
+    },
+
+    locales: {
+        en: {
+            teacher: 'Teachers',
+            manager: 'Managers',
+            reception: 'Receptions',
+            request: 'Requests',
+            current: 'Active Members',
+            archive: 'Archive'
+        },
+        mn: {
+            teacher: 'Багш',
+            manager: 'Менежер',
+            reception: 'Ресепшэн',
+            request: 'Хүсэлтүүд',
+            current: 'Идэвхтэй гишүүд',
+            archive: 'Архив'
+        }
+    }
+};
+if (module.exports.__esModule) module.exports = module.exports.default
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div>\n    <ul class=\"tabs\">\n      <li class=\"tab s3\"><a @click=\"setSubMenu('request-members')\" class=\"active\">{{$t('request')}} ({{request_count}})</a></li>\n      <li class=\"tab s3\"><a @click=\"setSubMenu('current-members')\">{{$t('current')}} ({{member_count}})</a></li>\n      <li class=\"tab s3\"><a @click=\"setSubMenu('archive-members')\">{{$t('archive')}} ({{archive_count}})</a></li>\n    </ul>\n</div>  \n\n<div class=\"small-12 text-center small-centered columns\">\n    <component :id=\"id\" :type=\"memberType\" :is=\"submenu\">\n    </component>\n</div>\n"
+if (module.hot) {(function () {  module.hot.accept()
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), true)
+  if (!hotAPI.compatible) return
+  if (!module.hot.data) {
+    hotAPI.createRecord("_v-0bb0f068", module.exports)
+  } else {
+    hotAPI.update("_v-0bb0f068", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+  }
+})()}
+},{"../components/ArchiveMembers.vue":63,"../components/CurrentMembers.vue":64,"../components/RequestMembers.vue":69,"vue":55,"vue-hot-reload-api":50}],63:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
 exports.default = {
 
     props: {
@@ -55322,7 +55451,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-1c02eea7", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":55,"vue-hot-reload-api":50}],63:[function(require,module,exports){
+},{"vue":55,"vue-hot-reload-api":50}],64:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -55399,7 +55528,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-6dc86ce0", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":55,"vue-hot-reload-api":50}],64:[function(require,module,exports){
+},{"vue":55,"vue-hot-reload-api":50}],65:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
 var __vueify_style__ = __vueify_insert__.insert("\n")
 "use strict";
@@ -55428,12 +55557,71 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-3df773f8", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":55,"vue-hot-reload-api":50,"vueify/lib/insert-css":56}],65:[function(require,module,exports){
+},{"vue":55,"vue-hot-reload-api":50,"vueify/lib/insert-css":56}],66:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+exports.default = {
+
+    props: {
+        id: {}
+    },
+
+    created: function created() {
+        this.getLoyaltyPlans();
+    },
+
+    data: function data() {
+        return {
+            plans: []
+        };
+    },
+
+
+    ready: function ready() {},
+
+    methods: {
+        getLoyaltyPlans: function getLoyaltyPlans() {
+            var _this = this;
+
+            debugger;
+            this.$http.get(this.$env.get('APP_URI') + 'api/club/' + this.id + '/plan?type=loyalty').then(function (res) {
+                _this.plans = res.data.result;
+            }).catch(function (err) {});
+        }
+    }
+};
+if (module.exports.__esModule) module.exports = module.exports.default
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<h3>Loyalty Plan</h3>\n\n<div class=\"row small-up-3 medium-up-4 large-up-4\">\n    <div class=\"columns\" v-for=\"current in plans\">\n    <h3>{{current.plan[0].name}}</h3>\n    <p>{{current.plan[0].description}}</p>\n\n    <label>{{current.before_price}}</label>\n    off to \n    <label>{{current.plan[0].price}}</label>\n    </div>\n</div>\n"
+if (module.hot) {(function () {  module.hot.accept()
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), true)
+  if (!hotAPI.compatible) return
+  if (!module.hot.data) {
+    hotAPI.createRecord("_v-5195c5e2", module.exports)
+  } else {
+    hotAPI.update("_v-5195c5e2", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+  }
+})()}
+},{"vue":55,"vue-hot-reload-api":50}],67:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _PrimaryPlan = require('./PrimaryPlan.vue');
+
+var _PrimaryPlan2 = _interopRequireDefault(_PrimaryPlan);
+
+var _LoyaltyPlan = require('./LoyaltyPlan.vue');
+
+var _LoyaltyPlan2 = _interopRequireDefault(_LoyaltyPlan);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 exports.default = {
     props: {
         id: {}
@@ -55442,29 +55630,46 @@ exports.default = {
     data: function data() {
         return {
             planType: 1,
-            panels: [],
+            content: 'primary-plan',
+            plans: [],
             showAddPlan: false
         };
     },
 
 
-    created: function created() {
-        this.getPanels();
-    },
+    created: function created() {},
 
     ready: function ready() {
         $('ul.tabs').tabs();
     },
 
-    methods: {
-        getPanels: function getPanels() {},
-
-        setPlanType: function setPlanType(type) {
-            this.planType = type;
+    events: {
+        'savePlan': function savePlan($response) {
+            this.savePlan($response);
         }
     },
 
-    components: {},
+    methods: {
+        savePlan: function savePlan($response) {
+            var _this = this;
+
+            this.$http.post(this.$env.get('APP_URI') + 'api/club/' + this.id + '/plan?data=' + $response.data).then(function (res) {
+                _this.plans.push(res.data.result);
+                _this.showAddPlan = false;
+                _this.$root.$refs.toast.showMessage('Successfully add new plan.');
+            }).catch(function (err) {
+                _this.$root.$refs.toast.showMessage('Server side error!.');
+            });
+        },
+
+        setContent: function setContent(content) {
+            this.content = content;
+        }
+    },
+
+    components: {
+        PrimaryPlan: _PrimaryPlan2.default, LoyaltyPlan: _LoyaltyPlan2.default
+    },
 
     locales: {
         en: {
@@ -55478,7 +55683,7 @@ exports.default = {
     }
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div>\n    <ul class=\"tabs\">\n      <li class=\"tab s3\"><a @click=\"setPlanType(1)\" class=\"active\">{{$t('plan')}} (1)</a></li>\n      <li class=\"tab s3\"><a @click=\"setPlanType(2)\">{{$t('loyalty')}} (1)</a></li>\n    </ul>\n</div>  \n\n<div class=\"row\">\n  <div class=\"small-10 columns\">\n    <input type=\"text\" name=\"search\" placeholder=\"search ...\">\n  </div>\n  <div class=\"small-2 columns\">\n    <div class=\"small-2 columns\">\n          <a @click=\"showAddPlan = true\" class=\"button success\">\n              <i class=\"fa fa-pencil-square-o\">                       \n              </i>\n          </a>\n    </div>\n  </div>\n</div>\n\n<label>Select Menu\n  <select>\n    <option value=\"husker\">All</option>\n    <option value=\"starbuck\">Starbuck</option>\n    <option value=\"hotdog\">Hot Dog</option>\n    <option value=\"apollo\">Apollo</option>\n  </select>\n</label>\n\n<custom-modal :id=\"id\" type=\"Club\" title=\"Add Plan\" usage=\"_add-plan\" :show.sync=\"showAddPlan\" save-callback=\"savePlan\" validateable=\"Y\" context=\"AddPlan\">\n  </custom-modal>\n\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div>\n    <ul class=\"tabs\">\n      <li class=\"tab s3\"><a @click=\"setContent('primary-plan')\" class=\"active\">{{$t('plan')}} (1)</a></li>\n      <li class=\"tab s3\"><a @click=\"setContent('loyalty-plan')\">{{$t('loyalty')}} (1)</a></li>\n    </ul>\n</div>  \n\n<component :id=\"id\" :is=\"content\">\n    \n</component>\n\n\n<div class=\"row\">\n  <div class=\"small-10 columns\">\n    <input type=\"text\" name=\"search\" placeholder=\"search ...\">\n  </div>\n  <div class=\"small-2 columns\">\n    <div class=\"small-2 columns\">\n          <a @click=\"showAddPlan = true\" class=\"button success\">\n              <i class=\"fa fa-pencil-square-o\">                       \n              </i>\n          </a>\n    </div>\n  </div>\n</div>\n\n<label>Select Menu\n  <select>\n    <option value=\"husker\">All</option>\n    <option value=\"starbuck\">Starbuck</option>\n    <option value=\"hotdog\">Hot Dog</option>\n    <option value=\"apollo\">Apollo</option>\n  </select>\n</label>\n\n<custom-modal :id=\"id\" type=\"Club\" title=\"Add Plan\" usage=\"_add-plan\" :show.sync=\"showAddPlan\" save-callback=\"savePlan\" validateable=\"Y\" context=\"AddPlan\">\n  </custom-modal>\n\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -55489,7 +55694,54 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-0084fe4a", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":55,"vue-hot-reload-api":50}],66:[function(require,module,exports){
+},{"./LoyaltyPlan.vue":66,"./PrimaryPlan.vue":68,"vue":55,"vue-hot-reload-api":50}],68:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.default = {
+
+    props: {
+        id: {}
+    },
+
+    created: function created() {
+        this.getPrimaryPlan();
+    },
+
+    data: function data() {
+        return {
+            plans: []
+        };
+    },
+
+
+    ready: function ready() {},
+
+    methods: {
+        getPrimaryPlan: function getPrimaryPlan() {
+            var _this = this;
+
+            this.$http.get(this.$env.get('APP_URI') + 'api/club/' + this.id + '/plan?type=primary').then(function (res) {
+                _this.plans = res.data.result;
+            }).catch(function (err) {});
+        }
+    }
+};
+if (module.exports.__esModule) module.exports = module.exports.default
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<h3>Primary Plan</h3>\n\n<div class=\"row\">\n    Percentage of lolloloasdsadfsdfl\n</div>\n"
+if (module.hot) {(function () {  module.hot.accept()
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), true)
+  if (!hotAPI.compatible) return
+  if (!module.hot.data) {
+    hotAPI.createRecord("_v-09f8eacb", module.exports)
+  } else {
+    hotAPI.update("_v-09f8eacb", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+  }
+})()}
+},{"vue":55,"vue-hot-reload-api":50}],69:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -55527,6 +55779,7 @@ exports.default = {
         init: function init() {
             var _this2 = this;
 
+            debugger;
             this.$http.get(this.$env.get('APP_URI') + 'api/club/edit/' + this.id + '/request?memberType=' + this.type).then(function (response) {
                 _this2.requests = response.data;
             }, function (response) {});
@@ -55569,7 +55822,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-1799aaba", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":55,"vue-hot-reload-api":50}],67:[function(require,module,exports){
+},{"vue":55,"vue-hot-reload-api":50}],70:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -55646,7 +55899,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-387842ff", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":55,"vue-hot-reload-api":50}],68:[function(require,module,exports){
+},{"vue":55,"vue-hot-reload-api":50}],71:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
 var __vueify_style__ = __vueify_insert__.insert("@charset \"UTF-8\";\n/* line 2, stdin */\n.picture-list {\n  background-color: #5fcf80;\n  border-radius: 4px; }\n\n/* line 7, stdin */\n.add-button {\n  height: 120px;\n  width: 120px;\n  background-color: #fff;\n  border-radius: 4px;\n  border: 1px solid #53BBB4; }\n\n/* line 15, stdin */\n.figure {\n  margin: 0 10px 10px 0;\n  height: 120px;\n  width: 120px;\n  position: relative; }\n  /* line 22, stdin */\n  .figure:hover .figcaption {\n    opacity: 1; }\n\n/* line 28, stdin */\n.figcaption {\n  border-radius: 4px;\n  background-color: rgba(58, 52, 42, 0.7);\n  -webkit-backface-visibility: hidden;\n  backface-visibility: hidden;\n  position: absolute;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n  color: #fff;\n  padding: 0 25px;\n  display: -webkit-flex;\n  display: -ms-flexbox;\n  display: -webkit-box;\n  display: flex;\n  -webkit-align-items: center;\n  -ms-flex-align: center;\n  -webkit-box-align: center;\n          align-items: center;\n  -webkit-transition: all 0.25s;\n  transition: all 0.25s;\n  opacity: 0; }\n\n/* line 52, stdin */\n.gh-search-submit {\n  opacity: 0.75;\n  z-index: 9999;\n  background-image: url(\"data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgi…KCUM1LjE1NCwxMi44NTUsMi44MjQsMTAuNTI3LDIuODI0LDcuNjY2eiIvPg0KPC9zdmc+DQo=\"); }\n\n/* line 58, stdin */\n.gh-search-reset.show {\n  cursor: pointer;\n  z-index: 9999;\n  opacity: 1;\n  -webkit-transform: translateX(0px);\n  -ms-transform: translateX(0px);\n  transform: translateX(0px);\n  -webkit-transition-delay: .2s;\n  transition-delay: .2s; }\n")
 'use strict';
@@ -55737,7 +55990,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-34c4336c", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{".././components/FtTraining.vue":64,"vue":55,"vue-hot-reload-api":50,"vueify/lib/insert-css":56}],69:[function(require,module,exports){
+},{".././components/FtTraining.vue":65,"vue":55,"vue-hot-reload-api":50,"vueify/lib/insert-css":56}],72:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
 var __vueify_style__ = __vueify_insert__.insert("\n")
 "use strict";
@@ -55751,9 +56004,7 @@ exports.default = {
 	},
 
 	data: function data() {
-		return {
-			items: []
-		};
+		return {};
 	},
 
 
@@ -55761,7 +56012,7 @@ exports.default = {
 	methods: {}
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n\t<div>\n\t\t<h3>Club Dashboard</h3>\n\t<div>\n</div></div>"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n\t<div>\n\t\t<h3>Club Dashboard</h3>\n\t\tipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod\n\t\ttempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,\n\t\tquis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo\n\t\tconsequat. Duis aute irure dolor in reprehenderit in voluptate velit esse\n\t\tcillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non\n\t\tproident, sunt in culpa qui officia deserunt mollit anim id est laborum.\n\t<div>\n</div></div>"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -55776,38 +56027,20 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-492704ba", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":55,"vue-hot-reload-api":50,"vueify/lib/insert-css":56}],70:[function(require,module,exports){
+},{"vue":55,"vue-hot-reload-api":50,"vueify/lib/insert-css":56}],73:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-
-var _ArchiveMembers = require('.././components/ArchiveMembers.vue');
-
-var _ArchiveMembers2 = _interopRequireDefault(_ArchiveMembers);
-
-var _CurrentMembers = require('.././components/CurrentMembers.vue');
-
-var _CurrentMembers2 = _interopRequireDefault(_CurrentMembers);
-
-var _RequestMembers = require('.././components/RequestMembers.vue');
-
-var _RequestMembers2 = _interopRequireDefault(_RequestMembers);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
 exports.default = {
     props: {
         clubid: {},
-        memberType: {
-            default: 1
-        }
+        type: { default: 1 }
     },
 
     data: function data() {
         return {
-            submenu: 'request-members',
             request_count: 0,
             member_count: 0,
             archive_count: 0
@@ -55819,20 +56052,7 @@ exports.default = {
         this.init();
     },
 
-    ready: function ready() {
-        $('ul.tabs').tabs();
-    },
-
-    events: {
-        'accept-request': function acceptRequest($request) {
-            this.decreaseRequests();
-            this.member_count++;
-        },
-
-        'reject-request': function rejectRequest($request) {
-            this.decreaseRequests();
-        }
-    },
+    ready: function ready() {},
 
     methods: {
         init: function init() {
@@ -55845,56 +56065,31 @@ exports.default = {
             }, function (response) {});
         },
 
-        getMenuToType: function getMenuToType() {
-            switch (this.submenu) {
-                case "request-members":
-                    return 0;
-                case "current-members":
-                    return 1;
-
-            }
-        },
-
         setMembersType: function setMembersType(type) {
-            this.memberType = type;
-            this.$broadcast('_MemberTypeChanged', this.memberType);
-            this.init();
-        },
-
-        setSubMenu: function setSubMenu(menu) {
-            this.submenu = menu;
-        },
-
-        decreaseRequests: function decreaseRequests() {
-            this.request_count--;
+            this.type = type;
+            this.$dispatch('member-changed', {
+                content: this.type
+            });
         }
     },
 
-    components: {
-        ArchiveMembers: _ArchiveMembers2.default, CurrentMembers: _CurrentMembers2.default, RequestMembers: _RequestMembers2.default
-    },
+    components: {},
 
     locales: {
         en: {
             teacher: 'Teachers',
             manager: 'Managers',
-            reception: 'Receptions',
-            request: 'Requests',
-            current: 'Active Members',
-            archive: 'Archive'
+            reception: 'Receptions'
         },
         mn: {
             teacher: 'Багш',
             manager: 'Менежер',
-            reception: 'Ресепшэн',
-            request: 'Хүсэлтүүд',
-            current: 'Идэвхтэй гишүүд',
-            archive: 'Архив'
+            reception: 'Ресепшэн'
         }
     }
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"row small-up-3\">\n  <div class=\"column\">\n    <a @click=\"setMembersType(1)\" class=\"button success\">{{$t('teacher')}}</a>\n    <a @click=\"setMembersType(2)\" class=\"button success\">{{$t('manager')}}</a>\n    <a @click=\"setMembersType(3)\" class=\"button success\">{{$t('reception')}}</a>\n  </div>\n</div>\n\n<div>\n    <ul class=\"tabs\">\n      <li class=\"tab s3\"><a @click=\"setSubMenu('request-members')\" class=\"active\">{{$t('request')}} ({{request_count}})</a></li>\n      <li class=\"tab s3\"><a @click=\"setSubMenu('current-members')\">{{$t('current')}} ({{member_count}})</a></li>\n      <li class=\"tab s3\"><a @click=\"setSubMenu('archive-members')\">{{$t('archive')}} ({{archive_count}})</a></li>\n    </ul>\n</div>  \n\n<div class=\"small-9 text-center small-centered columns\">\n    <component :id=\"clubid\" :type=\"memberType\" :is=\"submenu\">\n    </component>\n</div>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"row small-up-3\">\n  <div class=\"column\">\n    <a @click=\"setMembersType(1)\" class=\"button success\">{{$t('teacher')}}</a>\n    <a @click=\"setMembersType(2)\" class=\"button success\">{{$t('manager')}}</a>\n    <a @click=\"setMembersType(3)\" class=\"button success\">{{$t('reception')}}</a>\n  </div>\n</div>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -55905,27 +56100,12 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-fe3db782", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{".././components/ArchiveMembers.vue":62,".././components/CurrentMembers.vue":63,".././components/RequestMembers.vue":66,"vue":55,"vue-hot-reload-api":50}],71:[function(require,module,exports){
+},{"vue":55,"vue-hot-reload-api":50}],74:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-
-var _PlanPanel = require('.././components/PlanPanel.vue');
-
-var _PlanPanel2 = _interopRequireDefault(_PlanPanel);
-
-var _TrainingPanel = require('.././components/TrainingPanel.vue');
-
-var _TrainingPanel2 = _interopRequireDefault(_TrainingPanel);
-
-var _ServicePanel = require('.././components/ServicePanel.vue');
-
-var _ServicePanel2 = _interopRequireDefault(_ServicePanel);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
 exports.default = {
     props: {
         clubid: {},
@@ -55961,12 +56141,13 @@ exports.default = {
 
         setRegistrationType: function setRegistrationType(type) {
             this.type = type;
+            this.$dispatch('content-changed', {
+                content: this.type
+            });
         }
     },
 
-    components: {
-        PlanPanel: _PlanPanel2.default, TrainingPanel: _TrainingPanel2.default, ServicePanel: _ServicePanel2.default
-    },
+    components: {},
 
     locales: {
         en: {
@@ -55982,7 +56163,7 @@ exports.default = {
     }
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"row small-up-3\">\n  <div class=\"column\">\n    <a @click=\"setRegistrationType('plan-panel')\" class=\"button success\">{{$t('plan')}} ({{plan_count}})</a>\n    <a @click=\"setRegistrationType('training-panel')\" class=\"button success\">{{$t('training')}} ({{training_count}})</a>\n    <a @click=\"setRegistrationType('service-panel')\" class=\"button success\">{{$t('service')}} ({{service_count}})</a>\n  </div>\n</div>\n\n<component :id=\"clubid\" :is=\"type\">\n</component>\n\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"row small-up-3\">\n  <div class=\"column\">\n    <a @click=\"setRegistrationType('plan-panel')\" class=\"button success\">{{$t('plan')}} ({{plan_count}})</a>\n    <a @click=\"setRegistrationType('training-panel')\" class=\"button success\">{{$t('training')}} ({{training_count}})</a>\n    <a @click=\"setRegistrationType('service-panel')\" class=\"button success\">{{$t('service')}} ({{service_count}})</a>\n  </div>\n</div>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -55993,7 +56174,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-5773b283", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{".././components/PlanPanel.vue":65,".././components/ServicePanel.vue":67,".././components/TrainingPanel.vue":68,"vue":55,"vue-hot-reload-api":50}],72:[function(require,module,exports){
+},{"vue":55,"vue-hot-reload-api":50}],75:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
 var __vueify_style__ = __vueify_insert__.insert("\n")
 'use strict';
@@ -56059,7 +56240,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-455676c4", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":55,"vue-hot-reload-api":50,"vueify/lib/insert-css":56}],73:[function(require,module,exports){
+},{"vue":55,"vue-hot-reload-api":50,"vueify/lib/insert-css":56}],76:[function(require,module,exports){
 'use strict';
 
 var _VerifyView = require('./web/VerifyView.vue');
@@ -56116,7 +56297,7 @@ require('./bootstrap');
 
 Vue.debug = true;
 Vue.http.headers.common['X-CSRF-TOKEN'] = document.querySelector('#_token').getAttribute('value');
-Vue.config.lang = 'mn';
+Vue.config.lang = 'en';
 
 var app = new Vue({
 	el: 'body',
@@ -56139,7 +56320,7 @@ var app = new Vue({
 	}
 });
 
-},{"./actors/application/widgets/content/TeacherDefault.vue":59,"./actors/application/widgets/content/TrainingDefault.vue":60,"./actors/application/widgets/header/Default.vue":61,"./bootstrap":74,"./web/ClubEditView.vue":99,"./web/IndexView.vue":100,"./web/ProfileEditView.vue":101,"./web/ProfileView.vue":102,"./web/SearchView.vue":103,"./web/VerifyView.vue":104}],74:[function(require,module,exports){
+},{"./actors/application/widgets/content/TeacherDefault.vue":59,"./actors/application/widgets/content/TrainingDefault.vue":60,"./actors/application/widgets/header/Default.vue":61,"./bootstrap":77,"./web/ClubEditView.vue":103,"./web/IndexView.vue":104,"./web/ProfileEditView.vue":105,"./web/ProfileView.vue":106,"./web/SearchView.vue":107,"./web/VerifyView.vue":108}],77:[function(require,module,exports){
 'use strict';
 
 var _chart = require('chart.js');
@@ -56190,6 +56371,7 @@ require('./dependency/jquery.tokenize');
 require('./dependency/tabs');
 require('./dependency/dropdown');
 require('./dependency/velocity.min');
+require('./dependency/bootstrap-datetimepicker');
 
 /*require('./dependency/datepicker/picker');*/
 /*require('./dependency/datepicker/datepicker');*/
@@ -56252,7 +56434,7 @@ Vue.http.interceptors.push((request, next) => {
 //     key: 'your-pusher-key'
 // });
 
-},{"../../../env.js":1,"./components/CustomModal.vue":77,"./components/CustomToast.vue":78,"./dependency/dropdown":88,"./dependency/foundation":89,"./dependency/jquery-ui.min":90,"./dependency/jquery.fileupload":91,"./dependency/jquery.tokenize":92,"./dependency/jquery.ui.touch-punch":93,"./dependency/tabs":95,"./dependency/velocity.min":96,"./lang/locales":97,"./settings/Tools.js":98,"chart.js":2,"jquery":45,"lodash":46,"vue":55,"vue-env":49,"vue-i18n":51,"vue-multiselect":52,"vue-resource":53}],75:[function(require,module,exports){
+},{"../../../env.js":1,"./components/CustomModal.vue":80,"./components/CustomToast.vue":81,"./dependency/bootstrap-datetimepicker":91,"./dependency/dropdown":92,"./dependency/foundation":93,"./dependency/jquery-ui.min":94,"./dependency/jquery.fileupload":95,"./dependency/jquery.tokenize":96,"./dependency/jquery.ui.touch-punch":97,"./dependency/tabs":99,"./dependency/velocity.min":100,"./lang/locales":101,"./settings/Tools.js":102,"chart.js":2,"jquery":45,"lodash":46,"vue":55,"vue-env":49,"vue-i18n":51,"vue-multiselect":52,"vue-resource":53}],78:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -56282,7 +56464,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-ebf1af24", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":55,"vue-hot-reload-api":50}],76:[function(require,module,exports){
+},{"vue":55,"vue-hot-reload-api":50}],79:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
 var __vueify_style__ = __vueify_insert__.insert("/* line 8, stdin */\n.progress--circle {\n  position: relative;\n  display: inline-block;\n  margin: 1rem;\n  width: 120px;\n  height: 120px;\n  border-radius: 50%;\n  background-color: #ddd; }\n  /* line 16, stdin */\n  .progress--circle:before {\n    content: '';\n    position: absolute;\n    top: 15px;\n    left: 15px;\n    width: 90px;\n    height: 90px;\n    border-radius: 50%;\n    background-color: white; }\n  /* line 26, stdin */\n  .progress--circle:after {\n    content: '';\n    display: inline-block;\n    width: 100%;\n    height: 100%;\n    border-radius: 50%;\n    background-color: #63B8FF; }\n\n/* line 36, stdin */\n.progress__number {\n  position: absolute;\n  top: 50%;\n  width: 100%;\n  line-height: 1;\n  margin-top: -0.75rem;\n  text-align: center;\n  font-size: 1.5rem;\n  color: #777; }\n\n/* line 52, stdin */\n.progress--bar.progress--0:after {\n  width: 0%; }\n\n/* line 55, stdin */\n.progress--circle.progress--0:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(left, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(90deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--1:after {\n  width: 1%; }\n\n/* line 55, stdin */\n.progress--circle.progress--1:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(356.4deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(93.6deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--2:after {\n  width: 2%; }\n\n/* line 55, stdin */\n.progress--circle.progress--2:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(352.8deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(97.2deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--3:after {\n  width: 3%; }\n\n/* line 55, stdin */\n.progress--circle.progress--3:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(349.2deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(100.8deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--4:after {\n  width: 4%; }\n\n/* line 55, stdin */\n.progress--circle.progress--4:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(345.6deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(104.4deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--5:after {\n  width: 5%; }\n\n/* line 55, stdin */\n.progress--circle.progress--5:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(342deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(108deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--6:after {\n  width: 6%; }\n\n/* line 55, stdin */\n.progress--circle.progress--6:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(338.4deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(111.6deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--7:after {\n  width: 7%; }\n\n/* line 55, stdin */\n.progress--circle.progress--7:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(334.8deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(115.2deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--8:after {\n  width: 8%; }\n\n/* line 55, stdin */\n.progress--circle.progress--8:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(331.2deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(118.8deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--9:after {\n  width: 9%; }\n\n/* line 55, stdin */\n.progress--circle.progress--9:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(327.6deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(122.4deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--10:after {\n  width: 10%; }\n\n/* line 55, stdin */\n.progress--circle.progress--10:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(324deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(126deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--11:after {\n  width: 11%; }\n\n/* line 55, stdin */\n.progress--circle.progress--11:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(320.4deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(129.6deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--12:after {\n  width: 12%; }\n\n/* line 55, stdin */\n.progress--circle.progress--12:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(316.8deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(133.2deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--13:after {\n  width: 13%; }\n\n/* line 55, stdin */\n.progress--circle.progress--13:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(313.2deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(136.8deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--14:after {\n  width: 14%; }\n\n/* line 55, stdin */\n.progress--circle.progress--14:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(309.6deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(140.4deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--15:after {\n  width: 15%; }\n\n/* line 55, stdin */\n.progress--circle.progress--15:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(306deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(144deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--16:after {\n  width: 16%; }\n\n/* line 55, stdin */\n.progress--circle.progress--16:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(302.4deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(147.6deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--17:after {\n  width: 17%; }\n\n/* line 55, stdin */\n.progress--circle.progress--17:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(298.8deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(151.2deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--18:after {\n  width: 18%; }\n\n/* line 55, stdin */\n.progress--circle.progress--18:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(295.2deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(154.8deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--19:after {\n  width: 19%; }\n\n/* line 55, stdin */\n.progress--circle.progress--19:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(291.6deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(158.4deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--20:after {\n  width: 20%; }\n\n/* line 55, stdin */\n.progress--circle.progress--20:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(288deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(162deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--21:after {\n  width: 21%; }\n\n/* line 55, stdin */\n.progress--circle.progress--21:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(284.4deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(165.6deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--22:after {\n  width: 22%; }\n\n/* line 55, stdin */\n.progress--circle.progress--22:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(280.8deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(169.2deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--23:after {\n  width: 23%; }\n\n/* line 55, stdin */\n.progress--circle.progress--23:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(277.2deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(172.8deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--24:after {\n  width: 24%; }\n\n/* line 55, stdin */\n.progress--circle.progress--24:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(273.6deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(176.4deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--25:after {\n  width: 25%; }\n\n/* line 55, stdin */\n.progress--circle.progress--25:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(top, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(180deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--26:after {\n  width: 26%; }\n\n/* line 55, stdin */\n.progress--circle.progress--26:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(266.4deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(183.6deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--27:after {\n  width: 27%; }\n\n/* line 55, stdin */\n.progress--circle.progress--27:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(262.8deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(187.2deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--28:after {\n  width: 28%; }\n\n/* line 55, stdin */\n.progress--circle.progress--28:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(259.2deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(190.8deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--29:after {\n  width: 29%; }\n\n/* line 55, stdin */\n.progress--circle.progress--29:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(255.6deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(194.4deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--30:after {\n  width: 30%; }\n\n/* line 55, stdin */\n.progress--circle.progress--30:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(252deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(198deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--31:after {\n  width: 31%; }\n\n/* line 55, stdin */\n.progress--circle.progress--31:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(248.4deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(201.6deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--32:after {\n  width: 32%; }\n\n/* line 55, stdin */\n.progress--circle.progress--32:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(244.8deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(205.2deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--33:after {\n  width: 33%; }\n\n/* line 55, stdin */\n.progress--circle.progress--33:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(241.2deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(208.8deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--34:after {\n  width: 34%; }\n\n/* line 55, stdin */\n.progress--circle.progress--34:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(237.6deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(212.4deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--35:after {\n  width: 35%; }\n\n/* line 55, stdin */\n.progress--circle.progress--35:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(234deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(216deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--36:after {\n  width: 36%; }\n\n/* line 55, stdin */\n.progress--circle.progress--36:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(230.4deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(219.6deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--37:after {\n  width: 37%; }\n\n/* line 55, stdin */\n.progress--circle.progress--37:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(226.8deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(223.2deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--38:after {\n  width: 38%; }\n\n/* line 55, stdin */\n.progress--circle.progress--38:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(223.2deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(226.8deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--39:after {\n  width: 39%; }\n\n/* line 55, stdin */\n.progress--circle.progress--39:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(219.6deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(230.4deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--40:after {\n  width: 40%; }\n\n/* line 55, stdin */\n.progress--circle.progress--40:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(216deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(234deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--41:after {\n  width: 41%; }\n\n/* line 55, stdin */\n.progress--circle.progress--41:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(212.4deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(237.6deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--42:after {\n  width: 42%; }\n\n/* line 55, stdin */\n.progress--circle.progress--42:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(208.8deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(241.2deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--43:after {\n  width: 43%; }\n\n/* line 55, stdin */\n.progress--circle.progress--43:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(205.2deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(244.8deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--44:after {\n  width: 44%; }\n\n/* line 55, stdin */\n.progress--circle.progress--44:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(201.6deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(248.4deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--45:after {\n  width: 45%; }\n\n/* line 55, stdin */\n.progress--circle.progress--45:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(198deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(252deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--46:after {\n  width: 46%; }\n\n/* line 55, stdin */\n.progress--circle.progress--46:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(194.4deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(255.6deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--47:after {\n  width: 47%; }\n\n/* line 55, stdin */\n.progress--circle.progress--47:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(190.8deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(259.2deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--48:after {\n  width: 48%; }\n\n/* line 55, stdin */\n.progress--circle.progress--48:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(187.2deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(262.8deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--49:after {\n  width: 49%; }\n\n/* line 55, stdin */\n.progress--circle.progress--49:after {\n  background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%, transparent), -webkit-linear-gradient(183.6deg, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #ddd 50%, transparent 50%, transparent), linear-gradient(266.4deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--50:after {\n  width: 50%; }\n\n/* line 55, stdin */\n.progress--circle.progress--50:after {\n  background-image: -webkit-linear-gradient(right, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(-90deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--51:after {\n  width: 51%; }\n\n/* line 55, stdin */\n.progress--circle.progress--51:after {\n  background-image: -webkit-linear-gradient(176.4deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(-86.4deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--52:after {\n  width: 52%; }\n\n/* line 55, stdin */\n.progress--circle.progress--52:after {\n  background-image: -webkit-linear-gradient(172.8deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(-82.8deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--53:after {\n  width: 53%; }\n\n/* line 55, stdin */\n.progress--circle.progress--53:after {\n  background-image: -webkit-linear-gradient(169.2deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(-79.2deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--54:after {\n  width: 54%; }\n\n/* line 55, stdin */\n.progress--circle.progress--54:after {\n  background-image: -webkit-linear-gradient(165.6deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(-75.6deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--55:after {\n  width: 55%; }\n\n/* line 55, stdin */\n.progress--circle.progress--55:after {\n  background-image: -webkit-linear-gradient(162deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(-72deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--56:after {\n  width: 56%; }\n\n/* line 55, stdin */\n.progress--circle.progress--56:after {\n  background-image: -webkit-linear-gradient(158.4deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(-68.4deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--57:after {\n  width: 57%; }\n\n/* line 55, stdin */\n.progress--circle.progress--57:after {\n  background-image: -webkit-linear-gradient(154.8deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(-64.8deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--58:after {\n  width: 58%; }\n\n/* line 55, stdin */\n.progress--circle.progress--58:after {\n  background-image: -webkit-linear-gradient(151.2deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(-61.2deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--59:after {\n  width: 59%; }\n\n/* line 55, stdin */\n.progress--circle.progress--59:after {\n  background-image: -webkit-linear-gradient(147.6deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(-57.6deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--60:after {\n  width: 60%; }\n\n/* line 55, stdin */\n.progress--circle.progress--60:after {\n  background-image: -webkit-linear-gradient(144deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(-54deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--61:after {\n  width: 61%; }\n\n/* line 55, stdin */\n.progress--circle.progress--61:after {\n  background-image: -webkit-linear-gradient(140.4deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(-50.4deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--62:after {\n  width: 62%; }\n\n/* line 55, stdin */\n.progress--circle.progress--62:after {\n  background-image: -webkit-linear-gradient(136.8deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(-46.8deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--63:after {\n  width: 63%; }\n\n/* line 55, stdin */\n.progress--circle.progress--63:after {\n  background-image: -webkit-linear-gradient(133.2deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(-43.2deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--64:after {\n  width: 64%; }\n\n/* line 55, stdin */\n.progress--circle.progress--64:after {\n  background-image: -webkit-linear-gradient(129.6deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(-39.6deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--65:after {\n  width: 65%; }\n\n/* line 55, stdin */\n.progress--circle.progress--65:after {\n  background-image: -webkit-linear-gradient(126deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(-36deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--66:after {\n  width: 66%; }\n\n/* line 55, stdin */\n.progress--circle.progress--66:after {\n  background-image: -webkit-linear-gradient(122.4deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(-32.4deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--67:after {\n  width: 67%; }\n\n/* line 55, stdin */\n.progress--circle.progress--67:after {\n  background-image: -webkit-linear-gradient(118.8deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(-28.8deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--68:after {\n  width: 68%; }\n\n/* line 55, stdin */\n.progress--circle.progress--68:after {\n  background-image: -webkit-linear-gradient(115.2deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(-25.2deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--69:after {\n  width: 69%; }\n\n/* line 55, stdin */\n.progress--circle.progress--69:after {\n  background-image: -webkit-linear-gradient(111.6deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(-21.6deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--70:after {\n  width: 70%; }\n\n/* line 55, stdin */\n.progress--circle.progress--70:after {\n  background-image: -webkit-linear-gradient(108deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(-18deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--71:after {\n  width: 71%; }\n\n/* line 55, stdin */\n.progress--circle.progress--71:after {\n  background-image: -webkit-linear-gradient(104.4deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(-14.4deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--72:after {\n  width: 72%; }\n\n/* line 55, stdin */\n.progress--circle.progress--72:after {\n  background-image: -webkit-linear-gradient(100.8deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(-10.8deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--73:after {\n  width: 73%; }\n\n/* line 55, stdin */\n.progress--circle.progress--73:after {\n  background-image: -webkit-linear-gradient(97.2deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(-7.2deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--74:after {\n  width: 74%; }\n\n/* line 55, stdin */\n.progress--circle.progress--74:after {\n  background-image: -webkit-linear-gradient(93.6deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(-3.6deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--75:after {\n  width: 75%; }\n\n/* line 55, stdin */\n.progress--circle.progress--75:after {\n  background-image: -webkit-linear-gradient(bottom, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(0deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--76:after {\n  width: 76%; }\n\n/* line 55, stdin */\n.progress--circle.progress--76:after {\n  background-image: -webkit-linear-gradient(86.4deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(3.6deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--77:after {\n  width: 77%; }\n\n/* line 55, stdin */\n.progress--circle.progress--77:after {\n  background-image: -webkit-linear-gradient(82.8deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(7.2deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--78:after {\n  width: 78%; }\n\n/* line 55, stdin */\n.progress--circle.progress--78:after {\n  background-image: -webkit-linear-gradient(79.2deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(10.8deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--79:after {\n  width: 79%; }\n\n/* line 55, stdin */\n.progress--circle.progress--79:after {\n  background-image: -webkit-linear-gradient(75.6deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(14.4deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--80:after {\n  width: 80%; }\n\n/* line 55, stdin */\n.progress--circle.progress--80:after {\n  background-image: -webkit-linear-gradient(72deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(18deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--81:after {\n  width: 81%; }\n\n/* line 55, stdin */\n.progress--circle.progress--81:after {\n  background-image: -webkit-linear-gradient(68.4deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(21.6deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--82:after {\n  width: 82%; }\n\n/* line 55, stdin */\n.progress--circle.progress--82:after {\n  background-image: -webkit-linear-gradient(64.8deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(25.2deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--83:after {\n  width: 83%; }\n\n/* line 55, stdin */\n.progress--circle.progress--83:after {\n  background-image: -webkit-linear-gradient(61.2deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(28.8deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--84:after {\n  width: 84%; }\n\n/* line 55, stdin */\n.progress--circle.progress--84:after {\n  background-image: -webkit-linear-gradient(57.6deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(32.4deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--85:after {\n  width: 85%; }\n\n/* line 55, stdin */\n.progress--circle.progress--85:after {\n  background-image: -webkit-linear-gradient(54deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(36deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--86:after {\n  width: 86%; }\n\n/* line 55, stdin */\n.progress--circle.progress--86:after {\n  background-image: -webkit-linear-gradient(50.4deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(39.6deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--87:after {\n  width: 87%; }\n\n/* line 55, stdin */\n.progress--circle.progress--87:after {\n  background-image: -webkit-linear-gradient(46.8deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(43.2deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--88:after {\n  width: 88%; }\n\n/* line 55, stdin */\n.progress--circle.progress--88:after {\n  background-image: -webkit-linear-gradient(43.2deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(46.8deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--89:after {\n  width: 89%; }\n\n/* line 55, stdin */\n.progress--circle.progress--89:after {\n  background-image: -webkit-linear-gradient(39.6deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(50.4deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--90:after {\n  width: 90%; }\n\n/* line 55, stdin */\n.progress--circle.progress--90:after {\n  background-image: -webkit-linear-gradient(36deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(54deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--91:after {\n  width: 91%; }\n\n/* line 55, stdin */\n.progress--circle.progress--91:after {\n  background-image: -webkit-linear-gradient(32.4deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(57.6deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--92:after {\n  width: 92%; }\n\n/* line 55, stdin */\n.progress--circle.progress--92:after {\n  background-image: -webkit-linear-gradient(28.8deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(61.2deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--93:after {\n  width: 93%; }\n\n/* line 55, stdin */\n.progress--circle.progress--93:after {\n  background-image: -webkit-linear-gradient(25.2deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(64.8deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--94:after {\n  width: 94%; }\n\n/* line 55, stdin */\n.progress--circle.progress--94:after {\n  background-image: -webkit-linear-gradient(21.6deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(68.4deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--95:after {\n  width: 95%; }\n\n/* line 55, stdin */\n.progress--circle.progress--95:after {\n  background-image: -webkit-linear-gradient(18deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(72deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--96:after {\n  width: 96%; }\n\n/* line 55, stdin */\n.progress--circle.progress--96:after {\n  background-image: -webkit-linear-gradient(14.4deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(75.6deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--97:after {\n  width: 97%; }\n\n/* line 55, stdin */\n.progress--circle.progress--97:after {\n  background-image: -webkit-linear-gradient(10.8deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(79.2deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--98:after {\n  width: 98%; }\n\n/* line 55, stdin */\n.progress--circle.progress--98:after {\n  background-image: -webkit-linear-gradient(7.2deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(82.8deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--99:after {\n  width: 99%; }\n\n/* line 55, stdin */\n.progress--circle.progress--99:after {\n  background-image: -webkit-linear-gradient(3.6deg, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(86.4deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n\n/* line 52, stdin */\n.progress--bar.progress--100:after {\n  width: 100%; }\n\n/* line 55, stdin */\n.progress--circle.progress--100:after {\n  background-image: -webkit-linear-gradient(left, #63B8FF 50%, transparent 50%, transparent), -webkit-linear-gradient(right, #63B8FF 50%, #ddd 50%, #ddd);\n  background-image: linear-gradient(90deg, #63B8FF 50%, transparent 50%, transparent), linear-gradient(270deg, #63B8FF 50%, #ddd 50%, #ddd); }\n")
 'use strict';
@@ -56349,7 +56531,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-03cd24e7", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":55,"vue-hot-reload-api":50,"vueify/lib/insert-css":56}],77:[function(require,module,exports){
+},{"vue":55,"vue-hot-reload-api":50,"vueify/lib/insert-css":56}],80:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
 var __vueify_style__ = __vueify_insert__.insert("/* line 2, stdin */\n* {\n  box-sizing: border-box; }\n\n/* line 6, stdin */\n.modal-mask {\n  position: fixed;\n  z-index: 9998;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n  background-color: rgba(0, 0, 0, 0.5);\n  -webkit-transition: opacity .3s ease;\n  transition: opacity .3s ease; }\n\n/* line 17, stdin */\n.modal-container {\n  display: block;\n  z-index: 1006;\n  background-color: #fefefe;\n  border-radius: 4px;\n  position: relative;\n  top: 0px;\n  height: 100%;\n  margin-left: auto;\n  margin-right: auto;\n  overflow-y: auto; }\n\n/* line 30, stdin */\n.modal-header h3 {\n  margin-top: 0;\n  color: #42b983; }\n\n/* line 35, stdin */\n.modal-loader {\n  z-index: 1009;\n  background-color: #fff;\n  height: 100%;\n  width: 100%; }\n\n/* line 46, stdin */\n.text-right {\n  text-align: right; }\n\n/* line 50, stdin */\n.form-label {\n  display: block;\n  margin-bottom: 1em; }\n\n/* line 55, stdin */\n.form-label > .form-control {\n  margin-top: 0.5em; }\n\n/* line 59, stdin */\n.form-control {\n  display: block;\n  width: 100%;\n  padding: 0.5em 1em;\n  line-height: 1.5;\n  border: 1px solid #ddd; }\n\n/* line 67, stdin */\n.modal-enter, .modal-leave {\n  opacity: 0; }\n\n/* line 71, stdin */\n.modal-enter .modal-container,\n.modal-leave .modal-container {\n  -webkit-transition: all .3s ease;\n  transition: all .3s ease; }\n\n@media screen and (min-width: 640px) {\n  /* line 77, stdin */\n  .modal-container {\n    width: 600px;\n    max-width: 75rem;\n    top: 50px; } }\n")
 'use strict';
@@ -56458,7 +56640,7 @@ exports.default = {
 	}
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"modal-mask\" @click=\"modalClose\" v-if=\"show\" transition=\"modal\">\n        <div class=\"modal-container\" @click.stop=\"\">\n            <div class=\"modal-header\">\n\t\t\t\t<slot name=\"header\">\n\t\t\t\t\t<div class=\"row small-up-3 medium-up-3 large-up-3\">\n\t\t\t\t\t  <div class=\"columns\">\n\t\t\t\t\t  \t<button @click=\"modalClose\" class=\"close-button\" type=\"button\">\n\t\t\t\t\t\t\t<span class=\"fa fa-times\" aria-hidden=\"true\"></span>\n\t\t\t\t\t\t</button>\n\t\t\t\t\t  </div>\n\t\t\t\t\t  <div class=\"columns\">\n\t\t\t\t\t  \t<button @click=\"modalSave\" class=\"save-button\" type=\"button\">\n\t\t\t\t\t    \t<span aria-hidden=\"true\" class=\"fa fa-check\"></span>\n\t\t\t\t\t    </button>\n\t\t\t\t\t  </div>\n\t\t\t\t\t</div>\t\n\t\t\t\t\t<div class=\"row\" style=\"height:50px; text-align: center;\">\n\t\t\t\t\t\t<h4 style=\"color:#5fcf80;\">{{title}}</h4>\n\t\t\t\t\t</div>\n\t\t\t\t</slot>\n\t\t\t</div>\n\n\n\t\t\t<div v-show=\"loading\" class=\"modal-loader\">\n\n\t\t\t\t<div class=\"preloader-wrapper small active\">\n\t              <div class=\"spinner-layer spinner-green-only\">\n\t                <div class=\"circle-clipper left\">\n\t                  <div class=\"circle\"></div>\n\t                </div><div class=\"gap-patch\">\n\t                  <div class=\"circle\"></div>\n\t                </div><div class=\"circle-clipper right\">\n\t                  <div class=\"circle\"></div>\n\t                </div>\n\t              </div>\n\t            </div>\n\n\t\t\t</div>\n\n            <div v-show=\"!loading\" class=\"modal-body\">\n\t          <slot name=\"body\">\n\t          \t<component v-ref:context=\"\" v-if=\"type == 'Club'\" :id=\"id\" :type=\"type\" :is=\"context\" :selected=\"items\">\n\t\t\t\t</component>\n\t\t\t\t<components v-ref:context=\"\" :multiple=\"multiple\" v-else=\"\" :is=\"context\" :selected=\"items\">\n\t\t\t\t</components>\n\t          </slot>\n\t        </div>\n\n            <div class=\"modal-footer\">\n\t          <slot name=\"footer\">\n\t          </slot>\n\t        </div>\n        </div>\n    </div>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"modal-mask\" @click=\"modalClose\" v-if=\"show\" transition=\"modal\">\n        <div class=\"modal-container autoscroll\" @click.stop=\"\">\n            <div class=\"modal-header\">\n\t\t\t\t<slot name=\"header\">\n\t\t\t\t\t<div class=\"row small-up-3 medium-up-3 large-up-3\">\n\t\t\t\t\t  <div class=\"columns\">\n\t\t\t\t\t  \t<button @click=\"modalClose\" class=\"close-button\" type=\"button\">\n\t\t\t\t\t\t\t<span class=\"fa fa-times\" aria-hidden=\"true\"></span>\n\t\t\t\t\t\t</button>\n\t\t\t\t\t  </div>\n\t\t\t\t\t  <div class=\"columns\">\n\t\t\t\t\t  \t<button @click=\"modalSave\" class=\"save-button\" type=\"button\">\n\t\t\t\t\t    \t<span aria-hidden=\"true\" class=\"fa fa-check\"></span>\n\t\t\t\t\t    </button>\n\t\t\t\t\t  </div>\n\t\t\t\t\t</div>\t\n\t\t\t\t\t<div class=\"row\" style=\"height:50px; text-align: center;\">\n\t\t\t\t\t\t<h4 style=\"color:#5fcf80;\">{{title}}</h4>\n\t\t\t\t\t</div>\n\t\t\t\t</slot>\n\t\t\t</div>\n\n\n\t\t\t<div v-show=\"loading\" class=\"modal-loader\">\n\n\t\t\t\t<div class=\"preloader-wrapper small active\">\n\t              <div class=\"spinner-layer spinner-green-only\">\n\t                <div class=\"circle-clipper left\">\n\t                  <div class=\"circle\"></div>\n\t                </div><div class=\"gap-patch\">\n\t                  <div class=\"circle\"></div>\n\t                </div><div class=\"circle-clipper right\">\n\t                  <div class=\"circle\"></div>\n\t                </div>\n\t              </div>\n\t            </div>\n\n\t\t\t</div>\n\n            <div v-show=\"!loading\" class=\"modal-body\">\n\t          <slot name=\"body\">\n\t          \t<component v-ref:context=\"\" v-if=\"type == 'Club'\" :id=\"id\" :type=\"type\" :is=\"context\" :selected=\"items\">\n\t\t\t\t</component>\n\t\t\t\t<components v-ref:context=\"\" :multiple=\"multiple\" v-else=\"\" :is=\"context\" :selected=\"items\">\n\t\t\t\t</components>\n\t          </slot>\n\t        </div>\n\n            <div class=\"modal-footer\">\n\t          <slot name=\"footer\">\n\t          </slot>\n\t        </div>\n        </div>\n    </div>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -56473,7 +56655,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-df8e52a6", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"../context/AddPlan.vue":82,"../context/AddTraining.vue":83,"../context/FileManager.vue":84,"../context/services.vue":85,"../context/teachers.vue":86,"../context/trainings.vue":87,"vue":55,"vue-hot-reload-api":50,"vueify/lib/insert-css":56}],78:[function(require,module,exports){
+},{"../context/AddPlan.vue":85,"../context/AddTraining.vue":86,"../context/FileManager.vue":87,"../context/services.vue":88,"../context/teachers.vue":89,"../context/trainings.vue":90,"vue":55,"vue-hot-reload-api":50,"vueify/lib/insert-css":56}],81:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
 var __vueify_style__ = __vueify_insert__.insert("\n\n.CustomToast {\n    min-width: 250px;\n    margin-left: -125px;\n    background-color: #333;\n    color: #fff;\n    text-align: center;\n    border-radius: 2px;\n    padding: 16px;\n    position: fixed;\n    z-index: 9999;\n    left: 50%;\n    font-size: 17px;\n}\n\n.CustomToast--Top {\n\ttop: 10px;\n}\n\n.CustomToast--Bottom {\n\tbottom: 30px;\n}\n\n.CustomToast--Success {\n\tbackground-color : green;\n}\n\n.CustomToast--Info {\n\tbackground-color : #333;\n}\n\n.CustomToast--Warning {\n\tbackground-color : yellow;\n}\n\n.CustomToast--Error {\n\tbackground-color : red;\n}\n\n\n.fade-transition {\n  display: inline-block; /* otherwise scale animation won't work */\n}\n\n.fade-enter {\n  -webkit-animation: fadein .5s;\n          animation: fadein .5s;\n}\n.fade-leave {\n  -webkit-animation: fadeout .5s;\n          animation: fadeout .5s;\n}\n\n@-webkit-keyframes fadein {\n    from {bottom: 0; opacity: 0;}\n    to {bottom: 30px; opacity: 1;}\n}\n\n@keyframes fadein {\n    from {bottom: 0; opacity: 0;}\n    to {bottom: 30px; opacity: 1;}\n}\n\n@-webkit-keyframes fadeout {\n    from {bottom: 30px; opacity: 1;}\n    to {bottom: 0; opacity: 0;}\n}\n\n@keyframes fadeout {\n    from {bottom: 30px; opacity: 1;}\n    to {bottom: 0; opacity: 0;}\n}\n\n")
 'use strict';
@@ -56551,7 +56733,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-1e8d2527", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":55,"vue-hot-reload-api":50,"vueify/lib/insert-css":56}],79:[function(require,module,exports){
+},{"vue":55,"vue-hot-reload-api":50,"vueify/lib/insert-css":56}],82:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
 var __vueify_style__ = __vueify_insert__.insert("/* line 2, stdin */\n.button-follow {\n  line-height: 24px;\n  padding: 0 9px;\n  font-size: 16px;\n  border-radius: 4px;\n  border-style: solid;\n  border-width: 1px solid;\n  font-weight: 600;\n  outline: none;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n  width: 50%;\n  -webkit-appearance: none; }\n\n/* line 18, stdin */\n.button-follow.unfollow {\n  background-color: #5fcf80;\n  color: #fff; }\n\n/* line 23, stdin */\n.button-follow.follow {\n  background-color: #fff;\n  color: #222222; }\n")
 'use strict';
@@ -56628,7 +56810,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-8f302622", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":55,"vue-hot-reload-api":50,"vueify/lib/insert-css":56}],80:[function(require,module,exports){
+},{"vue":55,"vue-hot-reload-api":50,"vueify/lib/insert-css":56}],83:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
 var __vueify_style__ = __vueify_insert__.insert("\nbutton:focus {outline:0;}\n\n#omnibox {\n    position: absolute;\n    left: 0px;\n    margin: 16px;\n    top: 0px;\n    z-index: 10;\n    -webkit-transition:left 0.5s;\n    transition: left 0.5s;\n    -webkit-transform: translateX(0px);\n    transform: translateX(0px);\n    transition-property: -webkit-transform,transform,visibility,opacity;\n    -webkit-transition-duration: 200ms;\n            transition-duration: 200ms;\n    -webkit-transition-timing-function: cubic-bezier(0.0,0.0,0.2,1);\n            transition-timing-function: cubic-bezier(0.0,0.0,0.2,1);\n}\n\n.vasquette-margin-enabled#rap-card, .vasquette-margin-enabled#omnibox {\n    margin: 8px 0 8px 8px;\n}\n\n.searchbox.suggestions-shown \n{\n    border-radius: 2px 2px 0 0;\n}\n\n.searchbox-shadow \n{\n    box-shadow: 0 2px 4px rgba(0,0,0,0.2),0 -1px 0px rgba(0,0,0,0.02);\n}\n\n.searchbox \n{\n\n    position: relative;\n    background: #fff;\n    border-radius: 2px;\n    box-sizing: border-box;\n    height: 48px;\n    border-bottom: 1px solid transparent;\n    padding: 12px 104px 11px 64px;\n    -webkit-transition-property:background,box-shadow;\n    transition-property: background,box-shadow;\n    -webkit-transition-duration: 0.3s;\n            transition-duration: 0.3s;\n}\n\n.searchbox-searchbutton-container \n{\n    position: absolute;\n    right: 54px;\n    top: 0;\n}\n\n.searchbox-findme\n{\n    position: absolute;\n    right: 0px;\n    top: 0;\n}\n\n.searchbox-searchbutton::before {\n    content: '';\n    display: block;\n    width: 24px;\n    height: 24px;\n    background: url(//maps.gstatic.com/tactile/omnibox/quantum_search_button-20150825-1x.png);\n    background-size: 72px 24px;\n}\n\n.searchbox-searchbutton-container::after {\n    content: \"\";\n    position: absolute;\n    right: 0;\n    top: 10px;\n    border-left: 1px solid #ddd;\n    height: 28px;\n}\n\n.searchbox-searchbutton {\n    display: block;\n    padding: 12px 15px;\n}\n\n.searchbox-input {\n    border: none; \n    padding: 0px; \n    margin: 0px; \n    height: auto; \n    width: 100%; \n    z-index: 6;\n    left: 0px;\n    outline: none;\n    font-size: 15px;\n}\n\n.searchbox-hamburger::before {\n    content: '';\n    display: block;\n    background-image: url(//maps.gstatic.com/tactile/omnibox/quantum_menu-v2-1x.png);\n    background-size: 48px 24px;\n    background-position: 0 0;\n    height: 24px;\n    width: 24px;\n    opacity: .62;\n}\n\n.searchbox-hamburger {\n    display: block;\n    cursor: pointer;\n    padding: 12px 16px;\n}\n\n.searchbox-hamburger-container \n{\n    position: absolute;\n    z-index: 1003;\n    left: 0;\n    top: 0;\n}\n\n/* Pin Hover Box Styles */\n.search-tooltip{\n\tz-index: 11;\n    position: absolute;\n    background-color: #FFFFFF;\n    width: 250px;\n    height: 70px;\n    -webkit-box-shadow: 10px 10px 30px 0px rgba(174,174,174,1);\n    -moz-box-shadow: 10px 10px 30px 0px rgba(174,174,174,1);\n    box-shadow: 10px 10px 30px 0px rgba(174,174,174,1);\n    border-radius: 5px;\n}\n\n.rating {\n  margin: 10px 0;\n}\n\n.rating i {\n  display: inline-block;\n  width: 0;\n  height: 1.5em;\n  border-width: 1.5em / 2;\n  border-style: solid;\n  border-color: #eee;\n  border-radius: .22em;\n  color: white;\n  background: #eee;\n  font-style: normal;\n  line-height: 1.6em;\n  text-indent: -0.5em;\n  text-shadow: 1px 0 1px hsl(0, 0%, 70%);\n}\n/*panel*/\n.pane {\n    /*position: relative;*/\n    display: block;\n}\n\n.pane-holder{\n    width: 408px;\n    height: 100%;\n    position: absolute;\n    z-index: 2;\n    left: 0;\n    top: 0;\n    overflow: hidden;\n}\n\n.pane-holder:hover{\n    overflow-y: scroll;\n}\n\n.pane-header{\n    width: 100%;\n    height: 256px;\n    background-color: #fff;\n}\n.pane-content{\n    width: 100%;\n    height: auto;\n    line-height: 1.5em;\n    background-color: #4285F4;\n    padding: 10px;\n    color: #fff;\n}\n.pane-content h1{\n    font-size: 25px;\n}\n.pane-holder-small{\n    overflow-y: scroll;\n}\n\n.find-mylocation{\n    display: block;\n    padding: 12px 15px;\n}\n\n.reset-button{\n    display: block;\n    padding: 12px 15px;\n}\n.reset-button::before{\n    background-image: url(//maps.gstatic.com/tactile/omnibox/clear-1x-20150504.png);\n    background-size: 96px 24px;\n    height: 24px;\n    width: 24px;\n    cursor: pointer;\n    display: block;\n    content: '';\n}\n\n")
 "use strict";
@@ -56658,7 +56840,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-3f3bb728", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":55,"vue-hot-reload-api":50,"vueify/lib/insert-css":56}],81:[function(require,module,exports){
+},{"vue":55,"vue-hot-reload-api":50,"vueify/lib/insert-css":56}],84:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -56688,7 +56870,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-ff47bec0", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":55,"vue-hot-reload-api":50}],82:[function(require,module,exports){
+},{"vue":55,"vue-hot-reload-api":50}],85:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -56698,6 +56880,10 @@ Object.defineProperty(exports, "__esModule", {
 var _PhotoSlider = require('../actors/application/components/PhotoSlider.vue');
 
 var _PhotoSlider2 = _interopRequireDefault(_PhotoSlider);
+
+var _TeacherSlider = require('../actors/application/components/TeacherSlider.vue');
+
+var _TeacherSlider2 = _interopRequireDefault(_TeacherSlider);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -56713,11 +56899,18 @@ exports.default = {
 			name: '',
 			description: '',
 			trainerless: false,
+			trainerCount: 0,
+			freq: 3,
+			length: 1,
+			isPrimary: true,
 			price: 0,
+			discount: 0,
 			teachers: [],
+			trainings: [],
 			services: [],
 			clubservices: [],
 			showTraining: false,
+			showTeacher: false,
 			isLoading: false
 		};
 	},
@@ -56749,7 +56942,6 @@ exports.default = {
 
 			this.$http.get(this.$env.get('APP_URI') + 'api/club/' + this.id + '/service').then(function (res) {
 				_this.clubservices = res.data.result;
-				debugger;
 			}).catch(function (err) {});
 		},
 
@@ -56758,8 +56950,17 @@ exports.default = {
 				club_id: this.id,
 				name: this.name,
 				description: this.description,
-				pictures: this.$tools.collectionBy(this.pictures, "id|url"),
-				teachers: this.$tools.collectionBy(this.teachers, "id")
+				freq: this.freq,
+				length: this.length,
+				trainerless: this.trainerless,
+				trainerCount: this.trainerCount,
+				isPrimary: this.isPrimary,
+				price: this.price,
+				discount: this.discount,
+				teachers: this.$tools.arrayBy(this.teachers, 'id'),
+				trainings: this.$tools.arrayBy(this.trainings, 'id'),
+				services: this.$tools.arrayBy(this.services, 'id'),
+				pictures: this.$tools.collectionBy(this.$refs.pslider.pictures, "id|url|pinned")
 			});
 		},
 
@@ -56768,16 +56969,24 @@ exports.default = {
 		},
 
 		choosedTrainings: function choosedTrainings($response) {
-			this.teachers = $response.data;
-			this.showTeachers = false;
-		},
+			this.trainings = $response.data;
 
-		triggerPictureBtn: function triggerPictureBtn() {
-			this.showFileManager = true;
+			for (var i = 0; i < this.trainings.length; i++) {
+				for (var j = 0; j < this.trainings[i].teachers.length; j++) {
+					if (!this.containsTeachers(this.trainings[i].teachers[j])) this.teachers.push(this.trainings[i].teachers[j]);
+				}
+			}
+
+			debugger;
+			this.showTraining = false;
 		},
 
 		deleteTeacher: function deleteTeacher(teacher) {
 			this.teachers.$remove(teacher);
+		},
+
+		updateServices: function updateServices(services) {
+			this.services = services;
 		},
 
 		validate: function validate() {
@@ -56792,11 +57001,22 @@ exports.default = {
 			}
 
 			return true;
+		},
+
+		containsTeachers: function containsTeachers(data) {
+			var found = false;
+			for (var i = 0; i < this.teachers.length; i++) {
+				if (this.teachers[i].id == data.id) {
+					found = true;
+					break;
+				}
+			}
+			return found;
 		}
 	},
 
 	components: {
-		PhotoSlider: _PhotoSlider2.default
+		PhotoSlider: _PhotoSlider2.default, TeacherSlider: _TeacherSlider2.default
 	},
 
 	locales: {
@@ -56821,7 +57041,7 @@ exports.default = {
 	}
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n\n\t<custom-modal :id=\"id\" type=\"Club\" title=\"Trainings\" usage=\"_training-chooser\" :items=\"trainings\" :show.sync=\"showTraining\" save-callback=\"choosedTrainings\" context=\"trainings\">\n\t</custom-modal>\n\n\t<form method=\"POST\">\n\t\t<photo-slider></photo-slider>\n\n\t\t<div class=\"row\">\n\t\t  <fieldset class=\"large-6 columns\">\n\t\t    <legend>Plan schedule</legend>\n\t\t    <input type=\"radio\" name=\"schedule\" value=\"Daily\" id=\"schDaily\" required=\"\"><label for=\"schDaily\">Daily</label>\n\t\t    <input type=\"radio\" name=\"schedule\" value=\"Weakly\" id=\"schWeakly\"><label for=\"schWeakly\">Weakly</label>\n\t\t    <input type=\"radio\" name=\"schedule\" value=\"Monthly\" id=\"schMonthly\"><label for=\"schMonthly\">Monthly</label>\n\t\t    <input type=\"radio\" name=\"schedule\" value=\"Yearly\" id=\"schYearly\"><label for=\"schYearly\">Yearly</label>\n\t\t  </fieldset>\n\t\t  <fieldset class=\"large-6 columns\">\n\t\t    <legend>Duration</legend>\n\t\t    <input type=\"number\" name=\"length\" value=\"1\">\n\t\t  </fieldset>\n\t\t</div>\n\t\t<div class=\"row\">\n\t\t\t<div class=\"small-4 medium-4 column\">\n\t\t\t\t<p>\n\t\t\t      <label for=\"test5\">Trainerless</label>\n\t\t\t      <input type=\"checkbox\" id=\"trainerless\" name=\"trainerless\">\n\t\t\t    </p>\n\t\t\t</div>\n\t\t\t<div class=\"small-4 medium-4 column\">\n\t\t\t\t<label>Start\n\t\t\t\t\t<input type=\"date\" class=\"datepicker\">\n\t\t\t\t</label>\n\t\t\t</div>\n\t\t\t<div class=\"small-4 medium-4 column\">\n\t\t\t\t<label>Finish\n\t\t\t\t\t<input type=\"date\" class=\"datepicker\">\n\t\t\t\t</label>\n\t\t\t</div>\n\t\t</div>\n\n\t\t<div class=\"row\">\n\t\t    <multiselect :options=\"clubservices\" :selected=\"services\" :multiple=\"true\" :clear-on-select=\"false\" :close-on-select=\"false\" select-label=\"сонгох\" selected-label=\"сонгосон\" deselect-label=\"устгах\" :limit=\"1\" label=\"name\" :limit-text=\"limitText\" key=\"id\" placeholder=\"хайх ...\">\n\t\t    \t\t<span slot=\"noResult\">Илэрц алга ...</span>\n\t\t    </multiselect>\n\t\t</div>\n\n\t    <ul class=\"tabs\">\n\t        <li class=\"tab s3\"><a class=\"active\" href=\"#main\">{{ $t(\"info\") }}</a></li>\n\t        <li class=\"tab s3\"><a href=\"#trainer\">{{ $t(\"trainer\") }}</a></li>\n\t\t</ul>\n\n  \t    <div id=\"main\">\n\t\t  \t<div class=\"row\">\n\t\t\t\t<div class=\"small-12 medium-6 column\">\n\t\t\t\t\t<label>PlanName\n\t\t\t\t        <input type=\"text\" name=\"name\" v-model=\"name\" placeholder=\"fill training name\">\n\t\t\t\t    </label>\t\n\t\t\t\t</div>\n\n\t\t\t\t<div class=\"small-12 medium-6 column\">\n\t\t\t\t\t<label>Description\n\t\t\t\t        <textarea type=\"text\" name=\"description\" v-model=\"description\" placeholder=\"Description ...\">\t\t\t\t        </textarea>\n\t\t\t\t    </label>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t\t<div class=\"row\">\n\t\t\t\t<div class=\"small-12 medium-6 column\">\n\t\t\t\t\t<label>Price\n\t\t\t\t        <input type=\"number\" name=\"price\" v-model=\"name\" placeholder=\"Plan price ...\">\n\t\t\t\t    </label>\t\n\t\t\t\t</div>\n\n\t\t\t\t<div class=\"small-12 medium-6 column\">\n\t\t\t\t\t<label>Description\n\t\t\t\t        <textarea type=\"text\" name=\"description\" v-model=\"description\" placeholder=\"Description ...\">\t\t\t\t        </textarea>\n\t\t\t\t    </label>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t\t<div class=\"row\">\n\t\t\t\t<div class=\"small-12 medium-6 column\">\n\t\t\t\t\t<p>\n\t\t\t\t      <input type=\"checkbox\" v-model=\"trainerless\" class=\"filled-in\" id=\"trainerless\">\n\t\t\t\t      <label for=\"trainerless\">Trainerless</label>\n\t\t\t\t    </p>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"small-12 medium-6 column\">\n\t\t\t\t\t<label>Trainer Count\n\t\t\t\t\t\t<input type=\"number\" :disabled=\"!trainerless\" name=\"trainercount\">\n\t\t\t\t\t</label>\n\t\t\t\t</div>\n  \t\t  </div>\n\t\t</div>\n\n\t\t<div id=\"trainer\">\n\t\t    <div class=\"row\">\n\t\t    \t<div class=\"small-12 column\" style=\"height:100px\">\n\t\t    \t\t<a @click=\"showTraining = true\" class=\"button success\">\n\t\t    \t\t\t<span class=\"fa fa-plus\"></span>\n\t\t    \t\t</a>\n\t\t    \t</div>\n\t\t\t</div>\n\t\t</div>\n\t</form>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n\t<custom-modal :id=\"id\" type=\"Club\" title=\"Trainings\" usage=\"_training-chooser\" :selected=\"\" :items=\"trainings\" :show.sync=\"showTraining\" save-callback=\"choosedTrainings\" context=\"trainings\">\n\t</custom-modal>\n\n\t<form method=\"POST\">\n\t\t<photo-slider v-ref:pslider=\"\"></photo-slider>\n\n\t\t<div class=\"row\">\n\t\t  <fieldset class=\"large-6 columns\">\n\t\t    <legend>Plan schedule</legend>\n\t\t    <input type=\"radio\" name=\"schedule\" value=\"1\" v-model=\"freq\" id=\"schDaily\" required=\"\"><label for=\"schDaily\">Daily</label>\n\t\t    <input type=\"radio\" name=\"schedule\" value=\"2\" v-model=\"freq\" id=\"schWeakly\"><label for=\"schWeakly\">Weakly</label>\n\t\t    <input type=\"radio\" name=\"schedule\" value=\"3\" v-model=\"freq\" id=\"schMonthly\"><label for=\"schMonthly\">Monthly</label>\n\t\t    <input type=\"radio\" name=\"schedule\" value=\"4\" v-model=\"freq\" id=\"schYearly\"><label for=\"schYearly\">Yearly</label>\n\t\t  </fieldset>\n\t\t  <fieldset class=\"large-6 columns\">\n\t\t    <legend>Duration</legend>\n\t\t    <input type=\"number\" v-model=\"length\">\n\t\t  </fieldset>\n\t\t</div>\n\n\t\t<div class=\"row\">\n\t\t    <multiselect :options=\"clubservices\" :selected=\"services\" :multiple=\"true\" :clear-on-select=\"false\" :close-on-select=\"false\" select-label=\"сонгох\" selected-label=\"сонгосон\" deselect-label=\"устгах\" :limit=\"1\" @update=\"updateServices\" label=\"name\" :limit-text=\"limitText\" key=\"id\" placeholder=\"хайх ...\">\n\t\t    \t\t<span slot=\"noResult\">Илэрц алга ...</span>\n\t\t    </multiselect>\n\t\t</div>\n\n\t    <ul class=\"tabs\">\n\t        <li class=\"tab s3\"><a class=\"active\" href=\"#main\">{{ $t(\"info\") }}</a></li>\n\t        <li class=\"tab s3\"><a href=\"#trainer\">{{ $t(\"trainer\") }}</a></li>\n\t\t</ul>\n\n  \t    <div id=\"main\">\n\t\t  \t<div class=\"row\">\n\t\t\t\t<div class=\"small-12 medium-6 column\">\n\t\t\t\t\t<label>PlanName\n\t\t\t\t        <input type=\"text\" v-model=\"name\" placeholder=\"fill training name\">\n\t\t\t\t    </label>\t\n\t\t\t\t</div>\n\n\t\t\t\t<div class=\"small-12 medium-6 column\">\n\t\t\t\t\t<label>Description\n\t\t\t\t        <textarea type=\"text\" v-model=\"description\" placeholder=\"Description ...\">\t\t\t\t        </textarea>\n\t\t\t\t    </label>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t\t<div class=\"row\">\n\t\t\t\t<div class=\"small-12 medium-6 column\">\n\t\t\t\t\t<p>\n\t\t\t\t      <input type=\"checkbox\" v-model=\"trainerless\" class=\"filled-in\" id=\"trainerless\">\n\t\t\t\t      <label for=\"trainerless\">Trainerless</label>\n\t\t\t\t    </p>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"small-12 medium-6 column\">\n\t\t\t\t\t<label>Trainer Count\n\t\t\t\t\t\t<input type=\"number\" :disabled=\"!trainerless\" v-model=\"trainerCount\">\n\t\t\t\t\t</label>\n\t\t\t\t</div>\n  \t\t  </div>\n\n  \t\t  <div class=\"row\">\n  \t\t  \t<div class=\"small-12 medium-6 column\">\n  \t\t  \t\t<a @click=\"isPrimary = true\" class=\"button success\">Primary</a>\n  \t\t  \t</div>\n  \t\t  \t<div class=\"small-12 medium-6 column\">\n  \t\t  \t\t<a @click=\"isPrimary = false\" class=\"button success\">Loyalty</a>\n  \t\t  \t</div>\n  \t\t  </div>\n  \t\t  <div class=\"row\">\n\t\t\t<div class=\"small-6 medium-6 column\">\n\t\t\t\t<label>Start\n\t\t\t\t\t<input type=\"date\" class=\"datepicker\">\n\t\t\t\t</label>\n\t\t\t</div>\n\t\t\t<div class=\"small-6 medium-6 column\">\n\t\t\t\t<label v-show=\"isPrimary\">Finish\n\t\t\t\t\t<input type=\"date\" class=\"datepicker\">\n\t\t\t\t</label>\n\n\t\t\t\t<label v-show=\"!isPrimary\">\n\t\t\t\t\tUntil now\n\t\t\t\t</label>\n\t\t\t</div>\n\t\t  </div>\n\t\t  <div class=\"row\">\n\t\t\t<div class=\"small-6 medium-6 column\">\n\t\t\t\t<label>Price\n\t\t\t\t\t<input type=\"number\" v-model=\"price\">\n\t\t\t\t</label>\n\t\t\t</div>\n\t\t\t<div v-show=\"!isPrimary\" class=\"small-6 medium-6 column\">\n\t\t\t\t<label>Discount\n\t\t\t\t\t<input type=\"number\" v-model=\"discount\">\n\t\t\t\t</label>\n\t\t\t</div>\n\t\t  </div>\n\t\t</div>\n\n\t\t<div id=\"trainer\">\n\t\t    <div class=\"row small-up-3 medium-up-4\">\n\t\t    \t<div class=\"columns\" v-for=\"train in trainings\">\n\t\t    \t\t{{train.name}}\n\t\t    \t</div>\n\t\t    \t<div class=\"columns\">\n\t\t    \t\t<a @click=\"showTraining = true\" class=\"button success\">\n\t\t    \t\t\t<span class=\"fa fa-plus\"></span>\n\t\t    \t\t</a>\n\t\t    \t</div>\n\t\t\t</div>\n\t\t\t<div class=\"row small-up-3 medium-up-4 large-up-5\">\n\t\t\t\t<teacher-slider v-ref:tslider=\"\" :id=\"id\" :teachers.sync=\"teachers\"></teacher-slider>\n\t\t\t\t<div>\n\t\t\t\t\t<a @click=\"showTeacher = true\" class=\"fa fa-save\">+</a>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t</div>\n\n\t\t<div class=\"row\" style=\"height:50px\"></div>\n\t\t<div class=\"row\"></div>\n\t</form>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -56832,7 +57052,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-4d3e4960", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"../actors/application/components/PhotoSlider.vue":57,"vue":55,"vue-hot-reload-api":50}],83:[function(require,module,exports){
+},{"../actors/application/components/PhotoSlider.vue":57,"../actors/application/components/TeacherSlider.vue":58,"vue":55,"vue-hot-reload-api":50}],86:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -56860,10 +57080,16 @@ exports.default = {
 		return {
 			name: '',
 			description: '',
-			services: []
+			services: [],
+			sysgenres: [],
+			genres: null
 		};
 	},
 
+
+	created: function created() {
+		this.getGenres();
+	},
 
 	ready: function ready() {
 		$('ul.tabs').tabs();
@@ -56880,16 +57106,24 @@ exports.default = {
 
 	methods: {
 		getData: function getData() {
-			return this.$tools.transformParameters({
+
+			debugger;
+
+			var retData = this.$tools.transformParameters({
 				club_id: this.id,
 				name: this.name,
 				description: this.description,
 				pictures: this.$tools.collectionBy(this.$refs.pslider.pictures, "id|url|pinned"),
-				teachers: this.$tools.collectionBy(this.$refs.tslider.teachers, "id")
+				teachers: this.$tools.collectionBy(this.$refs.tslider.teachers, "id"),
+				genres: this.$tools.arrayBy(this.genres, "id")
 			});
+
+			return retData;
 		},
 
 		validate: function validate() {
+
+			debugger;
 			if (!this.name.trim()) {
 				this.$root.$refs.toast.showMessage("Please. Fill the name of training");
 				return false;
@@ -56901,6 +57135,22 @@ exports.default = {
 			}
 
 			return true;
+		},
+
+		getGenres: function getGenres() {
+			var _this = this;
+
+			this.$http.get(this.$env.get('APP_URI') + 'api/genre').then(function (res) {
+				_this.sysgenres = res.data.result;
+			}).catch(function (err) {});
+		},
+
+		limitText: function limitText(count) {
+			return "ба " + count + " бусад";
+		},
+
+		updateGenres: function updateGenres(genres) {
+			this.genres = genres;
 		}
 	},
 
@@ -56916,7 +57166,8 @@ exports.default = {
 			name: 'Training name',
 			description: 'Description',
 			name_watermark: 'name ...',
-			description_watermark: 'description ...'
+			description_watermark: 'description ...',
+			genre: 'Genre'
 		},
 		mn: {
 			info: 'Инфо',
@@ -56925,12 +57176,13 @@ exports.default = {
 			name: 'Хичээлийн нэр',
 			description: 'Тайлбар',
 			name_watermark: 'нэр ...',
-			description_watermark: 'тайлбар ...'
+			description_watermark: 'тайлбар ...',
+			genre: 'Төрөл'
 		}
 	}
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n\t<form method=\"POST\" accept=\"\">\n\n  \t  <a class=\"dropdown-button\" href=\"#!\" data-activates=\"14\" data-constrainwidth=\"false\">\n            \n      </a>\n\n      <ul id=\"14\" class=\"dropdown-content\">\n\t\t  <li><a href=\"http://myapp.dev/things\">Index</a></li>\n\t\t  <li><a href=\"http://myapp.dev/place/logs\">Logs</a></li>\n\t\t  <li><a href=\"http://myapp.dev/place/create\">Create Thing</a></li>\n\t\t  <li><a href=\"http://myapp.dev/things/manage\">Very Long Menu Item That Should Overflow</a></li>\n\t  </ul>\n\n\t  <photo-slider v-ref:pslider=\"\"></photo-slider>\n\n\t  <ul class=\"tabs\">\n        <li class=\"tab s3\"><a class=\"active\" href=\"#main\">{{ $t(\"info\") }}</a></li>\n        <li class=\"tab s3\"><a href=\"#teacher\">{{ $t(\"teacher\") }}</a></li>\n\t  </ul>\n\t  <div id=\"main\">\n\t    <div class=\"row\">\n\t\t    <div class=\"medium-6 columns\">\n\t\t      <label>{{ $t(\"name\") }}\n\t\t        <input type=\"text\" name=\"name\" v-model=\"name\" placeholder=\"\">\n\t\t      </label>\n\t\t    </div>\n\t\t    <div class=\"medium-6 columns\">\n\t\t      <label>{{ $t(\"description\") }}\n\t\t        <textarea type=\"text\" name=\"description\" v-model=\"description\" placeholder=\"\">\t\t        </textarea>\n\t\t      </label>\n\t\t    </div>\n\t\t</div>\n\t  </div>\n\t  <div id=\"teacher\">\n\t  \t<teacher-slider v-ref:tslider=\"\" :id=\"id\"></teacher-slider>\n\t  </div>\n\t</form>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n\t<form method=\"POST\" accept=\"\">\n\t  <photo-slider v-ref:pslider=\"\"></photo-slider>\n\n\n\t  <div class=\"row\">\n\t  \t\t<label>{{$t(\"genre\")}}</label>\n\t\t    <multiselect :options=\"sysgenres\" :selected=\"genres\" :multiple=\"true\" :clear-on-select=\"false\" :close-on-select=\"false\" select-label=\"сонгох\" selected-label=\"сонгосон\" deselect-label=\"устгах\" :limit=\"5\" label=\"name\" @update=\"updateGenres\" :limit-text=\"limitText\" key=\"id\" placeholder=\"хайх ...\">\n\t\t    \t\t<span slot=\"noResult\">Илэрц алга ...</span>\n\t\t    </multiselect>\n\t  </div>\n\n\t  <ul class=\"tabs\">\n        <li class=\"tab s3\"><a class=\"active\" href=\"#main\">{{ $t(\"info\") }}</a></li>\n        <li class=\"tab s3\"><a href=\"#teacher\">{{ $t(\"teacher\") }}</a></li>\n\t  </ul>\n\t  <div id=\"main\">\n\t    <div class=\"row\">\n\t\t    <div class=\"medium-6 columns\">\n\t\t      <label>{{ $t(\"name\") }}\n\t\t        <input type=\"text\" name=\"name\" v-model=\"name\" placeholder=\"\">\n\t\t      </label>\n\t\t    </div>\n\t\t    <div class=\"medium-6 columns\">\n\t\t      <label>{{ $t(\"description\") }}\n\t\t        <textarea type=\"text\" name=\"description\" v-model=\"description\" placeholder=\"\">\t\t        </textarea>\n\t\t      </label>\n\t\t    </div>\n\t\t</div>\n\t  </div>\n\t  <div id=\"teacher\">\n\t  \t<teacher-slider v-ref:tslider=\"\" :id=\"id\" :selected.sync=\"trainings\"></teacher-slider>\n\t  </div>\n\t</form>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -56941,7 +57193,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-2f8a7901", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"../actors/application/components/PhotoSlider.vue":57,"../actors/application/components/TeacherSlider.vue":58,"vue":55,"vue-hot-reload-api":50}],84:[function(require,module,exports){
+},{"../actors/application/components/PhotoSlider.vue":57,"../actors/application/components/TeacherSlider.vue":58,"vue":55,"vue-hot-reload-api":50}],87:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
 var __vueify_style__ = __vueify_insert__.insert("/* line 3, stdin */\n.thumb-img {\n  position: absolute;\n  top: 5px;\n  left: 5px;\n  right: 5px;\n  bottom: 5px;\n  font-size: 1.2em; }\n\n/* line 12, stdin */\n.vue-waterfall-slot:hover .thumb-back,\n.vue-waterfall-slot:hover ~ .thumb-back {\n  color: #fff;\n  opacity: 1; }\n\n/* line 18, stdin */\n.thumb-back {\n  opacity: 0;\n  border-radius: 4px;\n  background-color: rgba(0, 0, 0, 0.7);\n  position: absolute;\n  top: 5px;\n  left: 5px;\n  right: 5px;\n  bottom: 5px;\n  font-size: 1.2em; }\n\n/* line 30, stdin */\n.thumb-check {\n  top: 50%;\n  left: 50%; }\n\n/* line 35, stdin */\n.thumb-back ul {\n  list-style-type: none; }\n\n/* line 39, stdin */\n.thumb-back ul li {\n  color: #000;\n  background-color: #fff;\n  border-radius: 2px; }\n\n/* line 45, stdin */\n.thumb-img img {\n  width: 100%;\n  height: 100%;\n  display: block;\n  border-radius: 4px; }\n\n/* line 52, stdin */\n.fileinput-button {\n  position: relative;\n  overflow: hidden;\n  display: inline-block; }\n\n/* line 58, stdin */\n.fileinput-button input {\n  position: absolute;\n  top: 0;\n  right: 0;\n  margin: 0;\n  opacity: 0;\n  -ms-filter: 'alpha(opacity=0)';\n  font-size: 200px !important;\n  direction: ltr;\n  cursor: pointer; }\n\n/* line 70, stdin */\n.progress {\n  height: 20px;\n  margin-bottom: 20px;\n  overflow: hidden;\n  background-color: #f5f5f5;\n  border-radius: 4px;\n  -webkit-box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);\n  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1); }\n\n/* line 80, stdin */\n.progress-bar-success {\n  background-color: #5fcf80 !important; }\n\n/* line 84, stdin */\n.progress-bar {\n  float: left;\n  width: 0;\n  height: 100%;\n  font-size: 12px;\n  line-height: 20px;\n  color: #fff;\n  text-align: center;\n  background-color: #428bca;\n  -webkit-box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.15);\n  box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.15);\n  -webkit-transition: width .6s ease;\n  -o-transition: width .6s ease;\n  transition: width .6s ease; }\n\n/* line 100, stdin */\n.item-move {\n  transition: all 0.5s cubic-bezier(0.55, 0, 0.1, 1);\n  -webkit-transition: all 0.5s cubic-bezier(0.55, 0, 0.1, 1); }\n\n/* line 105, stdin */\n.wf-transition {\n  transition: opacity .3s ease;\n  -webkit-transition: opacity .3s ease; }\n\n/* line 110, stdin */\n.wf-enter, .wf-leave {\n  opacity: 0; }\n")
 'use strict';
@@ -57139,7 +57391,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-1b4eb012", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"../components/CircleProgressBar.vue":76,"vue":55,"vue-hot-reload-api":50,"vue-waterfall":54,"vueify/lib/insert-css":56}],85:[function(require,module,exports){
+},{"../components/CircleProgressBar.vue":79,"vue":55,"vue-hot-reload-api":50,"vue-waterfall":54,"vueify/lib/insert-css":56}],88:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
 var __vueify_style__ = __vueify_insert__.insert("\n\n")
 'use strict';
@@ -57213,7 +57465,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-2611a970", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":55,"vue-hot-reload-api":50,"vueify/lib/insert-css":56}],86:[function(require,module,exports){
+},{"vue":55,"vue-hot-reload-api":50,"vueify/lib/insert-css":56}],89:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
 var __vueify_style__ = __vueify_insert__.insert("\n\n.ft-teacher-img {\n\t-webkit-transition: box-shadow 200ms ease-in-out;\n\ttransition: box-shadow 200ms ease-in-out;\n    position: absolute;\n    top: 50%;\n    left: 0;\n    width: 32px;\n    height: 32px;\n    border-radius: 32px;\n    display: block;\n    margin-top: -16px;\n}\n\n.ft-teacher-column {\n\tcolor: #fff;\n}\t\n\n")
 'use strict';
@@ -57320,7 +57572,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-5a634b8a", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":55,"vue-hot-reload-api":50,"vueify/lib/insert-css":56}],87:[function(require,module,exports){
+},{"vue":55,"vue-hot-reload-api":50,"vueify/lib/insert-css":56}],90:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
 var __vueify_style__ = __vueify_insert__.insert("\n\n.tr-teacher-box {\n\toverflow: hidden;\n    padding: 10px 0;\n    color: #aecaec;\n}\n\n.training-text {\n\tpadding-left: 10px;\n    padding-top: 5px;\n}\n\n.training img {\n    height: 40px;\n    width: 40px;\n    border-radius: 150px;\n    -webkit-border-radius: 150px;\n    -moz-border-radius: 150px;\n}\n")
 'use strict';
@@ -57353,16 +57605,18 @@ exports.default = {
 		// This method should implement all context using as a save-callback 
 		getData: function getData() {
 			this.filterBy = "selected";
-			return this.filteredTeachers;
+			return this.filteredTrainings;
 		},
 
 		getTrainings: function getTrainings() {
 			var _this = this;
 
-			/*var maps = this.objectListToMap(this.selected);*/
-			this.$http.get(this.$env.get('APP_URI') + 'api/club/' + this.id + '/training').then(function (response) {
+			debugger;
+			var ids = this.$tools.arrayBy(this.selected, 'id');
+			this.$http.get(this.$env.get('APP_URI') + 'api/club/' + this.id + '/training?data=' + this.$tools.transformParameters({
+				selected: ids
+			})).then(function (response) {
 				_this.trainings = response.data.result;
-				debugger;
 			}, function (response) {});
 		},
 
@@ -57390,8 +57644,8 @@ exports.default = {
 	},
 
 	computed: {
-		filteredTeachers: function filteredTeachers() {
-			return this.teachers.filter(this.filterByType);
+		filteredTrainings: function filteredTrainings() {
+			return this.trainings.filter(this.filterByType);
 		}
 	}
 };
@@ -57411,7 +57665,191 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-4d1a5842", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":55,"vue-hot-reload-api":50,"vueify/lib/insert-css":56}],88:[function(require,module,exports){
+},{"vue":55,"vue-hot-reload-api":50,"vueify/lib/insert-css":56}],91:[function(require,module,exports){
+'use strict';var _typeof=typeof Symbol==="function"&&typeof Symbol.iterator==="symbol"?function(obj){return typeof obj;}:function(obj){return obj&&typeof Symbol==="function"&&obj.constructor===Symbol?"symbol":typeof obj;};/*! version : 4.17.42
+ =========================================================
+ bootstrap-datetimejs
+ https://github.com/Eonasdan/bootstrap-datetimepicker
+ Copyright (c) 2015 Jonathan Peterson
+ =========================================================
+ *//*
+ The MIT License (MIT)
+
+ Copyright (c) 2015 Jonathan Peterson
+
+ Permission is hereby granted, free of charge, to any person obtaining a copy
+ of this software and associated documentation files (the "Software"), to deal
+ in the Software without restriction, including without limitation the rights
+ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ copies of the Software, and to permit persons to whom the Software is
+ furnished to do so, subject to the following conditions:
+
+ The above copyright notice and this permission notice shall be included in
+ all copies or substantial portions of the Software.
+
+ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ THE SOFTWARE.
+ *//*global define:false *//*global exports:false *//*global require:false *//*global jQuery:false *//*global moment:false */(function(factory){'use strict';if(typeof define==='function'&&define.amd){// AMD is used - Register as an anonymous module.
+define(['jquery','moment'],factory);}else if((typeof exports==='undefined'?'undefined':_typeof(exports))==='object'){module.exports=factory(require('jquery'),require('moment'));}else{// Neither AMD nor CommonJS used. Use global variables.
+if(typeof jQuery==='undefined'){throw'bootstrap-datetimepicker requires jQuery to be loaded first';}if(typeof moment==='undefined'){throw'bootstrap-datetimepicker requires Moment.js to be loaded first';}factory(jQuery,moment);}})(function($,moment){'use strict';if(!moment){throw new Error('bootstrap-datetimepicker requires Moment.js to be loaded first');}var dateTimePicker=function dateTimePicker(element,options){var picker={},date,viewDate,unset=true,input,component=false,widget=false,use24Hours,minViewModeNumber=0,actualFormat,parseFormats,currentViewMode,datePickerModes=[{clsName:'days',navFnc:'M',navStep:1},{clsName:'months',navFnc:'y',navStep:1},{clsName:'years',navFnc:'y',navStep:10},{clsName:'decades',navFnc:'y',navStep:100}],viewModes=['days','months','years','decades'],verticalModes=['top','bottom','auto'],horizontalModes=['left','right','auto'],toolbarPlacements=['default','top','bottom'],keyMap={'up':38,38:'up','down':40,40:'down','left':37,37:'left','right':39,39:'right','tab':9,9:'tab','escape':27,27:'escape','enter':13,13:'enter','pageUp':33,33:'pageUp','pageDown':34,34:'pageDown','shift':16,16:'shift','control':17,17:'control','space':32,32:'space','t':84,84:'t','delete':46,46:'delete'},keyState={},/********************************************************************************
+             *
+             * Private functions
+             *
+             ********************************************************************************/hasTimeZone=function hasTimeZone(){return moment.tz!==undefined&&options.timeZone!==undefined&&options.timeZone!==null&&options.timeZone!=='';},getMoment=function getMoment(d){var returnMoment;if(d===undefined||d===null){returnMoment=moment();//TODO should this use format? and locale?
+}else if(hasTimeZone()){// There is a string to parse and a default time zone
+// parse with the tz function which takes a default time zone if it is not in the format string
+returnMoment=moment.tz(d,parseFormats,options.useStrict,options.timeZone);}else{returnMoment=moment(d,parseFormats,options.useStrict);}if(hasTimeZone()){returnMoment.tz(options.timeZone);}return returnMoment;},isEnabled=function isEnabled(granularity){if(typeof granularity!=='string'||granularity.length>1){throw new TypeError('isEnabled expects a single character string parameter');}switch(granularity){case'y':return actualFormat.indexOf('Y')!==-1;case'M':return actualFormat.indexOf('M')!==-1;case'd':return actualFormat.toLowerCase().indexOf('d')!==-1;case'h':case'H':return actualFormat.toLowerCase().indexOf('h')!==-1;case'm':return actualFormat.indexOf('m')!==-1;case's':return actualFormat.indexOf('s')!==-1;default:return false;}},hasTime=function hasTime(){return isEnabled('h')||isEnabled('m')||isEnabled('s');},hasDate=function hasDate(){return isEnabled('y')||isEnabled('M')||isEnabled('d');},getDatePickerTemplate=function getDatePickerTemplate(){var headTemplate=$('<thead>').append($('<tr>').append($('<th>').addClass('prev').attr('data-action','previous').append($('<span>').addClass(options.icons.previous))).append($('<th>').addClass('picker-switch').attr('data-action','pickerSwitch').attr('colspan',options.calendarWeeks?'6':'5')).append($('<th>').addClass('next').attr('data-action','next').append($('<span>').addClass(options.icons.next)))),contTemplate=$('<tbody>').append($('<tr>').append($('<td>').attr('colspan',options.calendarWeeks?'8':'7')));return[$('<div>').addClass('datepicker-days').append($('<table>').addClass('table-condensed').append(headTemplate).append($('<tbody>'))),$('<div>').addClass('datepicker-months').append($('<table>').addClass('table-condensed').append(headTemplate.clone()).append(contTemplate.clone())),$('<div>').addClass('datepicker-years').append($('<table>').addClass('table-condensed').append(headTemplate.clone()).append(contTemplate.clone())),$('<div>').addClass('datepicker-decades').append($('<table>').addClass('table-condensed').append(headTemplate.clone()).append(contTemplate.clone()))];},getTimePickerMainTemplate=function getTimePickerMainTemplate(){var topRow=$('<tr>'),middleRow=$('<tr>'),bottomRow=$('<tr>');if(isEnabled('h')){topRow.append($('<td>').append($('<a>').attr({href:'#',tabindex:'-1','title':options.tooltips.incrementHour}).addClass('btn').attr('data-action','incrementHours').append($('<span>').addClass(options.icons.up))));middleRow.append($('<td>').append($('<span>').addClass('timepicker-hour').attr({'data-time-component':'hours','title':options.tooltips.pickHour}).attr('data-action','showHours')));bottomRow.append($('<td>').append($('<a>').attr({href:'#',tabindex:'-1','title':options.tooltips.decrementHour}).addClass('btn').attr('data-action','decrementHours').append($('<span>').addClass(options.icons.down))));}if(isEnabled('m')){if(isEnabled('h')){topRow.append($('<td>').addClass('separator'));middleRow.append($('<td>').addClass('separator').html(':'));bottomRow.append($('<td>').addClass('separator'));}topRow.append($('<td>').append($('<a>').attr({href:'#',tabindex:'-1','title':options.tooltips.incrementMinute}).addClass('btn').attr('data-action','incrementMinutes').append($('<span>').addClass(options.icons.up))));middleRow.append($('<td>').append($('<span>').addClass('timepicker-minute').attr({'data-time-component':'minutes','title':options.tooltips.pickMinute}).attr('data-action','showMinutes')));bottomRow.append($('<td>').append($('<a>').attr({href:'#',tabindex:'-1','title':options.tooltips.decrementMinute}).addClass('btn').attr('data-action','decrementMinutes').append($('<span>').addClass(options.icons.down))));}if(isEnabled('s')){if(isEnabled('m')){topRow.append($('<td>').addClass('separator'));middleRow.append($('<td>').addClass('separator').html(':'));bottomRow.append($('<td>').addClass('separator'));}topRow.append($('<td>').append($('<a>').attr({href:'#',tabindex:'-1','title':options.tooltips.incrementSecond}).addClass('btn').attr('data-action','incrementSeconds').append($('<span>').addClass(options.icons.up))));middleRow.append($('<td>').append($('<span>').addClass('timepicker-second').attr({'data-time-component':'seconds','title':options.tooltips.pickSecond}).attr('data-action','showSeconds')));bottomRow.append($('<td>').append($('<a>').attr({href:'#',tabindex:'-1','title':options.tooltips.decrementSecond}).addClass('btn').attr('data-action','decrementSeconds').append($('<span>').addClass(options.icons.down))));}if(!use24Hours){topRow.append($('<td>').addClass('separator'));middleRow.append($('<td>').append($('<button>').addClass('btn btn-primary').attr({'data-action':'togglePeriod',tabindex:'-1','title':options.tooltips.togglePeriod})));bottomRow.append($('<td>').addClass('separator'));}return $('<div>').addClass('timepicker-picker').append($('<table>').addClass('table-condensed').append([topRow,middleRow,bottomRow]));},getTimePickerTemplate=function getTimePickerTemplate(){var hoursView=$('<div>').addClass('timepicker-hours').append($('<table>').addClass('table-condensed')),minutesView=$('<div>').addClass('timepicker-minutes').append($('<table>').addClass('table-condensed')),secondsView=$('<div>').addClass('timepicker-seconds').append($('<table>').addClass('table-condensed')),ret=[getTimePickerMainTemplate()];if(isEnabled('h')){ret.push(hoursView);}if(isEnabled('m')){ret.push(minutesView);}if(isEnabled('s')){ret.push(secondsView);}return ret;},getToolbar=function getToolbar(){var row=[];if(options.showTodayButton){row.push($('<td>').append($('<a>').attr({'data-action':'today','title':options.tooltips.today}).append($('<span>').addClass(options.icons.today))));}if(!options.sideBySide&&hasDate()&&hasTime()){row.push($('<td>').append($('<a>').attr({'data-action':'togglePicker','title':options.tooltips.selectTime}).append($('<span>').addClass(options.icons.time))));}if(options.showClear){row.push($('<td>').append($('<a>').attr({'data-action':'clear','title':options.tooltips.clear}).append($('<span>').addClass(options.icons.clear))));}if(options.showClose){row.push($('<td>').append($('<a>').attr({'data-action':'close','title':options.tooltips.close}).append($('<span>').addClass(options.icons.close))));}return $('<table>').addClass('table-condensed').append($('<tbody>').append($('<tr>').append(row)));},getTemplate=function getTemplate(){var template=$('<div>').addClass('bootstrap-datetimepicker-widget dropdown-menu'),dateView=$('<div>').addClass('datepicker').append(getDatePickerTemplate()),timeView=$('<div>').addClass('timepicker').append(getTimePickerTemplate()),content=$('<ul>').addClass('list-unstyled'),toolbar=$('<li>').addClass('picker-switch'+(options.collapse?' accordion-toggle':'')).append(getToolbar());if(options.inline){template.removeClass('dropdown-menu');}if(use24Hours){template.addClass('usetwentyfour');}if(isEnabled('s')&&!use24Hours){template.addClass('wider');}if(options.sideBySide&&hasDate()&&hasTime()){template.addClass('timepicker-sbs');if(options.toolbarPlacement==='top'){template.append(toolbar);}template.append($('<div>').addClass('row').append(dateView.addClass('col-md-6')).append(timeView.addClass('col-md-6')));if(options.toolbarPlacement==='bottom'){template.append(toolbar);}return template;}if(options.toolbarPlacement==='top'){content.append(toolbar);}if(hasDate()){content.append($('<li>').addClass(options.collapse&&hasTime()?'collapse in':'').append(dateView));}if(options.toolbarPlacement==='default'){content.append(toolbar);}if(hasTime()){content.append($('<li>').addClass(options.collapse&&hasDate()?'collapse':'').append(timeView));}if(options.toolbarPlacement==='bottom'){content.append(toolbar);}return template.append(content);},dataToOptions=function dataToOptions(){var eData,dataOptions={};if(element.is('input')||options.inline){eData=element.data();}else{eData=element.find('input').data();}if(eData.dateOptions&&eData.dateOptions instanceof Object){dataOptions=$.extend(true,dataOptions,eData.dateOptions);}$.each(options,function(key){var attributeName='date'+key.charAt(0).toUpperCase()+key.slice(1);if(eData[attributeName]!==undefined){dataOptions[key]=eData[attributeName];}});return dataOptions;},place=function place(){var position=(component||element).position(),offset=(component||element).offset(),vertical=options.widgetPositioning.vertical,horizontal=options.widgetPositioning.horizontal,parent;if(options.widgetParent){parent=options.widgetParent.append(widget);}else if(element.is('input')){parent=element.after(widget).parent();}else if(options.inline){parent=element.append(widget);return;}else{parent=element;element.children().first().after(widget);}// Top and bottom logic
+if(vertical==='auto'){if(offset.top+widget.height()*1.5>=$(window).height()+$(window).scrollTop()&&widget.height()+element.outerHeight()<offset.top){vertical='top';}else{vertical='bottom';}}// Left and right logic
+if(horizontal==='auto'){if(parent.width()<offset.left+widget.outerWidth()/2&&offset.left+widget.outerWidth()>$(window).width()){horizontal='right';}else{horizontal='left';}}if(vertical==='top'){widget.addClass('top').removeClass('bottom');}else{widget.addClass('bottom').removeClass('top');}if(horizontal==='right'){widget.addClass('pull-right');}else{widget.removeClass('pull-right');}// find the first parent element that has a relative css positioning
+if(parent.css('position')!=='relative'){parent=parent.parents().filter(function(){return $(this).css('position')==='relative';}).first();}if(parent.length===0){throw new Error('datetimepicker component should be placed within a relative positioned container');}widget.css({top:vertical==='top'?'auto':position.top+element.outerHeight(),bottom:vertical==='top'?parent.outerHeight()-(parent===element?0:position.top):'auto',left:horizontal==='left'?parent===element?0:position.left:'auto',right:horizontal==='left'?'auto':parent.outerWidth()-element.outerWidth()-(parent===element?0:position.left)});},notifyEvent=function notifyEvent(e){if(e.type==='dp.change'&&(e.date&&e.date.isSame(e.oldDate)||!e.date&&!e.oldDate)){return;}element.trigger(e);},viewUpdate=function viewUpdate(e){if(e==='y'){e='YYYY';}notifyEvent({type:'dp.update',change:e,viewDate:viewDate.clone()});},showMode=function showMode(dir){if(!widget){return;}if(dir){currentViewMode=Math.max(minViewModeNumber,Math.min(3,currentViewMode+dir));}widget.find('.datepicker > div').hide().filter('.datepicker-'+datePickerModes[currentViewMode].clsName).show();},fillDow=function fillDow(){var row=$('<tr>'),currentDate=viewDate.clone().startOf('w').startOf('d');if(options.calendarWeeks===true){row.append($('<th>').addClass('cw').text('#'));}while(currentDate.isBefore(viewDate.clone().endOf('w'))){row.append($('<th>').addClass('dow').text(currentDate.format('dd')));currentDate.add(1,'d');}widget.find('.datepicker-days thead').append(row);},isInDisabledDates=function isInDisabledDates(testDate){return options.disabledDates[testDate.format('YYYY-MM-DD')]===true;},isInEnabledDates=function isInEnabledDates(testDate){return options.enabledDates[testDate.format('YYYY-MM-DD')]===true;},isInDisabledHours=function isInDisabledHours(testDate){return options.disabledHours[testDate.format('H')]===true;},isInEnabledHours=function isInEnabledHours(testDate){return options.enabledHours[testDate.format('H')]===true;},isValid=function isValid(targetMoment,granularity){if(!targetMoment.isValid()){return false;}if(options.disabledDates&&granularity==='d'&&isInDisabledDates(targetMoment)){return false;}if(options.enabledDates&&granularity==='d'&&!isInEnabledDates(targetMoment)){return false;}if(options.minDate&&targetMoment.isBefore(options.minDate,granularity)){return false;}if(options.maxDate&&targetMoment.isAfter(options.maxDate,granularity)){return false;}if(options.daysOfWeekDisabled&&granularity==='d'&&options.daysOfWeekDisabled.indexOf(targetMoment.day())!==-1){return false;}if(options.disabledHours&&(granularity==='h'||granularity==='m'||granularity==='s')&&isInDisabledHours(targetMoment)){return false;}if(options.enabledHours&&(granularity==='h'||granularity==='m'||granularity==='s')&&!isInEnabledHours(targetMoment)){return false;}if(options.disabledTimeIntervals&&(granularity==='h'||granularity==='m'||granularity==='s')){var found=false;$.each(options.disabledTimeIntervals,function(){if(targetMoment.isBetween(this[0],this[1])){found=true;return false;}});if(found){return false;}}return true;},fillMonths=function fillMonths(){var spans=[],monthsShort=viewDate.clone().startOf('y').startOf('d');while(monthsShort.isSame(viewDate,'y')){spans.push($('<span>').attr('data-action','selectMonth').addClass('month').text(monthsShort.format('MMM')));monthsShort.add(1,'M');}widget.find('.datepicker-months td').empty().append(spans);},updateMonths=function updateMonths(){var monthsView=widget.find('.datepicker-months'),monthsViewHeader=monthsView.find('th'),months=monthsView.find('tbody').find('span');monthsViewHeader.eq(0).find('span').attr('title',options.tooltips.prevYear);monthsViewHeader.eq(1).attr('title',options.tooltips.selectYear);monthsViewHeader.eq(2).find('span').attr('title',options.tooltips.nextYear);monthsView.find('.disabled').removeClass('disabled');if(!isValid(viewDate.clone().subtract(1,'y'),'y')){monthsViewHeader.eq(0).addClass('disabled');}monthsViewHeader.eq(1).text(viewDate.year());if(!isValid(viewDate.clone().add(1,'y'),'y')){monthsViewHeader.eq(2).addClass('disabled');}months.removeClass('active');if(date.isSame(viewDate,'y')&&!unset){months.eq(date.month()).addClass('active');}months.each(function(index){if(!isValid(viewDate.clone().month(index),'M')){$(this).addClass('disabled');}});},updateYears=function updateYears(){var yearsView=widget.find('.datepicker-years'),yearsViewHeader=yearsView.find('th'),startYear=viewDate.clone().subtract(5,'y'),endYear=viewDate.clone().add(6,'y'),html='';yearsViewHeader.eq(0).find('span').attr('title',options.tooltips.prevDecade);yearsViewHeader.eq(1).attr('title',options.tooltips.selectDecade);yearsViewHeader.eq(2).find('span').attr('title',options.tooltips.nextDecade);yearsView.find('.disabled').removeClass('disabled');if(options.minDate&&options.minDate.isAfter(startYear,'y')){yearsViewHeader.eq(0).addClass('disabled');}yearsViewHeader.eq(1).text(startYear.year()+'-'+endYear.year());if(options.maxDate&&options.maxDate.isBefore(endYear,'y')){yearsViewHeader.eq(2).addClass('disabled');}while(!startYear.isAfter(endYear,'y')){html+='<span data-action="selectYear" class="year'+(startYear.isSame(date,'y')&&!unset?' active':'')+(!isValid(startYear,'y')?' disabled':'')+'">'+startYear.year()+'</span>';startYear.add(1,'y');}yearsView.find('td').html(html);},updateDecades=function updateDecades(){var decadesView=widget.find('.datepicker-decades'),decadesViewHeader=decadesView.find('th'),startDecade=moment({y:viewDate.year()-viewDate.year()%100-1}),endDecade=startDecade.clone().add(100,'y'),startedAt=startDecade.clone(),minDateDecade=false,maxDateDecade=false,endDecadeYear,html='';decadesViewHeader.eq(0).find('span').attr('title',options.tooltips.prevCentury);decadesViewHeader.eq(2).find('span').attr('title',options.tooltips.nextCentury);decadesView.find('.disabled').removeClass('disabled');if(startDecade.isSame(moment({y:1900}))||options.minDate&&options.minDate.isAfter(startDecade,'y')){decadesViewHeader.eq(0).addClass('disabled');}decadesViewHeader.eq(1).text(startDecade.year()+'-'+endDecade.year());if(startDecade.isSame(moment({y:2000}))||options.maxDate&&options.maxDate.isBefore(endDecade,'y')){decadesViewHeader.eq(2).addClass('disabled');}while(!startDecade.isAfter(endDecade,'y')){endDecadeYear=startDecade.year()+12;minDateDecade=options.minDate&&options.minDate.isAfter(startDecade,'y')&&options.minDate.year()<=endDecadeYear;maxDateDecade=options.maxDate&&options.maxDate.isAfter(startDecade,'y')&&options.maxDate.year()<=endDecadeYear;html+='<span data-action="selectDecade" class="decade'+(date.isAfter(startDecade)&&date.year()<=endDecadeYear?' active':'')+(!isValid(startDecade,'y')&&!minDateDecade&&!maxDateDecade?' disabled':'')+'" data-selection="'+(startDecade.year()+6)+'">'+(startDecade.year()+1)+' - '+(startDecade.year()+12)+'</span>';startDecade.add(12,'y');}html+='<span></span><span></span><span></span>';//push the dangling block over, at least this way it's even
+decadesView.find('td').html(html);decadesViewHeader.eq(1).text(startedAt.year()+1+'-'+startDecade.year());},fillDate=function fillDate(){var daysView=widget.find('.datepicker-days'),daysViewHeader=daysView.find('th'),currentDate,html=[],row,clsName,i;if(!hasDate()){return;}daysViewHeader.eq(0).find('span').attr('title',options.tooltips.prevMonth);daysViewHeader.eq(1).attr('title',options.tooltips.selectMonth);daysViewHeader.eq(2).find('span').attr('title',options.tooltips.nextMonth);daysView.find('.disabled').removeClass('disabled');daysViewHeader.eq(1).text(viewDate.format(options.dayViewHeaderFormat));if(!isValid(viewDate.clone().subtract(1,'M'),'M')){daysViewHeader.eq(0).addClass('disabled');}if(!isValid(viewDate.clone().add(1,'M'),'M')){daysViewHeader.eq(2).addClass('disabled');}currentDate=viewDate.clone().startOf('M').startOf('w').startOf('d');for(i=0;i<42;i++){//always display 42 days (should show 6 weeks)
+if(currentDate.weekday()===0){row=$('<tr>');if(options.calendarWeeks){row.append('<td class="cw">'+currentDate.week()+'</td>');}html.push(row);}clsName='';if(currentDate.isBefore(viewDate,'M')){clsName+=' old';}if(currentDate.isAfter(viewDate,'M')){clsName+=' new';}if(currentDate.isSame(date,'d')&&!unset){clsName+=' active';}if(!isValid(currentDate,'d')){clsName+=' disabled';}if(currentDate.isSame(getMoment(),'d')){clsName+=' today';}if(currentDate.day()===0||currentDate.day()===6){clsName+=' weekend';}row.append('<td data-action="selectDay" data-day="'+currentDate.format('L')+'" class="day'+clsName+'">'+currentDate.date()+'</td>');currentDate.add(1,'d');}daysView.find('tbody').empty().append(html);updateMonths();updateYears();updateDecades();},fillHours=function fillHours(){var table=widget.find('.timepicker-hours table'),currentHour=viewDate.clone().startOf('d'),html=[],row=$('<tr>');if(viewDate.hour()>11&&!use24Hours){currentHour.hour(12);}while(currentHour.isSame(viewDate,'d')&&(use24Hours||viewDate.hour()<12&&currentHour.hour()<12||viewDate.hour()>11)){if(currentHour.hour()%4===0){row=$('<tr>');html.push(row);}row.append('<td data-action="selectHour" class="hour'+(!isValid(currentHour,'h')?' disabled':'')+'">'+currentHour.format(use24Hours?'HH':'hh')+'</td>');currentHour.add(1,'h');}table.empty().append(html);},fillMinutes=function fillMinutes(){var table=widget.find('.timepicker-minutes table'),currentMinute=viewDate.clone().startOf('h'),html=[],row=$('<tr>'),step=options.stepping===1?5:options.stepping;while(viewDate.isSame(currentMinute,'h')){if(currentMinute.minute()%(step*4)===0){row=$('<tr>');html.push(row);}row.append('<td data-action="selectMinute" class="minute'+(!isValid(currentMinute,'m')?' disabled':'')+'">'+currentMinute.format('mm')+'</td>');currentMinute.add(step,'m');}table.empty().append(html);},fillSeconds=function fillSeconds(){var table=widget.find('.timepicker-seconds table'),currentSecond=viewDate.clone().startOf('m'),html=[],row=$('<tr>');while(viewDate.isSame(currentSecond,'m')){if(currentSecond.second()%20===0){row=$('<tr>');html.push(row);}row.append('<td data-action="selectSecond" class="second'+(!isValid(currentSecond,'s')?' disabled':'')+'">'+currentSecond.format('ss')+'</td>');currentSecond.add(5,'s');}table.empty().append(html);},fillTime=function fillTime(){var toggle,newDate,timeComponents=widget.find('.timepicker span[data-time-component]');if(!use24Hours){toggle=widget.find('.timepicker [data-action=togglePeriod]');newDate=date.clone().add(date.hours()>=12?-12:12,'h');toggle.text(date.format('A'));if(isValid(newDate,'h')){toggle.removeClass('disabled');}else{toggle.addClass('disabled');}}timeComponents.filter('[data-time-component=hours]').text(date.format(use24Hours?'HH':'hh'));timeComponents.filter('[data-time-component=minutes]').text(date.format('mm'));timeComponents.filter('[data-time-component=seconds]').text(date.format('ss'));fillHours();fillMinutes();fillSeconds();},update=function update(){if(!widget){return;}fillDate();fillTime();},setValue=function setValue(targetMoment){var oldDate=unset?null:date;// case of calling setValue(null or false)
+if(!targetMoment){unset=true;input.val('');element.data('date','');notifyEvent({type:'dp.change',date:false,oldDate:oldDate});update();return;}targetMoment=targetMoment.clone().locale(options.locale);if(hasTimeZone()){targetMoment.tz(options.timeZone);}if(options.stepping!==1){targetMoment.minutes(Math.round(targetMoment.minutes()/options.stepping)*options.stepping).seconds(0);}if(isValid(targetMoment)){date=targetMoment;//viewDate = date.clone(); // TODO this doesn't work right on first use
+input.val(date.format(actualFormat));element.data('date',date.format(actualFormat));unset=false;update();notifyEvent({type:'dp.change',date:date.clone(),oldDate:oldDate});}else{if(!options.keepInvalid){input.val(unset?'':date.format(actualFormat));}else{notifyEvent({type:'dp.change',date:targetMoment,oldDate:oldDate});}notifyEvent({type:'dp.error',date:targetMoment,oldDate:oldDate});}},/**
+             * Hides the widget. Possibly will emit dp.hide
+             */hide=function hide(){var transitioning=false;if(!widget){return picker;}// Ignore event if in the middle of a picker transition
+widget.find('.collapse').each(function(){var collapseData=$(this).data('collapse');if(collapseData&&collapseData.transitioning){transitioning=true;return false;}return true;});if(transitioning){return picker;}if(component&&component.hasClass('btn')){component.toggleClass('active');}widget.hide();$(window).off('resize',place);widget.off('click','[data-action]');widget.off('mousedown',false);widget.remove();widget=false;notifyEvent({type:'dp.hide',date:date.clone()});input.blur();currentViewMode=0;viewDate=date.clone();return picker;},clear=function clear(){setValue(null);},parseInputDate=function parseInputDate(inputDate){if(options.parseInputDate===undefined){if(!moment.isMoment(inputDate)){inputDate=getMoment(inputDate);}}else{inputDate=options.parseInputDate(inputDate);}//inputDate.locale(options.locale);
+return inputDate;},/********************************************************************************
+             *
+             * Widget UI interaction functions
+             *
+             ********************************************************************************/actions={next:function next(){var navFnc=datePickerModes[currentViewMode].navFnc;viewDate.add(datePickerModes[currentViewMode].navStep,navFnc);fillDate();viewUpdate(navFnc);},previous:function previous(){var navFnc=datePickerModes[currentViewMode].navFnc;viewDate.subtract(datePickerModes[currentViewMode].navStep,navFnc);fillDate();viewUpdate(navFnc);},pickerSwitch:function pickerSwitch(){showMode(1);},selectMonth:function selectMonth(e){var month=$(e.target).closest('tbody').find('span').index($(e.target));viewDate.month(month);if(currentViewMode===minViewModeNumber){setValue(date.clone().year(viewDate.year()).month(viewDate.month()));if(!options.inline){hide();}}else{showMode(-1);fillDate();}viewUpdate('M');},selectYear:function selectYear(e){var year=parseInt($(e.target).text(),10)||0;viewDate.year(year);if(currentViewMode===minViewModeNumber){setValue(date.clone().year(viewDate.year()));if(!options.inline){hide();}}else{showMode(-1);fillDate();}viewUpdate('YYYY');},selectDecade:function selectDecade(e){var year=parseInt($(e.target).data('selection'),10)||0;viewDate.year(year);if(currentViewMode===minViewModeNumber){setValue(date.clone().year(viewDate.year()));if(!options.inline){hide();}}else{showMode(-1);fillDate();}viewUpdate('YYYY');},selectDay:function selectDay(e){var day=viewDate.clone();if($(e.target).is('.old')){day.subtract(1,'M');}if($(e.target).is('.new')){day.add(1,'M');}setValue(day.date(parseInt($(e.target).text(),10)));if(!hasTime()&&!options.keepOpen&&!options.inline){hide();}},incrementHours:function incrementHours(){var newDate=date.clone().add(1,'h');if(isValid(newDate,'h')){setValue(newDate);}},incrementMinutes:function incrementMinutes(){var newDate=date.clone().add(options.stepping,'m');if(isValid(newDate,'m')){setValue(newDate);}},incrementSeconds:function incrementSeconds(){var newDate=date.clone().add(1,'s');if(isValid(newDate,'s')){setValue(newDate);}},decrementHours:function decrementHours(){var newDate=date.clone().subtract(1,'h');if(isValid(newDate,'h')){setValue(newDate);}},decrementMinutes:function decrementMinutes(){var newDate=date.clone().subtract(options.stepping,'m');if(isValid(newDate,'m')){setValue(newDate);}},decrementSeconds:function decrementSeconds(){var newDate=date.clone().subtract(1,'s');if(isValid(newDate,'s')){setValue(newDate);}},togglePeriod:function togglePeriod(){setValue(date.clone().add(date.hours()>=12?-12:12,'h'));},togglePicker:function togglePicker(e){var $this=$(e.target),$parent=$this.closest('ul'),expanded=$parent.find('.in'),closed=$parent.find('.collapse:not(.in)'),collapseData;if(expanded&&expanded.length){collapseData=expanded.data('collapse');if(collapseData&&collapseData.transitioning){return;}if(expanded.collapse){// if collapse plugin is available through bootstrap.js then use it
+expanded.collapse('hide');closed.collapse('show');}else{// otherwise just toggle in class on the two views
+expanded.removeClass('in');closed.addClass('in');}if($this.is('span')){$this.toggleClass(options.icons.time+' '+options.icons.date);}else{$this.find('span').toggleClass(options.icons.time+' '+options.icons.date);}// NOTE: uncomment if toggled state will be restored in show()
+//if (component) {
+//    component.find('span').toggleClass(options.icons.time + ' ' + options.icons.date);
+//}
+}},showPicker:function showPicker(){widget.find('.timepicker > div:not(.timepicker-picker)').hide();widget.find('.timepicker .timepicker-picker').show();},showHours:function showHours(){widget.find('.timepicker .timepicker-picker').hide();widget.find('.timepicker .timepicker-hours').show();},showMinutes:function showMinutes(){widget.find('.timepicker .timepicker-picker').hide();widget.find('.timepicker .timepicker-minutes').show();},showSeconds:function showSeconds(){widget.find('.timepicker .timepicker-picker').hide();widget.find('.timepicker .timepicker-seconds').show();},selectHour:function selectHour(e){var hour=parseInt($(e.target).text(),10);if(!use24Hours){if(date.hours()>=12){if(hour!==12){hour+=12;}}else{if(hour===12){hour=0;}}}setValue(date.clone().hours(hour));actions.showPicker.call(picker);},selectMinute:function selectMinute(e){setValue(date.clone().minutes(parseInt($(e.target).text(),10)));actions.showPicker.call(picker);},selectSecond:function selectSecond(e){setValue(date.clone().seconds(parseInt($(e.target).text(),10)));actions.showPicker.call(picker);},clear:clear,today:function today(){var todaysDate=getMoment();if(isValid(todaysDate,'d')){setValue(todaysDate);}},close:hide},doAction=function doAction(e){if($(e.currentTarget).is('.disabled')){return false;}actions[$(e.currentTarget).data('action')].apply(picker,arguments);return false;},/**
+             * Shows the widget. Possibly will emit dp.show and dp.change
+             */show=function show(){var currentMoment,useCurrentGranularity={'year':function year(m){return m.month(0).date(1).hours(0).seconds(0).minutes(0);},'month':function month(m){return m.date(1).hours(0).seconds(0).minutes(0);},'day':function day(m){return m.hours(0).seconds(0).minutes(0);},'hour':function hour(m){return m.seconds(0).minutes(0);},'minute':function minute(m){return m.seconds(0);}};if(input.prop('disabled')||!options.ignoreReadonly&&input.prop('readonly')||widget){return picker;}if(input.val()!==undefined&&input.val().trim().length!==0){setValue(parseInputDate(input.val().trim()));}else if(unset&&options.useCurrent&&(options.inline||input.is('input')&&input.val().trim().length===0)){currentMoment=getMoment();if(typeof options.useCurrent==='string'){currentMoment=useCurrentGranularity[options.useCurrent](currentMoment);}setValue(currentMoment);}widget=getTemplate();fillDow();fillMonths();widget.find('.timepicker-hours').hide();widget.find('.timepicker-minutes').hide();widget.find('.timepicker-seconds').hide();update();showMode();$(window).on('resize',place);widget.on('click','[data-action]',doAction);// this handles clicks on the widget
+widget.on('mousedown',false);if(component&&component.hasClass('btn')){component.toggleClass('active');}place();widget.show();if(options.focusOnShow&&!input.is(':focus')){input.focus();}notifyEvent({type:'dp.show'});return picker;},/**
+             * Shows or hides the widget
+             */toggle=function toggle(){return widget?hide():show();},keydown=function keydown(e){var handler=null,index,index2,pressedKeys=[],pressedModifiers={},currentKey=e.which,keyBindKeys,allModifiersPressed,pressed='p';keyState[currentKey]=pressed;for(index in keyState){if(keyState.hasOwnProperty(index)&&keyState[index]===pressed){pressedKeys.push(index);if(parseInt(index,10)!==currentKey){pressedModifiers[index]=true;}}}for(index in options.keyBinds){if(options.keyBinds.hasOwnProperty(index)&&typeof options.keyBinds[index]==='function'){keyBindKeys=index.split(' ');if(keyBindKeys.length===pressedKeys.length&&keyMap[currentKey]===keyBindKeys[keyBindKeys.length-1]){allModifiersPressed=true;for(index2=keyBindKeys.length-2;index2>=0;index2--){if(!(keyMap[keyBindKeys[index2]]in pressedModifiers)){allModifiersPressed=false;break;}}if(allModifiersPressed){handler=options.keyBinds[index];break;}}}}if(handler){handler.call(picker,widget);e.stopPropagation();e.preventDefault();}},keyup=function keyup(e){keyState[e.which]='r';e.stopPropagation();e.preventDefault();},change=function change(e){var val=$(e.target).val().trim(),parsedDate=val?parseInputDate(val):null;setValue(parsedDate);e.stopImmediatePropagation();return false;},attachDatePickerElementEvents=function attachDatePickerElementEvents(){input.on({'change':change,'blur':options.debug?'':hide,'keydown':keydown,'keyup':keyup,'focus':options.allowInputToggle?show:''});if(element.is('input')){input.on({'focus':show});}else if(component){component.on('click',toggle);component.on('mousedown',false);}},detachDatePickerElementEvents=function detachDatePickerElementEvents(){input.off({'change':change,'blur':blur,'keydown':keydown,'keyup':keyup,'focus':options.allowInputToggle?hide:''});if(element.is('input')){input.off({'focus':show});}else if(component){component.off('click',toggle);component.off('mousedown',false);}},indexGivenDates=function indexGivenDates(givenDatesArray){// Store given enabledDates and disabledDates as keys.
+// This way we can check their existence in O(1) time instead of looping through whole array.
+// (for example: options.enabledDates['2014-02-27'] === true)
+var givenDatesIndexed={};$.each(givenDatesArray,function(){var dDate=parseInputDate(this);if(dDate.isValid()){givenDatesIndexed[dDate.format('YYYY-MM-DD')]=true;}});return Object.keys(givenDatesIndexed).length?givenDatesIndexed:false;},indexGivenHours=function indexGivenHours(givenHoursArray){// Store given enabledHours and disabledHours as keys.
+// This way we can check their existence in O(1) time instead of looping through whole array.
+// (for example: options.enabledHours['2014-02-27'] === true)
+var givenHoursIndexed={};$.each(givenHoursArray,function(){givenHoursIndexed[this]=true;});return Object.keys(givenHoursIndexed).length?givenHoursIndexed:false;},initFormatting=function initFormatting(){var format=options.format||'L LT';actualFormat=format.replace(/(\[[^\[]*\])|(\\)?(LTS|LT|LL?L?L?|l{1,4})/g,function(formatInput){var newinput=date.localeData().longDateFormat(formatInput)||formatInput;return newinput.replace(/(\[[^\[]*\])|(\\)?(LTS|LT|LL?L?L?|l{1,4})/g,function(formatInput2){//temp fix for #740
+return date.localeData().longDateFormat(formatInput2)||formatInput2;});});parseFormats=options.extraFormats?options.extraFormats.slice():[];if(parseFormats.indexOf(format)<0&&parseFormats.indexOf(actualFormat)<0){parseFormats.push(actualFormat);}use24Hours=actualFormat.toLowerCase().indexOf('a')<1&&actualFormat.replace(/\[.*?\]/g,'').indexOf('h')<1;if(isEnabled('y')){minViewModeNumber=2;}if(isEnabled('M')){minViewModeNumber=1;}if(isEnabled('d')){minViewModeNumber=0;}currentViewMode=Math.max(minViewModeNumber,currentViewMode);if(!unset){setValue(date);}};/********************************************************************************
+         *
+         * Public API functions
+         * =====================
+         *
+         * Important: Do not expose direct references to private objects or the options
+         * object to the outer world. Always return a clone when returning values or make
+         * a clone when setting a private variable.
+         *
+         ********************************************************************************/picker.destroy=function(){///<summary>Destroys the widget and removes all attached event listeners</summary>
+hide();detachDatePickerElementEvents();element.removeData('DateTimePicker');element.removeData('date');};picker.toggle=toggle;picker.show=show;picker.hide=hide;picker.disable=function(){///<summary>Disables the input element, the component is attached to, by adding a disabled="true" attribute to it.
+///If the widget was visible before that call it is hidden. Possibly emits dp.hide</summary>
+hide();if(component&&component.hasClass('btn')){component.addClass('disabled');}input.prop('disabled',true);return picker;};picker.enable=function(){///<summary>Enables the input element, the component is attached to, by removing disabled attribute from it.</summary>
+if(component&&component.hasClass('btn')){component.removeClass('disabled');}input.prop('disabled',false);return picker;};picker.ignoreReadonly=function(ignoreReadonly){if(arguments.length===0){return options.ignoreReadonly;}if(typeof ignoreReadonly!=='boolean'){throw new TypeError('ignoreReadonly () expects a boolean parameter');}options.ignoreReadonly=ignoreReadonly;return picker;};picker.options=function(newOptions){if(arguments.length===0){return $.extend(true,{},options);}if(!(newOptions instanceof Object)){throw new TypeError('options() options parameter should be an object');}$.extend(true,options,newOptions);$.each(options,function(key,value){if(picker[key]!==undefined){picker[key](value);}else{throw new TypeError('option '+key+' is not recognized!');}});return picker;};picker.date=function(newDate){///<signature helpKeyword="$.fn.datetimepicker.date">
+///<summary>Returns the component's model current date, a moment object or null if not set.</summary>
+///<returns type="Moment">date.clone()</returns>
+///</signature>
+///<signature>
+///<summary>Sets the components model current moment to it. Passing a null value unsets the components model current moment. Parsing of the newDate parameter is made using moment library with the options.format and options.useStrict components configuration.</summary>
+///<param name="newDate" locid="$.fn.datetimepicker.date_p:newDate">Takes string, Date, moment, null parameter.</param>
+///</signature>
+if(arguments.length===0){if(unset){return null;}return date.clone();}if(newDate!==null&&typeof newDate!=='string'&&!moment.isMoment(newDate)&&!(newDate instanceof Date)){throw new TypeError('date() parameter must be one of [null, string, moment or Date]');}setValue(newDate===null?null:parseInputDate(newDate));return picker;};picker.format=function(newFormat){///<summary>test su</summary>
+///<param name="newFormat">info about para</param>
+///<returns type="string|boolean">returns foo</returns>
+if(arguments.length===0){return options.format;}if(typeof newFormat!=='string'&&(typeof newFormat!=='boolean'||newFormat!==false)){throw new TypeError('format() expects a string or boolean:false parameter '+newFormat);}options.format=newFormat;if(actualFormat){initFormatting();// reinit formatting
+}return picker;};picker.timeZone=function(newZone){if(arguments.length===0){return options.timeZone;}if(typeof newZone!=='string'){throw new TypeError('newZone() expects a string parameter');}options.timeZone=newZone;return picker;};picker.dayViewHeaderFormat=function(newFormat){if(arguments.length===0){return options.dayViewHeaderFormat;}if(typeof newFormat!=='string'){throw new TypeError('dayViewHeaderFormat() expects a string parameter');}options.dayViewHeaderFormat=newFormat;return picker;};picker.extraFormats=function(formats){if(arguments.length===0){return options.extraFormats;}if(formats!==false&&!(formats instanceof Array)){throw new TypeError('extraFormats() expects an array or false parameter');}options.extraFormats=formats;if(parseFormats){initFormatting();// reinit formatting
+}return picker;};picker.disabledDates=function(dates){///<signature helpKeyword="$.fn.datetimepicker.disabledDates">
+///<summary>Returns an array with the currently set disabled dates on the component.</summary>
+///<returns type="array">options.disabledDates</returns>
+///</signature>
+///<signature>
+///<summary>Setting this takes precedence over options.minDate, options.maxDate configuration. Also calling this function removes the configuration of
+///options.enabledDates if such exist.</summary>
+///<param name="dates" locid="$.fn.datetimepicker.disabledDates_p:dates">Takes an [ string or Date or moment ] of values and allows the user to select only from those days.</param>
+///</signature>
+if(arguments.length===0){return options.disabledDates?$.extend({},options.disabledDates):options.disabledDates;}if(!dates){options.disabledDates=false;update();return picker;}if(!(dates instanceof Array)){throw new TypeError('disabledDates() expects an array parameter');}options.disabledDates=indexGivenDates(dates);options.enabledDates=false;update();return picker;};picker.enabledDates=function(dates){///<signature helpKeyword="$.fn.datetimepicker.enabledDates">
+///<summary>Returns an array with the currently set enabled dates on the component.</summary>
+///<returns type="array">options.enabledDates</returns>
+///</signature>
+///<signature>
+///<summary>Setting this takes precedence over options.minDate, options.maxDate configuration. Also calling this function removes the configuration of options.disabledDates if such exist.</summary>
+///<param name="dates" locid="$.fn.datetimepicker.enabledDates_p:dates">Takes an [ string or Date or moment ] of values and allows the user to select only from those days.</param>
+///</signature>
+if(arguments.length===0){return options.enabledDates?$.extend({},options.enabledDates):options.enabledDates;}if(!dates){options.enabledDates=false;update();return picker;}if(!(dates instanceof Array)){throw new TypeError('enabledDates() expects an array parameter');}options.enabledDates=indexGivenDates(dates);options.disabledDates=false;update();return picker;};picker.daysOfWeekDisabled=function(daysOfWeekDisabled){if(arguments.length===0){return options.daysOfWeekDisabled.splice(0);}if(typeof daysOfWeekDisabled==='boolean'&&!daysOfWeekDisabled){options.daysOfWeekDisabled=false;update();return picker;}if(!(daysOfWeekDisabled instanceof Array)){throw new TypeError('daysOfWeekDisabled() expects an array parameter');}options.daysOfWeekDisabled=daysOfWeekDisabled.reduce(function(previousValue,currentValue){currentValue=parseInt(currentValue,10);if(currentValue>6||currentValue<0||isNaN(currentValue)){return previousValue;}if(previousValue.indexOf(currentValue)===-1){previousValue.push(currentValue);}return previousValue;},[]).sort();if(options.useCurrent&&!options.keepInvalid){var tries=0;while(!isValid(date,'d')){date.add(1,'d');if(tries===31){throw'Tried 31 times to find a valid date';}tries++;}setValue(date);}update();return picker;};picker.maxDate=function(maxDate){if(arguments.length===0){return options.maxDate?options.maxDate.clone():options.maxDate;}if(typeof maxDate==='boolean'&&maxDate===false){options.maxDate=false;update();return picker;}if(typeof maxDate==='string'){if(maxDate==='now'||maxDate==='moment'){maxDate=getMoment();}}var parsedDate=parseInputDate(maxDate);if(!parsedDate.isValid()){throw new TypeError('maxDate() Could not parse date parameter: '+maxDate);}if(options.minDate&&parsedDate.isBefore(options.minDate)){throw new TypeError('maxDate() date parameter is before options.minDate: '+parsedDate.format(actualFormat));}options.maxDate=parsedDate;if(options.useCurrent&&!options.keepInvalid&&date.isAfter(maxDate)){setValue(options.maxDate);}if(viewDate.isAfter(parsedDate)){viewDate=parsedDate.clone().subtract(options.stepping,'m');}update();return picker;};picker.minDate=function(minDate){if(arguments.length===0){return options.minDate?options.minDate.clone():options.minDate;}if(typeof minDate==='boolean'&&minDate===false){options.minDate=false;update();return picker;}if(typeof minDate==='string'){if(minDate==='now'||minDate==='moment'){minDate=getMoment();}}var parsedDate=parseInputDate(minDate);if(!parsedDate.isValid()){throw new TypeError('minDate() Could not parse date parameter: '+minDate);}if(options.maxDate&&parsedDate.isAfter(options.maxDate)){throw new TypeError('minDate() date parameter is after options.maxDate: '+parsedDate.format(actualFormat));}options.minDate=parsedDate;if(options.useCurrent&&!options.keepInvalid&&date.isBefore(minDate)){setValue(options.minDate);}if(viewDate.isBefore(parsedDate)){viewDate=parsedDate.clone().add(options.stepping,'m');}update();return picker;};picker.defaultDate=function(defaultDate){///<signature helpKeyword="$.fn.datetimepicker.defaultDate">
+///<summary>Returns a moment with the options.defaultDate option configuration or false if not set</summary>
+///<returns type="Moment">date.clone()</returns>
+///</signature>
+///<signature>
+///<summary>Will set the picker's inital date. If a boolean:false value is passed the options.defaultDate parameter is cleared.</summary>
+///<param name="defaultDate" locid="$.fn.datetimepicker.defaultDate_p:defaultDate">Takes a string, Date, moment, boolean:false</param>
+///</signature>
+if(arguments.length===0){return options.defaultDate?options.defaultDate.clone():options.defaultDate;}if(!defaultDate){options.defaultDate=false;return picker;}if(typeof defaultDate==='string'){if(defaultDate==='now'||defaultDate==='moment'){defaultDate=getMoment();}else{defaultDate=getMoment(defaultDate);}}var parsedDate=parseInputDate(defaultDate);if(!parsedDate.isValid()){throw new TypeError('defaultDate() Could not parse date parameter: '+defaultDate);}if(!isValid(parsedDate)){throw new TypeError('defaultDate() date passed is invalid according to component setup validations');}options.defaultDate=parsedDate;if(options.defaultDate&&options.inline||input.val().trim()===''){setValue(options.defaultDate);}return picker;};picker.locale=function(locale){if(arguments.length===0){return options.locale;}if(!moment.localeData(locale)){throw new TypeError('locale() locale '+locale+' is not loaded from moment locales!');}options.locale=locale;date.locale(options.locale);viewDate.locale(options.locale);if(actualFormat){initFormatting();// reinit formatting
+}if(widget){hide();show();}return picker;};picker.stepping=function(stepping){if(arguments.length===0){return options.stepping;}stepping=parseInt(stepping,10);if(isNaN(stepping)||stepping<1){stepping=1;}options.stepping=stepping;return picker;};picker.useCurrent=function(useCurrent){var useCurrentOptions=['year','month','day','hour','minute'];if(arguments.length===0){return options.useCurrent;}if(typeof useCurrent!=='boolean'&&typeof useCurrent!=='string'){throw new TypeError('useCurrent() expects a boolean or string parameter');}if(typeof useCurrent==='string'&&useCurrentOptions.indexOf(useCurrent.toLowerCase())===-1){throw new TypeError('useCurrent() expects a string parameter of '+useCurrentOptions.join(', '));}options.useCurrent=useCurrent;return picker;};picker.collapse=function(collapse){if(arguments.length===0){return options.collapse;}if(typeof collapse!=='boolean'){throw new TypeError('collapse() expects a boolean parameter');}if(options.collapse===collapse){return picker;}options.collapse=collapse;if(widget){hide();show();}return picker;};picker.icons=function(icons){if(arguments.length===0){return $.extend({},options.icons);}if(!(icons instanceof Object)){throw new TypeError('icons() expects parameter to be an Object');}$.extend(options.icons,icons);if(widget){hide();show();}return picker;};picker.tooltips=function(tooltips){if(arguments.length===0){return $.extend({},options.tooltips);}if(!(tooltips instanceof Object)){throw new TypeError('tooltips() expects parameter to be an Object');}$.extend(options.tooltips,tooltips);if(widget){hide();show();}return picker;};picker.useStrict=function(useStrict){if(arguments.length===0){return options.useStrict;}if(typeof useStrict!=='boolean'){throw new TypeError('useStrict() expects a boolean parameter');}options.useStrict=useStrict;return picker;};picker.sideBySide=function(sideBySide){if(arguments.length===0){return options.sideBySide;}if(typeof sideBySide!=='boolean'){throw new TypeError('sideBySide() expects a boolean parameter');}options.sideBySide=sideBySide;if(widget){hide();show();}return picker;};picker.viewMode=function(viewMode){if(arguments.length===0){return options.viewMode;}if(typeof viewMode!=='string'){throw new TypeError('viewMode() expects a string parameter');}if(viewModes.indexOf(viewMode)===-1){throw new TypeError('viewMode() parameter must be one of ('+viewModes.join(', ')+') value');}options.viewMode=viewMode;currentViewMode=Math.max(viewModes.indexOf(viewMode),minViewModeNumber);showMode();return picker;};picker.toolbarPlacement=function(toolbarPlacement){if(arguments.length===0){return options.toolbarPlacement;}if(typeof toolbarPlacement!=='string'){throw new TypeError('toolbarPlacement() expects a string parameter');}if(toolbarPlacements.indexOf(toolbarPlacement)===-1){throw new TypeError('toolbarPlacement() parameter must be one of ('+toolbarPlacements.join(', ')+') value');}options.toolbarPlacement=toolbarPlacement;if(widget){hide();show();}return picker;};picker.widgetPositioning=function(widgetPositioning){if(arguments.length===0){return $.extend({},options.widgetPositioning);}if({}.toString.call(widgetPositioning)!=='[object Object]'){throw new TypeError('widgetPositioning() expects an object variable');}if(widgetPositioning.horizontal){if(typeof widgetPositioning.horizontal!=='string'){throw new TypeError('widgetPositioning() horizontal variable must be a string');}widgetPositioning.horizontal=widgetPositioning.horizontal.toLowerCase();if(horizontalModes.indexOf(widgetPositioning.horizontal)===-1){throw new TypeError('widgetPositioning() expects horizontal parameter to be one of ('+horizontalModes.join(', ')+')');}options.widgetPositioning.horizontal=widgetPositioning.horizontal;}if(widgetPositioning.vertical){if(typeof widgetPositioning.vertical!=='string'){throw new TypeError('widgetPositioning() vertical variable must be a string');}widgetPositioning.vertical=widgetPositioning.vertical.toLowerCase();if(verticalModes.indexOf(widgetPositioning.vertical)===-1){throw new TypeError('widgetPositioning() expects vertical parameter to be one of ('+verticalModes.join(', ')+')');}options.widgetPositioning.vertical=widgetPositioning.vertical;}update();return picker;};picker.calendarWeeks=function(calendarWeeks){if(arguments.length===0){return options.calendarWeeks;}if(typeof calendarWeeks!=='boolean'){throw new TypeError('calendarWeeks() expects parameter to be a boolean value');}options.calendarWeeks=calendarWeeks;update();return picker;};picker.showTodayButton=function(showTodayButton){if(arguments.length===0){return options.showTodayButton;}if(typeof showTodayButton!=='boolean'){throw new TypeError('showTodayButton() expects a boolean parameter');}options.showTodayButton=showTodayButton;if(widget){hide();show();}return picker;};picker.showClear=function(showClear){if(arguments.length===0){return options.showClear;}if(typeof showClear!=='boolean'){throw new TypeError('showClear() expects a boolean parameter');}options.showClear=showClear;if(widget){hide();show();}return picker;};picker.widgetParent=function(widgetParent){if(arguments.length===0){return options.widgetParent;}if(typeof widgetParent==='string'){widgetParent=$(widgetParent);}if(widgetParent!==null&&typeof widgetParent!=='string'&&!(widgetParent instanceof $)){throw new TypeError('widgetParent() expects a string or a jQuery object parameter');}options.widgetParent=widgetParent;if(widget){hide();show();}return picker;};picker.keepOpen=function(keepOpen){if(arguments.length===0){return options.keepOpen;}if(typeof keepOpen!=='boolean'){throw new TypeError('keepOpen() expects a boolean parameter');}options.keepOpen=keepOpen;return picker;};picker.focusOnShow=function(focusOnShow){if(arguments.length===0){return options.focusOnShow;}if(typeof focusOnShow!=='boolean'){throw new TypeError('focusOnShow() expects a boolean parameter');}options.focusOnShow=focusOnShow;return picker;};picker.inline=function(inline){if(arguments.length===0){return options.inline;}if(typeof inline!=='boolean'){throw new TypeError('inline() expects a boolean parameter');}options.inline=inline;return picker;};picker.clear=function(){clear();return picker;};picker.keyBinds=function(keyBinds){if(arguments.length===0){return options.keyBinds;}options.keyBinds=keyBinds;return picker;};picker.getMoment=function(d){return getMoment(d);};picker.debug=function(debug){if(typeof debug!=='boolean'){throw new TypeError('debug() expects a boolean parameter');}options.debug=debug;return picker;};picker.allowInputToggle=function(allowInputToggle){if(arguments.length===0){return options.allowInputToggle;}if(typeof allowInputToggle!=='boolean'){throw new TypeError('allowInputToggle() expects a boolean parameter');}options.allowInputToggle=allowInputToggle;return picker;};picker.showClose=function(showClose){if(arguments.length===0){return options.showClose;}if(typeof showClose!=='boolean'){throw new TypeError('showClose() expects a boolean parameter');}options.showClose=showClose;return picker;};picker.keepInvalid=function(keepInvalid){if(arguments.length===0){return options.keepInvalid;}if(typeof keepInvalid!=='boolean'){throw new TypeError('keepInvalid() expects a boolean parameter');}options.keepInvalid=keepInvalid;return picker;};picker.datepickerInput=function(datepickerInput){if(arguments.length===0){return options.datepickerInput;}if(typeof datepickerInput!=='string'){throw new TypeError('datepickerInput() expects a string parameter');}options.datepickerInput=datepickerInput;return picker;};picker.parseInputDate=function(parseInputDate){if(arguments.length===0){return options.parseInputDate;}if(typeof parseInputDate!=='function'){throw new TypeError('parseInputDate() sholud be as function');}options.parseInputDate=parseInputDate;return picker;};picker.disabledTimeIntervals=function(disabledTimeIntervals){///<signature helpKeyword="$.fn.datetimepicker.disabledTimeIntervals">
+///<summary>Returns an array with the currently set disabled dates on the component.</summary>
+///<returns type="array">options.disabledTimeIntervals</returns>
+///</signature>
+///<signature>
+///<summary>Setting this takes precedence over options.minDate, options.maxDate configuration. Also calling this function removes the configuration of
+///options.enabledDates if such exist.</summary>
+///<param name="dates" locid="$.fn.datetimepicker.disabledTimeIntervals_p:dates">Takes an [ string or Date or moment ] of values and allows the user to select only from those days.</param>
+///</signature>
+if(arguments.length===0){return options.disabledTimeIntervals?$.extend({},options.disabledTimeIntervals):options.disabledTimeIntervals;}if(!disabledTimeIntervals){options.disabledTimeIntervals=false;update();return picker;}if(!(disabledTimeIntervals instanceof Array)){throw new TypeError('disabledTimeIntervals() expects an array parameter');}options.disabledTimeIntervals=disabledTimeIntervals;update();return picker;};picker.disabledHours=function(hours){///<signature helpKeyword="$.fn.datetimepicker.disabledHours">
+///<summary>Returns an array with the currently set disabled hours on the component.</summary>
+///<returns type="array">options.disabledHours</returns>
+///</signature>
+///<signature>
+///<summary>Setting this takes precedence over options.minDate, options.maxDate configuration. Also calling this function removes the configuration of
+///options.enabledHours if such exist.</summary>
+///<param name="hours" locid="$.fn.datetimepicker.disabledHours_p:hours">Takes an [ int ] of values and disallows the user to select only from those hours.</param>
+///</signature>
+if(arguments.length===0){return options.disabledHours?$.extend({},options.disabledHours):options.disabledHours;}if(!hours){options.disabledHours=false;update();return picker;}if(!(hours instanceof Array)){throw new TypeError('disabledHours() expects an array parameter');}options.disabledHours=indexGivenHours(hours);options.enabledHours=false;if(options.useCurrent&&!options.keepInvalid){var tries=0;while(!isValid(date,'h')){date.add(1,'h');if(tries===24){throw'Tried 24 times to find a valid date';}tries++;}setValue(date);}update();return picker;};picker.enabledHours=function(hours){///<signature helpKeyword="$.fn.datetimepicker.enabledHours">
+///<summary>Returns an array with the currently set enabled hours on the component.</summary>
+///<returns type="array">options.enabledHours</returns>
+///</signature>
+///<signature>
+///<summary>Setting this takes precedence over options.minDate, options.maxDate configuration. Also calling this function removes the configuration of options.disabledHours if such exist.</summary>
+///<param name="hours" locid="$.fn.datetimepicker.enabledHours_p:hours">Takes an [ int ] of values and allows the user to select only from those hours.</param>
+///</signature>
+if(arguments.length===0){return options.enabledHours?$.extend({},options.enabledHours):options.enabledHours;}if(!hours){options.enabledHours=false;update();return picker;}if(!(hours instanceof Array)){throw new TypeError('enabledHours() expects an array parameter');}options.enabledHours=indexGivenHours(hours);options.disabledHours=false;if(options.useCurrent&&!options.keepInvalid){var tries=0;while(!isValid(date,'h')){date.add(1,'h');if(tries===24){throw'Tried 24 times to find a valid date';}tries++;}setValue(date);}update();return picker;};/**
+         * Returns the component's model current viewDate, a moment object or null if not set. Passing a null value unsets the components model current moment. Parsing of the newDate parameter is made using moment library with the options.format and options.useStrict components configuration.
+         * @param {Takes string, viewDate, moment, null parameter.} newDate
+         * @returns {viewDate.clone()}
+         */picker.viewDate=function(newDate){if(arguments.length===0){return viewDate.clone();}if(!newDate){viewDate=date.clone();return picker;}if(typeof newDate!=='string'&&!moment.isMoment(newDate)&&!(newDate instanceof Date)){throw new TypeError('viewDate() parameter must be one of [string, moment or Date]');}viewDate=parseInputDate(newDate);viewUpdate();return picker;};// initializing element and component attributes
+if(element.is('input')){input=element;}else{input=element.find(options.datepickerInput);if(input.length===0){input=element.find('input');}else if(!input.is('input')){throw new Error('CSS class "'+options.datepickerInput+'" cannot be applied to non input element');}}if(element.hasClass('input-group')){// in case there is more then one 'input-group-addon' Issue #48
+if(element.find('.datepickerbutton').length===0){component=element.find('.input-group-addon');}else{component=element.find('.datepickerbutton');}}if(!options.inline&&!input.is('input')){throw new Error('Could not initialize DateTimePicker without an input element');}// Set defaults for date here now instead of in var declaration
+date=getMoment();viewDate=date.clone();$.extend(true,options,dataToOptions());picker.options(options);initFormatting();attachDatePickerElementEvents();if(input.prop('disabled')){picker.disable();}if(input.is('input')&&input.val().trim().length!==0){setValue(parseInputDate(input.val().trim()));}else if(options.defaultDate&&input.attr('placeholder')===undefined){setValue(options.defaultDate);}if(options.inline){show();}return picker;};/********************************************************************************
+     *
+     * jQuery plugin constructor and defaults object
+     *
+     ********************************************************************************//**
+    * See (http://jquery.com/).
+    * @name jQuery
+    * @class
+    * See the jQuery Library  (http://jquery.com/) for full details.  This just
+    * documents the function and classes that are added to jQuery by this plug-in.
+    *//**
+     * See (http://jquery.com/)
+     * @name fn
+     * @class
+     * See the jQuery Library  (http://jquery.com/) for full details.  This just
+     * documents the function and classes that are added to jQuery by this plug-in.
+     * @memberOf jQuery
+     *//**
+     * Show comments
+     * @class datetimepicker
+     * @memberOf jQuery.fn
+     */$.fn.datetimepicker=function(options){options=options||{};var args=Array.prototype.slice.call(arguments,1),isInstance=true,thisMethods=['destroy','hide','show','toggle'],returnValue;if((typeof options==='undefined'?'undefined':_typeof(options))==='object'){return this.each(function(){var $this=$(this);if(!$this.data('DateTimePicker')){// create a private copy of the defaults object
+options=$.extend(true,{},$.fn.datetimepicker.defaults,options);$this.data('DateTimePicker',dateTimePicker($this,options));}});}else if(typeof options==='string'){this.each(function(){var $this=$(this),instance=$this.data('DateTimePicker');if(!instance){throw new Error('bootstrap-datetimepicker("'+options+'") method was called on an element that is not using DateTimePicker');}returnValue=instance[options].apply(instance,args);isInstance=returnValue===instance;});if(isInstance||$.inArray(options,thisMethods)>-1){return this;}return returnValue;}throw new TypeError('Invalid arguments for DateTimePicker: '+options);};$.fn.datetimepicker.defaults={timeZone:'',format:false,dayViewHeaderFormat:'MMMM YYYY',extraFormats:false,stepping:1,minDate:false,maxDate:false,useCurrent:true,collapse:true,locale:moment.locale(),defaultDate:false,disabledDates:false,enabledDates:false,icons:{time:'glyphicon glyphicon-time',date:'glyphicon glyphicon-calendar',up:'glyphicon glyphicon-chevron-up',down:'glyphicon glyphicon-chevron-down',previous:'glyphicon glyphicon-chevron-left',next:'glyphicon glyphicon-chevron-right',today:'glyphicon glyphicon-screenshot',clear:'glyphicon glyphicon-trash',close:'glyphicon glyphicon-remove'},tooltips:{today:'Go to today',clear:'Clear selection',close:'Close the picker',selectMonth:'Select Month',prevMonth:'Previous Month',nextMonth:'Next Month',selectYear:'Select Year',prevYear:'Previous Year',nextYear:'Next Year',selectDecade:'Select Decade',prevDecade:'Previous Decade',nextDecade:'Next Decade',prevCentury:'Previous Century',nextCentury:'Next Century',pickHour:'Pick Hour',incrementHour:'Increment Hour',decrementHour:'Decrement Hour',pickMinute:'Pick Minute',incrementMinute:'Increment Minute',decrementMinute:'Decrement Minute',pickSecond:'Pick Second',incrementSecond:'Increment Second',decrementSecond:'Decrement Second',togglePeriod:'Toggle Period',selectTime:'Select Time'},useStrict:false,sideBySide:false,daysOfWeekDisabled:false,calendarWeeks:false,viewMode:'days',toolbarPlacement:'default',showTodayButton:false,showClear:false,showClose:false,widgetPositioning:{horizontal:'auto',vertical:'auto'},widgetParent:null,ignoreReadonly:false,keepOpen:false,focusOnShow:true,inline:false,keepInvalid:false,datepickerInput:'.datepickerinput',keyBinds:{up:function up(widget){if(!widget){return;}var d=this.date()||this.getMoment();if(widget.find('.datepicker').is(':visible')){this.date(d.clone().subtract(7,'d'));}else{this.date(d.clone().add(this.stepping(),'m'));}},down:function down(widget){if(!widget){this.show();return;}var d=this.date()||this.getMoment();if(widget.find('.datepicker').is(':visible')){this.date(d.clone().add(7,'d'));}else{this.date(d.clone().subtract(this.stepping(),'m'));}},'control up':function controlUp(widget){if(!widget){return;}var d=this.date()||this.getMoment();if(widget.find('.datepicker').is(':visible')){this.date(d.clone().subtract(1,'y'));}else{this.date(d.clone().add(1,'h'));}},'control down':function controlDown(widget){if(!widget){return;}var d=this.date()||this.getMoment();if(widget.find('.datepicker').is(':visible')){this.date(d.clone().add(1,'y'));}else{this.date(d.clone().subtract(1,'h'));}},left:function left(widget){if(!widget){return;}var d=this.date()||this.getMoment();if(widget.find('.datepicker').is(':visible')){this.date(d.clone().subtract(1,'d'));}},right:function right(widget){if(!widget){return;}var d=this.date()||this.getMoment();if(widget.find('.datepicker').is(':visible')){this.date(d.clone().add(1,'d'));}},pageUp:function pageUp(widget){if(!widget){return;}var d=this.date()||this.getMoment();if(widget.find('.datepicker').is(':visible')){this.date(d.clone().subtract(1,'M'));}},pageDown:function pageDown(widget){if(!widget){return;}var d=this.date()||this.getMoment();if(widget.find('.datepicker').is(':visible')){this.date(d.clone().add(1,'M'));}},enter:function enter(){this.hide();},escape:function escape(){this.hide();},//tab: function (widget) { //this break the flow of the form. disabling for now
+//    var toggle = widget.find('.picker-switch a[data-action="togglePicker"]');
+//    if(toggle.length > 0) toggle.click();
+//},
+'control space':function controlSpace(widget){if(!widget){return;}if(widget.find('.timepicker').is(':visible')){widget.find('.btn[data-action="togglePeriod"]').click();}},t:function t(){this.date(this.getMoment());},'delete':function _delete(){this.clear();}},debug:false,allowInputToggle:false,disabledTimeIntervals:false,disabledHours:false,enabledHours:false,viewDate:false};if(typeof module!=='undefined'){module.exports=$.fn.datetimepicker;}});
+
+},{"jquery":45,"moment":47}],92:[function(require,module,exports){
 'use strict';
 
 (function ($) {
@@ -57664,7 +58102,7 @@ if (module.hot) {(function () {  module.hot.accept()
   });
 })(jQuery);
 
-},{}],89:[function(require,module,exports){
+},{}],93:[function(require,module,exports){
 'use strict';var _typeof=typeof Symbol==="function"&&typeof Symbol.iterator==="symbol"?function(obj){return typeof obj;}:function(obj){return obj&&typeof Symbol==="function"&&obj.constructor===Symbol?"symbol":typeof obj;};!function($){"use strict";var FOUNDATION_VERSION='6.2.3';// Global Foundation object
 // This is attached to the window, or used as a module for AMD/Browserify
 var Foundation={version:FOUNDATION_VERSION,/**
@@ -60076,7 +60514,7 @@ if(!_this.options.clickOpen){isFocus=false;}return false;}else{_this.show();}}).
    */// Window exports
 Foundation.plugin(Tooltip,'Tooltip');}(jQuery);
 
-},{}],90:[function(require,module,exports){
+},{}],94:[function(require,module,exports){
 "use strict";
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
@@ -61228,7 +61666,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
   }(), t.effects;
 });
 
-},{}],91:[function(require,module,exports){
+},{}],95:[function(require,module,exports){
 'use strict';
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
@@ -62558,7 +62996,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
     });
 });
 
-},{"./jquery.ui.widget":94,"jquery":45}],92:[function(require,module,exports){
+},{"./jquery.ui.widget":98,"jquery":45}],96:[function(require,module,exports){
 'use strict';
 
 /**
@@ -63376,7 +63814,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
     };
 })(jQuery, 'tokenize');
 
-},{}],93:[function(require,module,exports){
+},{}],97:[function(require,module,exports){
 'use strict';
 
 /*!
@@ -63558,7 +63996,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
   };
 })(jQuery);
 
-},{}],94:[function(require,module,exports){
+},{}],98:[function(require,module,exports){
 "use strict";
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
@@ -64106,7 +64544,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 	var widget = $.widget;
 });
 
-},{"jquery":45}],95:[function(require,module,exports){
+},{"jquery":45}],99:[function(require,module,exports){
 'use strict';
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
@@ -64258,7 +64696,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
   });
 })(jQuery);
 
-},{}],96:[function(require,module,exports){
+},{}],100:[function(require,module,exports){
 "use strict";
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
@@ -64890,7 +65328,7 @@ jQuery.Velocity ? console.log("Velocity is already loaded. You may be needlessly
   }(window.jQuery || window.Zepto || window, window, document);
 }));
 
-},{}],97:[function(require,module,exports){
+},{}],101:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -64941,12 +65379,23 @@ exports.default = {
   }
 };
 
-},{}],98:[function(require,module,exports){
+},{}],102:[function(require,module,exports){
 'use strict';
 
 module.exports = function () {
 
     function Tools() {}
+
+    Tools.prototype.arrayBy = function (items, filter) {
+        var arrays = [];
+
+        for (var d = 0, len = items.length; d < len; d += 1) {
+            var ret = {};
+            arrays.push(items[d][filter]);
+        }
+
+        return arrays;
+    };
 
     Tools.prototype.collectionBy = function (items, filter) {
         var arrays = [];
@@ -64978,7 +65427,7 @@ module.exports = function () {
     };
 }();
 
-},{}],99:[function(require,module,exports){
+},{}],103:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -65001,13 +65450,30 @@ var _ClubTemplate = require('.././actors/manager/menus/ClubTemplate.vue');
 
 var _ClubTemplate2 = _interopRequireDefault(_ClubTemplate);
 
+var _PlanPanel = require('.././actors/manager/components/PlanPanel.vue');
+
+var _PlanPanel2 = _interopRequireDefault(_PlanPanel);
+
+var _TrainingPanel = require('.././actors/manager/components/TrainingPanel.vue');
+
+var _TrainingPanel2 = _interopRequireDefault(_TrainingPanel);
+
+var _ServicePanel = require('.././actors/manager/components/ServicePanel.vue');
+
+var _ServicePanel2 = _interopRequireDefault(_ServicePanel);
+
+var _AllMembers = require('.././actors/manager/components/AllMembers.vue');
+
+var _AllMembers2 = _interopRequireDefault(_AllMembers);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = {
 
 	props: {
 		clubid: {},
-		selectedMenu: { default: 'club-registration' }
+		selectedMenu: { default: 'club-registration' },
+		content: { default: 'training-panel' }
 	},
 
 	data: function data() {
@@ -65025,6 +65491,15 @@ exports.default = {
 	ready: function ready() {},
 
 	events: {
+		'member-changed': function memberChanged($request) {
+			this.$broadcast('_MemberTypeChanged', $request.content);
+		},
+
+		'content-changed': function contentChanged($request) {
+			debugger;
+			this.content = $request.content;
+		},
+
 		'accept-request': function acceptRequest($request) {
 			this.requests_count--;
 			this.members_count++;
@@ -65047,12 +65522,27 @@ exports.default = {
 
 		setMenu: function setMenu(menu) {
 			this.selectedMenu = menu;
+
+			switch (this.selectedMenu) {
+				case 'club-registration':
+					this.content = 'training-panel';
+					break;
+				case 'club-members':
+					this.content = 'all-members';
+					break;
+				case 'club-dashboard':
+					this.content = 'training-panel';
+					break;
+				default:
+					this.content = 'all-members';
+			}
 		}
 	},
 
 	components: {
 		ClubDashboard: _ClubDashboard2.default, ClubMembers: _ClubMembers2.default,
-		ClubRegistration: _ClubRegistration2.default, ClubTemplate: _ClubTemplate2.default
+		ClubRegistration: _ClubRegistration2.default, ClubTemplate: _ClubTemplate2.default, PlanPanel: _PlanPanel2.default,
+		TrainingPanel: _TrainingPanel2.default, ServicePanel: _ServicePanel2.default, AllMembers: _AllMembers2.default
 	},
 
 	locales: {
@@ -65081,7 +65571,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-149d772a", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{".././actors/manager/menus/ClubDashboard.vue":69,".././actors/manager/menus/ClubMembers.vue":70,".././actors/manager/menus/ClubRegistration.vue":71,".././actors/manager/menus/ClubTemplate.vue":72,"vue":55,"vue-hot-reload-api":50}],100:[function(require,module,exports){
+},{".././actors/manager/components/AllMembers.vue":62,".././actors/manager/components/PlanPanel.vue":67,".././actors/manager/components/ServicePanel.vue":70,".././actors/manager/components/TrainingPanel.vue":71,".././actors/manager/menus/ClubDashboard.vue":72,".././actors/manager/menus/ClubMembers.vue":73,".././actors/manager/menus/ClubRegistration.vue":74,".././actors/manager/menus/ClubTemplate.vue":75,"vue":55,"vue-hot-reload-api":50}],104:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -65129,7 +65619,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-334daf3c", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":55,"vue-hot-reload-api":50}],101:[function(require,module,exports){
+},{"vue":55,"vue-hot-reload-api":50}],105:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -65188,7 +65678,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-7b0768ba", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":55,"vue-hot-reload-api":50}],102:[function(require,module,exports){
+},{"vue":55,"vue-hot-reload-api":50}],106:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -65263,7 +65753,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-4f51e179", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{".././components/Activity.vue":75,".././components/Followed.vue":79,".././components/Timeline.vue":81,"vue":55,"vue-hot-reload-api":50}],103:[function(require,module,exports){
+},{".././components/Activity.vue":78,".././components/Followed.vue":82,".././components/Timeline.vue":84,"vue":55,"vue-hot-reload-api":50}],107:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -65288,14 +65778,14 @@ exports.default = {
 			map: {},
 			me: null,
 			currentPos: null,
-			circleTool: {},
 			clubs: [],
 			clubMarkers: [],
 			tooltipHover: false,
 			zoom: 16,
 			bounds: null,
 			center: { lat: 47.9118309, lng: 106.8276077 },
-			searchOptions: null
+			searchOptions: null,
+			locationTool: null
 		};
 	},
 
@@ -65327,16 +65817,10 @@ exports.default = {
 				}
 			});
 
-			this.circleTool = new google.maps.Circle({
-				strokeColor: '#FF0000',
-				strokeOpacity: 0.8,
-				strokeWeight: 2,
-				fillColor: '#FF0000',
-				fillOpacity: 0.35,
+			this.locationTool = new google.maps.Marker({
+				position: this.center,
 				map: this.map,
-				center: { lat: 47.9118309, lng: 106.8276077 },
-				radius: 100,
-				editable: true,
+				animation: google.maps.Animation.DROP,
 				draggable: true
 			});
 		},
@@ -65528,7 +66012,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-333b9032", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{".././components/SearchTooltip.vue":80,"vue":55,"vue-hot-reload-api":50}],104:[function(require,module,exports){
+},{".././components/SearchTooltip.vue":83,"vue":55,"vue-hot-reload-api":50}],108:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -65568,6 +66052,6 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-56035bfa", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":55,"vue-hot-reload-api":50}]},{},[73]);
+},{"vue":55,"vue-hot-reload-api":50}]},{},[76]);
 
 //# sourceMappingURL=app.js.map
