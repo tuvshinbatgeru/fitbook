@@ -17,5 +17,6 @@ class DatabaseSeeder extends Seeder
         $this->call(WidgetSeeder::class);
         $this->call(TagSeeder::class);
         $this->call(ServiceSeeder::class);
+        $this->call(GenreSeeder::class);
     }
 }
