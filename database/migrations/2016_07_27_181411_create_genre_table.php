@@ -14,10 +14,9 @@ class CreateGenreTable extends Migration
     {
         Schema::create('genre', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('tag');
-            $table->string('tag_en');
             $table->string('name');
             $table->string('name_en');
+            $table->string('icon');
             $table->enum('verified', ['N', 'Y'])->default('N');
             $table->timestamps();
         });
