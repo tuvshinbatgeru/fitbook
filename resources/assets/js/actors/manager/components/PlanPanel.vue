@@ -6,11 +6,6 @@
       </ul>
   </div>  
 
-  <component :id="id" :is="content">
-      
-  </component>
-
-
   <div class="row">
     <div class="small-10 columns">
       <input type="text" name="search" placeholder="search ...">
@@ -25,15 +20,6 @@
     </div>
   </div>
 
-  <label>Select Menu
-    <select>
-      <option value="husker">All</option>
-      <option value="starbuck">Starbuck</option>
-      <option value="hotdog">Hot Dog</option>
-      <option value="apollo">Apollo</option>
-    </select>
-  </label>
-
   <custom-modal 
       :id = "id"
       type = "Club"
@@ -44,8 +30,11 @@
       validateable = 'Y'
       context = "AddPlan"
       >
-    </custom-modal>
+  </custom-modal>
 
+  <component :id="id" :is="content">
+      
+  </component>
 </template>
 
 <script>
@@ -67,7 +56,7 @@
     },
 
     created : function () {
-        
+        this.$broadcast('_planadded', null);
     },
 
     ready : function () {
@@ -76,16 +65,32 @@
 
     events : {
         'savePlan' : function($response) {
-          this.savePlan($response);
+            this.savePlan($response);
         },
     },
 
     methods : {
+        testBroadcast : function () {
+            this.$broadcast('_planadded', null);
+        },
         savePlan : function($response) {
-            this.$http.post(this.$env.get('APP_URI') + 'api/club/' + this.id + '/plan?data=' + $response.data).then(res => {
-                this.plans.push(res.data.result);
-                this.showAddPlan = false;
-                this.$root.$refs.toast.showMessage('Successfully add new plan.');
+            this.$http.post(this.$env.get('APP_URI') + 'api/club/' + this.id + '/plan?data=' + $response.data.param).then(res => {
+                
+                if(res.data.code == 0) {
+                    var current = res.data.result;
+                    var pinned_photos = [];
+                    pinned_photos.push($response.data.pinned_photo);
+
+                    current.plan[0].pinned_photos = pinned_photos;
+
+                    current.plan[0].teachers = $response.data.teachers;
+                    current.plan[0].services = $response.data.services;
+                    current.plan[0].trainings = $response.data.trainings;
+                    this.$broadcast('_planadded', current);
+                    this.showAddPlan = false;
+                }
+
+                this.$root.$refs.toast.showMessage(res.data.message);
             }).catch(err => {
                 this.$root.$refs.toast.showMessage('Server side error!.');
             });

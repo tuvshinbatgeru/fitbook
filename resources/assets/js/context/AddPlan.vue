@@ -206,22 +206,30 @@
 			},
 
 			getData : function() {
-				return this.$tools.transformParameters({
-					club_id : this.id,
-					name : this.name,
-					description : this.description,
-					freq : this.freq,
-					length : this.length,
-					trainerless : this.trainerless,
-					trainerCount : this.trainerCount,
-					isPrimary : this.isPrimary,
-					price : this.price,
-					discount : this.discount,
-					teachers : this.$tools.arrayBy(this.teachers,'id'),
-					trainings : this.$tools.arrayBy(this.trainings,'id'),
-					services : this.$tools.arrayBy(this.services,'id'),
-					pictures : this.$tools.collectionBy(this.$refs.pslider.pictures, "id|url|pinned"),
-			    });
+				this.$dispatch('startLoading');
+
+				return {
+					teachers : this.teachers,
+					trainings : this.trainings,
+					services : this.services,
+					pinned_photo : this.$refs.pslider.pinnedPhoto,
+					param : this.$tools.transformParameters({
+						club_id : this.id,
+						name : this.name,
+						description : this.description,
+						freq : this.freq,
+						length : this.length,
+						trainerless : this.trainerless,
+						trainerCount : this.trainerCount,
+						isPrimary : this.isPrimary,
+						price : this.price,
+						discount : this.discount,
+						teachers : this.$tools.arrayBy(this.teachers,'id'),
+						trainings : this.$tools.arrayBy(this.trainings,'id'),
+						services : this.$tools.arrayBy(this.services,'id'),
+						pictures : this.$tools.collectionBy(this.$refs.pslider.pictures, "id|url|pinned"),
+				    })
+				}
 			},
 
 			limitText : function(count) {

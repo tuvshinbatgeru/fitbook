@@ -1,8 +1,23 @@
 <template>
-    <h3>Primary Plan</h3>
+    <div class="row small-up-3 medium-up-4 large-up-4">
+        <div class="columns" v-for="current in plans">
+        <h3>{{current.plan[0].name}}</h3>
+        <p>{{current.plan[0].description}}</p>
 
-    <div class="row">
-        Percentage of lolloloasdsadfsdfl
+        <img :src="current.plan[0].pinned_photos[0].url"/>
+
+        <label>{{current.plan[0].price}}</label>
+
+        <ul v-for="teacher in current.plan[0].teachers">
+            {{teacher.username}}
+        </ul>
+        <ul v-for="service in current.plan[0].services">
+            {{service.name}}
+        </ul>
+        <ul v-for="train in current.plan[0].trainings">
+            {{train.name}}
+        </ul>
+        </div>
     </div>
 </template>
 
@@ -14,21 +29,25 @@
         },
 
         created : function () {
-            this.getPrimaryPlan();
-        },
-
-        data() {
-            return {
-                plans : [],
-            }           
+            this.getPrimaryPlans();
         },
 
         ready : function () {
+            this.$on('_planadded', this.PlanAdded);
+        },
 
+        data () {
+            return {
+                plans : [],
+            }
         },
 
         methods : {
-            getPrimaryPlan : function () {
+            PlanAdded : function(primary) {
+                this.plans.push(primary);
+            },
+
+            getPrimaryPlans : function () {
                 this.$http.get(this.$env.get('APP_URI') + 'api/club/' + this.id + '/plan?type=primary').then(res => {
                     this.plans = res.data.result;
                 }).catch(err => {
