@@ -44,7 +44,7 @@
         },
 
         created: function () {
-            this.getMembers();
+            this.init();
         },
 
         data : function () {
@@ -55,21 +55,21 @@
         },
 
         ready : function () {
-            this.$on('_MemberTypeChanged', (memberType) => {
-                this.type = memberType;
-                this.getMembers();
-            });
+            this.$watch('type', function () {
+                debugger;
+                this.init();
+            })
         },
 
         methods : {
-            getMembers: function () {
+            init : function () {
                 this.$http.get(this.$env.get('APP_URI') + 'api/club/' + this.id + '/members/' + this.type).then((response) => 
                 {
-                    this.members = response.data;
-                    this.maxViewOrder = 10;
+                    this.members = response.data.result;
+                    this.maxViewOrder = response.data.max_id;
                 }, (response) => {
 
-                });            
+                });
             },
 
             upperOrder : function (member) {
@@ -78,14 +78,28 @@
                 member.pivot.view_order --;
                 if(upper) upper.pivot.view_order ++;
 
-                
+                this.toggleOrder('upper', member, upper);
             },
 
             downOrder : function (member) {
                 var down = this.findByViewOrder(member.pivot.view_order + 1);
                 member.pivot.view_order ++;
                 if(down) down.pivot.view_order --;
+                this.toggleOrder('down', member, down);
             },
+
+            toggleOrder : function (type, first, second) {
+                this.$http.post(this.$env.get('APP_URI') + 
+                    'api/club/' + 
+                    this.id + 
+                    '/teacher/' + 
+                    first.id + '/' + 
+                    second.id + '?type=' + type).then(res => {
+                        
+                }).catch(err => {
+                    
+                });
+            }, 
 
             findByViewOrder : function (view_order) {
                 for (var index in this.members) {

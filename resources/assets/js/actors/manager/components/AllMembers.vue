@@ -9,7 +9,7 @@
 
     <div class="small-12 text-center small-centered columns">
         <component :id="id" 
-                   :type="memberType" 
+                   :type.sync="memberType" 
                    :is="submenu">
         </component>
     </div>
@@ -33,7 +33,7 @@
           request_count : 0,
           member_count : 0,
           archive_count : 0,
-          submenu : { default: 'request-members' },
+          submenu : 'request-members',
       }
     },
 
@@ -43,6 +43,9 @@
 
     ready : function () {
         $('ul.tabs').tabs();
+        this.$on('_MemberTypeChanged', (memberType) => {
+            this.memberType = memberType;
+        });
     },
 
     events: {
@@ -58,6 +61,7 @@
 
     methods : {
         init: function () {
+            debugger;
             this.$http.get(this.$env.get('APP_URI') + 'api/club/edit/' + this.clubid + '/members?type=' + this.memberType).then((response) => 
             {
                 this.request_count = response.data.requests_count;
@@ -74,13 +78,12 @@
                 return 0;
               case "current-members" : 
                 return 1;
-
            }
         },
 
         setMembersType : function (type) {
-            this.$broadcast('_MemberTypeChanged', this.memberType);
-            this.init();
+            this.memberType = type;
+            //this.init();
         },
 
         setSubMenu : function (menu) {

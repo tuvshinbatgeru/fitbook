@@ -22,6 +22,12 @@ class Plan extends Model
     			->withTimestamps();
     }
 
+    public function pinnedPhotos()
+    {
+        return $this->belongsToMany('App\Photo', 'plan_photos', 'plan_id', 'photo_id')
+                ->where('pinned', '=', 'Y');
+    }
+
     public function teachers()
     {
     	return $this->belongsToMany('App\User', 'plan_teacher', 'plan_id', 'teacher_id')

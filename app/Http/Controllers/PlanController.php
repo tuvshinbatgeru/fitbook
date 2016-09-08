@@ -32,7 +32,8 @@ class PlanController extends Controller
     public function index(Club $club, Request $request)
     {
         $plans = self::$lookup[$request->type]::with(['plan' => function ($query) use ($club) {
-            $query->where('club_id', '=', $club->id);
+            $query->where('club_id', '=', $club->id)
+                  ->with('pinnedPhotos', 'teachers', 'services', 'trainings');
         }])->get();
 
         return Response::json([
@@ -54,25 +55,30 @@ class PlanController extends Controller
     {
         $decode = json_decode($request->data);
         $data = $this->planTransformer->transform($decode);
+
         $planable = self::createPlanable($data);
 
         $plan = new Plan($data);
         $plan->price = $data['isPrimary'] ? $data['price'] : $data['discount'];
         $planable->plan()->save($plan);
 
+        $planable->plan[0] = $plan;
+
+        $photo_id_array = [];
         for ($i = 0; $i < count($decode->pictures); $i++) {
-            $plan->photos()->attach(intval($decode->pictures[$i]->id), ['pinned' => $decode->pictures[$i]->pinned ? 'Y' : 'N']);
-            Photo::attachTagById($decode->pictures[$i]->id, Tag::PLAN_ID);
+            $photo_id_array[$decode->pictures[$i]->id] = ['pinned' => $decode->pictures[$i]->pinned ? 'Y' : 'N'];
+            Photo::attachTagById($decode->pictures[$i]->id, Tag::TRAINING_ID);
         }
 
+        $plan->trainings()->sync($decode->trainings);
+        $plan->photos()->sync($photo_id_array);
         $plan->teachers()->sync($decode->teachers);
         $plan->services()->sync($decode->services);
 
-        $plan->teachers;
-        $plan->photos = $plan->pinnedPhoto();
-
         return Response::json([
-            'result' => $plan,
+            'code' => 0,
+            'message' => 'Successfully added plan.',
+            'result' => $planable,
         ], 200);
     }
 
