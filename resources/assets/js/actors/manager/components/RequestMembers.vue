@@ -40,15 +40,13 @@
         },
 
         ready : function () {
-            this.$on('_MemberTypeChanged', (memberType) => {
-                this.type = memberType;
+            this.$watch('type', function () {
                 this.init();
-            });
+            })
         },
 
         methods : {
             init: function () {
-                debugger;
                 this.$http.get(this.$env.get('APP_URI') + 'api/club/edit/' + this.id + '/request?memberType=' + this.type).then((response) => 
                 {
                     this.requests = response.data;
