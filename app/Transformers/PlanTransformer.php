@@ -2,6 +2,8 @@
 
 namespace App\Transformers;
 
+use Carbon\Carbon;
+
 class PlanTransformer extends Transformer {
 
 	public function transform($item)
@@ -18,6 +20,8 @@ class PlanTransformer extends Transformer {
 			'is_active' => 'Y',
 			'length' => $item->length,
 			'frequency_type' => $item->freq,
+			'start_date' => Carbon::create(2000, 1, 1, 0, 0, 0),
+			'finish_date' => Carbon::create(2000, 1, 1, 0, 0, 0),
 		];
 	}
 	

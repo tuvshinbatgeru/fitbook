@@ -93,12 +93,12 @@
   		  <div class="row">
 			<div class="small-6 medium-6 column">
 				<label>Start
-					<input type="date" class="datepicker">
+					<input type="text" id="start_date" v-model="startDate"/>
 				</label>
 			</div>
 			<div class="small-6 medium-6 column">
 				<label v-show="isPrimary">Finish
-					<input type="date" class="datepicker">
+					<input type="text" id="finish_date" v-model="finishDate">
 				</label>
 
 				<label v-show="!isPrimary">
@@ -173,6 +173,8 @@
 				showTraining : false,
 				showTeacher : false,
 				isLoading : false,
+				startDate : null,
+				finishDate : null,
 			}
 		},
 		
@@ -182,12 +184,13 @@
 
 		ready : function () {
 			$('ul.tabs').tabs();
+			$('#start_date').datetimepicker({
+                    format: 'DD/MM/YYYY'
+            });
 
-			/*$('.datepicker').pickadate({
-			    firstDay: 1,
-			    selectMonths: true, // Creates a dropdown to control month
-			    selectYears: 1
-			});*/
+			$('#finish_date').datetimepicker({
+                    format: 'DD/MM/YYYY'
+            });
 		},
 
 		events : {
@@ -219,6 +222,8 @@
 						description : this.description,
 						freq : this.freq,
 						length : this.length,
+						startDate : this.startDate,
+						finishDate : this.finishDate,
 						trainerless : this.trainerless,
 						trainerCount : this.trainerCount,
 						isPrimary : this.isPrimary,

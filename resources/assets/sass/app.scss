@@ -10,8 +10,8 @@
 @include motion-ui-transitions;
 @include foundation-everything;
 
-@import 'foundation/datepicker/_datepicker.scss';
-
+@import 'foundation/datepicker/variables.scss';
+@import 'foundation/datepicker/bootstrap-datetimepicker-build.scss';
 @import 'bower_components/materialize/scss/components/_mixins.scss';
 @import 'bower_components/materialize/scss/components/_color.scss';
 @import 'bower_components/materialize/scss/components/_variables.scss';

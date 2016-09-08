@@ -17,11 +17,11 @@ require('./dependency/jquery.tokenize');
 require('./dependency/tabs');
 require('./dependency/dropdown');
 require('./dependency/velocity.min');
+require('./dependency/transition');
+require('./dependency/collapse');
 require('./dependency/bootstrap-datetimepicker');
 
-
-/*require('./dependency/datepicker/picker');*/
-/*require('./dependency/datepicker/datepicker');*/
+/*require('./dependency/tooltip');*/
 
 import Chart from 'chart.js';
 
