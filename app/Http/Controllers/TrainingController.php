@@ -28,10 +28,10 @@ class TrainingController extends Controller
     {
         $decode = json_decode($request->data);
         $trainings = $club->trainings;
+        $trainings->load('teachers', 'pinnedPhotos');
 
         foreach ($trainings as $training) {
-            $training->photos = $training->pinnedPhoto();
-            $training->teachers;
+
             $training->selected = false;
 
             if(empty($decode->selected)) {
@@ -69,24 +69,29 @@ class TrainingController extends Controller
     {
         $decode = json_decode($request->data);
         $data = $this->trainingTransformer->transform($decode);
+
+        if(Training::where('name', '=', $data['name'])->exists()) 
+            return Response::json([
+                'code' => 1,
+                'message' => 'Training name duplicated',
+            ]); 
+
         $training = new Training($data);
         $training->save();
 
+        $photo_id_array = [];
         for ($i = 0; $i < count($decode->pictures); $i++) {
-            $training->photos()->attach(intval($decode->pictures[$i]->id), ['pinned' => $decode->pictures[$i]->pinned ? 'Y' : 'N']);
+            $photo_id_array[$decode->pictures[$i]->id] = ['pinned' => $decode->pictures[$i]->pinned ? 'Y' : 'N'];
             Photo::attachTagById($decode->pictures[$i]->id, Tag::TRAINING_ID);
         }
 
-        for ($i = 0; $i < count($decode->teachers); $i ++) { 
-            $training->teachers()->attach(intval($decode->teachers[$i]->id));    
-        }
-
+        $training->photos()->sync($photo_id_array);
+        $training->teachers()->sync($decode->teachers);
         $training->genres()->sync($decode->genres);
 
-        $training->teachers;
-        $training->photos = $training->pinnedPhoto();
-
         return Response::json([
+            'code' => 0,
+            'message' => 'Successfully added training',
             'result' => $training,
         ], 200);
     }

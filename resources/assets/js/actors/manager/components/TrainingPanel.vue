@@ -16,6 +16,7 @@
 
   <custom-modal 
         :id = "id"
+        v-ref:addtr
         type = "Club"
         title = "Хичээл нэмэх" 
         title_en = "Add Training"
@@ -70,11 +71,25 @@
         },
 
         saveTraining : function($response) {
-            this.$http.post(this.$env.get('APP_URI') + 'api/club/' + this.id + '/training?data=' + $response.data).then(res => {
-                this.training.push(res.data.result);
-                this.showAddTraining = false;
-                this.$root.$refs.toast.showMessage('Successfully add new training.');
+
+            this.$http.post(this.$env.get('APP_URI') + 'api/club/' + this.id + '/training?data=' + $response.data.param).then(res => {
+                
+                if(res.data.code == 0) {
+                    var curTraining = res.data.result;
+                    curTraining.teachers = $response.data.teachers;
+                    var pinned_photos = [];
+                    pinned_photos.push($response.data.pinned_photo);
+                    curTraining.pinned_photos = pinned_photos;
+
+                    this.training.shift(curTraining);
+                    this.showAddTraining = false;
+                }
+
+                this.$refs.addtr.loading = false;
+                this.$root.$refs.toast.showMessage(res.data.message);
+
             }).catch(err => {
+                this.$refs.addtr.loading = false;
                 this.$root.$refs.toast.showMessage('Server side error!.');
             });
             

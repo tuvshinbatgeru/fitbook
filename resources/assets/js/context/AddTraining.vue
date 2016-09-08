@@ -90,24 +90,24 @@
 
 		methods : {
 			getData : function() {
+				this.$dispatch('startLoading');
 
-				debugger;
-
-				var retData =  this.$tools.transformParameters({
-					club_id : this.id,
-					name : this.name,
-					description : this.description,
-					pictures : this.$tools.collectionBy(this.$refs.pslider.pictures, "id|url|pinned"),
-					teachers : this.$tools.collectionBy(this.$refs.tslider.teachers, "id"),
-					genres : this.$tools.arrayBy(this.genres, "id"), 
-			    });
-
-			    return retData;
+				return {
+					teachers : this.$refs.tslider.teachers,
+					pinned_photo : this.$refs.pslider.pinnedPhoto,
+					param : this.$tools.transformParameters({
+						club_id : this.id,
+						name : this.name,
+						description : this.description,
+						pictures : this.$tools.collectionBy(this.$refs.pslider.pictures, "id|url|pinned"),
+						teachers : this.$tools.arrayBy(this.$refs.tslider.teachers, "id"),
+						genres : this.$tools.arrayBy(this.genres, "id"), 
+			    	})
+				};
 			},
 
 			validate : function () {
 
-				debugger;
 				if(!this.name.trim()) {
 					this.$root.$refs.toast.showMessage("Please. Fill the name of training");
 					return false;
@@ -115,6 +115,11 @@
 
 				if(!this.description.trim()) {
 					this.$root.$refs.toast.showMessage("Please. Fill the description of training");
+					return false;
+				}
+
+				if(!this.genres || this.genres.length == 0) {
+					this.$root.$refs.toast.showMessage("Please. Choose at least one genre");
 					return false;
 				}
 
