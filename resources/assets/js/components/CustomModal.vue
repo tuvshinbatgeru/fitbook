@@ -135,12 +135,10 @@
 
 		events : {
 			'startLoading' : function() {
-				debugger;
 				this.loading = true;
 			},
 
 			'stopLoading' : function() {
-				debugger;
 				this.loading = false;
 			},
 		},
