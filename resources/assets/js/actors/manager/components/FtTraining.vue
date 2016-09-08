@@ -1,6 +1,6 @@
 <template>
 	<div class="column">
-		<img :src="item.photos[0].url"/>
+		<img :src="item.pinned_photos[0].url"/>
 		<h3>{{item.name}}</h3>
 		{{item.description}}	
 		<ul>
