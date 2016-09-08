@@ -54,9 +54,19 @@ class ClubController extends Controller
 
     public function members(Club $club, $type)
     {
-        return $club->members()
-                    ->where('type', '=', $type)
+        return Response::json([
+            'code' => 0,
+            'result' => $club->members()->where('type', '=', $type)->get(),
+            'max_id' => $club->nextTeacherViewOrder() - 1,
+        ]);
+        return $club->members()->where('type', '=', $type)
                     ->get();
+    }
+    
+    public function toggleTeacherViewOrder($clubId, User $first, User $second, Request $request)
+    {
+        $first->toggleViewOrder($request->type == 'upper' ? 'upper' : 'down', $clubId);
+        $second->toggleViewOrder($request->type == 'upper' ? 'down' : 'upper', $clubId);
     }
 
     public function getTeachers(Club $club, Request $request)

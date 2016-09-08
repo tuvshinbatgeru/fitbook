@@ -250,6 +250,28 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
         return $photo;
     }
 
+    public function decreaseViewOrder($clubId)
+    {
+        $pivot = $this->clubs()->where('id', '=', $clubId)->first();
+        $pivot->pivot->view_order = $pivot->pivot->view_order - 1;
+        $pivot->pivot->save();
+    }
+
+    public function increaseViewOrder($clubId)
+    {
+        $pivot = $this->clubs()->where('id', '=', $clubId)->first();
+        $pivot->pivot->view_order = $pivot->pivot->view_order + 1;
+        $pivot->pivot->save();
+    }
+
+    public function toggleViewOrder($type, $clubId)
+    {
+        if($type == 'upper') 
+            return self::increaseViewOrder($clubId);
+        
+        return self::decreaseViewOrder($clubId);
+    }
+
     // MByte
     public function maxFileUpload()
     {

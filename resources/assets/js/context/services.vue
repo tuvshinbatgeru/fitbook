@@ -40,7 +40,7 @@
 			// This method should implement all context using as a save-callback 
 			getData : function() {
 				return this.$tools.transformParameters({
-					choosed : this.$tools.collectionBy(this.filteredServices, "id"),
+					choosed : this.$tools.arrayBy(this.filteredServices, "id"),
 			    });
 			},
 

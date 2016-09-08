@@ -51,15 +51,7 @@ class ServiceController extends Controller
     public function modifyClubServices(Club $club, Request $request)
     {
         $decode = json_decode($request->data);
-        $choosedServices = $decode->choosed;
-
-        $syncArray = [];
-
-        for($i = 0; $i < count($choosedServices); $i ++) {
-            array_push($syncArray, $choosedServices[$i]->id);
-        }
-
-        $club->services()->sync($syncArray);
+        $club->services()->sync($decode->choosed);
 
         return Response::json([
             'result' => $club->services,

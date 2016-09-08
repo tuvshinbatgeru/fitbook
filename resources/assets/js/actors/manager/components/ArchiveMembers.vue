@@ -19,9 +19,7 @@
         },
 
         ready : function () {
-            this.$on('_MemberTypeChanged', (memberType) => {
-                this.type = memberType;
-            });
+            
         },
 
         methods : {

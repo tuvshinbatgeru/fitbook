@@ -61,18 +61,6 @@ class ClubEditController extends Controller
         return $club->requests()->where('type','=', $type)->get();
     }
 
-    public function teacherToggleViewOrder(Club $club, Request $request)
-    {
-        $id;
-        $otherId;
-
-
-
-        //member.pivot.view_order --;
-        //upper.pivot.view_order ++;
-    }
-
-
     public function requestResponse(Request $request, Club $club, User $user)
     {
         $user->removeClubRequest($club);

@@ -63,6 +63,12 @@ use Illuminate\Support\Facades\Storage;
 		Route::post('request', 'UserController@toggleRequest');
 		Route::get('teacher', 'ClubController@getTeachers');
 		Route::get('members/{type}', 'ClubController@members');
+		Route::post('teacher/{first}/{second}', 'ClubController@toggleTeacherViewOrder');
+
+		Route::post('teacher/{first}/{second}', function($clubId, User $first, User $second, Request $request) {
+		    $first->toggleViewOrder($request->type == 'down' ? 'upper' : 'down', $clubId);
+        	$second->toggleViewOrder($request->type == 'down' ? 'down' : 'upper', $clubId);
+		});
 
 		Route::resource('training', 'TrainingController');
 		Route::resource('plan', 'PlanController');
@@ -78,7 +84,6 @@ use Illuminate\Support\Facades\Storage;
 		Route::get('members', 'ClubEditController@members');
 		Route::get('request', 'ClubEditController@request');
 		Route::put('request/{user}', 'ClubEditController@requestResponse');	
-		Route::post('vieworder', 'ClubEditController@teacherToggleViewOrder');
 	});
 
 	/* type - User */

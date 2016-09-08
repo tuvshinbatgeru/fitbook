@@ -20,6 +20,7 @@
 			return {
 				requests_count : { default : 0 },
 				members_count : { default : 0 },
+				subMenu : 1,
 			}
 		},
 
@@ -33,11 +34,11 @@
 
 		events: {
 			'member-changed' : function ($request) {
-				this.$broadcast('_MemberTypeChanged', $request.content);
+				this.subMenu = $request.content;
+				this.$broadcast('_MemberTypeChanged', this.subMenu);
 			},
 
 			'content-changed' : function($request) {
-				debugger;
 				this.content = $request.content;
 			},
 
