@@ -69,6 +69,7 @@
 		data() {
 			return {
 				showFileManager : false,
+				pinned : null,
 			}
 		},
 
