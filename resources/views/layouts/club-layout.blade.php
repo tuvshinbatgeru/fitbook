@@ -12,9 +12,7 @@
 <body>
 
     <custom-toast v-ref:toast></custom-toast>
-    <component id = "{{$id}}" is="club-view" inline-template>
-      @yield('content')      
-    </component>
+    @yield('content')      
 
    <!-- FOR WIDGET ANIMATION -->
    <script src="{{ elixir('js/app.js') }}"></script>

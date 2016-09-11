@@ -29,6 +29,18 @@ class PlanController extends Controller
         $this->planTransformer = $planTransformer;
     }
 
+    public function forWidgets(Club $club, Request $request)
+    {
+        $plans = self::$lookup[$request->type]::with(['plan' => function ($query) use ($club) {
+            $query->where('club_id', '=', $club->id)
+                  ->with('pinnedPhotos', 'teachers', 'services', 'trainings');
+        }])->get();
+
+        return Response::json([
+            'result' => $plans,
+        ]);
+    }
+
     public function index(Club $club, Request $request)
     {
         $plans = self::$lookup[$request->type]::with(['plan' => function ($query) use ($club) {
@@ -88,9 +100,16 @@ class PlanController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Plan $plan)
     {
-        //
+        $plan->pinnedPhotos;
+        $plan->teachers;
+        $plan->services;
+        $plan->trainings;
+        $plan->planable;
+        $plan->photos;
+
+        return view('club.plan')->with(compact('plan'));
     }
 
     /**

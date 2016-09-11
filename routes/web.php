@@ -28,7 +28,7 @@ use Illuminate\Support\Facades\Storage;
 	});
 
 	Route::get('/search', function(Request $request) {
-		    return view('search');
+		return view('search');
 	});
 
 	Route::get('users/{username}', 'UserController@index');
@@ -36,7 +36,7 @@ use Illuminate\Support\Facades\Storage;
 	Route::post('auth/login', 'Auth\LoginController@login');
 
 	Route::get('login', function() {
-			return view('auth.login');
+		return view('auth.login');
 	});
 
 	Route::get('/dashboard', function() {
@@ -46,14 +46,17 @@ use Illuminate\Support\Facades\Storage;
 	//application api
 	Route::group(['prefix' => '/api'], function () {
 
+		Route::get('/users', 'UserController@search');
 		Route::get('/service', 'ServiceController@list');	
 		Route::post('/test','FileManagerController@test');
 		Route::get('/search', 'SearchController@search');
 		Route::resource('/genre', 'GenreController');
+		Route::get('/user/files', 'FileManagerController@files');
+		Route::post('/user/avatar/{photo}', 'UserController@storeAvatar');
+
 	});
 
 	Route::post('/upload', 'FileManagerController@upload');
-	
 
 	//Club info APIs
 	Route::group(['prefix' => '/api/club/{club}/'], function () {
@@ -71,10 +74,12 @@ use Illuminate\Support\Facades\Storage;
 		});
 
 		Route::resource('training', 'TrainingController');
+		Route::get('plan/widget', 'PlanController@forWidgets');
 		Route::resource('plan', 'PlanController');
 		Route::resource('widgets', 'TemplateController');
 		Route::resource('service', 'ServiceController');
 		Route::post('/service/edit', 'ServiceController@modifyClubServices');
+
 	});
 
 	//Club edit APIs
@@ -84,6 +89,7 @@ use Illuminate\Support\Facades\Storage;
 		Route::get('members', 'ClubEditController@members');
 		Route::get('request', 'ClubEditController@request');
 		Route::put('request/{user}', 'ClubEditController@requestResponse');	
+
 	});
 
 	/* type - User */
@@ -93,13 +99,11 @@ use Illuminate\Support\Facades\Storage;
 
 	});
 
-	Route::get('/api/user/files', 'FileManagerController@files');
-	Route::post('/api/user/avatar/{photo}', 'UserController@storeAvatar');
-
 	Route::get('/create-club', function(Request $request) {
 	    return view('create-club');
 	});
 
+	Route::get('/plan/{plan}', 'PlanController@show');
 	Route::get('/{club}', 'ClubController@index');
 	Route::get('/{club}/edit', 'ClubEditController@edit');
 	Route::get('auth/logout', 'Auth\LoginController@logout');

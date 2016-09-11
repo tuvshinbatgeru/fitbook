@@ -38,11 +38,14 @@ Vue.use(require('vue-i18n'));
 //global components
 import CustomModal from './components/CustomModal.vue';
 import CustomToast from './components/CustomToast.vue';
+import CustomButton from './actors/application/components/CustomButton.vue';
+
 import Multiselect from 'vue-multiselect'
 
 Vue.component('CustomModal', CustomModal);
 Vue.component('CustomToast', CustomToast);
 Vue.component('Multiselect', Multiselect);
+Vue.component('CustomButton', CustomButton);
 
 
 //common tools

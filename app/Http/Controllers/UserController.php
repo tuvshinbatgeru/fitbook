@@ -13,6 +13,15 @@ use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
+    public function search(Request $request)
+    {
+        $query = $request->query;
+
+        User::
+
+        dd($query);
+        return;
+    }
     //
     public function index($username)
     {

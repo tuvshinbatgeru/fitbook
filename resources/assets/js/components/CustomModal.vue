@@ -71,6 +71,7 @@
 	import FileManager from '../context/FileManager.vue'; 
 	import teachers from '../context/teachers.vue'; 
 	import trainings from '../context/trainings.vue'; 
+	import AddSubscriptions from '../context/AddSubscriptions.vue'; 
 
 	export default {
 		props: {
@@ -144,7 +145,8 @@
 		},
 
 		components : {
-			AddTraining, AddPlan, FileManager, teachers, trainings, services
+			AddTraining, AddPlan, FileManager, 
+			teachers, trainings, services, AddSubscriptions
 		}
 	}
 </script>

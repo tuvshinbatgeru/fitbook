@@ -34,12 +34,12 @@
 <script>
 	export default {
 		props : {
-			clubid : {default : ''},
+			id : {default : ''},
 		},
 
 		created: function () {
 			this.setLanguage();
-		    this.getClubHeaderContent(this.clubid);
+		    this.getClubHeaderContent(this.id);
 		},
 
 		data : function () {
@@ -54,8 +54,8 @@
 		},
 
 		methods : {
-			getClubHeaderContent : function(clubId) {
-				this.$http.get(this.$env.get('APP_URI') + 'api/club/'+ clubId +'/club-info').then((response) => {
+			getClubHeaderContent : function() {
+				this.$http.get(this.$env.get('APP_URI') + 'api/club/'+ this.id +'/club-info').then((response) => {
 			        this.club = response.data.club;
 			        this.follow_status = response.data.follow_status;
 			        this.teacher_status = response.data.teacher_status;
