@@ -14,15 +14,11 @@ import SearchView from './web/SearchView.vue';
 import ProfileView from './web/ProfileView.vue';
 import ProfileEditView from './web/ProfileEditView.vue';
 import ClubEditView from './web/ClubEditView.vue';
-
-//application widgets load
-import HeaderDefault from './actors/application/widgets/header/Default.vue';
-import TeacherDefault from './actors/application/widgets/content/TeacherDefault.vue';
-import TrainingDefault from './actors/application/widgets/content/TrainingDefault.vue';
+import ClubView from './web/ClubView.vue';
 
 Vue.debug = true;
 Vue.http.headers.common['X-CSRF-TOKEN'] = document.querySelector('#_token').getAttribute('value');
-Vue.config.lang = 'mn';
+Vue.config.lang = 'en';
 
 const app = new Vue({
 	el : 'body',
@@ -39,8 +35,7 @@ const app = new Vue({
 	},
 
 	components : {
-		VerifyView, IndexView, SearchView, 
-		HeaderDefault, ClubEditView, TeacherDefault,
-		TrainingDefault, ProfileView, ProfileEditView
+		VerifyView, IndexView, SearchView, ClubEditView,
+		ProfileView, ProfileEditView, ClubView
 	},
 });
