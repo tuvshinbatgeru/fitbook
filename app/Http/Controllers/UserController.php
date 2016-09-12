@@ -16,12 +16,12 @@ class UserController extends Controller
     public function search(Request $request)
     {
         $query = $request->query;
-
-        User::
-
-        dd($query);
-        return;
-    }
+        $users = User::search($query)->get();
+        
+        return Response::json([
+            'result' => $users,
+        ]);
+    }   
     //
     public function index($username)
     {

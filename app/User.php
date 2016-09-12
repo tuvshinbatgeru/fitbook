@@ -16,11 +16,13 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Response;
 use Intervention\Image\Facades\Image;
 use Zizaco\Entrust\Traits\EntrustUserTrait;
+use Laravel\Scout\Searchable;
 
 class User extends Eloquent implements AuthenticatableContract, CanResetPasswordContract
 {
     use EntrustUserTrait;
     use Authenticatable, CanResetPassword;
+    use Searchable;
 
     protected $table = 'users';
     /**
@@ -284,5 +286,16 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
             return true;
         }
         return false;
+    }
+
+    public function toSearchableArray()
+    {
+        return [
+            'id' => $this->id,
+            'username' => $this->username,
+            'first_name' => $this->first_name,
+            'last_name' => $this->last_name,
+            'email' => $this->email,
+        ];
     }
 }
