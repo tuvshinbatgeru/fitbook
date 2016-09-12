@@ -2,17 +2,18 @@
 @section('content')
 
 	<custom-modal
+		:id = "1"
 		type = "Club"
 		title = "Subscription"
 		usage = "_subscription"
-		:show = "showSubscription"
+		:show.sync = "showSubscription"
 		context = "add-subscriptions">
 	</custom-modal>
 
 	<div class="row">
 		<div class="small-12 medium-2 column">
 			<img src="{{$plan->pinnedPhotos[0]->url}}"/>
-			<a @click="showSubscription = true" class="button success">Subscription</a>
+			<a @click="setSubscription(true)" class="button success">Subscription</a>
 		</div>
 		<div class="small-12 medium-5 column">
 			<h4>{{$plan->name}}</h4>

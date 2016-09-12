@@ -12,7 +12,10 @@
 <body>
 
     <custom-toast v-ref:toast></custom-toast>
-    @yield('content')      
+
+    <component is="plan-view" inline-template>
+        @yield('content')      
+    </component>  
 
    <!-- FOR WIDGET ANIMATION -->
    <script src="{{ elixir('js/app.js') }}"></script>

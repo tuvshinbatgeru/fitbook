@@ -15,6 +15,7 @@ import ProfileView from './web/ProfileView.vue';
 import ProfileEditView from './web/ProfileEditView.vue';
 import ClubEditView from './web/ClubEditView.vue';
 import ClubView from './web/ClubView.vue';
+import PlanView from './web/PlanView.vue';
 
 Vue.debug = true;
 Vue.http.headers.common['X-CSRF-TOKEN'] = document.querySelector('#_token').getAttribute('value');
@@ -36,6 +37,6 @@ const app = new Vue({
 
 	components : {
 		VerifyView, IndexView, SearchView, ClubEditView,
-		ProfileView, ProfileEditView, ClubView
+		ProfileView, ProfileEditView, ClubView, PlanView
 	},
 });

@@ -1,23 +1,20 @@
 <template>
 	<form method="POST" action="/">
 		<div class="row">
-	  		<label>{{$t("genre")}}</label>
+	  		<label>{{$t("user")}}</label>
 		    <multiselect 
 		    	:options="users" 
 		    	:selected="user" 
 		    	:multiple="false"
-		    	:clear-on-select="false" 
-		    	:close-on-select="true" 
 		    	select-label='сонгох'
 		    	selected-label='сонгосон'	
 		    	deselect-label='устгах'
-		    	label="name"
+		    	label="username"
+		    	key="id" 
 		    	id="user"
 		    	:loading="userLoading",
 		    	@search-change="userSearch",
 		    	@update="setUser",
-		    	:limit-text="limitText"
-		    	key="id" 
 		    	placeholder="хайх ...">
 		    		<span slot="noResult">Илэрц алга ...</span>
 		  	</multiselect>
@@ -56,7 +53,8 @@
 				}
 				
 				this.userLoading = true
-				this.$http.get(this.$env.get('APP_URI') + 'api/user?query=' + query).then(res => {
+				this.$http.get(this.$env.get('APP_URI') + 'api/users?query=' + query).then(res => {
+					this.users = res.data.result;
 					this.userLoading = false;
 				}).catch(err => {
 					this.userLoading = false;
