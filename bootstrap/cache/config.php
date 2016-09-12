@@ -1,4 +1,19 @@
 <?php return array (
+  'entrust' => 
+  array (
+    'role' => 'App\\Role',
+    'roles_table' => 'roles',
+    'permission' => 'App\\Permission',
+    'permissions_table' => 'permissions',
+    'permission_role_table' => 'permission_role',
+    'role_user_table' => 'role_user',
+    'user_foreign_key' => 'user_id',
+    'role_foreign_key' => 'role_id',
+  ),
+  'image' => 
+  array (
+    'driver' => 'gd',
+  ),
   'compile' => 
   array (
     'files' => 
@@ -192,13 +207,14 @@
       19 => 'Illuminate\\Translation\\TranslationServiceProvider',
       20 => 'Illuminate\\Validation\\ValidationServiceProvider',
       21 => 'Illuminate\\View\\ViewServiceProvider',
-      22 => 'App\\Providers\\AppServiceProvider',
-      23 => 'App\\Providers\\AuthServiceProvider',
-      24 => 'App\\Providers\\EventServiceProvider',
-      25 => 'App\\Providers\\RouteServiceProvider',
-      26 => 'Zizaco\\Entrust\\EntrustServiceProvider',
-      27 => 'Laravel\\Socialite\\SocialiteServiceProvider',
-      28 => 'Intervention\\Image\\ImageServiceProvider',
+      22 => 'Laravel\\Scout\\ScoutServiceProvider',
+      23 => 'App\\Providers\\AppServiceProvider',
+      24 => 'App\\Providers\\AuthServiceProvider',
+      25 => 'App\\Providers\\EventServiceProvider',
+      26 => 'App\\Providers\\RouteServiceProvider',
+      27 => 'Zizaco\\Entrust\\EntrustServiceProvider',
+      28 => 'Laravel\\Socialite\\SocialiteServiceProvider',
+      29 => 'Intervention\\Image\\ImageServiceProvider',
     ),
     'aliases' => 
     array (
@@ -341,6 +357,28 @@
     'password' => NULL,
     'sendmail' => '/usr/sbin/sendmail -bs',
   ),
+  'scout' => 
+  array (
+    'driver' => 'algolia',
+    'prefix' => '',
+    'queue' => false,
+    'algolia' => 
+    array (
+      'id' => 'EQWJL6TZLV',
+      'secret' => '9a7a3b6c25bf72bfe65e4d43c5c6196b',
+    ),
+    'elasticsearch' => 
+    array (
+      'index' => 'laravel',
+      'config' => 
+      array (
+        'hosts' => 
+        array (
+          0 => NULL,
+        ),
+      ),
+    ),
+  ),
   'broadcasting' => 
   array (
     'default' => 'log',
@@ -424,20 +462,5 @@
       ),
     ),
     'prefix' => 'laravel',
-  ),
-  'entrust' => 
-  array (
-    'role' => 'App\\Role',
-    'roles_table' => 'roles',
-    'permission' => 'App\\Permission',
-    'permissions_table' => 'permissions',
-    'permission_role_table' => 'permission_role',
-    'role_user_table' => 'role_user',
-    'user_foreign_key' => 'user_id',
-    'role_foreign_key' => 'role_id',
-  ),
-  'image' => 
-  array (
-    'driver' => 'gd',
   ),
 );
