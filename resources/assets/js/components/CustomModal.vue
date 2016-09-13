@@ -40,15 +40,13 @@
 
             <div v-show="!loading" class="modal-body">
 	          <slot name="body">
-	          	<component v-ref:context 
-	          			   v-if="type == 'Club'" 
+	          	<component v-if="type == 'Club'" 
 	          			   :id="id" 
 	          			   :type="type" 
 	          			   :is="context"
 	          			   :selected="items">
 				</component>
-				<components v-ref:context 
-							:multiple="multiple"
+				<components :multiple="multiple"
 							v-else 
 							:is="context" 
 							:selected="items">
@@ -71,7 +69,6 @@
 	import FileManager from '../context/FileManager.vue'; 
 	import teachers from '../context/teachers.vue'; 
 	import trainings from '../context/trainings.vue'; 
-	import AddSubscriptions from '../context/AddSubscriptions.vue'; 
 
 	export default {
 		props: {
@@ -87,9 +84,7 @@
 			},
 			title_en : {default : ''},
 			usage : { default: 'questionable'},
-			context : { 
-				required: true,
-			},
+			context : {},
 			items : {},
 			saveCallback : { default: null },
 			validateable : { 
@@ -117,14 +112,15 @@
 			},
 
 			modalSave : function() {
+				debugger;
 				if(this.saveCallback) {
-					if(this.validateable == 'Y' && !this.$refs.context.validate()){
+					if(this.validateable == 'Y' && !this.$children[0].validate()){
 						return;
 					}
 
 					var response = {
 						id: this.usage, 
-						data: this.$refs.context.getData(),
+						data: this.$children[0].getData(),
 					};
 
 					this.$dispatch(this.saveCallback, response);
@@ -146,7 +142,7 @@
 
 		components : {
 			AddTraining, AddPlan, FileManager, 
-			teachers, trainings, services, AddSubscriptions
+			teachers, trainings, services
 		}
 	}
 </script>

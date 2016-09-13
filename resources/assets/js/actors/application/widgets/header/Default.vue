@@ -98,6 +98,7 @@
 			    	trainer : 'Request',
 			    	untrainer : 'Un Request',
 			    	manager : 'Manager',
+			    	reception : 'Reception',
 			    };
 
 			    this.lang_mn = {
@@ -108,6 +109,7 @@
 			    	trainer : 'Элсэх',
 			    	untrainer : 'Элсэх хүсэлт илгээсэн',
 			    	manager : 'Менежер',
+			    	reception : 'Ресефшин',
 			    };
 			},
 

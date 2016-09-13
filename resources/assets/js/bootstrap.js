@@ -31,14 +31,22 @@ import Chart from 'chart.js';
  * and simple, leaving you to focus on building your next great project.
  */
 
-window.Vue = require('vue');
-require('vue-resource');
-Vue.use(require('vue-i18n'));
+window.Vue = require('vue')
+require('vue-resource')
+Vue.use(require('vue-i18n'))
+
+const moment = require('moment')
+require('moment/locale/mn')
+
+Vue.use(require('vue-moment'), {
+    moment
+})
 
 //global components
 import CustomModal from './components/CustomModal.vue';
 import CustomToast from './components/CustomToast.vue';
 import CustomButton from './actors/application/components/CustomButton.vue';
+import CustomCallout from './actors/application/components/CustomCallout.vue';
 
 import Multiselect from 'vue-multiselect'
 
@@ -46,6 +54,7 @@ Vue.component('CustomModal', CustomModal);
 Vue.component('CustomToast', CustomToast);
 Vue.component('Multiselect', Multiselect);
 Vue.component('CustomButton', CustomButton);
+Vue.component('CustomCallout', CustomCallout);
 
 
 //common tools

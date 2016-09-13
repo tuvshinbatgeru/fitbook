@@ -1,8 +1,7 @@
 <template>
-    <h3>Activity</h3>
-
-    <div class="row">
-        Percentage of lolloloasdsadfsdfl
+    <div class="row" v-for="activity in activities">
+        <h3>{{activity.short_name}}</h3>
+        <label>{{activity.pivot.duration}} min</label>
     </div>
 </template>
 
@@ -13,8 +12,14 @@
             id : {},
         },
 
-        created : function () {
+        data () {
+            return {
+                activities : [],
+            }
+        },
 
+        created : function () {
+            this.getActivity();
         },
 
         ready : function () {
@@ -22,7 +27,13 @@
         },
 
         methods : {
-
+            getActivity : function () {
+                this.$http.get(this.$env.get('APP_URI') + 'api/user/' + this.id + '/activity').then(res => {
+                    this.activities = res.data.result;
+                    debugger;
+                }).catch(err => {
+                });
+            }
         },
     }
 </script>
