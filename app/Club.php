@@ -24,6 +24,12 @@ class Club extends Model
 		return static::where('club_id','=', $club_id)->first();
 	}
 
+	public function onlineUsers()
+	{
+		return $this->belongsToMany('App\User', 'online_members', 'club_id', 'user_id')
+					->withPivot('subscription_id','start_time');
+	}
+
 	public function plans()
 	{
 		return $this->hasMany('App\Plan');

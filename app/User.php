@@ -62,6 +62,18 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
         $order->products()->saveMany($products);
     }
 
+    public function subscriptionPlans()
+    {
+        return $this->belongsToMany('App\Plan', 'subscriptions', 'user_id', 'plan_id')
+                    ->withPivot('id', 'club_id','begin_date', 'end_date');
+    }
+
+    public function subscriptionClubs()
+    {
+        return $this->belongsToMany('App\Club', 'subscriptions', 'user_id', 'club_id')
+                    ->withPivot('begin_date', 'end_date');
+    }
+
     public function photos()
     {
         return $this->hasMany('App\Photo', 'object_id');
@@ -110,6 +122,11 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
         return $this->belongsToMany('App\Club', 'followers', 'user_id', 'club_id')->withTimestamps();
     }
 
+    public function clubAsReception()
+    {
+        return $this->belongsToMany('App\Club', 'members', 'user_id', 'club_id')->where('type', '=', 3);
+    }
+
     public function clubsAsManager()
     {
         return $this->belongsToMany('App\Club', 'members', 'user_id', 'club_id')->where('type', '=', 2);
@@ -118,7 +135,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
     public function activities()
     {
         return $this->belongsToMany('App\Club', 'user_activity', 'user_id', 'club_id')
-                    ->withPivot('start_time', 'finish_time', 'duration')
+                    ->withPivot('subscription_id', 'start_time', 'finish_time', 'duration')
                     ->withTimestamps();
     }
 
@@ -126,6 +143,13 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
     {
         return $this->belongsToMany('App\Club','members','user_id', 'club_id')
                     ->withPivot('type', 'since_date', 'view_order')
+                    ->withTimestamps();
+    }
+
+    public function onlineClubs()
+    {
+        return $this->belongsToMany('App\Club', 'online_members', 'user_id', 'club_id')
+                    ->withPivot('subscription_id', 'start_time')
                     ->withTimestamps();
     }
 

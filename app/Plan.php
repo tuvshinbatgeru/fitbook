@@ -28,6 +28,13 @@ class Plan extends Model
                 ->where('pinned', '=', 'Y');
     }
 
+    public function subscriptions()
+    {
+        return $this->belongsToMany('App\User', 'subscriptions', 'plan_id', 'user_id')
+                ->withPivot('club_id', 'begin_date', 'end_date')
+                ->withTimestamps();
+    }
+
     public function teachers()
     {
     	return $this->belongsToMany('App\User', 'plan_teacher', 'plan_id', 'teacher_id')
