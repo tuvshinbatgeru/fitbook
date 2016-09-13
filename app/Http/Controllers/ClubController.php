@@ -31,11 +31,7 @@ class ClubController extends Controller
 
     		if(self::isManager($member)) $request_status = 'manager';
     		if(self::isTeacher($member)) $request_status = 'teacher';
-    		if(self::isMember($member))
-    		{
-    			$request_status = 'member';
-    			$teacher_status = 'teacher';
-    		}
+            if(self::isReception($member)) $request_status = 'reception';
     	}
     	else
     	{
@@ -50,6 +46,14 @@ class ClubController extends Controller
     			'follow_status' => $follow_status,
     			'request_status' => $request_status,
     	]);
+    }
+
+    public function onlineUsers(Club $club)
+    {
+        return Response::json([
+            'code' => 0,
+            'result' => $club->onlineUsers,
+        ]);
     }
 
     public function members(Club $club, $type)
@@ -96,14 +100,14 @@ class ClubController extends Controller
     	return $member->pivot->type == 2 ? true : false;
     }
 
+    private function isReception($member)
+    {
+        return $member->pivot->type == 3 ? true : false;
+    }
+
     private function isTeacher($member)
     {
     	return $member->pivot->type == 1 ? true : false;
-    }
-
-    private function isMember($member)
-    {
-    	return $member->pivot->type == 3 ? true : false;
     }
 
     public function index($clubId)

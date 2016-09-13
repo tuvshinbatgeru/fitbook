@@ -29,6 +29,24 @@ class PlanController extends Controller
         $this->planTransformer = $planTransformer;
     }
 
+    public function search(Request $request)
+    {
+        
+    }
+
+    public function simpleSearch(Club $club, Request $request)
+    {
+        $param = $request->q;
+        $plans = Plan::where(function ($query) use ($param) {
+            $query->where('name', 'like', '%'.$param.'%')
+                  ->orWhere('description', 'like', '%'.$param.'%');
+        })->get();
+
+        return Response::json([
+            'result' => $plans,
+        ]);
+    }
+
     public function forWidgets(Club $club, Request $request)
     {
         $plans = self::$lookup[$request->type]::with(['plan' => function ($query) use ($club) {
