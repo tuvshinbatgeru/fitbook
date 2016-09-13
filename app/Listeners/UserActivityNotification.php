@@ -28,14 +28,11 @@ class UserActivityNotification implements ShouldQueue
      */
     public function handle(UserOutTraining $event)
     {
-        for($i = 0; $i < 10000; $i ++)
-        {
-            $event->user->activities()->attach(1, [
-                    'start_time' => Carbon::now(), 
-                    'finish_time' => Carbon::now(),
-                    'duration' => 120,
-                ]);
-        }
-        
+        $event->user->activities()->attach($event->club_id, [
+            'subscription_id' => $event->subscription_id,
+            'start_time' => $event->start_time, 
+            'finish_time' => Carbon::now(),
+            'duration' => Carbon::now()->diffInMinutes(Carbon::parse($event->start_time)),
+        ]);
     }
 }
