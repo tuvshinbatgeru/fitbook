@@ -1,4 +1,6 @@
 <script>
+	import AddSubscriptions from '../context/AddSubscriptions.vue'; 
+
 	export default {
 
 		props: { 
@@ -11,10 +13,24 @@
 			}
 		},
 
+		events : {
+		    'saveSubscription' : function($response) {
+		        this.saveSubscription($response);
+		    },
+		},
+
 		methods : {
 			setSubscription : function (type) {
 				this.showSubscription = type;
-			}	
+			}, 
+
+			saveSubscription : function($response) {
+				this.$http.post(this.$env.get('APP_URI') + 'subscriptions?data=' + $response.data.param).then(res => {
+					this.showSubscription = false;  	
+				}).catch(err => {
+				  	
+				});
+			},
 		},
 
 		created : function () {
@@ -26,6 +42,7 @@
 		},
 
 		components : {
+			AddSubscriptions
 		},
 	}
 </script>
