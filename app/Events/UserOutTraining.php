@@ -12,15 +12,25 @@ class UserOutTraining extends Event
     use SerializesModels;
 
     public $user;
+
+    public $club_id;
+
+    public $subscription_id;
+
+    public $start_time;
+
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct(User $user)
+    public function __construct(User $user, $clubId, $subscriptionId, $startTime)
     {
         //
         $this->user = $user;
+        $this->club_id = $clubId;
+        $this->subscription_id = $subscriptionId;
+        $this->start_time = $startTime;
     }
 
     /**
