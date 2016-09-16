@@ -16,6 +16,10 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\UserOutTraining' => [
             'App\Listeners\UserActivityNotification',
         ],
+
+        'App\Events\PlanAddedEvent' => [
+            'App\Listeners\PlanAddedListener',
+        ],
     ];
     /**
      * Register any events for your application.
