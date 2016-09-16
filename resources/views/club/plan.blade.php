@@ -7,7 +7,13 @@
 		title = "Subscription"
 		usage = "_subscription"
 		:show.sync = "showSubscription"
-		context = "add-subscriptions">
+		save-callback = "saveSubscription"
+		validateable = 'Y'>
+		<div slot="body">
+			<components v-ref:context :club-id="1" is="add-subscriptions">
+					
+			</components>
+		</div>
 	</custom-modal>
 
 	<div class="row">
