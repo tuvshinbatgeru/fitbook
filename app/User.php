@@ -7,6 +7,7 @@ use App\Photo;
 use App\Tag;
 use Carbon\Carbon;
 use Illuminate\Auth\Authenticatable;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
@@ -23,6 +24,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
     use EntrustUserTrait;
     use Authenticatable, CanResetPassword;
     use Searchable;
+    use Notifiable;
 
     protected $table = 'users';
     /**

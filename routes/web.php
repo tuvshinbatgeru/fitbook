@@ -23,7 +23,14 @@ use Illuminate\Support\Facades\Storage;
 		return "running";
 	});
 
+	Route::get('/test', function () {
+		return view('test');
+	});
+
 	Route::get('/', function () {
+
+		//event(new App\Events\PlanAddedEvent(App\Plan::find(10)));
+
     	return view('index');
 	});
 
@@ -31,6 +38,7 @@ use Illuminate\Support\Facades\Storage;
 		return view('search');
 	});
 
+	Route::resource('/subscriptions', 'SubscriptionController');
 	Route::get('users/{username}', 'UserController@index');
 	Route::get('users/{username}/edit', 'UserController@edit')->middleware('auth');
 	Route::post('auth/login', 'Auth\LoginController@login');
@@ -40,7 +48,13 @@ use Illuminate\Support\Facades\Storage;
 	});
 
 	Route::get('/dashboard', function() {
-	    return view('dashboard');
+
+		if(Auth::check()) {
+			$club = Auth::user()->clubAsReception()->first();
+			return view('auth.reception.dashboard')->with('club', $club);
+		}
+
+	    return view('auth.reception.dashboard');
 	});
 
 	//application api
@@ -62,6 +76,7 @@ use Illuminate\Support\Facades\Storage;
 	Route::group(['prefix' => '/api/club/{club}/'], function () {
 
 		Route::get('club-info', 'ClubController@info');
+		Route::get('online', 'ClubController@onlineUsers');
 		Route::post('follow', 'UserController@toggleFollow');
 		Route::post('request', 'UserController@toggleRequest');
 		Route::get('teacher', 'ClubController@getTeachers');
@@ -74,6 +89,7 @@ use Illuminate\Support\Facades\Storage;
 		});
 
 		Route::resource('training', 'TrainingController');
+		Route::get('plan/simple', 'PlanController@simpleSearch');
 		Route::get('plan/widget', 'PlanController@forWidgets');
 		Route::resource('plan', 'PlanController');
 		Route::resource('widgets', 'TemplateController');
@@ -95,8 +111,12 @@ use Illuminate\Support\Facades\Storage;
 	/* type - User */
 	Route::group(['prefix' => '/api/user/{user}/'], function () {
 
+		Route::get('activity', 'UserController@userActivity');
 		Route::get('followed', 'UserController@followedClubs');
-
+		Route::get('subscriptions', 'UserController@subscriptions');
+		Route::post('inuser', 'UserController@inUser');
+		Route::post('outuser', 'UserController@outUser');
+		
 	});
 
 	Route::get('/create-club', function(Request $request) {

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Club;
+use App\Events\PlanAddedEvent;
 use App\Http\Requests;
 use App\LoyaltyPlan;
 use App\Photo;
@@ -104,6 +105,8 @@ class PlanController extends Controller
         $plan->photos()->sync($photo_id_array);
         $plan->teachers()->sync($decode->teachers);
         $plan->services()->sync($decode->services);
+
+        event(new PlanAddedEvent($plan));
 
         return Response::json([
             'code' => 0,
