@@ -1,8 +1,5 @@
-@extends('layouts.master-layout')
+@extends('layouts.master-layout', ['currentView' => 'reception-dashboard-view', 'user' => null])
 @section('content')
 	<div>
-		<div class="header-container">
-			HERE IS DASHBOARD
-		</div>
 	</div>
 @stop

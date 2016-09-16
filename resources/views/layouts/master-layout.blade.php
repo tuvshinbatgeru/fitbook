@@ -9,13 +9,14 @@
 </head>
 <body>
     @include('includes.main-header')
-	@if (isset($currentView))
-        <component :user="{{$user}}" is="{{$currentView}}" inline-template>
-    @endif
-	   @yield('content')
-       
-	@if (isset($currentView))
-    	</component>
+  	@if (isset($currentView))
+        <component :user="{{$user}}" 
+                   is="{{$currentView}}" 
+                   inline-template>
+      @endif
+  	   @yield('content')
+  	@if (isset($currentView))
+      	</component>
     @endif
 
     <script src="{{ elixir('js/app.js') }}"></script>
