@@ -35,6 +35,12 @@
 			title : { default : 'test' },
 			submenu : { default : 'activity'}
 		},
+
+		data () {
+			return {
+				showNotifications : false,
+			}
+		},
 		
 		ready : function () {
 			$('ul.tabs').tabs();
@@ -55,6 +61,10 @@
 		methods : {
 			setSubMenu : function(menu) {
 				this.submenu = menu;
+			},
+
+			test : function () {
+				alert('test');
 			}
 		},
 

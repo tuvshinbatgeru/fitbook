@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Storage;
 */
 
 	Auth::loginUsingId(1);
+	//Auth::loginUsingId(1);
 
 	Route::get('/userout', function() {
 		event(new UserOutTraining(User::find(1)));
@@ -111,6 +112,8 @@ use Illuminate\Support\Facades\Storage;
 	/* type - User */
 	Route::group(['prefix' => '/api/user/{user}/'], function () {
 
+		Route::get('notifications', 'UserController@notifications');
+		Route::get('mentions', 'UserController@mentions');
 		Route::get('activity', 'UserController@userActivity');
 		Route::get('followed', 'UserController@followedClubs');
 		Route::get('subscriptions', 'UserController@subscriptions');

@@ -30,7 +30,6 @@
             getActivity : function () {
                 this.$http.get(this.$env.get('APP_URI') + 'api/user/' + this.id + '/activity').then(res => {
                     this.activities = res.data.result;
-                    debugger;
                 }).catch(err => {
                 });
             }

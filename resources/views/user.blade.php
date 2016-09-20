@@ -2,11 +2,6 @@
 @section('content')
 
 <div class="row">
-	<div style="height:100px; width:1000px; background-color:#aecaec;">
-		what about now
-	</div>	
-</div>
-<div class="row">
 	<div class="small-9 small-centered text-center large-centered columns">
 		<h1 style="font-size: 40px;">
 				{{$user->first_name}} {{$user->last_name}}

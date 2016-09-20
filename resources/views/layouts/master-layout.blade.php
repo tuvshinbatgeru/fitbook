@@ -8,7 +8,9 @@
     @include('includes.header')
 </head>
 <body>
+    
     @include('includes.main-header')
+
   	@if (isset($currentView))
         <component :user="{{$user}}" 
                    is="{{$currentView}}" 

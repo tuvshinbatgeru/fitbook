@@ -53,5 +53,6 @@
 			</ul>
 		</div>
 	</div>
-    Plan widgets coming soon...
+    Plan widgets coming soon...    
+    <taggable-input></taggable-input>
 @stop
