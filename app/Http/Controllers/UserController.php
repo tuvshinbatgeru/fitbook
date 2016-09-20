@@ -57,6 +57,14 @@ class UserController extends Controller
             ], 200);
     }
 
+    public function notifications(User $user)
+    {
+        return Response::json([
+            'code' => 0,
+            'result' => $user->notifications,
+        ]);        
+    }
+
     public function subscriptions(User $user, SubscriptionFilters $filters)
     {
         $query = $user->subscriptionPlans()->with('pinnedPhotos');
