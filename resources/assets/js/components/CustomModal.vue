@@ -10,7 +10,7 @@
 						</button>
 					  </div>
 					  <div class="columns">
-					  	<button @click="modalSave" class="save-button" type="button">
+					  	<button v-show="saveCallback" @click="modalSave" class="save-button" type="button">
 					    	<span aria-hidden="true" class="fa fa-check"></span>
 					    </button>
 					  </div>
@@ -72,9 +72,7 @@
 
 	export default {
 		props: {
-			id : {
-				required: true,
-			},
+			id : {},
 			type : {default : 'Club'},
 			multiple : {},
 			title : { default: '' },
@@ -98,7 +96,7 @@
 		    },
 		    zIndex : {
 		    	default: 1006,
-		    }
+		    },
 		},
 
 		created : function () {
