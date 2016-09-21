@@ -21,13 +21,20 @@
 	</div>
 	
 	<div id="mentions">
-		<h3>Mentions</h3>
+		<ul v-show="mentions.length != 0">
+			<components :mention="mention"
+						:is="mentionComponentFilter(mention)"
+						v-for="mention in mentions">
+			</components>
+		</ul>
+		<h3 v-show="mentions.length == 0">There is no mention</h3>
 	</div>
 </template>
 
 <script>
 
 	import NewPlanNotification from '../actors/user/notification/NewPlanNotification.vue';
+	import PhotoMention from '../actors/user/mention/PhotoMention.vue';
 	
 	export default {
 		props: {
@@ -50,6 +57,14 @@
 		},
 	
 		methods : {
+			mentionComponentFilter : function (mention) {
+				switch (mention.mention_type) {
+					case "App\\Photo" : 
+						return "photo-mention";
+					break;
+				}
+			},
+
 			notificationComponentFilter : function (notification) {
 				switch (notification.type) {
 					case "App\\Notifications\\NewPlan" : 
@@ -59,7 +74,6 @@
 			},
 
 			getNotifications : function () {
-				debugger;
 				this.$http.get(this.$env.get('APP_URI') + 'api/user/' + this.userId + '/notifications').then(res => {
 				  	debugger;
 				  	if(res.data.code == 0) {
@@ -71,15 +85,19 @@
 			},
 
 			getMentions : function () {
+				this.$http.get(this.$env.get('APP_URI') + 'api/user/' + this.userId + '/mentions').then(res => {
+				  	debugger;
+				  	if(res.data.code == 0) {
+				  		this.mentions = res.data.result;
+				  	}
+				}).catch(err => {
+				  
+				});
 			},
-
-			markAsRead : function (item) {
-
-			}
 		},
 
 		components : {
-			NewPlanNotification,
+			NewPlanNotification, PhotoMention
 		}
 	}
 </script>
