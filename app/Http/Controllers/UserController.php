@@ -21,7 +21,7 @@ class UserController extends Controller
     public function search(Request $request)
     {
         $query = $request->query;
-        $users = User::search($query)->get();
+        $users = User::search($query->get('query'))->get();
         
         return Response::json([
             'result' => $users,
@@ -54,7 +54,15 @@ class UserController extends Controller
         return Response::json([
                 'result' => 'OK',
                 'avatar' => $mediumAvatar->url,
-            ], 200);
+        ], 200);
+    }
+
+    public function mentions(User $user)
+    {
+        return Response::json([
+            'code' => 0,
+            'result' => $user->mentions(),
+        ]);
     }
 
     public function notifications(User $user)

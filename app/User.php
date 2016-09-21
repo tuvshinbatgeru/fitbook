@@ -7,17 +7,18 @@ use App\Photo;
 use App\Tag;
 use Carbon\Carbon;
 use Illuminate\Auth\Authenticatable;
-use Illuminate\Notifications\Notifiable;
 use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use Illuminate\Database\Eloquent\Model as Eloquent;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Response;
 use Intervention\Image\Facades\Image;
-use Zizaco\Entrust\Traits\EntrustUserTrait;
 use Laravel\Scout\Searchable;
+use Zizaco\Entrust\Traits\EntrustUserTrait;
 
 class User extends Eloquent implements AuthenticatableContract, CanResetPasswordContract
 {
@@ -76,6 +77,11 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
                     ->withPivot('begin_date', 'end_date');
     }
 
+    public function comments()
+    {
+        return $this->hasMany('App\Comment', 'user_id');
+    }
+
     public function photos()
     {
         return $this->hasMany('App\Photo', 'object_id');
@@ -132,6 +138,21 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
     public function clubsAsManager()
     {
         return $this->belongsToMany('App\Club', 'members', 'user_id', 'club_id')->where('type', '=', 2);
+    }
+
+    public function mentions()
+    {
+        $relations = DB::table('mentionables')
+                 ->where('mentionable_id', $this->id)
+                 ->get();
+
+        foreach ($relations as $key => $relation) {
+            $instance = new $relation->mention_type;
+            $query = $instance->newQuery();
+            $relation->mentioned = $query->find($relation->mention_id);
+        }
+
+        return $relations;
     }
 
     public function activities()
