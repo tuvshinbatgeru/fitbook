@@ -119,6 +119,7 @@
 			},
 
 			userSearch : function (query) {
+
 				if (query.length === 0) {
 				    this.users = [];
 				    this.user = null;
@@ -128,6 +129,7 @@
 				this.userLoading = true
 				this.$http.get(this.$env.get('APP_URI') + 'api/users?query=' + query).then(res => {
 					this.users = res.data.result;
+					debugger;
 					this.userLoading = false;
 				}).catch(err => {
 					this.userLoading = false;

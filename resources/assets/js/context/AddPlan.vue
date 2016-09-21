@@ -15,17 +15,14 @@
 		<photo-slider v-ref:pslider></photo-slider>
 
 		<div class="row">
-		  <fieldset class="large-6 columns">
-		    <legend>Plan schedule</legend>
-		    <input type="radio" name="schedule" value="1" v-model="freq" id="schDaily" required><label for="schDaily">Daily</label>
-		    <input type="radio" name="schedule" value="2" v-model="freq" id="schWeakly"><label for="schWeakly">Weakly</label>
-		    <input type="radio" name="schedule" value="3" v-model="freq" id="schMonthly"><label for="schMonthly">Monthly</label>
-		    <input type="radio" name="schedule" value="4" v-model="freq" id="schYearly"><label for="schYearly">Yearly</label>
-		  </fieldset>
-		  <fieldset class="large-6 columns">
-		    <legend>Duration</legend>
-		    <input type="number" v-model="length">
-		  </fieldset>
+			<div class="small-12 medium-9 column">
+		  		<custom-button-group :data="bgroup" :value.sync="freq"></custom-button-group>
+			</div>
+			<div class="small-12 medium-3 column">
+   	      		<label>Duration
+		    		<input type="number" v-model="length">
+		    	</label>
+		  	</div>
 		</div>
 
 		<div class="row">
@@ -175,11 +172,26 @@
 				isLoading : false,
 				startDate : null,
 				finishDate : null,
+				bgroup : [],
 			}
 		},
 		
 		created : function () {
 			this.getClubServices();
+			this.bgroup = [{
+					name : 'Daily',
+					value : 1,
+				}, {
+					name : 'Weakly',
+					value : 2,
+				}, {
+					name : 'Monthly',
+					value : 3,
+				}, {
+					name : 'Yearly',
+					value : 4,
+				}
+			];
 		},
 
 		ready : function () {
