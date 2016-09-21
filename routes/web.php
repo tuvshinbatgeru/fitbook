@@ -109,6 +109,12 @@ use Illuminate\Support\Facades\Storage;
 
 	});
 
+	Route::group(['prefix' => '/api/user/'], function () {
+
+		Route::resource('comments', 'CommentController');
+		
+	});
+
 	/* type - User */
 	Route::group(['prefix' => '/api/user/{user}/'], function () {
 

@@ -53,6 +53,19 @@
 			</ul>
 		</div>
 	</div>
-    Plan widgets coming soon...    
-    <taggable-input></taggable-input>
+    Plan widgets coming soon...  
+    <ul>
+    	@foreach ($plan->comments as $comment)
+		   <li style="font-size:12px;">
+		   		<p>{{$comment->user_id}}</p>
+		   		<div style="border: 1px solid #aecaec; padding: 10px;">
+		   			{!! $comment->message !!}
+		   		</div>
+		   </li>
+		@endforeach
+    </ul>
+    @if(Auth::check())  
+    	<custom-comment :parent-id="{{$plan->id}}" parent-type="App\Plan">
+	    </custom-comment>
+    @endif
 @stop
