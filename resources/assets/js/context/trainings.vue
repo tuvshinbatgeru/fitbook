@@ -75,7 +75,6 @@
 			},
 
 			getTrainings: function() {
-				debugger;
 				var ids = this.$tools.arrayBy(this.selected, 'id');
 				this.$http.get(this.$env.get('APP_URI') + 'api/club/' + this.id + '/training?data=' + this.$tools.transformParameters({
 					selected : ids,

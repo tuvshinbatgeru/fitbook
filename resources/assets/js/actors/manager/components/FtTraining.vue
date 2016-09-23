@@ -1,8 +1,15 @@
 <template>
 	<div class="column">
-		<img :src="item.pinned_photos[0].url"/>
+		<div class="ft-pinned">
+            <img :src="item.pinned_photos[0].url"
+                 :style = "{ 
+                        top: -1 * parseInt((item.pinned_photos[0].pivot.top_percentage * 300 * item.pinned_photos[0].ratio) / 100) + 'px'
+                 }" />    
+        </div>
+		
+
 		<h3>{{item.name}}</h3>
-		{{item.description}}	
+		{{{item.description}}}	
 		<ul>
 			<li v-for="teacher in item.teachers">
 				#{{teacher.username}},
@@ -19,4 +26,15 @@
 	}
 </script>
 <style>
+.ft-pinned {
+	width:300px; 
+	height:100px; 
+	overflow: hidden;
+} 
+
+.ft-pinned img {
+	width: 100%;
+	position: relative;
+	max-height: none;
+}
 </style>

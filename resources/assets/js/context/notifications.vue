@@ -34,7 +34,9 @@
 <script>
 
 	import NewPlanNotification from '../actors/user/notification/NewPlanNotification.vue';
+
 	import PhotoMention from '../actors/user/mention/PhotoMention.vue';
+	import CommentMention from '../actors/user/mention/CommentMention.vue';
 	
 	export default {
 		props: {
@@ -61,6 +63,8 @@
 				switch (mention.mention_type) {
 					case "App\\Photo" : 
 						return "photo-mention";
+					case "App\\Comment" :
+						return "comment-mention";
 					break;
 				}
 			},
@@ -97,7 +101,7 @@
 		},
 
 		components : {
-			NewPlanNotification, PhotoMention
+			NewPlanNotification, PhotoMention, CommentMention
 		}
 	}
 </script>
