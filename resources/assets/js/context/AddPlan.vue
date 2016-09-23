@@ -60,8 +60,7 @@
 
 				<div class="small-12 medium-6 column">
 					<label>Description
-				        <textarea type="text" v-model="description" placeholder="Description ...">
-				        </textarea>
+				        <custom-editor v-ref:tdescription></custom-editor>
 				    </label>
 				</div>
 			</div>
@@ -231,7 +230,7 @@
 					param : this.$tools.transformParameters({
 						club_id : this.id,
 						name : this.name,
-						description : this.description,
+						description : this.$refs.tdescription.getHTML(),
 						freq : this.freq,
 						length : this.length,
 						startDate : this.startDate,
@@ -241,6 +240,7 @@
 						isPrimary : this.isPrimary,
 						price : this.price,
 						discount : this.discount,
+						crop : this.$refs.pslider.getViewPort(), 
 						teachers : this.$tools.arrayBy(this.teachers,'id'),
 						trainings : this.$tools.arrayBy(this.trainings,'id'),
 						services : this.$tools.arrayBy(this.services,'id'),
@@ -280,11 +280,6 @@
 			validate : function () {
 				if(!this.name.trim()) {
 					this.$root.$refs.toast.showMessage("Please. Fill the name of training");
-					return false;
-				}
-
-				if(!this.description.trim()) {
-					this.$root.$refs.toast.showMessage("Please. Fill the description of training");
 					return false;
 				}
 

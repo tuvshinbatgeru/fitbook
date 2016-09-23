@@ -28,17 +28,16 @@
         <li class="tab s3"><a class="active" href="#main">{{ $t("info") }}</a></li>
         <li class="tab s3"><a href="#teacher">{{ $t("teacher") }}</a></li>
 	  </ul>
-	  <div id="main">
+	  <div id="main" style="padding-bottom:70px;">
 	    <div class="row">
 		    <div class="medium-6 columns">
 		      <label>{{ $t("name") }}
 		        <input type="text" name="name" v-model="name" placeholder="">
 		      </label>
 		    </div>
-		    <div class="medium-6 columns">
+		    <div class="small-12 columns">
 		      <label>{{ $t("description") }}
-		        <textarea type="text" name="description" v-model="description" placeholder="">
-		        </textarea>
+		      	<custom-editor v-ref:tdescription></custom-editor>
 		      </label>
 		    </div>
 		</div>
@@ -98,7 +97,8 @@
 					param : this.$tools.transformParameters({
 						club_id : this.id,
 						name : this.name,
-						description : this.description,
+						description : this.$refs.tdescription.getHTML(),
+						crop : this.$refs.pslider.getViewPort(),
 						pictures : this.$tools.collectionBy(this.$refs.pslider.pictures, "id|url|pinned"),
 						teachers : this.$tools.arrayBy(this.$refs.tslider.teachers, "id"),
 						genres : this.$tools.arrayBy(this.genres, "id"), 
@@ -110,11 +110,6 @@
 
 				if(!this.name.trim()) {
 					this.$root.$refs.toast.showMessage("Please. Fill the name of training");
-					return false;
-				}
-
-				if(!this.description.trim()) {
-					this.$root.$refs.toast.showMessage("Please. Fill the description of training");
 					return false;
 				}
 
