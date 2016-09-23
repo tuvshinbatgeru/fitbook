@@ -1,29 +1,29 @@
 <template>
-	<div v-if="toolbar" class="toolbar-top">
+    <div v-if="toolbar" class="toolbar-top">
         <span class="toolbar">
-            <span class="bold" style="font-weight: bold; color: #66d9ef">B</span>
-            <span class="underline" style="text-decoration: underline; color: #a6e22e">U</span>
-            <span class="italic" style="font-style: italic; color: #f92672">I</span>
-            <span class="strike" style="text-decoration: line-through; color: #e6db74">S</span>
+            <button style="font-weight: bold; color: #66d9ef" onclick="document.execCommand('bold',false,null);">B</button>
+            <button style="text-decoration: underline; color: #a6e22e" onclick="document.execCommand('underline',false,null);">U</button>
+            <button style="font-style: italic; color: #f92672" onclick="document.execCommand('italic',false,null);">I</button>
+            <button style="text-decoration: line-through; color: #e6db74" onclick="document.execCommand('strikethrough',false,null);">S</button>
         </span>
     </div>
 
-	<div id="taggable"
+    <div id="taggable"
          spellcheck="false" 
-		 class="row taggable--field inputor" 
-		 contentEditable="true">
-		
-	</div>
+         class="row taggable--field inputor" 
+         contentEditable="true">
+        
+    </div>
     <button @click="sentComment()" class="button success">Sent</button>
 </template>
 
 <script>
 
-	export default {
-		props : {
-			debounce : {
-				default : 300,
-			},
+    export default {
+        props : {
+            debounce : {
+                default : 300,
+            },
 
             parentId : {
                 required : true,
@@ -33,40 +33,54 @@
                 required : true,
             },
 
-			toolbar : {
-				type : Boolean,
-				default : true,
-			},
+            toolbar : {
+                type : Boolean,
+                default : true,
+            },
 
-			tagged : {
+            tagged : {
 
-			},
+            },
 
-			html : {},
-		},
+            html : {},
+        },
 
-		ready : function () {
-		    var vm = this;
-		    $('#taggable').atwho({
-			    at: "@",
-			    delay : this.debounce,
-			    insertTpl: '${username}',
-			    displayTpl: "<li><img style='height:30px; width:30px;' src='${avatar_url}'/> ${first_name} <small> ${last_name}</small></li>",
-			    limit: 200,
-			    callbacks : {
-			    	filter: null,
+        ready : function () {
+            var emojis = [
+      "smile", "iphone", "girl", "smiley", "heart", "kiss", "copyright", "coffee"];
+
+            var emojis = $.map(emojis, function(value, i) {return {key: value, name:value}});
+            
+            var emoji_config = {
+              at: ":",
+              data: emojis,
+              displayTpl: "<li>${name} <img src='https://assets-cdn.github.com/images/icons/emoji/${key}.png'  height='20' width='20' /></li>",
+              insertTpl: "<img src='https://assets-cdn.github.com/images/icons/emoji/${name}.png' height='20' width='20' />",
+              delay: 400
+            };
+
+
+            var vm = this;
+            $('#taggable').atwho({
+                at: "@",
+                delay : this.debounce,
+                insertTpl: '${username}',
+                displayTpl: "<li><img style='height:30px; width:30px;' src='${avatar_url}'/> ${first_name} <small> ${last_name}</small></li>",
+                limit: 200,
+                callbacks : {
+                    filter: null,
                     sorter : function(query, items, searchKey) {
                         return items;
                     },
                     matcher : null,
                     tplEval : null,
                     highlighter : null,
-			    	remoteFilter: vm.searchMentions,
-			    }	
-		    });
-		},
+                    remoteFilter: vm.searchMentions,
+                }   
+            }).atwho(emoji_config);
+        },
 
-		methods : {
+        methods : {
             sentComment : function () {
 
                 var vm = this;
@@ -93,26 +107,26 @@
                 });  
             },
 
-			searchMentions : function(query, callback) {
+            searchMentions : function(query, callback) {
                 if (query.length === 0) {
                     return [];             
                 }
 
-				this.$http.get(this.$env.get('APP_URI') + 'api/users?query=' + query).then(res => {
-					callback(res.data.result);
-				}).catch(err => {
-									
-				});
-			},
-		}
-	}
+                this.$http.get(this.$env.get('APP_URI') + 'api/users?query=' + query).then(res => {
+                    callback(res.data.result);
+                }).catch(err => {
+                                    
+                });
+            },
+        }
+    }
 </script>
 
 <style lang="scss">
 
 #taggable img {
-	height:10px;
-	width:10px;
+    height:10px;
+    width:10px;
 }
 
 .inputor {
@@ -122,7 +136,7 @@
 
 .taggable--field {
     width:70%;
-	background-color: #F5F5F0;
+    background-color: #F5F5F0;
     -webkit-box-shadow: 0px 3px 15px 2px #F5F5F0;
     -moz-box-shadow: 0px 3px 15px 2px #F5F5F0;
     box-shadow: 0px 3px 15px 2px #F5F5F0;
@@ -150,7 +164,7 @@
     box-shadow: 0px 0px 20px 0px rgba(0,0,0,0.42);
 }
 
-.toolbar span {
+.toolbar button {
     padding: 5px;
     margin: 0px;
 }
@@ -166,7 +180,7 @@ blockquote {
 }
 
 p .tagged {
-	background-color : #aecaec;
+    background-color : #aecaec;
 }
 
 .atwho-view {

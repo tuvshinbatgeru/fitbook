@@ -13,12 +13,14 @@
 		context = "fileManager">
 	</custom-modal>
 
-	<div id="viewContainer" style="width:600px;height:200px;overflow:hidden;">
-        <div id="draggableContainer" style="">
-	        <img id="draggable" class="pinned" 
-	        	 :src = "pinnedPic"
-	             style="width:100%;height:684px;overflow:hidden;"/>
+	<div id="viewContainer">
+        <div id="draggableContainer" 
+        	 :style="{ top: viewPort + 'px', bottom: viewPort + 'px' }">
 	    </div>
+	    <img id="draggable" 
+	         class="pinned" 
+	         :style="{ top: top + 'px'}"
+	         :src = "pinnedPic"/>
 	</div>
 
 	<div class="row">
@@ -70,24 +72,14 @@
 			return {
 				showFileManager : false,
 				pinned : null,
+				pinnedPhoto : null,
+				viewPort : 0,
+				top : 0,
 			}
 		},
 
 		ready : function () {
-			var dragContainerWidth = $("#viewContainer").innerWidth() + ($('#draggable').outerWidth() - $("#viewContainer").innerWidth()) * 2;
-			var dragContainerHeight = $("#viewContainer").innerHeight() + ($('#draggable').outerHeight() - $("#viewContainer").innerHeight()) * 2;
 
-			$("#draggableContainer").css("width",dragContainerWidth);
-			$("#draggableContainer").css("height",dragContainerHeight);
-
-			//set up position of draggable container according to view container and draggable size
-
-			var dragContainerOffsetLeft = $("#viewContainer").offset().left + $("#viewContainer").outerWidth()/2 + $("#viewContainer").innerWidth()/2 - $('#draggable').outerWidth();
-			var dragContainerOffsetTop = $("#viewContainer").offset().top + $("#viewContainer").outerHeight()/2 + $("#viewContainer").innerHeight()/2 - $('#draggable').outerHeight();
-
-			$("#draggableContainer").offset({left:dragContainerOffsetLeft,top:dragContainerOffsetTop});
-
-			//activate draggable
 			$('#draggable').draggable({
 				axis: "y",
 				containment:"#draggableContainer"
@@ -101,6 +93,16 @@
 		},
 
 		methods : {
+			getViewPort : function () {
+				var top = $('#draggable').css('top');
+				top = -1 * parseInt(top.split('px')[0]);
+				return parseInt((top * 100) / (this.pinnedPhoto.ratio * 600));
+			},
+
+			setViewPort : function (width) {
+				this.viewPort = width;
+			},
+
 			choosedPictures : function($response) {
 				this.pictures = $response.data;
 				if(this.pictures.length > 0) {
@@ -121,7 +123,7 @@
 			},
 
 			deletePhoto : function(photo) {
-				this.pictures.$remove(photo);				
+				this.pictures.$remove(photo);		
 			},
 
 			filterPinnedPic : function (obj) {
@@ -131,8 +133,12 @@
 
 		computed : {
 			pinnedPic : function () {
-				var pinned = this.pictures.filter(this.filterPinnedPic);
-				return pinned.length == 0 ? this.$env.get('APP_URI') + 'images/site/back.jpg' : pinned[0].url;
+
+				this.setViewPort(this.pinnedPhoto == null ? -175 : (200 - this.pinnedPhoto.ratio * 600));
+
+				$('#draggable').css('top', '0px');
+
+				return this.pinnedPhoto == null ? this.$env.get('APP_URI') + 'images/site/back.jpg' : this.pinnedPhoto.url;
 			}
 		},
 
@@ -165,6 +171,28 @@
 </script>
 
 <style lang="scss">
+
+/* $container : 100%; */
+
+#viewContainer {
+	width: 600px;
+	height: 200px;
+	overflow:hidden;
+	position: relative;
+}
+
+#draggableContainer {
+	left: 0px; 
+	right: 0px; 
+	position: absolute;
+}
+
+#draggable {
+	width:100%; 
+	position:relative; 
+	max-height:none;
+	top: 0px;
+}
 
 .photo-container {
     top: 5px;
