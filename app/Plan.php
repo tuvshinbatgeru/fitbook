@@ -18,13 +18,13 @@ class Plan extends Model
     public function photos()
     {
     	return $this->belongsToMany('App\Photo', 'plan_photos', 'plan_id', 'photo_id')
-    			->withPivot('pinned')
+    			->withPivot('pinned','top_percentage')
     			->withTimestamps();
     }
 
     public function pinnedPhotos()
     {
-        return $this->belongsToMany('App\Photo', 'plan_photos', 'plan_id', 'photo_id')
+        return $this->belongsToMany('App\Photo', 'plan_photos', 'plan_id', 'photo_id')->withPivot('top_percentage', 'pinned')
                 ->where('pinned', '=', 'Y');
     }
 

@@ -144,6 +144,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
     {
         $relations = DB::table('mentionables')
                  ->where('mentionable_id', $this->id)
+                 ->orderBy('created_at', 'DESC')
                  ->get();
 
         foreach ($relations as $key => $relation) {
