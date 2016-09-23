@@ -2,9 +2,17 @@
     <div class="row small-up-3 medium-up-4 large-up-4">
         <div class="columns" v-for="current in plans">
         <h3>{{current.plan[0].name}}</h3>
-        <p>{{current.plan[0].description}}</p>
+        <p>{{{current.plan[0].description}}}</p>
 
-        <img :src="current.plan[0].pinned_photos[0].url"/>
+        <div style="width:300px; height:100px; overflow: hidden;">
+            <img :src="current.plan[0].pinned_photos[0].url"
+                 style="width: 100%;
+    position: relative;
+    max-height: none;" 
+                 :style = "{ 
+                        top: -1 * parseInt((current.plan[0].pinned_photos[0].pivot.top_percentage * 300 * current.plan[0].pinned_photos[0].ratio) / 100) + 'px'
+                 }" />    
+        </div>
 
         <label>{{current.before_price}}</label>
         off to 

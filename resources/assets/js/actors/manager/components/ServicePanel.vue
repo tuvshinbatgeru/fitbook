@@ -32,6 +32,7 @@
         <h3>
           {{service.name}}
         </h3>
+        <a class="button fa fa-plus"></a>
     </div>
   </div>
 </template>
