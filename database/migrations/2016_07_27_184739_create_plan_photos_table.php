@@ -15,6 +15,7 @@ class CreatePlanPhotosTable extends Migration
         Schema::create('plan_photos', function (Blueprint $table) {
             $table->integer('plan_id')->unsigned();
             $table->integer('photo_id')->unsigned();
+            $table->tinyInteger('top_percentage');
             $table->enum('pinned', ['N','Y'])->default('N');
             $table->timestamps();
         });
