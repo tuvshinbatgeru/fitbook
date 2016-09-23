@@ -11,7 +11,7 @@ class PlanTransformer extends Transformer {
 		return [
 			'name' => $item->name,
 			'club_id' => $item->club_id,
-			'description' => $item->description,
+			'description' => stripslashes($item->description),
 			'trainerless' => ((boolean) $item->trainerless) ? 'Y' : 'N',
 			'trainer_count' =>  ((boolean) $item->trainerless) ? $item->trainerCount : 0,
 			'isPrimary' => (boolean) $item->isPrimary,

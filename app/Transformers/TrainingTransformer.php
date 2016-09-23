@@ -9,7 +9,7 @@ class TrainingTransformer extends Transformer {
 		return [
 			'name' => $item->name,
 			'club_id' => $item->club_id,
-			'description' => $item->description,
+			'description' => stripslashes($item->description),
 		];
 	}
 	
