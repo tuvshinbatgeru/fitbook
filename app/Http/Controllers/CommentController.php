@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Comment;
 use App\Http\Requests;
+use App\Mentionable;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Response;
@@ -47,6 +49,10 @@ class CommentController extends Controller
         $comment->user_id = Auth::user()->id;
 
         $comment->save();
+
+        foreach ($decode->tags as $key => $tag) {
+            Mentionable::mentionedBy($comment, User::where('username', $tag)->first());
+        }
 
         return Response::json([
             'code' => 0,

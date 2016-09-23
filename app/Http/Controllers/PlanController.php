@@ -97,7 +97,14 @@ class PlanController extends Controller
 
         $photo_id_array = [];
         for ($i = 0; $i < count($decode->pictures); $i++) {
-            $photo_id_array[$decode->pictures[$i]->id] = ['pinned' => $decode->pictures[$i]->pinned ? 'Y' : 'N'];
+
+            if($decode->pictures[$i]->pinned == 'Y') {
+                $photo_id_array[$decode->pictures[$i]->id] = [
+                  'pinned' => $decode->pictures[$i]->pinned ? 'Y' : 'N',
+                  'top_percentage' => $decode->pictures[$i]->pinned ? $decode->crop : 0,
+                ];  
+            }
+            
             Photo::attachTagById($decode->pictures[$i]->id, Tag::TRAINING_ID);
         }
 

@@ -71,17 +71,21 @@ class TrainingController extends Controller
         $data = $this->trainingTransformer->transform($decode);
 
         if(Training::where('name', '=', $data['name'])->exists()) 
-            return Response::json([
-                'code' => 1,
-                'message' => 'Training name duplicated',
-            ]); 
+        return Response::json([
+            'code' => 1,
+            'message' => 'Training name duplicated',
+        ]); 
 
         $training = new Training($data);
         $training->save();
 
         $photo_id_array = [];
         for ($i = 0; $i < count($decode->pictures); $i++) {
-            $photo_id_array[$decode->pictures[$i]->id] = ['pinned' => $decode->pictures[$i]->pinned ? 'Y' : 'N'];
+            $photo_id_array[$decode->pictures[$i]->id] = [
+                'pinned' => $decode->pictures[$i]->pinned ? 'Y' : 'N',
+                'top_percentage' => $decode->pictures[$i]->pinned ? $decode->crop : 0,
+            ];
+
             Photo::attachTagById($decode->pictures[$i]->id, Tag::TRAINING_ID);
         }
 
