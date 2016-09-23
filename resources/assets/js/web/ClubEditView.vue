@@ -13,7 +13,7 @@
 		props: { 
 			clubid : {},
 			selectedMenu : { default : 'club-registration'},
-			content : {default : 'training-panel'},
+			content : {default : 'plan-panel'},
 		},
 
 		data () {
@@ -68,7 +68,7 @@
 
 				switch(this.selectedMenu) {
 					case 'club-registration':
-						this.content = 'training-panel';
+						this.content = 'plan-panel';
 						break;
 					case 'club-members':
 						this.content = 'all-members';
