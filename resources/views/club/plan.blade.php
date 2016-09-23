@@ -25,7 +25,7 @@
 			<h4>{{$plan->name}}</h4>
 		</div>
 		<div class="small-12 medium-5 column">
-			test
+			<a href="#7">magellon test</a>
 		</div>
 	</div>
 	<ul class="row" style="list-style-type: none;">
@@ -56,7 +56,7 @@
     Plan widgets coming soon...  
     <ul>
     	@foreach ($plan->comments as $comment)
-		   <li style="font-size:12px;">
+		   <li style="font-size:12px;" id="{{$comment->id}}">
 		   		<p>{{$comment->user_id}}</p>
 		   		<div style="border: 1px solid #aecaec; padding: 10px;">
 		   			{!! $comment->message !!}
@@ -65,7 +65,8 @@
 		@endforeach
     </ul>
     @if(Auth::check())  
-    	<custom-comment :parent-id="{{$plan->id}}" parent-type="App\Plan">
+    	<custom-comment :parent-id="{{$plan->id}}" 
+    					parent-type="App\Plan">
 	    </custom-comment>
     @endif
 @stop
