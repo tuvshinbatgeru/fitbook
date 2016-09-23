@@ -101,8 +101,9 @@
 	
 		methods : {
 			getData : function () {
-				this.type = "selected";
-				return this.filteredFiles;
+				return _.filter(this.files, function(o) { 
+					return o.selected; 
+				});
 			},
 			
 			start : function (e) {
