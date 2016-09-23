@@ -52,6 +52,7 @@ import CustomToast from './actors/application/components/CustomToast.vue';
 import CustomComment from './actors/application/components/CustomComment.vue';
 import CustomButton from './actors/application/components/CustomButton.vue';
 import CustomCallout from './actors/application/components/CustomCallout.vue';
+import CustomEditor from './actors/application/components/CustomEditor.vue';
 import CustomButtonGroup from './actors/application/components/CustomButtonGroup.vue';
 import Multiselect from 'vue-multiselect'
 
@@ -62,6 +63,7 @@ Vue.component('Multiselect', Multiselect);
 Vue.component('CustomButton', CustomButton);
 Vue.component('CustomCallout', CustomCallout);
 Vue.component('CustomComment', CustomComment);
+Vue.component('CustomEditor', CustomEditor);
 
 //global context
 import MainHeader from './actors/user/components/MainHeader.vue';
