@@ -1,41 +1,55 @@
 <component :user="{{Auth::user()}}" 
            is="main-header" 
            inline-template>
-    <div class="row">
-      <div class="header">
-        <div class="burger-container">
-          <div id="burger">
-            <div class="bar topBar"></div>
-            <div class="bar btmBar"></div>
-          </div>
-        </div>
-
-        <ul class="menu">
-          <li class="menu-logo">
-            <a>
-              <img src="{{asset('images/site/logo-little-smooth.png')}}" />
-            </a> 
-          </li>
-          <li class="menu-item"><a href="#">Watch</a></li>
-          <li class="menu-item">
-            <a @click="showNotifications = true">
-              Notifications
-            </a>
-            <custom-modal 
-                title = "Notifications" 
-                usage = "_notifications" 
-                :show.sync = "showNotifications"
-                context = "notifications"
-                >
-                <div slot="body">
-                  <components v-ref:context :user-id="user.id" is="notifications">
-                      
-                  </components>
+    <div class="site-header">
+        <div class="site-header-container">
+            <div class="site-header-item" style="width: 200px;">
+                <div class="site-logo">
+                    <img src="{{asset('images/site/logo-white.png')}}" />
                 </div>
-            </custom-modal>
-          </li>
-        </ul>
-      </div>
+                <div class="site-header-title">
+                    <label>
+                        Fitbook
+                    </label>
+                </div>
+            </div>
+            <div class="site-header-search site-header-item">
+                <div class="site-search-input">
+                  <input placeholder="Клуб, дасгалжуулагч, гишүүн ... " type="text"/>
+                  <a>
+                    <i class="fa fa-search"></i>
+                  </a>
+                </div>
+            </div>
+            <div class="site-header-item" style="width: 120px;">
+            </div>
+            <div class="site-header-item" style="width: 40px;">
+              <div class="site-header-notification">
+                <a @click="showNotifications = true">
+                  <i class="fa fa-bell-o"> </i>
+                  <span class="alert badge">12</span>
+                </a>
+              </div>             
+            </div>
+            <div class="site-header-profile site-header-item">
+              <div>  
+                <img class="header-profile-pic" src="{{Auth::user()->avatar_url}}" />
+              </div>
+            </div>
+        </div>
     </div>
+    <custom-modal 
+        title = "Notifications" 
+        usage = "_notifications" 
+        :show.sync = "showNotifications"
+        context = "notifications"
+        >
+        <div slot="body">
+          <components v-ref:context :user-id="user.id" is="notifications">
+              
+          </components>
+        </div>
+    </custom-modal>
+
 </component>
 

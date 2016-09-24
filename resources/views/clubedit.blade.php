@@ -1,15 +1,6 @@
 @extends('layouts.club-edit-layout', ['currentView' => 'club-edit-view'])
 @section('content')
 
-	<div style="width:100%; height:50px; background-color:#fff;
-	z-index: 11999;
-	-webkit-box-shadow: 0px 10px 5px 0px rgba(189,189,189,1);
--moz-box-shadow: 0px 10px 5px 0px rgba(189,189,189,1);
-box-shadow: 0px 10px 5px 0px rgba(189,189,189,1);
-	">
-		
-	</div>
-
 <section class="container" style="background-color:#ebeced !important;">
 	<section class="sidebar" v-cloak>
 		<menu class="setting-menu">
@@ -19,7 +10,6 @@ box-shadow: 0px 10px 5px 0px rgba(189,189,189,1);
 					<br/>
 					@{{$t('dashboard')}}
 				</a>
-				<span class="secondary badge">2</span>
 			</li>
 			<li>
 				<a @click="setMenu('club-members')">

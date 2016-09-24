@@ -9,10 +9,13 @@
     @include('includes.header')
 </head>
 <body>
+    @include('includes.main-header')
     <custom-toast v-ref:toast></custom-toast>
+    <div class="site-body">
     <component clubid = "{{$club->id}}" is="club-edit-view" inline-template>
       @yield('content')      
     </component>
+    </div>
    <!-- FOR WIDGET ANIMATION -->
     <script src="{{ elixir('js/app.js') }}">
       
