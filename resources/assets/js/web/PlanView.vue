@@ -10,6 +10,7 @@
 		data () {
 			return {
 				showSubscription : false,
+				showComments : false,
 			}
 		},
 
