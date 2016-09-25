@@ -2,6 +2,7 @@
 
 	//global context
 	import Notifications from '../../../context/notifications.vue';
+	import LogoutMenus from './LogoutMenus.vue';
 
 	export default {
 		props: { 
@@ -13,11 +14,16 @@
 		data () {
 			return {
 				showNotifications : false,
+				showLogoutMenus : false,
 			}
+		},
+
+		created : function () {
+
 		},
 		
 		components : {
-            Notifications
+            Notifications, LogoutMenus
         }
 	}
 </script>
