@@ -1,5 +1,5 @@
 <template>
-    <div class="row small-up-3 medium-up-4 large-up-4">
+    <div class="row small-up-1 large-up-2">
         <div class="columns" v-for="current in plans">
         <h3>{{current.plan[0].name}}</h3>
         <p>{{{current.plan[0].description}}}</p>
