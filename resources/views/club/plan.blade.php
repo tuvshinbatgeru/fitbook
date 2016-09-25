@@ -54,16 +54,17 @@
 		</div>
 	</div>
     Plan widgets coming soon...  
-    <ul>
-    	@foreach ($plan->comments as $comment)
-		   <li style="font-size:12px;" id="{{$comment->id}}">
-		   		<p>{{$comment->user_id}}</p>
-		   		<div style="border: 1px solid #aecaec; padding: 10px;">
-		   			{!! $comment->message !!}
-		   		</div>
-		   </li>
-		@endforeach
-    </ul>
+
+    <div class="row text-center">
+    	<a @click="showComments = true">COMMENTS - {{$plan->comments()->count()}}</a>
+    </div>
+
+    <component id="{{$plan->id}}" 
+    			is="comments-list"
+    			logged-user="{{Auth::check() ? Auth::user() : null}}"
+    			v-if="showComments">
+    </component>
+
     @if(Auth::check())  
     	<custom-comment :parent-id="{{$plan->id}}" 
     					parent-type="App\Plan">

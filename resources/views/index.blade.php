@@ -26,6 +26,12 @@
 	</div>
 </header>
 
+<button class="button" type="button" data-toggle="example-dropdown2">Top Aligned</button>
+
+<div class="dropdown-pane top" id="example-dropdown2" data-dropdown>
+  Just some junk that needs to be said. Or not. Your choice.
+</div>
+
 <br>
 <div class="row column">
 <h4 style="margin: 0;" class="text-center">BREAKING NEWS</h4>
