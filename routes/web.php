@@ -118,6 +118,7 @@ use Illuminate\Support\Facades\Storage;
 	/* type - User */
 	Route::group(['prefix' => '/api/user/{user}/'], function () {
 
+		Route::get('menus', 'UserController@menus');
 		Route::get('notifications', 'UserController@notifications');
 		Route::get('mentions', 'UserController@mentions');
 		Route::get('activity', 'UserController@userActivity');
@@ -125,7 +126,7 @@ use Illuminate\Support\Facades\Storage;
 		Route::get('subscriptions', 'UserController@subscriptions');
 		Route::post('inuser', 'UserController@inUser');
 		Route::post('outuser', 'UserController@outUser');
-		
+
 	});
 
 	Route::get('/create-club', function(Request $request) {
@@ -133,6 +134,7 @@ use Illuminate\Support\Facades\Storage;
 	});
 
 	Route::get('/plan/{plan}', 'PlanController@show');
+	Route::get('/plan/{plan}/comments', 'PlanController@comments');
 	Route::get('/{club}', 'ClubController@index');
 	Route::get('/{club}/edit', 'ClubEditController@edit');
 	Route::get('auth/logout', 'Auth\LoginController@logout');
