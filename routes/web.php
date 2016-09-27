@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Storage;
 |
 */
 
-	Auth::loginUsingId(	1);
+	Auth::loginUsingId(1);
 	//Auth::loginUsingId(1);
 
 	Route::get('/userout', function() {
