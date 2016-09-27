@@ -29,9 +29,9 @@ class ClubController extends Controller
     		$follow_status = 'unfollow';
     		$teacher_status = 'deteacher';
 
-    		if(self::isManager($member)) $request_status = 'manager';
-    		if(self::isTeacher($member)) $request_status = 'teacher';
-            if(self::isReception($member)) $request_status = 'reception';
+    		if(self::isManager($member->pivot->type)) $request_status = 'manager';
+    		if(self::isTeacher($member->pivot->type)) $request_status = 'teacher';
+            if(self::isReception($member->pivot->type)) $request_status = 'reception';
     	}
     	else
     	{
@@ -95,19 +95,19 @@ class ClubController extends Controller
         return $teachers;
     }
 
-    private function isManager($member)
+    static public function isManager($type)
     {
-    	return $member->pivot->type == 2 ? true : false;
+    	return $type == 2 ? true : false;
     }
 
-    private function isReception($member)
+    static public function isReception($type)
     {
-        return $member->pivot->type == 3 ? true : false;
+        return $type == 3 ? true : false;
     }
 
-    private function isTeacher($member)
+    static public function isTeacher($type)
     {
-    	return $member->pivot->type == 1 ? true : false;
+    	return $type == 1 ? true : false;
     }
 
     public function index($clubId)

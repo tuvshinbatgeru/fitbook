@@ -63,6 +63,7 @@ class NewPlan extends Notification
     {
         //just test
         return [
+            'plan_id' => $this->plan->id,
             'name' => $this->plan->name,
             'description' => $this->plan->description,
             'release_date' => $this->plan->created_at,

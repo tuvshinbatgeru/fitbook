@@ -57,6 +57,16 @@ class UserController extends Controller
         ], 200);
     }
 
+    public function menus(User $user)
+    {
+
+        return Response::json([
+            'code' => 0,
+            'menus' => $user->clubs,
+            'subscriptions' => $user->subscriptionPlans
+        ]);
+    }
+
     public function mentions(User $user)
     {
         return Response::json([

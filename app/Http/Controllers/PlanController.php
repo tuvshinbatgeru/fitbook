@@ -48,6 +48,16 @@ class PlanController extends Controller
         ]);
     }
 
+    public function comments(Plan $plan)
+    {
+        $comments = $plan->comments()->paginate(5);
+
+        return Response::json([
+            'code' => 0,
+            'result' => $comments,
+        ]);
+    }
+
     public function forWidgets(Club $club, Request $request)
     {
         $plans = self::$lookup[$request->type]::with(['plan' => function ($query) use ($club) {
