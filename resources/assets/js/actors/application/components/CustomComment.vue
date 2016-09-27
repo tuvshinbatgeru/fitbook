@@ -14,7 +14,7 @@
          contentEditable="true">
         
     </div>
-    <button @click="sentComment()" class="button success">Sent</button>
+    <button v-show="saveButton" @click="sentComment()" class="button success">Sent</button>
 </template>
 
 <script>
@@ -36,6 +36,11 @@
             toolbar : {
                 type : Boolean,
                 default : true,
+            },
+
+            saveButton : {
+                type : Boolean,
+                default : false,
             },
 
             tagged : {

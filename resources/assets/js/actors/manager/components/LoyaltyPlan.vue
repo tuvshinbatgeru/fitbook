@@ -5,7 +5,7 @@
         <p>{{{current.plan[0].description}}}</p>
 
         <div style="width:300px; height:100px; overflow: hidden;">
-            <img :src="current.plan[0].pinned_photos[0].url"
+            <img v-lazy="current.plan[0].pinned_photos[0].url"
                  style="width: 100%;
     position: relative;
     max-height: none;" 

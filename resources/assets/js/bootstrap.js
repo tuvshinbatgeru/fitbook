@@ -46,6 +46,19 @@ require('moment/locale/en-au')
 
 Vue.use(require('vue-moment'), { moment })
 
+import VueLazyload from 'vue-lazyload'
+import VueTouch from 'vue-touch'
+
+Vue.use(VueTouch)
+
+// with options
+Vue.use(VueLazyload, {
+  preLoad: 1.3,
+  error: 'dist/error.png',
+  loading: 'dist/loading.gif',
+  attempt: 1
+})
+
 //global components
 import CustomModal from './actors/application/components/CustomModal.vue';
 import CustomToast from './actors/application/components/CustomToast.vue';
@@ -88,7 +101,8 @@ Object.keys(locales).forEach(function (lang) {
 Vue.use(Tools);
 Vue.use(require('vue-env'), _env);
 
-
+//Custom Directives
+require('./actors/application/directives/foundation-dropdown-menu')
 
 
 /**
