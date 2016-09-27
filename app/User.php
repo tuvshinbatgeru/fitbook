@@ -15,6 +15,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Response;
 use Intervention\Image\Facades\Image;
 use Laravel\Scout\Searchable;
@@ -202,6 +203,11 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
         {
             $this->clubRequests()->detach($club->id);
             return Response::json(['result' => 'Success', 'type' => $type == 2 ? 'teacher' : 'trainer']);
+        }
+
+
+        if(\App\Http\Controllers\ClubController::isTeacher($type)) {
+            Notification::send($club->managers, new \App\Notifications\TeacherRequestRecieved($this, $club, Carbon::now(), $description));
         }
 
         $this->clubRequests()->attach($club->id, [

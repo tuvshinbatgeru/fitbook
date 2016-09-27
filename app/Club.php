@@ -57,6 +57,11 @@ class Club extends Model
 					->withTimestamps();
 	}
 
+	public function managers()
+	{
+		return $this->members()->where('type', 2);
+	}
+
 	static public function teachers($clubId)
 	{
 		return static::find($clubId)->members()->where('type', '=', 1)->get();
