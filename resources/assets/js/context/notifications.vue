@@ -34,6 +34,7 @@
 <script>
 
 	import NewPlanNotification from '../actors/user/notification/NewPlanNotification.vue';
+	import TeacherRequestRecievedNotification from '../actors/user/notification/TeacherRequestRecievedNotification.vue';
 
 	import PhotoMention from '../actors/user/mention/PhotoMention.vue';
 	import CommentMention from '../actors/user/mention/CommentMention.vue';
@@ -73,6 +74,8 @@
 				switch (notification.type) {
 					case "App\\Notifications\\NewPlan" : 
 						return "new-plan-notification";
+					case "App\\Notifications\\TeacherRequestRecieved" :
+					 	return "teacher-request-recieved-notification";
 					break;
 				}
 			},
@@ -101,9 +104,18 @@
 		},
 
 		components : {
-			NewPlanNotification, PhotoMention, CommentMention
+			NewPlanNotification, TeacherRequestRecievedNotification,
+			PhotoMention, CommentMention
 		}
 	}
 </script>
-<style>
+<style lang="scss">
+	$notification-hover-color: #aecaec;
+	
+	.notification {
+		&:hover {
+			background-color: $notification-hover-color;
+			cursor: pointer;
+		}
+	}
 </style>
