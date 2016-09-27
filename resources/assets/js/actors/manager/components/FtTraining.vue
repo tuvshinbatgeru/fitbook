@@ -1,7 +1,7 @@
 <template>
 	<div class="column">
 		<div class="ft-pinned">
-            <img :src="item.pinned_photos[0].url"
+            <img v-lazy="item.pinned_photos[0].url"
                  :style = "{ 
                         top: -1 * parseInt((item.pinned_photos[0].pivot.top_percentage * 300 * item.pinned_photos[0].ratio) / 100) + 'px'
                  }" />    
