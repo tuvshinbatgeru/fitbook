@@ -37,7 +37,7 @@
               </div>
             </div>
         </div>
-    </div>
+  </div>
     <div class="dropdown-pane bottom" id="user-menu" data-dropdown data-close-on-click="true">
         <component v-if="showLogoutMenus" :user-id="user.id" is="logout-menus">
         </component>

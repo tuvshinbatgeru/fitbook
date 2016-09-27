@@ -67,7 +67,8 @@
 
     @if(Auth::check())  
     	<custom-comment :parent-id="{{$plan->id}}" 
-    					parent-type="App\Plan">
+    					parent-type="App\Plan"
+    					:save-button="true">
 	    </custom-comment>
     @endif
 @stop

@@ -93,7 +93,8 @@
 		@if(Auth::check())
 			<form method="GET" action="/auth/logout">
 				<h2>{{Auth::user()->username}}</h2>
-				<img src="{{Auth::user()->avatar_url}}" height="100" width="100" />
+				{{Auth::user()->avatar_url}}
+				<img src="{!! Auth::user()->avatar_url !!}"/>
 				<h3>{{Auth::user()->birthday}}</h3>
 				<h3>{{Auth::user()->gender}}</h3>
 				<button class="button">Logout</button>
