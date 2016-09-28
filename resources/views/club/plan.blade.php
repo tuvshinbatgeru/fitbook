@@ -30,19 +30,21 @@
 	</div>
 	<ul class="row" style="list-style-type: none;">
 		@foreach ($plan->photos as $photo)
-		   <li style="height:100px; width:100px; float: left;">
+		   <li style="height:50px; width:50px; float: left;">
 		   		<img src={{$photo->url}}/> 
 		   </li>
 		@endforeach
 	</ul>
+	<br>
 	<div class="row">
 		<a @click="toggleHearth()">Hearth</a>
+		<div @click="toggleHearth()" class="heart"></div>
 		<p class="font-weight:bold;">@{{plan.hearth_count}}</p>
 	</div>
 	<div class="row">
 		<div class="small-12 medium-9 column">
 			<p>
-				{{$plan->description}}
+				{!!$plan->description!!}
 			</p>
 		</div>
 		<div class="small-12 medium-3 column">
