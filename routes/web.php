@@ -62,7 +62,7 @@ use Illuminate\Support\Facades\Storage;
 	Route::group(['prefix' => '/api'], function () {
 
 		Route::get('/users', 'UserController@search');
-		Route::get('/service', 'ServiceController@list');	
+		Route::get('/service', 'ServiceController@listService');	
 		Route::post('/test','FileManagerController@test');
 		Route::get('/search', 'SearchController@search');
 		Route::resource('/genre', 'GenreController');
@@ -112,6 +112,7 @@ use Illuminate\Support\Facades\Storage;
 	Route::group(['prefix' => '/api/user/'], function () {
 
 		Route::resource('comments', 'CommentController');
+		Route::post('comments/{comment}/reaction', 'CommentController@reaction');
 		
 	});
 
@@ -135,6 +136,7 @@ use Illuminate\Support\Facades\Storage;
 
 	Route::get('/plan/{plan}', 'PlanController@show');
 	Route::get('/plan/{plan}/comments', 'PlanController@comments');
+	Route::post('/plan/{plan}/reaction', 'PlanController@toggleReaction');
 	Route::get('/{club}', 'ClubController@index');
 	Route::get('/{club}/edit', 'ClubEditController@edit');
 	Route::get('auth/logout', 'Auth\LoginController@logout');
