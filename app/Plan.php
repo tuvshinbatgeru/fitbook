@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Filters\QueryFilter;
 use Illuminate\Database\Eloquent\Model;
 
 class Plan extends Model
@@ -14,6 +15,11 @@ class Plan extends Model
         'club_id', 'frequency_type','planable_id', 'planable_type','trainerless', 'name', 'description', 'price'
         , 'trainer_count', 'length', 'is_active'
     ];
+
+    static public function filter($query, QueryFilter $filters)
+    {
+        return $filters->apply($query);
+    }
 
     public function photos()
     {
@@ -33,6 +39,11 @@ class Plan extends Model
         return $this->belongsToMany('App\User', 'subscriptions', 'plan_id', 'user_id')
                 ->withPivot('club_id', 'begin_date', 'end_date')
                 ->withTimestamps();
+    }
+
+    public function heartsActions()
+    {
+        return $this->reactions()->where('action_type', 'App\HeartAction');   
     }
 
     public function reactions()

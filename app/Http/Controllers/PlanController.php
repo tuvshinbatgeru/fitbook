@@ -89,12 +89,15 @@ class PlanController extends Controller
         ]);
     }
 
-    public function index(Club $club, Request $request)
+    public function index(Club $club, \App\Filters\PlanFilters $filters)
     {
-        $plans = self::$lookup[$request->type]::with(['plan' => function ($query) use ($club) {
+        $query = self::$lookup[$filters->getRequest()->type]::with(['plan' => function ($query) use ($club) {
             $query->where('club_id', '=', $club->id)
-                  ->with('pinnedPhotos', 'teachers', 'services', 'trainings');
-        }])->get();
+                  ->with('pinnedPhotos', 'teachers', 'services', 'trainings')
+                  ->withCount('heartsActions');
+        }]);
+
+        $plans = Plan::filter($query, $filters)->paginate(2);
 
         return Response::json([
             'result' => $plans,

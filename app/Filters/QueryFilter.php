@@ -33,4 +33,9 @@ abstract class QueryFilter {
 	{
 		return $this->request->all();
 	}
+
+	public function getRequest()
+	{
+		return $this->request;
+	}
 }
