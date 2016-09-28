@@ -1,7 +1,10 @@
 <template>
-    <div class="row small-up-1 large-up-2">
+    <div class="row small-up-1 large-up-2" style="font-size:12px;">
         <div class="columns" v-for="current in plans">
         <h3>{{current.plan[0].name}}</h3>
+        {{current.plan[0].created_at | moment "from"}}
+        <div class="heart is-active"></div> 
+        <strong>{{current.plan[0].hearts_actions_count}}</strong>
         <p>{{{current.plan[0].description}}}</p>
 
         <div style="width:300px; height:100px; overflow: hidden;">
@@ -27,6 +30,9 @@
         </ul>
         </div>
     </div>
+    <div class="row text-center" v-show="pageIndex < pageLast">
+        <a class="button" @click="loadMore()">Load More ...</a>
+    </div>
 </template>
 
 <script>
@@ -34,6 +40,10 @@
         
         props: { 
             id : {},
+            orderBy : {
+                required : true
+            },
+            searchText : {}
         },
 
         created : function () {
@@ -47,6 +57,8 @@
         data () {
             return {
                 plans : [],
+                pageIndex : 1,
+                pageLast : 0,
             }
         },
 
@@ -55,13 +67,33 @@
                 this.plans.push(primary);
             },
 
+            loadMore : function () {
+                this.pageIndex ++;
+                this.getPrimaryPlans();
+            },
+
             getPrimaryPlans : function () {
-                this.$http.get(this.$env.get('APP_URI') + 'api/club/' + this.id + '/plan?type=primary').then(res => {
-                    this.plans = res.data.result;
+                this.$http.get(this.$env.get('APP_URI') + 'api/club/' + this.id + '/plan?type=primary&' + 
+                    this.orderBy + '&page=' + this.pageIndex).then(res => {
+                    this.plans = this.plans.concat(res.data.result.data);
+                    this.pageLast = res.data.result.last_page;
                 }).catch(err => {
 
                 });
             },
         },
+
+        watch: {
+            searchText : function (val, oldVal) {
+                this.plans = [];
+                this.getPrimaryPlans();
+            },
+
+            orderBy : function (val, oldVal) {
+                this.plans = [];
+                this.pageIndex = 1;
+                this.getPrimaryPlans();
+            },
+        }
     }
 </script>

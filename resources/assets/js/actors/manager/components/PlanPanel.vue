@@ -8,7 +8,7 @@
 
   <div class="row">
     <div class="small-10 columns">
-      <input type="text" name="search" placeholder="search ...">
+      <input type="text" v-model="search"  placeholder="search ...">
     </div>
     <div class="small-2 columns">
       <div class="small-2 columns">
@@ -23,15 +23,15 @@
   <div class="row">
       <ul class="dropdown menu" data-dropdown-menu v-foundation-dropdown-menu>
           <li class="is-dropdown-submenu-parent" style="background-color:#aecaec; border-radius:4px; font-size:12px;">
-              <a style="color:#fff; font-weight:bold;">Sort By</a>
+              <a style="color:#fff; font-weight:bold;">{{$t(orderBy)}}</a>
               
               <ul class="menu" style="margin-top:10px; background-color:#F2F5F8; border-radius:4px;">
                 <div class="arrow"></div>
-                <li><a>NEWEST</a></li>
-                <li><a>OLDEST</a></li>
-                <li><a>HEART</a></li>
-                <li><a>PRICE</a></li>
-                <li><a>SUBSCRIPTION COUNT</a></li>
+                <li><a @click="setOrderBy('newest')" style="font-weight:bold; color: #3f4652">{{$t('newest')}}</a></li>
+                <li><a @click="setOrderBy('oldest')">{{$t('oldest')}}</a></li>
+                <li><a @click="setOrderBy('heart')">{{$t('heart')}}</a></li>
+                <li><a @click="setOrderBy('price')">{{$t('price')}}</a></li>
+                <li><a @click="setOrderBy('max')">{{$t('max')}}</a></li>
               </ul>
           </li>
       </ul>
@@ -49,8 +49,10 @@
       >
   </custom-modal>
 
-  <component :id="id" :is="content">
-      
+  <component :id="id" 
+             :order-by.sync="orderBy"
+             :search-text.sync="search"
+             :is="content">
   </component>
 </template>
 
@@ -68,7 +70,9 @@
         planType : 1,
         content : 'primary-plan',
         plans : [],
+        orderBy : 'newest',
         showAddPlan : false,
+        search : '',
       }
     },
 
@@ -82,14 +86,17 @@
 
     events : {
         'savePlan' : function($response) {
-            debugger;
             this.savePlan($response);
         },
     },
 
     methods : {
+        setOrderBy : function (order) {
+            this.orderBy = order;
+            this.$broadcast('_orderchanged', this.orderBy);
+        },
+
         savePlan : function($response) {
-            debugger;
             this.$http.post(this.$env.get('APP_URI') + 'api/club/' + this.id + '/plan?data=' + $response.data.param).then(res => {
                 
                 if(res.data.code == 0) {
@@ -125,10 +132,20 @@
         en: { 
             plan : 'Plan',
             loyalty : 'Loyalty',
+            newest : 'NEWEST',
+            oldest : 'OLDEST',
+            price : 'PRICE',
+            max : 'MAX',
+            heart : 'HEART',
         },
         mn : {
             plan : 'Хөтөлбөр',
             loyalty : 'Урамшуулал',
+            newest : 'Шинэ',
+            oldest : 'Хуучин',
+            price : 'Үнэ',
+            max : 'MAX',
+            heart : 'Таалагдсан',
         },
     }
   }

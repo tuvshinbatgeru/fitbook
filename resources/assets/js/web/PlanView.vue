@@ -29,6 +29,12 @@
 			toggleHearth : function () {
 				this.$http.post(this.$env.get('APP_URI') + 'plan/' + this.plan.id + '/reaction?action_type=HeartAction').then(res => {
 					this.plan.hearth_count += res.data.type? 1 : -1;
+
+					if(res.data.type)
+						$(".heart").addClass('is-active');
+					else 
+						$(".heart").removeClass('is-active');
+
 				}).catch(err => {
 
 				});
@@ -39,7 +45,6 @@
 			}, 
 
 			saveSubscription : function($response) {
-				debugger;
 				this.$http.post(this.$env.get('APP_URI') + 'subscriptions?data=' + $response.data.param).then(res => {
 					this.showSubscription = false;  	
 				}).catch(err => {
