@@ -31,7 +31,7 @@
         </div>
     </div>
     <div class="row text-center" v-show="pageIndex < pageLast">
-        <a class="button" @click="loadMore()">Load More ...</a>
+        <a class="button" @click="loadMore()">{{ $t("load") }}</a>
     </div>
 </template>
 
@@ -93,6 +93,15 @@
                 this.plans = [];
                 this.pageIndex = 1;
                 this.getPrimaryPlans();
+            },
+        },
+
+        locales: {
+            en: { 
+                load : 'Load More ...',
+            },
+            mn : {
+                load : 'Цааш нь ...',
             },
         }
     }
