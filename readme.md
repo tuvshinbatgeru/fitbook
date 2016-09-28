@@ -10,7 +10,8 @@ installation guide.
 2. composer update
 3. install gulp
 
-
+npm 3.5.2
+node v4.2.6
 
 
 ## License
