@@ -13,7 +13,9 @@
 
     <custom-toast v-ref:toast></custom-toast>
 
-    <component is="plan-view" inline-template>
+    <component is="plan-view"
+               :plan="{{$plan}}" 
+               inline-template>
         @yield('content')      
     </component>  
 

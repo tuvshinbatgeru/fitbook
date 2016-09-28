@@ -4,7 +4,11 @@
 	export default {
 
 		props: { 
-			
+			plan : {}
+		},
+
+		ready : function () {
+			this.plan = JSON.parse(this.plan);
 		},
 
 		data () {
@@ -21,6 +25,15 @@
 		},
 
 		methods : {
+
+			toggleHearth : function () {
+				this.$http.post(this.$env.get('APP_URI') + 'plan/' + this.plan.id + '/reaction?action_type=HeartAction').then(res => {
+					this.plan.hearth_count += res.data.type? 1 : -1;
+				}).catch(err => {
+
+				});
+			},
+
 			setSubscription : function (type) {
 				this.showSubscription = type;
 			}, 

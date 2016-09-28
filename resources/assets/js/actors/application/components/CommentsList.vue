@@ -5,7 +5,8 @@
                 {{comment.created_at | moment "from"}}
                 {{{comment.message}}}
 
-                <a v-show="loggedUser">Thumbs up</a>
+                <a @click="toggleThumbsUp(comment)" v-show="loggedUser">Thumbs up</a> {{comment.thumbsup_count}}
+
                 <a @click="setCommentReply(comment)" 
                    v-show="loggedUser">Reply</a>
 
@@ -68,6 +69,15 @@
         },
 
         methods : {
+            toggleThumbsUp : function (comment) {
+                this.$http.post(this.$env.get('APP_URI') + 'api/user/comments/' + comment.id + '/reaction?action_type=ThumbsUpAction').then(res => {
+                    
+                    comment.thumbsup_count += res.data.type ? 1 : -1;
+
+                }).catch(err => {
+                });
+            },
+
             setCommentReply : function (comment) {
                 Vue.set(comment, 'reply', true);
             },

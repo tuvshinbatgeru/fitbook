@@ -164,6 +164,11 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
                     ->withTimestamps();
     }
 
+    public function reactions()
+    {
+        return $this->hasMany('App\Reaction', 'user_id');
+    }
+
     public function clubs()
     {
         return $this->belongsToMany('App\Club','members','user_id', 'club_id')
@@ -195,6 +200,48 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
             $this->clubRequests()->detach($club->id);
             return Response::json(['result' => 'Success', 'type' => 'APPROVE']);
         }
+    }
+
+    public function toggleReaction($action, $obj)
+    {
+        return  $this->reactionExists($action, $obj) ? 
+                $this->detachReaction($action, $obj) : 
+                $this->attachReaction($action, $obj) ;
+    }
+
+    private function reactionExists($action, $obj)
+    {
+        return $this->reactions()   
+                    ->where('action_id', $action->id)
+                    ->where('action_type', get_class($action))
+                    ->where('actionable_id', $obj->id)
+                    ->where('actionable_type', get_class($obj))
+                    ->exists();
+    }
+
+    public function detachReaction($action, $obj)
+    {
+        DB::table('reactions')
+                    ->where('action_id', $action->id)
+                    ->where('action_type', get_class($action))
+                    ->where('actionable_id', $obj->id)
+                    ->where('actionable_type', get_class($obj))
+                    ->delete();
+
+        return false;
+    }
+
+    private function attachReaction($action, $obj)
+    {
+        $instance = new \App\Reaction;
+        $instance->user_id = $this->id;
+        $instance->action_id = $action->id;
+        $instance->action_type = get_class($action);
+        $instance->actionable_id = $obj->id;
+        $instance->actionable_type = get_class($obj);
+        $instance->save();
+
+        return true;
     }
 
     public function toggleClubRequest($club, $type = null, $description = null)

@@ -24,7 +24,7 @@ class ServiceController extends Controller
         ]);
     }
 
-    public function list(Request $request)
+    public function listService(Request $request)
     {
     	$decode = json_decode($request->data);
     	$services = Service::verifiedServices();

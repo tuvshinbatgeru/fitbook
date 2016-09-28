@@ -9,10 +9,12 @@ use App\LoyaltyPlan;
 use App\Photo;
 use App\Plan;
 use App\PrimaryPlan;
+use App\Reaction;
 use App\Tag;
 use App\Transformers\PlanTransformer;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Response;
 
@@ -35,6 +37,19 @@ class PlanController extends Controller
         
     }
 
+    public function toggleReaction(Plan $plan, Request $request)
+    {
+        $action = Reaction::makeModel($request->action_type);
+
+        $response = Auth::user()->toggleReaction($action, $plan);        
+
+        return Response::json([
+            'code' => 0,
+            'type' => $response,
+            'message' => 'Hearthed :D', 
+        ]);
+    }
+
     public function simpleSearch(Club $club, Request $request)
     {
         $param = $request->q;
@@ -50,7 +65,11 @@ class PlanController extends Controller
 
     public function comments(Plan $plan)
     {
-        $comments = $plan->comments()->paginate(5);
+        $comments = $plan->comments()
+                         ->with('user')
+                         ->withCount('thumbsup')
+                         ->orderBy('thumbsup_count', 'DESC')
+                         ->paginate(5);
 
         return Response::json([
             'code' => 0,
@@ -146,6 +165,7 @@ class PlanController extends Controller
         $plan->trainings;
         $plan->planable;
         $plan->photos;
+        $plan->hearth_count = $plan->reactions()->where('action_id', 1)->count();
 
         return view('club.plan')->with(compact('plan'));
     }

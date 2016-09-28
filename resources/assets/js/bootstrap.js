@@ -54,8 +54,8 @@ Vue.use(VueTouch)
 // with options
 Vue.use(VueLazyload, {
   preLoad: 1.3,
-  error: 'dist/error.png',
-  loading: 'dist/loading.gif',
+  error: '/images/error.png',
+  loading: '/images/image_loader.gif',
   attempt: 1
 })
 
