@@ -110,7 +110,6 @@
 			},
 
 			modalSave : function() {
-				debugger;
 				if(this.saveCallback) {
 					if(this.validateable == 'Y' && !this.$children[0].validate()){
 						return;

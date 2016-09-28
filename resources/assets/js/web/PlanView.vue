@@ -39,6 +39,7 @@
 			}, 
 
 			saveSubscription : function($response) {
+				debugger;
 				this.$http.post(this.$env.get('APP_URI') + 'subscriptions?data=' + $response.data.param).then(res => {
 					this.showSubscription = false;  	
 				}).catch(err => {

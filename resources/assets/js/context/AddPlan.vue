@@ -265,7 +265,6 @@
 					}
 				}
 
-				debugger;
 				this.showTraining = false;
 			},
 			

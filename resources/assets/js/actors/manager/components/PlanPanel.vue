@@ -73,7 +73,7 @@
     },
 
     created : function () {
-        this.$broadcast('_planadded', null);
+
     },
 
     ready : function () {
@@ -82,15 +82,14 @@
 
     events : {
         'savePlan' : function($response) {
+            debugger;
             this.savePlan($response);
         },
     },
 
     methods : {
-        testBroadcast : function () {
-            this.$broadcast('_planadded', null);
-        },
         savePlan : function($response) {
+            debugger;
             this.$http.post(this.$env.get('APP_URI') + 'api/club/' + this.id + '/plan?data=' + $response.data.param).then(res => {
                 
                 if(res.data.code == 0) {
