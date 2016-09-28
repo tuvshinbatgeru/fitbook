@@ -35,6 +35,11 @@ class Plan extends Model
                 ->withTimestamps();
     }
 
+    public function reactions()
+    {
+        return $this->hasMany('App\Reaction', 'actionable_id');
+    }
+
     public function teachers()
     {
     	return $this->belongsToMany('App\User', 'plan_teacher', 'plan_id', 'teacher_id')

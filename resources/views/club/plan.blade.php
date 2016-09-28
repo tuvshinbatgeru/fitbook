@@ -36,6 +36,10 @@
 		@endforeach
 	</ul>
 	<div class="row">
+		<a @click="toggleHearth()">Hearth</a>
+		<p class="font-weight:bold;">@{{plan.hearth_count}}</p>
+	</div>
+	<div class="row">
 		<div class="small-12 medium-9 column">
 			<p>
 				{{$plan->description}}
@@ -53,8 +57,6 @@
 			</ul>
 		</div>
 	</div>
-    Plan widgets coming soon...  
-
     <div class="row text-center">
     	<a @click="showComments = true">COMMENTS - {{$plan->comments()->count()}}</a>
     </div>

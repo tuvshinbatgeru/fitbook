@@ -20,6 +20,23 @@
     </div>
   </div>
 
+  <div class="row">
+      <ul class="dropdown menu" data-dropdown-menu v-foundation-dropdown-menu>
+          <li class="is-dropdown-submenu-parent" style="background-color:#aecaec; border-radius:4px; font-size:12px;">
+              <a style="color:#fff; font-weight:bold;">Sort By</a>
+              
+              <ul class="menu" style="margin-top:10px; background-color:#F2F5F8; border-radius:4px;">
+                <div class="arrow"></div>
+                <li><a>NEWEST</a></li>
+                <li><a>OLDEST</a></li>
+                <li><a>HEART</a></li>
+                <li><a>PRICE</a></li>
+                <li><a>SUBSCRIPTION COUNT</a></li>
+              </ul>
+          </li>
+      </ul>
+  </div>
+
   <custom-modal 
       :id = "id"
       type = "Club"
@@ -119,4 +136,15 @@
 </script>
   
 <style lang="scss">
+
+.arrow {
+    width: 0;
+    height: 0;
+    margin-top: -8px;
+    margin-left: 15px;
+    border-left: 7px solid transparent;
+    border-right: 7px solid transparent;
+    border-bottom: 9px solid #F2F5F8;
+}
+
 </style>

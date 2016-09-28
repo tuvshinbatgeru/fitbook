@@ -32,6 +32,18 @@ class CommentController extends Controller
         //
     }
 
+    public function reaction(Comment $comment, Request $request)
+    {
+        $action = \App\Reaction::makeModel($request->action_type);
+        $response = Auth::user()->toggleReaction($action, $comment);        
+
+        return Response::json([
+            'code' => 0,
+            'type' => $response,
+            'message' => 'Thumbs upped :D', 
+        ]);
+    }
+
     /**
      * Store a newly created resource in storage.
      *

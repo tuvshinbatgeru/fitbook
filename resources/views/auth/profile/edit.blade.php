@@ -35,7 +35,7 @@
 		<div class="small-9 small-centered text-center large-centered columns">
 
 			<button @click="uploadAvatar($event)" style="position:relative; height: 168px; width: 168px; ">
-			    <img v-bind:src="user.avatar_url" style="width: 168px;
+			    <img v-lazy="user.avatar_url" style="width: 168px;
 			    	height: 168px;
 			    	position: absolute;
 			    	top: 0;
