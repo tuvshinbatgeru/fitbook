@@ -94,7 +94,8 @@ class PlanController extends Controller
         $query = self::$lookup[$filters->getRequest()->type]::with(['plan' => function ($query) use ($club) {
             $query->where('club_id', '=', $club->id)
                   ->with('pinnedPhotos', 'teachers', 'services', 'trainings')
-                  ->withCount('heartsActions');
+                  ->withCount('heartsActions')
+                  ->withCount('comments');
         }]);
 
         $plans = Plan::filter($query, $filters)->paginate(2);

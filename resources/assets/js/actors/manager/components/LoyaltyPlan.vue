@@ -2,9 +2,16 @@
     <div class="row small-up-1 large-up-2" style="font-size:12px;">
         <div class="columns" v-for="current in plans">
         <h3>{{current.plan[0].name}}</h3>
-        {{current.plan[0].created_at | moment "from"}}
-        <div class="heart is-active"></div> 
-        <strong>{{current.plan[0].hearts_actions_count}}</strong>
+
+        <div class="row text-center">
+            {{current.plan[0].created_at | moment "from"}}
+            <span class="fa fa-heart" style="color: red;"></span>
+            <strong>{{current.plan[0].hearts_actions_count}}</strong>
+
+            <span class="fa fa-comments-o" style="color: #3f4652;"></span>
+            <strong>{{current.plan[0].comments_count}}</strong>
+        </div>
+        
         <p>{{{current.plan[0].description}}}</p>
 
         <div style="width:300px; height:100px; overflow: hidden;">
