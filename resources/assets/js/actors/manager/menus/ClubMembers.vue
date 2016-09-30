@@ -1,11 +1,29 @@
 <template>
-  <div class="row small-up-3">
-    <div class="column">
-      <a @click="setMembersType(1)" class="button success">{{$t('teacher')}}</a>
-      <a @click="setMembersType(2)" class="button success">{{$t('manager')}}</a>
-      <a @click="setMembersType(3)" class="button success">{{$t('reception')}}</a>
+  <div>
+        <ul class="menu vertical nested">
+            <li>
+                <a @click="setMembersType(1)">
+                    <i class="fa fa-users"></i>
+                    <br/>
+                    {{$t('teacher')}}
+                </a>
+            </li>
+            <li>
+                <a @click="setMembersType(2)">
+                    <i class="fa fa-users"></i>
+                    <br/>
+                    {{$t('manager')}}
+                </a>
+            </li>
+            <li>
+                <a @click="setMembersType(3)">
+                    <i class="fa fa-users"></i>
+                    <br/>
+                    {{$t('reception')}}
+                </a>
+            </li>
+        </ul>
     </div>
-  </div>
 </template>
 
 <script>

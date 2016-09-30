@@ -17,14 +17,14 @@
 	</custom-modal>
 
 	<div class="row">
-		<div class="small-12 medium-2 column">
+		<div class="small-12 column">
 			<img src="{{$plan->pinnedPhotos[0]->url}}"/>
 			<a @click="setSubscription(true)" class="button success">Subscription</a>
 		</div>
-		<div class="small-12 medium-5 column">
+		<div class="small-12 column">
 			<h4>{{$plan->name}}</h4>
 		</div>
-		<div class="small-12 medium-5 column">
+		<div class="small-12 column">
 			<a href="#7">magellon test</a>
 		</div>
 	</div>

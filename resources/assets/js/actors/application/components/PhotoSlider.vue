@@ -49,11 +49,9 @@
 		  </waterfall-slot>
 		</waterfall>
 		<div class="figure">
-            <div class="figcaption" style="opacity:1;">
-                <a @click="showFileManager = true" class="btn-floating red" style="left: 25%;">
-                	<i class="fa fa-plus"></i>
+                <a @click="showFileManager = true" class="figcaption float-center">
+                	<i class="fa fa-camera"></i>
                 </a>
-            </div>
         </div>
 	</div>
 </template>
