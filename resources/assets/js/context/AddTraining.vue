@@ -1,13 +1,12 @@
 <template>
 	<form method="POST" accept="">
-	  <photo-slider v-ref:pslider></photo-slider>
-
-
+	  <photo-slider v-ref:pslider>
+	  </photo-slider>
 	  <div class="row">
 	  		<label>{{$t("genre")}}</label>
 		    <multiselect 
 		    	:options="sysgenres" 
-		    	:selected="genres" 
+		    	:selected.sync="genres" 
 		    	:multiple="true"
 		    	:clear-on-select="false" 
 		    	:close-on-select="false" 
@@ -55,15 +54,13 @@
 	export default {
 		props: { 
 			id : {},
-			type: {},
-			selected : {}
+			training : {}
 		},
 
 		data() {
 			return {
 				name : '',
 				description : '',
-				services : [],
 				sysgenres : [],
 				genres : null,
 			}
@@ -85,16 +82,27 @@
 			      alignment: 'left' // Displays dropdown with edge aligned to the left of button
 			    }
 			);
+
+			if(this.training) {
+				this.setData();
+			}
 		},
 
 		methods : {
+			setData : function () {
+				this.name = this.training.name;
+				this.$refs.tdescription.setHtml(this.training.description);
+				this.$refs.tslider.setTeachers(this.training.teachers);
+				this.genres = this.training.genres;
+				this.$refs.pslider.setPhotos(this.training.photos);			
+			},
 			getData : function() {
 				this.$dispatch('startLoading');
-
 				return {
 					teachers : this.$refs.tslider.teachers,
 					pinned_photo : this.$refs.pslider.pinnedPhoto,
 					param : this.$tools.transformParameters({
+						id : this.training ? this.training.id : null,
 						club_id : this.id,
 						name : this.name,
 						description : this.$refs.tdescription.getHTML(),
@@ -116,6 +124,11 @@
 				if(!this.genres || this.genres.length == 0) {
 					this.$root.$refs.toast.showMessage("Please. Choose at least one genre");
 					return false;
+				}
+
+				if(!this.$refs.tslider.teachers || this.$refs.tslider.teachers.length == 0) {
+					this.$root.$refs.toast.showMessage("Please. Choose at least one teacher");
+					return false;	
 				}
 
 				return true;
