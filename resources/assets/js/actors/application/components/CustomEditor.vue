@@ -12,6 +12,7 @@
          spellcheck="false" 
 		 class="row taggable--field inputor" 
 		 contentEditable="true">
+         {{{html}}}
 	</div>
 </template>
 
@@ -30,6 +31,10 @@
 		methods : {
             getHTML : function () {
                 return $('#custom-editor').html();
+            },
+
+            setHtml : function(html) {
+                this.html = html;
             }
         }
 	}

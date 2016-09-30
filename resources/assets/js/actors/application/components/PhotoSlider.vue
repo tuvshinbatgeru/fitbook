@@ -101,6 +101,17 @@
 
 			setViewPort : function (width) {
 				this.viewPort = width;
+				$('#draggable').css('top', this.viewPort + 'px');
+			},
+
+			setPhotos : function(photos) {
+				this.pictures = photos;
+
+				var pinned = _.filter(this.pictures, function(o) { 
+					return o.pivot.pinned == 'Y'; 
+				});
+
+				this.setPinnedPhoto(pinned[0]);				
 			},
 
 			choosedPictures : function($response) {
@@ -135,8 +146,6 @@
 			pinnedPic : function () {
 
 				this.setViewPort(this.pinnedPhoto == null ? -175 : (200 - this.pinnedPhoto.ratio * 600));
-
-				$('#draggable').css('top', '0px');
 
 				return this.pinnedPhoto == null ? this.$env.get('APP_URI') + 'images/site/back.jpg' : this.pinnedPhoto.url;
 			}

@@ -44,4 +44,11 @@ class Training extends Model
         return $this->belongsToMany('App\Genre', 'training_genre', 'training_id', 'genre_id')
                 ->withTimestamps();
     }
+
+    public function histories()
+    {
+        return $this->belongsToMany('App\User', 'training_adjustments', 'training_id', 'user_id')
+                ->withPivot('before', 'after')
+                ->withTimestamps();   
+    }
 }

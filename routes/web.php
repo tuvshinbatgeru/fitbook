@@ -89,7 +89,7 @@ use Illuminate\Support\Facades\Storage;
         	$second->toggleViewOrder($request->type == 'down' ? 'down' : 'upper', $clubId);
 		});
 
-		Route::resource('training', 'TrainingController');
+		Route::get('/training', 'TrainingController@clubTrainings');
 		Route::get('plan/simple', 'PlanController@simpleSearch');
 		Route::get('plan/widget', 'PlanController@forWidgets');
 		Route::resource('plan', 'PlanController');
@@ -134,6 +134,8 @@ use Illuminate\Support\Facades\Storage;
 	    return view('create-club');
 	});
 
+	Route::resource('/training', 'TrainingController');
+	Route::put('/training', 'TrainingController@updateTraining');
 	Route::get('/plan/{plan}', 'PlanController@show');
 	Route::get('/plan/{plan}/comments', 'PlanController@comments');
 	Route::post('/plan/{plan}/reaction', 'PlanController@toggleReaction');

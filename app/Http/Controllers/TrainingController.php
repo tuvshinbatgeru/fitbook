@@ -23,12 +23,15 @@ class TrainingController extends Controller
         $this->trainingTransformer = $trainingTransformer;
     }
 
+    public function index()
+    {
+        
+    }
     
-    public function index(Club $club, Request $request)
+    public function clubTrainings(Club $club, Request $request)
     {
         $decode = json_decode($request->data);
-        $trainings = $club->trainings;
-        $trainings->load('teachers', 'pinnedPhotos');
+        $trainings = $club->trainings()->with('pinnedPhotos')->withCount('teachers', 'genres', 'histories')->get();
 
         foreach ($trainings as $training) {
 
@@ -65,7 +68,7 @@ class TrainingController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Club $club, Request $request)
+    public function store(Request $request)
     {
         $decode = json_decode($request->data);
         $data = $this->trainingTransformer->transform($decode);
@@ -82,8 +85,8 @@ class TrainingController extends Controller
         $photo_id_array = [];
         for ($i = 0; $i < count($decode->pictures); $i++) {
             $photo_id_array[$decode->pictures[$i]->id] = [
-                'pinned' => $decode->pictures[$i]->pinned ? 'Y' : 'N',
-                'top_percentage' => $decode->pictures[$i]->pinned ? $decode->crop : 0,
+                'pinned' => isset($decode->pictures[$i]->pinned) && $decode->pictures[$i]->pinned ? 'Y' : 'N',
+                'top_percentage' => isset($decode->pictures[$i]->pinned) && $decode->pictures[$i]->pinned ? $decode->crop : 0,
             ];
 
             Photo::attachTagById($decode->pictures[$i]->id, Tag::TRAINING_ID);
@@ -106,9 +109,16 @@ class TrainingController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Training $training)
     {
-        //
+        $training->teachers;
+        $training->genres;
+        $training->photos;
+
+        return Response::json([
+            'code' => 0,
+            'result' => $training,
+        ], 200);
     }
 
     /**
@@ -132,6 +142,66 @@ class TrainingController extends Controller
     public function update(Request $request, $id)
     {
         //
+    }
+
+    public function updateTraining(Request $request)
+    {
+        $decode = json_decode($request->data);
+
+        $data = $this->trainingTransformer->transform($decode);
+        if(Training::where('name', '=', $data['name'])->
+                where('id', '<>' , $data['id'])->exists()) 
+        return Response::json([
+            'code' => 1,
+            'message' => 'Training name duplicated',
+        ]); 
+
+        $training = Training::find($data['id']);
+
+        $before = new \App\Adjustment;
+        $after = new \App\Adjustment;
+
+        if($training->name != $data['name']) {
+            $before->name = $training->name;
+            $after->name = $data['name'];
+        }
+
+        if($training->description != $data['description']) {
+            $before->description = $training->description;
+            $after->description = $data['description'];
+        }
+
+        $training->name = $data['name'];
+        $training->description = $data['description'];
+        $training->save();
+
+        $photo_id_array = [];
+        for ($i = 0; $i < count($decode->pictures); $i++) {
+            $photo_id_array[$decode->pictures[$i]->id] = [
+                'pinned' => isset($decode->pictures[$i]->pinned) && $decode->pictures[$i]->pinned ? 'Y' : 'N',
+                'top_percentage' => isset($decode->pictures[$i]->pinned) && $decode->pictures[$i]->pinned ? $decode->crop : 0,
+            ];
+
+            Photo::attachTagById($decode->pictures[$i]->id, Tag::TRAINING_ID);
+        }
+
+        $training->photos()->sync($photo_id_array);
+        $training->teachers()->sync($decode->teachers);
+        $training->genres()->sync($decode->genres);
+
+        $training->teachers_count = count($decode->teachers);
+        $training->genres_count = count($decode->genres);
+
+        $training->histories()->attach(\Illuminate\Support\Facades\Auth::user()->id, [
+            'before' => $before->toJson(),
+            'after' => $after->toJson(),
+        ]);
+
+        return Response::json([
+            'code' => 0,
+            'message' => 'Successfully added training',
+            'result' => $training,
+        ], 200);
     }
 
     /**
