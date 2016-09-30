@@ -19,10 +19,6 @@ class CreatePlanAdjustmentsTable extends Migration
             $table->integer('plan_id')->unsigned()->index();
             $table->text('before');
             $table->text('after');
-            $table->text('before_teachers');
-            $table->text('after_teachers');
-            $table->text('before_trainings');
-            $table->text('after_trainings');
             $table->timestamps();
         });
     }

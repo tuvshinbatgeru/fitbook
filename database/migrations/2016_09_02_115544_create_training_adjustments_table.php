@@ -19,8 +19,6 @@ class CreateTrainingAdjustmentsTable extends Migration
             $table->integer('training_id')->unsigned()->index();
             $table->text('before');
             $table->text('after');
-            $table->text('before_teachers');
-            $table->text('after_teachers');
             $table->timestamps();
         });
     }
