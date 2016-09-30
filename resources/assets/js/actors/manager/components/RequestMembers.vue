@@ -1,13 +1,13 @@
 <template>
     <div class="row">
-        <div class="small-12 columns">
-             <input type="text" name="search" placeholder="search ...">
+        <div class="small-12 columns content--search">
+             <input type="text" name="search" class="" placeholder="search ...">
         </div>
     </div>
 
     <form>
         <ul class="row">
-            <li class="small-12" v-for="request in requests">
+            <li class="small-12 float-left" v-for="request in requests">
                     <img v-bind:src="request.avatar_url" height="40" width="40" />
                     {{request.first_name}}
                      {{request.last_name}}
