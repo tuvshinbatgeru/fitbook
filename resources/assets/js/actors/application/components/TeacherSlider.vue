@@ -62,6 +62,10 @@
 		},
 
 		methods : {
+			setTeachers : function (teachers) {
+				this.teachers = teachers;
+			},
+
 			choosedTeachers : function($response) {
 				this.teachers = $response.data;
 				this.showTeachers = false;
