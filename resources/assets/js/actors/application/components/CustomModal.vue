@@ -63,7 +63,6 @@
 </template>
 
 <script>
-	import AddTraining from '../../../context/AddTraining.vue';
 	import services from '../../../context/services.vue'; 
 	import AddPlan from '../../../context/AddPlan.vue'; 
 	import FileManager from '../../../context/FileManager.vue'; 
@@ -138,7 +137,7 @@
 		},
 
 		components : {
-			AddTraining, AddPlan, FileManager, 
+			AddPlan, FileManager, 
 			teachers, trainings, services
 		}
 	}
