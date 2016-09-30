@@ -5,7 +5,7 @@
     </div>
     <div class="small-2 columns">
       <div class="small-2 columns">
-            <a @click="showAddTraining = true" class="button success">
+            <a @click="addTraining()" class="button success">
                 <i class="fa fa-pencil-square-o">
                          
                 </i>
@@ -18,16 +18,19 @@
         :id = "id"
         v-ref:addtr
         type = "Club"
-        title = "Хичээл нэмэх" 
-        title_en = "Add Training"
+        :title = "$t(methodType + '_title')" 
         usage = "_add-training" 
         :show.sync = "showAddTraining"
         save-callback = "saveTraining"
-        validateable = 'Y'
-        context = "AddTraining">
+        validateable = 'Y'>
+        <div slot="body">
+          <components v-ref:context :id="id" is="add-training" :training="currentTraining">
+              
+          </components>
+        </div>
   </custom-modal>
 
-  <div class="row small-up-3 medium-up-4 large-up-5">
+  <div class="row small-up-1 medium-up-2">
     <ft-training :item = "train" v-for = "train in training">
         
     </ft-training>
@@ -38,6 +41,7 @@
 <script>
 
   import FtTraining from '.././components/FtTraining.vue';
+  import AddTraining from '../../../context/AddTraining.vue';
 
   export default {
     props: { 
@@ -47,7 +51,10 @@
     data() {
       return {
           training : [],
-          showAddTraining : false
+          currentTraining : null,
+          showAddTraining : false,
+          methodType : 'add',
+          copyInstance : null,
       }
     },
 
@@ -59,9 +66,34 @@
         'saveTraining' : function($response) {
           this.saveTraining($response);
         },
+
+        'deleteTraining' : function($response) {
+          this.training.$remove($response);
+        },
+
+        'editTraining' : function($response) {
+            debugger;
+            this.copyInstance = $response;
+            this.editTraining($response.id);
+        }
     },
 
     methods : {
+        addTraining : function () {
+            this.currentTraining = null;
+            this.methodType = 'add';
+            this.showAddTraining = true;
+        },
+
+        editTraining : function(id) {
+            this.$http.get(this.$env.get('APP_URI') + 'training/' + id).then(res => {
+                this.methodType = 'edit';
+                this.currentTraining = res.data.result;
+                this.showAddTraining = true;
+            }).catch(err => {
+            });
+        },
+
         getTrainings : function () {
             this.$http.get(this.$env.get('APP_URI') + 'api/club/' + this.id + '/training').then(res => {
                 this.training = res.data.result;
@@ -70,10 +102,8 @@
             });
         },
 
-        saveTraining : function($response) {
-
-            this.$http.post(this.$env.get('APP_URI') + 'api/club/' + this.id + '/training?data=' + $response.data.param).then(res => {
-                
+        storeTraining : function ($response) {
+            this.$http.post(this.$env.get('APP_URI') + 'training?data=' + $response.data.param).then(res => {
                 if(res.data.code == 0) {
                     var curTraining = res.data.result;
                     curTraining.teachers = $response.data.teachers;
@@ -92,22 +122,60 @@
                 this.$refs.addtr.loading = false;
                 this.$root.$refs.toast.showMessage('Server side error!.');
             });
-            
+        },
+
+        cloneTraining : function (curTraining) {
+
+            this.copyInstance.name = curTraining.name;
+            this.copyInstance.description = curTraining.description;
+            this.copyInstance.teachers_count = curTraining.teachers_count;
+            this.copyInstance.genres_count = curTraining.genres_count;
+            this.copyInstance.pinned_photos = curTraining.pinned_photos;
+            this.showAddTraining = false;
+        },
+
+        updateTraining : function ($response) {
+            this.$http.put(this.$env.get('APP_URI') + 'training?data=' + $response.data.param).then(res => {
+                if(res.data.code == 0) {
+                    var curTraining = res.data.result;
+                    var pinned_photos = [];
+                    
+                    pinned_photos.push($response.data.pinned_photo);
+                    curTraining.pinned_photos = pinned_photos;
+                    this.cloneTraining(curTraining);
+                    this.copyInstance.histories_count ++;
+                }
+
+                this.$refs.addtr.loading = false;
+                this.$root.$refs.toast.showMessage(res.data.message);
+
+            }).catch(err => {
+                this.$refs.addtr.loading = false;
+                this.$root.$refs.toast.showMessage('Server side error!.');
+            });    
+        },
+
+        saveTraining : function($response) {
+            this.methodType == "add" ? this.storeTraining($response) : this.updateTraining($response);
         }
     },
 
     components : {
-        FtTraining
+        FtTraining, AddTraining
     },
 
     locales: {
         en: { 
             plan : 'Plan',
             loyalty : 'Loyalty',
+            add_title : 'Add Training',
+            edit_title : 'Edit Training',
         },
         mn : {
             plan : 'Хөтөлбөр',
             loyalty : 'Урамшуулал',
+            add_title : 'Хичээл нэмэх',
+            edit_title : 'Хичээл засах',
         },
     }
   }
