@@ -39,6 +39,7 @@
 
   <custom-modal 
       :id = "id"
+      v-ref:addpl
       type = "Club"
       title = "Add Plan" 
       usage = "_add-plan" 
@@ -113,8 +114,10 @@
                     this.showAddPlan = false;
                 }
 
+                this.$refs.addpl.loading = false;
                 this.$root.$refs.toast.showMessage(res.data.message);
             }).catch(err => {
+                this.$refs.addpl.loading = false;
                 this.$root.$refs.toast.showMessage('Server side error!.');
             });
         },
