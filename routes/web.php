@@ -29,9 +29,6 @@ use Illuminate\Support\Facades\Storage;
 	});
 
 	Route::get('/', function () {
-
-		//event(new App\Events\PlanAddedEvent(App\Plan::find(10)));
-
     	return view('index');
 	});
 
@@ -39,12 +36,7 @@ use Illuminate\Support\Facades\Storage;
 		return view('search');
 	});
 
-	Route::resource('/subscriptions', 'SubscriptionController');
-	Route::get('users/{username}', 'UserController@index');
-	Route::get('users/{username}/edit', 'UserController@edit')->middleware('auth');
-	Route::post('auth/login', 'Auth\LoginController@login');
-
-	Route::get('login', function() {
+	Route::get('/login', function() {
 		return view('auth.login');
 	});
 
@@ -58,93 +50,24 @@ use Illuminate\Support\Facades\Storage;
 	    return view('auth.reception.dashboard');
 	});
 
-	//application api
-	Route::group(['prefix' => '/api'], function () {
-
-		Route::get('/users', 'UserController@search');
-		Route::get('/service', 'ServiceController@listService');	
-		Route::post('/test','FileManagerController@test');
-		Route::get('/search', 'SearchController@search');
-		Route::resource('/genre', 'GenreController');
-		Route::get('/user/files', 'FileManagerController@files');
-		Route::post('/user/avatar/{photo}', 'UserController@storeAvatar');
-
-	});
-
-	Route::post('/upload', 'FileManagerController@upload');
-
-	//Club info APIs
-	Route::group(['prefix' => '/api/club/{club}/'], function () {
-
-		Route::get('club-info', 'ClubController@info');
-		Route::get('online', 'ClubController@onlineUsers');
-		Route::post('follow', 'UserController@toggleFollow');
-		Route::post('request', 'UserController@toggleRequest');
-		Route::get('teacher', 'ClubController@getTeachers');
-		Route::get('members/{type}', 'ClubController@members');
-		Route::post('teacher/{first}/{second}', 'ClubController@toggleTeacherViewOrder');
-
-		Route::post('teacher/{first}/{second}', function($clubId, User $first, User $second, Request $request) {
-		    $first->toggleViewOrder($request->type == 'down' ? 'upper' : 'down', $clubId);
-        	$second->toggleViewOrder($request->type == 'down' ? 'down' : 'upper', $clubId);
-		});
-
-		Route::get('/training', 'TrainingController@clubTrainings');
-		Route::get('plan/simple', 'PlanController@simpleSearch');
-		Route::get('plan/widget', 'PlanController@forWidgets');
-		Route::resource('plan', 'PlanController');
-		Route::resource('widgets', 'TemplateController');
-		Route::resource('service', 'ServiceController');
-		Route::post('/service/edit', 'ServiceController@modifyClubServices');
-
-	});
-
-	//Club edit APIs
-	Route::group(['prefix' => '/api/club/edit/{club}/'], function () {
-
-		Route::get('index', 'ClubEditController@index');
-		Route::get('members', 'ClubEditController@members');
-		Route::get('request', 'ClubEditController@request');
-		Route::put('request/{user}', 'ClubEditController@requestResponse');	
-
-	});
-
-	Route::group(['prefix' => '/api/user/'], function () {
-
-		Route::resource('comments', 'CommentController');
-		Route::post('comments/{comment}/reaction', 'CommentController@reaction');
-		
-	});
-
-	/* type - User */
-	Route::group(['prefix' => '/api/user/{user}/'], function () {
-
-		Route::get('menus', 'UserController@menus');
-		Route::get('notifications', 'UserController@notifications');
-		Route::get('mentions', 'UserController@mentions');
-		Route::get('activity', 'UserController@userActivity');
-		Route::get('followed', 'UserController@followedClubs');
-		Route::get('subscriptions', 'UserController@subscriptions');
-		Route::post('inuser', 'UserController@inUser');
-		Route::post('outuser', 'UserController@outUser');
-
-	});
-
 	Route::get('/create-club', function(Request $request) {
 	    return view('create-club');
 	});
 
-	Route::resource('/training', 'TrainingController');
-	Route::put('/training', 'TrainingController@updateTraining');
-	Route::get('/plan/{plan}', 'PlanController@show');
-	Route::get('/plan/{plan}/comments', 'PlanController@comments');
-	Route::post('/plan/{plan}/reaction', 'PlanController@toggleReaction');
-	Route::get('/{club}', 'ClubController@index');
-	Route::get('/{club}/edit', 'ClubEditController@edit');
-	Route::get('auth/logout', 'Auth\LoginController@logout');
 	Route::get('auth/verify-account', function() {
 	    return view('auth.verify-account');
 	});
+
+	//Social Login
+	Route::get('/login/{provider?}',[
+	    'uses' => 'Auth\LoginController@getSocialAuth',
+	    'as'   => 'auth.getSocialAuth'
+	]);
+
+	Route::get('/login/callback/{provider?}',[
+	    'uses' => 'Auth\LoginController@getSocialAuthCallback',
+	    'as'   => 'auth.getSocialAuthCallback'
+	]);
 
 	Route::post('auth/activate', function(Request $request) {
 		if(User::checkUserAvailable($request->username))
@@ -158,19 +81,21 @@ use Illuminate\Support\Facades\Storage;
 	    return redirect('/');
 	});
 
-	Route::get('/api/check-user/{username}', function($username) {
-		if(User::checkUserAvailable($username))
-			return Response::json(['result' => 'no']);
-	    return Response::json(['result' => 'ok']);
-	});
+	Route::resource('/subscriptions', 'SubscriptionController');
+	Route::get('users/{username}', 'UserController@index');
+	Route::get('users/{username}/edit', 'UserController@edit')->middleware('auth');
+	
+	Route::post('auth/login', 'Auth\LoginController@login');
+	Route::post('/upload', 'FileManagerController@upload');
+	Route::resource('/training', 'TrainingController');
+	Route::put('/training', 'TrainingController@updateTraining');
+	Route::get('/plan/{plan}', 'PlanController@show');
+	Route::get('/plan/{plan}/comments', 'PlanController@comments');
+	Route::post('/plan/{plan}/reaction', 'PlanController@toggleReaction');
+	Route::get('/{club}', 'ClubController@index');
+	Route::get('/{club}/edit', 'ClubEditController@edit');
+	Route::get('/auth/logout', 'Auth\LoginController@logout');
+	
+	
 
-	//Social Login
-	Route::get('/login/{provider?}',[
-	    'uses' => 'Auth\LoginController@getSocialAuth',
-	    'as'   => 'auth.getSocialAuth'
-	]);
-
-	Route::get('/login/callback/{provider?}',[
-	    'uses' => 'Auth\LoginController@getSocialAuthCallback',
-	    'as'   => 'auth.getSocialAuthCallback'
-	]);
+	

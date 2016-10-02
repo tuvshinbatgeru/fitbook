@@ -33,11 +33,6 @@
 		},
 
 		events: {
-			'member-changed' : function ($request) {
-				this.subMenu = $request.content;
-				this.$broadcast('_MemberTypeChanged', this.subMenu);
-			},
-
 			'content-changed' : function($request) {
 				this.content = $request.content;
 			},
@@ -65,19 +60,24 @@
 
 			setMenu : function(menu) {
 				this.selectedMenu = menu;
-
+				this.setSubMenu();
+				this.content = this.selectedMenu;
+			},
+			
+			setSubMenu : function() {
 				switch(this.selectedMenu) {
-					case 'club-registration':
-						this.content = 'plan-panel';
+					case 'teacher-panel':
+						this.subMenu = 1;
+						this.selectedMenu = 'all-members';
 						break;
-					case 'club-members':
-						this.content = 'all-members';
+					case 'reception-panel':
+						this.subMenu = 2;
+						this.selectedMenu = 'all-members';
 						break;
-					case 'club-dashboard':
-						this.content = 'training-panel';
+					case 'manager-panel':
+						this.subMenu = 3;
+						this.selectedMenu = 'all-members';
 						break;
-					default : 
-						this.content = 'all-members';
 				}
 			},
 		},
@@ -94,12 +94,24 @@
 	            members : 'Members',
 	            registration : 'Registration',
 	            template : 'Template',
+	            teacher : 'Teachers',
+	            manager : 'Managers',
+	            reception : 'Receptions',
+	            plan : 'Plan',
+	            training : 'Training',
+	            service : 'Service',
 	        },
 	        mn : {
 	            dashboard : 'Хяналт',
 	            members : 'Гишүүнчлэл',
 	            registration : 'Бүртгэл',
 	            template : 'Загвар',
+	            teacher : 'Багш',
+	            manager : 'Менежер',
+	            reception : 'Ресепшэн',
+	            plan : 'Хөтөлбөр',
+	            training : 'Хичээл',
+	            service : 'Үйлчилгээ',
 	        },
 	    }
 	}

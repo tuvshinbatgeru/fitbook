@@ -92,7 +92,7 @@
       ),
       'api' => 
       array (
-        'driver' => 'token',
+        'driver' => 'passport',
         'provider' => 'users',
       ),
     ),
@@ -207,14 +207,15 @@
       19 => 'Illuminate\\Translation\\TranslationServiceProvider',
       20 => 'Illuminate\\Validation\\ValidationServiceProvider',
       21 => 'Illuminate\\View\\ViewServiceProvider',
-      22 => 'Laravel\\Scout\\ScoutServiceProvider',
-      23 => 'App\\Providers\\AppServiceProvider',
-      24 => 'App\\Providers\\AuthServiceProvider',
-      25 => 'App\\Providers\\EventServiceProvider',
-      26 => 'App\\Providers\\RouteServiceProvider',
-      27 => 'Zizaco\\Entrust\\EntrustServiceProvider',
-      28 => 'Laravel\\Socialite\\SocialiteServiceProvider',
-      29 => 'Intervention\\Image\\ImageServiceProvider',
+      22 => 'Laravel\\Passport\\PassportServiceProvider',
+      23 => 'Laravel\\Scout\\ScoutServiceProvider',
+      24 => 'App\\Providers\\AppServiceProvider',
+      25 => 'App\\Providers\\AuthServiceProvider',
+      26 => 'App\\Providers\\EventServiceProvider',
+      27 => 'App\\Providers\\RouteServiceProvider',
+      28 => 'Zizaco\\Entrust\\EntrustServiceProvider',
+      29 => 'Laravel\\Socialite\\SocialiteServiceProvider',
+      30 => 'Intervention\\Image\\ImageServiceProvider',
     ),
     'aliases' => 
     array (

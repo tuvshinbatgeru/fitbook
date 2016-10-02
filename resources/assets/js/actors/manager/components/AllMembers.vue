@@ -1,6 +1,5 @@
 <template>
     <div class="widget-content float-center">
-        <h3>Teachers</h3>
       <div class="content--container float-center">
         <div>
             <ul class="tabs">
@@ -29,7 +28,6 @@
   export default {
     props: { 
       id : {},
-      type : {},
       memberType : { default: 1 },
     },
 
@@ -48,9 +46,6 @@
 
     ready : function () {
         $('ul.tabs').tabs();
-        this.$on('_MemberTypeChanged', (memberType) => {
-            this.memberType = memberType;
-        });
     },
 
     events: {
@@ -66,7 +61,6 @@
 
     methods : {
         init: function () {
-            debugger;
             this.$http.get(this.$env.get('APP_URI') + 'api/club/edit/' + this.clubid + '/members?type=' + this.memberType).then((response) => 
             {
                 this.request_count = response.data.requests_count;
@@ -77,27 +71,27 @@
             });        
         },
 
-        getMenuToType : function () {
-           switch(this.submenu) {
-              case "request-members" : 
-                return 0;
-              case "current-members" : 
-                return 1;
-           }
+        resetSubMenu : function () {
+            this.submenu = 'request-members';
+        },
+
+        setSubMenu : function(submenu) {
+            this.submenu = submenu;
         },
 
         setMembersType : function (type) {
             this.memberType = type;
-            //this.init();
-        },
-
-        setSubMenu : function (menu) {
-            this.submenu = menu;
         },
 
         decreaseRequests : function() {
             this.request_count --;
         },
+    },
+
+    watch : {
+        memberType : function(val, oldVal) {
+            this.init();
+        }
     },
 
     components : {

@@ -40,9 +40,7 @@
         },
 
         ready : function () {
-            this.$watch('type', function () {
-                this.init();
-            })
+            
         },
 
         methods : {
@@ -80,6 +78,12 @@
 
                 }); 
             },  
+        },
+
+        watch : {
+            type : function(val, oldVal) {
+                this.init();
+            }
         },
     }
 </script>

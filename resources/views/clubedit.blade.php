@@ -20,24 +20,24 @@
 				<span class="success badge">@{{members_count}}</span>
 				<ul class="menu vertical nested">
 					<li>
-						<a @click="setMenu('club-members')">
+						<a @click="setMenu('teacher-panel')">
 							<i class="fa fa-users"></i>
 							<br/>
-							@{{$t('members')}}
+							@{{$t('teacher')}}
 						</a>
 					</li>
 					<li>
-						<a @click="setMenu('club-members')">
+						<a @click="setMenu('manager-panel')">
 							<i class="fa fa-users"></i>
 							<br/>
-							@{{$t('members')}}
+							@{{$t('manager')}}
 						</a>
 					</li>
 					<li>
-						<a @click="setMenu('club-members')">
+						<a @click="setMenu('reception-panel')">
 							<i class="fa fa-users"></i>
 							<br/>
-							@{{$t('members')}}
+							@{{$t('reception')}}
 						</a>
 					</li>
 				</ul>
@@ -51,24 +51,24 @@
 				<span class="secondary badge">@{{requests_count}}</span>
 				<ul>
 					<li>
-						<a @click="setMenu('club-registration')">
+						<a @click="setMenu('plan-panel')">
 							<i class="fa fa-pencil-square-o"></i>
 							<br/>
-							@{{$t('registration')}}
+							@{{$t('plan')}}
 						</a>
 					</li>
 					<li>
-						<a @click="setMenu('club-registration')">
+						<a @click="setMenu('training-panel')">
 							<i class="fa fa-pencil-square-o"></i>
 							<br/>
-							@{{$t('registration')}}
+							@{{$t('training')}}
 						</a>
 					</li>
 					<li>
-						<a @click="setMenu('club-registration')">
+						<a @click="setMenu('service-panel')">
 							<i class="fa fa-pencil-square-o"></i>
 							<br/>
-							@{{$t('registration')}}
+							@{{$t('service')}}
 						</a>
 					</li>
 				</ul>
@@ -104,16 +104,23 @@
 				</ul>
 			</li>
 		</ul>
-		<section class="widget" style="margin-left:100px;">
+		{{-- <section class="widget" style="margin-left:100px; display:none;">
 			<component :clubid="clubid" 
 					   :is="selectedMenu">
 			</component>
-		</section>
+		</section> --}}
 	</section>
 	<section class="widget--container">
-		<component 
+		<component v-if="content == 'all-members'"
+			:id="clubid"
+			:member-type.sync="subMenu"
+			:is="content">
+		</component>
+
+		<component v-else
 			:id="clubid"
 			:is="content">
+			
 		</component>
 	</section>
 </section>

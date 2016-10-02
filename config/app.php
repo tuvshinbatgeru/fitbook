@@ -163,6 +163,7 @@ return [
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
 
+
         /*
          * Package Service Providers...
          */
@@ -172,6 +173,7 @@ return [
         /*
          * Application Service Providers...
          */
+        Laravel\Passport\PassportServiceProvider::class,
         Laravel\Scout\ScoutServiceProvider::class,
         App\Providers\AppServiceProvider::class,
         // App\Providers\BroadcastServiceProvider::class,
@@ -181,6 +183,7 @@ return [
         Zizaco\Entrust\EntrustServiceProvider::class,
         Laravel\Socialite\SocialiteServiceProvider::class,
         Intervention\Image\ImageServiceProvider::class,
+
 
     ],
 
