@@ -7,7 +7,7 @@
 
     <form>
         <ul class="row">
-            <li class="small-12 float-left" v-for="request in requests">
+            <li class="small-12 content--list" v-for="request in requests">
                     <img v-bind:src="request.avatar_url" height="40" width="40" />
                     {{request.first_name}}
                      {{request.last_name}}
