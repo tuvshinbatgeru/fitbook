@@ -19,13 +19,14 @@ use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Response;
 use Intervention\Image\Facades\Image;
 use Laravel\Scout\Searchable;
+use Laravel\Passport\HasApiTokens;
 use Zizaco\Entrust\Traits\EntrustUserTrait;
 
 class User extends Eloquent implements AuthenticatableContract, CanResetPasswordContract
 {
     use EntrustUserTrait;
     use Authenticatable, CanResetPassword;
-    use Searchable;
+    use Searchable, HasApiTokens;
     use Notifiable;
 
     protected $table = 'users';
