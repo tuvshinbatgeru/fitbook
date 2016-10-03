@@ -1,5 +1,5 @@
 <template>
-    <div class="row">
+    <div class="row content--search">
         <div class="small-10 columns">
              <input type="text" name="search" placeholder="search ...">
         </div>
@@ -16,18 +16,18 @@
         <ul class="row">
             <li class="small-12" v-for="member in members | orderBy 'pivot.view_order'">
                 <div class="row">
-                    <div class="small-1 columns">
-                        {{member.pivot.view_order}} 
-                        <a @click="upperOrder(member)" v-show="member.pivot.view_order != 1">up</a>
-                        <a @click="downOrder(member)" v-show="member.pivot.view_order != maxViewOrder">down</a>  
+                    <div class="small-1 columns member--order">
+                        <a class="member--order-up" @click="upperOrder(member)" v-show="member.pivot.view_order != 1"><i class="fa fa-caret-up"></i></a>
+                        <span class="member--order-count">{{member.pivot.view_order}}</span>
+                        <a class="member--order-down" @click="downOrder(member)" v-show="member.pivot.view_order != maxViewOrder"><i class="fa fa-caret-down"></i></a>  
                     </div>
-                    <div class="small-9 columns">
+                    <div class="small-9 columns member--list">
                         <img v-bind:src="member.avatar_url" height="40" width="40" />
-                        {{member.first_name}}
-                        {{member.last_name}}    
+                        <span>{{member.first_name}}</span>
+                        {{member.last_name}}
                     </div>
-                    <div class="small-2 columns">
-                        <a @click="rejectRequest(member)" class="button alert">X</a>   
+                    <div class="small-2 columns ">
+                        <a @click="rejectRequest(member)" class="button alert member--button"><i class="fa fa-trash-o"></i></a>   
                     </div>
                 </div>
             </li>
@@ -111,3 +111,8 @@
         }
     }
 </script>
+<style lang="scss">
+.content--search {
+    background-color: #aecaec;
+}
+</style>
