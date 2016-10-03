@@ -1,19 +1,24 @@
 <template>
-    <div class="widget-content float-center">
-      <div class="content--container float-center">
-        <div>
-            <ul class="tabs">
-              <li class="tab s3"><a @click="setSubMenu('request-members')" class="active">{{$t('request')}} ({{request_count}})</a></li>
-              <li class="tab s3"><a @click="setSubMenu('current-members')">{{$t('current')}} ({{member_count}})</a></li>
-              <li class="tab s3"><a @click="setSubMenu('archive-members')">{{$t('archive')}} ({{archive_count}})</a></li>
-            </ul>
-        </div>  
+    <div class="widget-content">
+      <div class="content--header">
+        <h3>Teacher</h3>
+      </div>
+      <div class="content--container">
+        <div class="content--back">
+          <div>
+              <ul class="tabs content--tabs">
+                <li class="tab s3"><a @click="setSubMenu('request-members')" class="active">{{$t('request')}} ({{request_count}})</a></li>
+                <li class="tab s3"><a @click="setSubMenu('current-members')">{{$t('current')}} ({{member_count}})</a></li>
+                <li class="tab s3"><a @click="setSubMenu('archive-members')">{{$t('archive')}} ({{archive_count}})</a></li>
+              </ul>
+          </div>  
 
-        <div class="small-12 text-center small-centered columns">
-            <component :id="id" 
-                       :type.sync="memberType" 
-                       :is="submenu">
-            </component>
+          <div class="small-12 text-center small-centered columns">
+              <component :id="id" 
+                         :type.sync="memberType" 
+                         :is="submenu">
+              </component>
+          </div>
         </div>
       </div>
     </div>
