@@ -669,6 +669,15 @@ img[lazy=error] {
 //2016-9-30 style writes here
 
 .content--container{
+	position: relative;
+	width: 100%;
+}
+
+.content--search{
+	margin-top: 30px;
+}
+
+.content--back{
 	position: absolute;
 	background-color: #fff;
 	height: auto;
@@ -676,10 +685,48 @@ img[lazy=error] {
 	margin-top: 10px;
 }
 
-.content--search{
-	margin-top: 30px;
+.content--tabs{
+	width: inherit !important;
 }
 
-.content--list{
-	
+//Member order count function design
+$member_order_font-size: 14px;
+
+.member--order{
+	display: -webkit-inline-box;
+	position: relative;
+	font-size: $member_order_font-size;
+}
+.member--order-count{
+	display: block;
+	position: absolute;
+	margin-top: $member_order_font-size;
+}
+.member--order-up{
+	display: block;
+	position: absolute;
+}
+.member--order-down{
+	display: block;
+	position: absolute;
+	margin-top: calc(2*#{$member_order_font-size});
+}
+.member--list{
+	position: absolute;
+	margin-left: 14px;
+	margin-top: 10px;
+	float: left !important;
+	text-align: left;
+	img{
+		width: 25px;
+		height: 25px;
+		border-radius: 25px;
+	}
+	span{
+		font-weight: bold;
+	}
+}
+.member--button{
+	margin: 10px 0 0 0 !important;
+	padding: 7px;
 }
