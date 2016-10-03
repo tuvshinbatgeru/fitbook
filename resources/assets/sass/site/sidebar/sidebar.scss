@@ -1,7 +1,14 @@
 @mixin box-shadow($horizontal,$vertical,$blur,$spread) {
 	-webkit-box-shadow: $horizontal $vertical $blur $spread #474747;
 			box-shadow: $horizontal $vertical $blur $spread #474747;
-}
+};
+
+$sidebar_width: 90px;
+@mixin content--center($position){
+	margin-left: $position;
+	margin-right: $position;
+} 
+
 section {
 	margin: 0px;
 	padding: 0px;
@@ -15,7 +22,7 @@ section {
 	position:fixed;
 	top: 40px;
 	left: 0px;
-	width: 90px;
+	width: $sidebar_width;
 	min-height: 100%;
 	background-color: #272c33;
 	color: #fff;
@@ -57,7 +64,9 @@ section {
 	left: 70px;
 }
 .widget--container {
-	margin-left: 90px;
+	margin-left: $sidebar_width;
+	height: 100%;
+	width: calc(100%-#{$sidebar_width});
 }
 .widget-content{
 	position: relative;
@@ -65,7 +74,8 @@ section {
 	margin-top: 20px;
 	min-height: 100%;
 	height: 100%;
-	width: 90%;
+	width: 95%;
+	@include content--center(auto);
 }
 .site-header {
 	z-index:1;
