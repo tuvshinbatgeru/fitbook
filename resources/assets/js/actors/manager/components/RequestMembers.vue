@@ -7,13 +7,13 @@
 
     <form>
         <ul class="row">
-            <li class="small-12 content--list" v-for="request in requests">
+            <li class="small-12 member--list" v-for="request in requests">
                     <img v-bind:src="request.avatar_url" height="40" width="40" />
-                    {{request.first_name}}
+                    <span>{{request.first_name}}</span>
                      {{request.last_name}}
                      {{request.pivot.created_at}}
-                    <a @click="acceptRequest(request)" class="button success">Accept</a>
-                    <a @click="rejectRequest(request)" class="button alert">Reject</a>
+                    <a @click="acceptRequest(request)" class="button success member--button"><i class="fa fa-plus"></i></a>
+                    <a @click="rejectRequest(request)" class="button alert member--button"><i class="fa fa-times"></i></a>
             </li>
         </ul>
     </form>
