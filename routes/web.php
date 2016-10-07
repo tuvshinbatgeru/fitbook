@@ -40,6 +40,10 @@ use Illuminate\Support\Facades\Storage;
 		return view('auth.login');
 	});
 
+	Route::get('/chart', function () {
+		return view('chart');
+	});
+
 	Route::get('/dashboard', function() {
 
 		if(Auth::check()) {

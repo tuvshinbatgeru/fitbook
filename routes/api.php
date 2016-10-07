@@ -53,6 +53,11 @@ Route::group(['middleware' => ['auth:api']], function () {
 
 	});
 
+	//direct apis
+
+	Route::get('/training/{training}/adjustments', 'TrainingController@adjustments');
+	Route::get('/plan/{plan}/edit', 'PlanController@edit');
+
 	//Club info APIs
 	Route::group(['prefix' => '/club/{club}/'], function () {
 
@@ -69,8 +74,10 @@ Route::group(['middleware' => ['auth:api']], function () {
 		});
 
 		Route::get('/training', 'TrainingController@clubTrainings');
+		Route::get('/training/context', 'TrainingController@forContext');
 		Route::get('plan/simple', 'PlanController@simpleSearch');
 		Route::get('plan/widget', 'PlanController@forWidgets');
+		Route::get('plan/adjustments', 'PlanController@adjustments');
 		Route::resource('plan', 'PlanController');
 		Route::resource('widgets', 'TemplateController');
 		Route::resource('service', 'ServiceController');
