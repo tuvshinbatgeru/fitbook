@@ -43,13 +43,11 @@
 	          	<component v-if="type == 'Club'" 
 	          			   :id="id" 
 	          			   :type="type" 
-	          			   :is="context"
-	          			   :selected="items">
+	          			   :is="context">
 				</component>
 				<components :multiple="multiple"
 							v-else 
-							:is="context" 
-							:selected="items">
+							:is="context">
 				</components>
 	          </slot>
 	        </div>
@@ -63,11 +61,6 @@
 </template>
 
 <script>
-	import services from '../../../context/services.vue'; 
-	import AddPlan from '../../../context/AddPlan.vue'; 
-	import FileManager from '../../../context/FileManager.vue'; 
-	import teachers from '../../../context/teachers.vue'; 
-	import trainings from '../../../context/trainings.vue'; 
 
 	export default {
 		props: {
@@ -82,7 +75,6 @@
 			title_en : {default : ''},
 			usage : { default: 'questionable'},
 			context : {},
-			items : {},
 			saveCallback : { default: null },
 			validateable : { 
 				default: 'N'
@@ -137,8 +129,7 @@
 		},
 
 		components : {
-			AddPlan, FileManager, 
-			teachers, trainings, services
+
 		}
 	}
 </script>
