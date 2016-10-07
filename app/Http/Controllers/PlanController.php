@@ -15,6 +15,7 @@ use App\Transformers\PlanTransformer;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Response;
 
@@ -23,8 +24,8 @@ class PlanController extends Controller
     protected $planTransformer;
 
     static public $lookup = [
-        'primary' => PrimaryPlan::class,
-        'loyalty' => LoyaltyPlan::class,
+        'primary' => 'App\PrimaryPlan',
+        'loyalty' => 'App\LoyaltyPlan',
     ];
 
     function __construct(PlanTransformer $planTransformer)
@@ -91,13 +92,11 @@ class PlanController extends Controller
 
     public function index(Club $club, \App\Filters\PlanFilters $filters)
     {
-        $query = self::$lookup[$filters->getRequest()->type]::with(['plan' => function ($query) use ($club) {
-            $query->where('club_id', '=', $club->id)
-                  ->with('pinnedPhotos', 'teachers', 'services', 'trainings')
-                  ->withCount('heartsActions')
-                  ->withCount('comments');
-        }]);
-
+        $query = $club->plans()
+                ->with('planable', 'teachers', 'services', 'pinnedPhotos')
+                ->withCount('heartsActions', 'comments', 'histories')
+                ->where('planable_type', self::$lookup[$filters->getRequest()->type]);
+        
         $plans = Plan::filter($query, $filters)->paginate(2);
 
         return Response::json([
@@ -115,18 +114,24 @@ class PlanController extends Controller
         //
     }
 
-    public function store(Club $club, Request $request)
+    public function store(Request $request)
     {
         $decode = json_decode($request->data);
         $data = $this->planTransformer->transform($decode);
+
+        if(Plan::where('name', '=', $data['name'])->exists()) 
+        return Response::json([
+            'code' => 1,
+            'message' => 'Plan name duplicated',
+        ]); 
 
         $planable = self::createPlanable($data);
 
         $plan = new Plan($data);
         $plan->price = $data['isPrimary'] ? $data['price'] : $data['discount'];
-        $planable->plan()->save($plan);
-
-        $planable->plan[0] = $plan;
+        $plan->planable = $planable;
+        $planable->save();
+        $plan->save();
 
         $photo_id_array = [];
         for ($i = 0; $i < count($decode->pictures); $i++) {
@@ -146,21 +151,15 @@ class PlanController extends Controller
         $plan->teachers()->sync($decode->teachers);
         $plan->services()->sync($decode->services);
 
-        event(new PlanAddedEvent($plan));
+        //event(new PlanAddedEvent($plan));
 
         return Response::json([
             'code' => 0,
             'message' => 'Successfully added plan.',
-            'result' => $planable,
+            'result' => $plan,
         ], 200);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show(Plan $plan)
     {
         $plan->pinnedPhotos;
@@ -180,9 +179,20 @@ class PlanController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Plan $plan)
     {
         //
+        $plan->pinnedPhotos;
+        $plan->teachers;
+        $plan->services;
+        $plan->trainings;
+        $plan->planable;
+        $plan->photos;
+
+        return Response::json([
+            'code' => '0',
+            'result' => $plan,
+        ]);
     }
 
     /**
@@ -192,9 +202,74 @@ class PlanController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function updatePlan(Request $request)
     {
-        //
+        $decode = json_decode($request->data);
+        $data = $this->planTransformer->transform($decode);
+
+        if(Plan::where('name', $data['name'])
+               ->where('id', '<>', $data['id']->exists()))
+            return Response::json([
+                'code' => 1,
+                'message' => 'Plan name duplicated',
+            ]);
+
+        $before = new \App\Adjustment;
+        $after = new \App\Adjustment;
+
+        $plan = Plan::find($data['id']);
+        $planable = $plan->planable;
+        $planable->start_date = $data['start_date'];
+
+        if($data['isPrimary']) {
+            $planable->price = $data['price'];
+        } else {
+            $planable->finish_date = $data['finish_date'];
+            $planable->before_price = $data['price'];
+        }
+
+
+        $plan->planable = $planable;
+        $plan->name = $data['name'];
+        $plan->description = $data['description'];
+        $plan->length = $data['length'];
+        $plan->frequency_type = $data['frequency_type'];
+        $plan->trainerless = $data['trainerless'];
+        $plan->trainer_count = $data['trainer_count'];
+
+        $planable->save();
+        $plan->save();
+
+        $photo_id_array = [];
+        for ($i = 0; $i < count($decode->pictures); $i++) {
+
+            if($decode->pictures[$i]->pinned == 'Y') {
+                $photo_id_array[$decode->pictures[$i]->id] = [
+                  'pinned' => $decode->pictures[$i]->pinned ? 'Y' : 'N',
+                  'top_percentage' => $decode->pictures[$i]->pinned ? $decode->crop : 0,
+                ];  
+            }
+            
+            Photo::attachTagById($decode->pictures[$i]->id, Tag::TRAINING_ID);
+        }
+
+        $plan->trainings()->sync($decode->trainings);
+        $plan->photos()->sync($photo_id_array);
+        $plan->teachers()->sync($decode->teachers);
+        $plan->services()->sync($decode->services);
+
+        $plan->histories()->attach(\Illuminate\Support\Facades\Auth::user()->id, [
+            'before' => $before->toJson(),
+            'after' => $after->toJson(),
+        ]);
+
+        //event(new PlanAddedEvent($plan));
+
+        return Response::json([
+            'code' => 0,
+            'message' => 'Successfully added plan.',
+            'result' => $plan,
+        ], 200);
     }
 
     /**
