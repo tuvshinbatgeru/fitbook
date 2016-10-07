@@ -20,10 +20,13 @@
         title = "Үйлчилгээ сонгох" 
         title_en = "Add Service"
         usage = "_add-service" 
-        :items = "services"
         :show.sync = "showAddService"
-        save-callback = "chooseService"
-        context = "services">
+        save-callback = "chooseService">
+        <div slot="body">
+          <components v-ref:context :id="id" is="services" :selected="services">
+            
+          </components>
+        </div>
   </custom-modal>
 
   <div class="row small-up-3 medium-up-4 large-up-5">
@@ -38,6 +41,7 @@
 </template>
 
 <script>
+  import services from '../../../context/services.vue'; 
 
   export default {
     props: { 
@@ -84,7 +88,7 @@
     },
 
     components : {
-        
+        services
     },
 
     locales: {
