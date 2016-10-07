@@ -7,10 +7,12 @@
 		title ="Зураг сонгох" 
 		usage = "_photo-chooser" 
 		multiple = "true"
-		:items = "pictures"
 		:show.sync = "showFileManager"
-		save-callback = "choosedPictures"
-		context = "fileManager">
+		save-callback = "choosedPictures">
+		<div slot="body">
+			<components v-ref:context :multiple="true" :selected.sync="pictures" is="file-manager">
+			</components>
+		</div>
 	</custom-modal>
 
 	<div id="viewContainer">
@@ -57,6 +59,8 @@
 </template>
 
 <script>
+	import FileManager from '../../../context/FileManager.vue';
+
 	var Waterfall = require('vue-waterfall')
 
 	export default {
@@ -113,6 +117,7 @@
 			},
 
 			choosedPictures : function($response) {
+				debugger;
 				this.pictures = $response.data;
 				if(this.pictures.length > 0) {
 					this.pinnedPhoto = this.pictures[0];
@@ -152,6 +157,7 @@
 		components : {
 			'waterfall': Waterfall.waterfall,
     		'waterfall-slot': Waterfall.waterfallSlot,
+    		FileManager
 		},
 
 		locales: {
