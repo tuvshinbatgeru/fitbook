@@ -84,5 +84,10 @@ class Plan extends Model
         return $this->morphMany('App\Comment', 'commentable');
     }
 
-
+    public function histories()
+    {
+        return $this->belongsToMany('App\User', 'plan_adjustments', 'plan_id', 'user_id')
+                ->withPivot('before', 'after')
+                ->withTimestamps();   
+    }
 }
