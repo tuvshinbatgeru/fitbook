@@ -7,24 +7,19 @@ use Carbon\Carbon;
 
 class PlanFilters extends QueryFilter{
 
-	public function newest()
-	{
-		return $this->builder->orderBy('created_at', 'DESC');
+	public function date($order = 'desc')
+	{	
+		return $this->builder->orderBy('created_at', $order);
 	}
 
-	public function oldest()
+	public function heart($order = 'desc')
 	{
-		return $this->builder->orderBy('created_at');		
+		return $this->builder->orderBy('hearts_actions_count', $order);
 	}
 
-	public function heart()
+	public function price($order = 'desc')
 	{
-		return $this->builder;
-	}
-
-	public function price()
-	{
-		return $this->builder->orderBy('price');
+		return $this->builder->orderBy('price', $order);
 	}
 
 	public function search($value)
