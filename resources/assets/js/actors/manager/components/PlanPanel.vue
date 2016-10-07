@@ -12,30 +12,17 @@
     </div>
     <div class="small-2 columns">
       <div class="small-2 columns">
-            <a @click="showAddPlan = true" class="button success">
+            <a @click="addPlan()" class="button success">
                 <i class="fa fa-pencil-square-o">                       
                 </i>
             </a>
       </div>
     </div>
+     
   </div>
-
-  <div class="row">
-      <ul class="dropdown menu" data-dropdown-menu v-foundation-dropdown-menu>
-          <li class="is-dropdown-submenu-parent" style="background-color:#aecaec; border-radius:4px; font-size:12px;">
-              <a style="color:#fff; font-weight:bold;">{{$t(orderBy)}}</a>
-              
-              <ul class="menu" style="margin-top:10px; background-color:#F2F5F8; border-radius:4px;">
-                <div class="arrow"></div>
-                <li><a @click="setOrderBy('newest')" style="font-weight:bold; color: #3f4652">{{$t('newest')}}</a></li>
-                <li><a @click="setOrderBy('oldest')">{{$t('oldest')}}</a></li>
-                <li><a @click="setOrderBy('heart')">{{$t('heart')}}</a></li>
-                <li><a @click="setOrderBy('price')">{{$t('price')}}</a></li>
-                <li><a @click="setOrderBy('max')">{{$t('max')}}</a></li>
-              </ul>
-          </li>
-      </ul>
-  </div>
+  
+  <plan-select-collection>
+  </plan-select-collection>
 
   <custom-modal 
       :id = "id"
@@ -46,13 +33,19 @@
       :show.sync = "showAddPlan"
       save-callback = "savePlan"
       validateable = 'Y'
-      context = "AddPlan"
       >
+      <div slot="body">
+        <components v-ref:context 
+                    :id="id" 
+                    is="add-plan"
+                    :plan="currentPlan">
+            
+        </components>
+      </div>
   </custom-modal>
 
   <component :id="id" 
              :order-by.sync="orderBy"
-             :search-text.sync="search"
              :is="content">
   </component>
 </template>
@@ -60,6 +53,8 @@
 <script>
   import PrimaryPlan from './PrimaryPlan.vue';
   import LoyaltyPlan from './LoyaltyPlan.vue';
+  import PlanSelectCollection from '../../application/components/PlanSelectCollection.vue';
+  import AddPlan from '../../../context/AddPlan.vue';
 
   export default {
     props: { 
@@ -74,6 +69,9 @@
         orderBy : 'newest',
         showAddPlan : false,
         search : '',
+        dateOption : {},
+        dateSelection : null,
+        currentPlan : null,
       }
     },
 
@@ -83,12 +81,24 @@
 
     ready : function () {
       $('ul.tabs').tabs();
+      this.dateOption = [{
+        "label" : "NEWEST",
+        "name" : "asc"
+      }, {
+        "label" : "OLDEST",
+        "name" : "desc"
+      }];
     },
 
     events : {
         'savePlan' : function($response) {
-            this.savePlan($response);
+            this.methodType == "add" ? this.savePlan($response) : this.updatePlan($response);
         },
+
+        'editPlan' : function($response) {
+            this.currentPlan = $response;
+            this.editPlan($response.id);
+        }
     },
 
     methods : {
@@ -97,7 +107,23 @@
             this.$broadcast('_orderchanged', this.orderBy);
         },
 
-        savePlan : function($response) {
+        addPlan : function() {
+            this.methodType = 'add';
+            this.currentPlan = null;
+            this.showAddPlan = true;
+        },
+
+        editPlan : function(id) {
+          this.$http.get(this.$env.get('APP_URI') + 'api/plan/' + id + '/edit').then(res => {
+              this.methodType = 'edit';
+              this.currentPlan = res.data.result;
+              this.showAddPlan = true;
+          }).catch(err => {
+            console.log(err);
+          });
+        },
+
+        updatePlan : function ($response) {
             this.$http.post(this.$env.get('APP_URI') + 'api/club/' + this.id + '/plan?data=' + $response.data.param).then(res => {
                 
                 if(res.data.code == 0) {
@@ -122,17 +148,42 @@
             });
         },
 
+        savePlan : function($response) {
+            this.$http.post(this.$env.get('APP_URI') + 'api/club/' + this.id + '/plan?data=' + $response.data.param).then(res => {
+                
+                if(res.data.code == 0) {
+                    var current = res.data.result;
+                    var pinned_photos = [];
+                    pinned_photos.push($response.data.pinned_photo);
+
+                    current.plan.pinned_photos = pinned_photos;
+                    current.plan.teachers = $response.data.teachers;
+                    current.plan.services = $response.data.services;
+                    current.plan.trainings = $response.data.trainings;
+                    this.$broadcast('_planadded', current);
+                    this.showAddPlan = false;
+                }
+
+                this.$refs.addpl.loading = false;
+                this.$root.$refs.toast.showMessage(res.data.message);
+            }).catch(err => {
+                this.$refs.addpl.loading = false;
+                this.$root.$refs.toast.showMessage('Server side error!.');
+            });
+        },
+
         setContent : function (content) {
             this.content = content;
         }
     },
 
     components : {
-        PrimaryPlan, LoyaltyPlan
+        PrimaryPlan, LoyaltyPlan, PlanSelectCollection, AddPlan
     },
 
     locales: {
         en: { 
+            date : 'Date',
             plan : 'Plan',
             loyalty : 'Loyalty',
             newest : 'NEWEST',
@@ -142,6 +193,7 @@
             heart : 'HEART',
         },
         mn : {
+            date : 'Хугацаа',
             plan : 'Хөтөлбөр',
             loyalty : 'Урамшуулал',
             newest : 'Шинэ',
