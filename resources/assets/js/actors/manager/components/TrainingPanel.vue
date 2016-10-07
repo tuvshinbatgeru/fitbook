@@ -34,6 +34,9 @@
     <ft-training :item = "train" v-for = "train in training">
         
     </ft-training>
+    <div class="row text-center" v-show="pageIndex < pageLast">
+        <a class="button" @click="loadMore()">{{ $t("load") }}</a>
+    </div>
   </div>
 
 </template>
@@ -55,6 +58,8 @@
           showAddTraining : false,
           methodType : 'add',
           copyInstance : null,
+          pageIndex : 1,
+          pageLast : 0,
       }
     },
 
@@ -72,13 +77,17 @@
         },
 
         'editTraining' : function($response) {
-            debugger;
             this.copyInstance = $response;
             this.editTraining($response.id);
         }
     },
 
     methods : {
+        loadMore : function () {
+            this.pageIndex ++;
+            this.getTrainings();
+        },
+
         addTraining : function () {
             this.currentTraining = null;
             this.methodType = 'add';
@@ -95,8 +104,9 @@
         },
 
         getTrainings : function () {
-            this.$http.get(this.$env.get('APP_URI') + 'api/club/' + this.id + '/training').then(res => {
-                this.training = res.data.result;
+            this.$http.get(this.$env.get('APP_URI') + 'api/club/' + this.id + '/training?page=' + this.pageIndex).then(res => {
+                this.training = this.training.concat(res.data.result.data);
+                this.pageLast = res.data.result.last_page;
             }).catch(err => {
 
             });
@@ -125,12 +135,12 @@
         },
 
         cloneTraining : function (curTraining) {
-
             this.copyInstance.name = curTraining.name;
             this.copyInstance.description = curTraining.description;
             this.copyInstance.teachers_count = curTraining.teachers_count;
-            this.copyInstance.genres_count = curTraining.genres_count;
+            this.copyInstance.genres = curTraining.genres;
             this.copyInstance.pinned_photos = curTraining.pinned_photos;
+            $('#training-' + curTraining.id +'-img').attr('src', curTraining.pinned_photos[0].url);
             this.showAddTraining = false;
         },
 
@@ -142,6 +152,7 @@
                     
                     pinned_photos.push($response.data.pinned_photo);
                     curTraining.pinned_photos = pinned_photos;
+                    curTraining.genres = $response.data.genres;
                     this.cloneTraining(curTraining);
                     this.copyInstance.histories_count ++;
                 }
@@ -170,12 +181,14 @@
             loyalty : 'Loyalty',
             add_title : 'Add Training',
             edit_title : 'Edit Training',
+            load : 'Load More ...',
         },
         mn : {
             plan : 'Хөтөлбөр',
             loyalty : 'Урамшуулал',
             add_title : 'Хичээл нэмэх',
             edit_title : 'Хичээл засах',
+            load : 'Цааш нь ...',
         },
     }
   }
