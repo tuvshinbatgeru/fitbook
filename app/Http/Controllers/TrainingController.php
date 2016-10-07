@@ -27,11 +27,11 @@ class TrainingController extends Controller
     {
         
     }
-    
-    public function clubTrainings(Club $club, Request $request)
+
+    public function forContext(Club $club, Request $request)
     {
         $decode = json_decode($request->data);
-        $trainings = $club->trainings()->with('pinnedPhotos')->withCount('teachers', 'genres', 'histories')->get();
+        $trainings = $club->trainings()->with('pinnedPhotos', 'teachers')->get();
 
         foreach ($trainings as $training) {
 
@@ -50,6 +50,23 @@ class TrainingController extends Controller
         return Response::json([
             'result' => $trainings,
         ], 200);
+    }
+    
+    public function clubTrainings(Club $club, Request $request)
+    {
+        $trainings = $club->trainings()->with('pinnedPhotos','genres')->withCount('teachers', 'histories')->paginate(2);
+
+        return Response::json([
+            'result' => $trainings,
+        ], 200);
+    }
+
+    public function adjustments(Training $training)
+    {
+        return Response::json([
+            'code' => 0,
+            'result' => $training->histories,
+        ]);
     }
 
     /**
