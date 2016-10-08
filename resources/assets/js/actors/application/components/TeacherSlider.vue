@@ -6,10 +6,13 @@
 		title = "Багш сонгох"
 		title_en = "Teacher chooser"
 		usage = "_teacher-chooser"
-		:items = "teachers"
 		:show.sync = "showTeachers"
-		save-callback = "choosedTeachers"
-		context = "teachers">
+		save-callback = "choosedTeachers">
+		<div slot="body">
+			<components v-ref:context :id="id" is="teachers" :selected="teachers">
+				
+			</components>
+		</div>
 	</custom-modal>
 
 	<div class="picture-list">
@@ -40,6 +43,8 @@
 </template>
 
 <script>
+
+	import teachers from '../../../context/teachers.vue'; 
 
 	export default {
 		props : {
@@ -77,7 +82,7 @@
 		},
 
 		components : {
-
+			teachers
 		},
 
 		locales: {

@@ -15,6 +15,6 @@ class PrimaryPlan extends Model
 
     public function plan()
     {
-    	return $this->morphMany('App\Plan', 'planable');	
+    	return $this->morphOne('App\Plan', 'planable');	
     }
 }

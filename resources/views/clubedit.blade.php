@@ -111,17 +111,21 @@
 		</section> --}}
 	</section>
 	<section class="widget--container">
-		<component v-if="content == 'all-members'"
-			:id="clubid"
-			:member-type.sync="subMenu"
-			:is="content">
-		</component>
+		<div class="widget-content float-center">
+			<div class="content--container float-center">
+				<component v-if="content == 'all-members'"
+					:id="clubid"
+					:member-type.sync="subMenu"
+					:is="content">
+				</component>
 
-		<component v-else
-			:id="clubid"
-			:is="content">
-			
-		</component>
+				<component v-else
+					:id="clubid"
+					:is="content">
+					
+				</component>
+			</div>
+		</div>
 	</section>
 </section>
 @stop

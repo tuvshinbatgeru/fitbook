@@ -42,7 +42,7 @@
 		</div>
 	  </div>
 	  <div id="teacher">
-	  	<teacher-slider v-ref:tslider :id="id" :selected.sync="trainings"></teacher-slider>
+	  	<teacher-slider v-ref:tslider :id="id" :teachers.sync="trainings"></teacher-slider>
 	  </div>
 	</form>
 </template>
@@ -101,6 +101,7 @@
 				return {
 					teachers : this.$refs.tslider.teachers,
 					pinned_photo : this.$refs.pslider.pinnedPhoto,
+					genres : this.genres,
 					param : this.$tools.transformParameters({
 						id : this.training ? this.training.id : null,
 						club_id : this.id,

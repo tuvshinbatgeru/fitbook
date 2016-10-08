@@ -22,6 +22,8 @@
 <div class="row">
     <div class="small-9 text-center small-centered columns">
       <ul class="tabs">
+        <li class="tab col s3"><a @click="setSubMenu('home')">Home</a></li>    
+        <li class="tab col s3"><a @click="setSubMenu('trent')">Trent</a></li>    
         <li class="tab col s3"><a @click="setSubMenu('activity')" class="active">Activity</a></li>
         <li class="tab col s3"><a @click="setSubMenu('timeline')">Timeline</a></li>
         <li class="tab col s3"><a @click="setSubMenu('followed')">Follow</a></li>

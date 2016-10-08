@@ -9,6 +9,7 @@ class PlanTransformer extends Transformer {
 	public function transform($item)
 	{
 		return [
+			'id' => $item->id,
 			'name' => $item->name,
 			'club_id' => $item->club_id,
 			'description' => stripslashes($item->description),
@@ -20,8 +21,8 @@ class PlanTransformer extends Transformer {
 			'is_active' => 'Y',
 			'length' => $item->length,
 			'frequency_type' => $item->freq,
-			'start_date' => Carbon::create(2000, 1, 1, 0, 0, 0),
-			'finish_date' => Carbon::create(2000, 1, 1, 0, 0, 0),
+			'start_date' => $item->startDate,
+			'finish_date' => $item->finishDate,
 		];
 	}
 	

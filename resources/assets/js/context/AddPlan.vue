@@ -4,11 +4,13 @@
 		type = "Club"
 		title = "Trainings"
 		usage = "_training-chooser"
-		:selected = ""
-		:items = "trainings"
 		:show.sync = "showTraining"
-		save-callback = "choosedTrainings"
-		context = "trainings">
+		save-callback = "choosedTrainings">
+		<div slot="body">
+          <components v-ref:context :id="id" is="trainings" :selected.sync="trainings">
+            
+          </components>
+        </div>
 	</custom-modal>
 
 	<form method="POST">
@@ -35,7 +37,7 @@
 		    	select-label='сонгох'
 		    	selected-label='сонгосон'	
 		    	deselect-label='устгах'
-		    	:limit="1"
+		    	:limit="5"
 		    	@update="updateServices"
 		    	label="name" 
 		    	:limit-text="limitText"
@@ -93,11 +95,11 @@
 				</label>
 			</div>
 			<div class="small-6 medium-6 column">
-				<label v-show="isPrimary">Finish
+				<label v-show="!isPrimary">Finish
 					<input type="text" id="finish_date" v-model="finishDate">
 				</label>
 
-				<label v-show="!isPrimary">
+				<label v-show="isPrimary">
 					Until now
 				</label>
 			</div>
@@ -144,11 +146,12 @@
 	import PhotoSlider from '../actors/application/components/PhotoSlider.vue';
 	import TeacherSlider from '../actors/application/components/TeacherSlider.vue';
 
+	import trainings from './trainings.vue'; 
+
 	export default {
 		props: { 
 			id : {},
-			type: {},
-			selected : {}
+			plan : {}
 		},
 
 		data() {
@@ -202,6 +205,10 @@
 			$('#finish_date').datetimepicker({
                     format: 'DD/MM/YYYY'
             });
+
+            if(this.plan) {
+				this.setData();
+			}
 		},
 
 		events : {
@@ -211,6 +218,33 @@
 		},
 
 		methods : {
+			setData : function () {
+				this.name = this.plan.name;
+				this.freq = this.plan.frequency_type;
+				this.length = this.plan.length;
+				this.price = this.plan.price;
+				this.trainings = this.plan.trainings;
+				this.trainerless = this.plan.trainerless;
+				this.trainerCount = this.plan.trainer_count;
+				this.startDate = this.plan.planable.start_date;
+
+				if(this.plan.planable_type == 'App\\PrimaryPlan') {
+					this.isPrimary = true;
+					this.price = this.plan.price;
+				}
+				else {
+					this.price = this.plan.planable.before_price;
+					this.finishDate = this.plan.planable.finish_date;
+					this.discount = this.plan.price;
+					this.isPrimary = false;
+				}
+
+				this.$refs.tdescription.setHtml(this.plan.description);
+				this.$refs.tslider.setTeachers(this.plan.teachers);
+				this.services = this.plan.services;
+				this.$refs.pslider.setPhotos(this.plan.photos);				
+			},
+
 			getClubServices : function () {
 				this.$http.get(this.$env.get('APP_URI') + 'api/club/' + this.id + '/service').then(res => {
 				 	this.clubservices = res.data.result;
@@ -298,7 +332,7 @@
 		},
 
 		components : {
-			PhotoSlider, TeacherSlider
+			PhotoSlider, TeacherSlider, trainings
 		},
 
 		locales: {

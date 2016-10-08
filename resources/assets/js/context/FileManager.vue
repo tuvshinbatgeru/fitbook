@@ -101,9 +101,11 @@
 	
 		methods : {
 			getData : function () {
-				return _.filter(this.files, function(o) { 
+				var resp = _.filter(this.files, function(o) { 
 					return o.selected; 
 				});
+
+				return resp;
 			},
 			
 			start : function (e) {

@@ -68,6 +68,8 @@ import CustomCallout from './actors/application/components/CustomCallout.vue';
 import CustomEditor from './actors/application/components/CustomEditor.vue';
 import CommentsList from './actors/application/components/CommentsList.vue';
 import CustomButtonGroup from './actors/application/components/CustomButtonGroup.vue';
+import CustomSearchTag from './actors/application/components/CustomSearchTag.vue';
+//import CustomDropdownMenu from './actors/application/components/CustomDropdownMenu.vue';
 import Multiselect from 'vue-multiselect'
 
 Vue.component('CustomButtonGroup', CustomButtonGroup);
@@ -79,6 +81,9 @@ Vue.component('CustomCallout', CustomCallout);
 Vue.component('CustomComment', CustomComment);
 Vue.component('CustomEditor', CustomEditor);
 Vue.component('CommentsList', CommentsList);
+Vue.component('CustomSearchTag', CustomSearchTag);
+//Vue.component('CustomDropdownMenu', CustomDropdownMenu);
+
 
 //global context
 import MainHeader from './actors/user/components/MainHeader.vue';
@@ -103,6 +108,7 @@ Vue.use(require('vue-env'), _env);
 
 //Custom Directives
 require('./actors/application/directives/foundation-dropdown-menu')
+require('./actors/application/directives/foundation-dropdown')
 
 
 /**

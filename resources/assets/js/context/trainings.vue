@@ -76,7 +76,7 @@
 
 			getTrainings: function() {
 				var ids = this.$tools.arrayBy(this.selected, 'id');
-				this.$http.get(this.$env.get('APP_URI') + 'api/club/' + this.id + '/training?data=' + this.$tools.transformParameters({
+				this.$http.get(this.$env.get('APP_URI') + 'api/club/' + this.id + '/training/context?data=' + this.$tools.transformParameters({
 					selected : ids,
 			    })).then((response) => 
 				{
