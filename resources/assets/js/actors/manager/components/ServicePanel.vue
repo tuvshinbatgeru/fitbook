@@ -38,6 +38,8 @@
 </template>
 
 <script>
+  
+  import services from '../../../context/services.vue';
 
   export default {
     props: { 
@@ -73,7 +75,6 @@
         chooseService : function($response) {
             this.$http.post(this.$env.get('APP_URI') + 'api/club/' + this.id + '/service/edit?data=' + $response.data).then(res => 
             {
-                debugger;
                 this.services = res.data.result;
                 this.showAddService = false;
                 this.$root.$refs.toast.showMessage('Successfully choose services');
@@ -84,7 +85,7 @@
     },
 
     components : {
-        
+        services
     },
 
     locales: {

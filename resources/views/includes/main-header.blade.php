@@ -5,7 +5,9 @@
         <div class="site-header-container">
             <div class="site-header-item" style="width: 200px;">
                 <div class="site-logo">
+                  <a href="{{ URL::to('/users/' . Auth::user()->username) }}">
                     <img src="{{asset('images/site/logo-white.png')}}" />
+                  </a>
                 </div>
                 <div class="site-header-title">
                     <label>

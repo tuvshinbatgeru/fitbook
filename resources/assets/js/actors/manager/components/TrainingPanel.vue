@@ -35,6 +35,9 @@
         
     </ft-training>
   </div>
+  <div class="row text-center" v-show="pageIndex < pageLast">
+        <a class="button" @click="loadMore()">{{ $t("load") }}</a>
+  </div>
 
 </template>
 
@@ -55,6 +58,8 @@
           showAddTraining : false,
           methodType : 'add',
           copyInstance : null,
+          pageIndex : 1,
+          pageLast : 0,
       }
     },
 
@@ -72,7 +77,6 @@
         },
 
         'editTraining' : function($response) {
-            debugger;
             this.copyInstance = $response;
             this.editTraining($response.id);
         }
@@ -95,8 +99,9 @@
         },
 
         getTrainings : function () {
-            this.$http.get(this.$env.get('APP_URI') + 'api/club/' + this.id + '/training').then(res => {
-                this.training = res.data.result;
+            this.$http.get(this.$env.get('APP_URI') + 'api/club/' + this.id + '/training?page=' + this.pageIndex).then(res => {
+                this.training = this.training.concat(res.data.result.data);
+                this.pageLast = res.data.result.last_page;
             }).catch(err => {
 
             });
@@ -157,7 +162,12 @@
 
         saveTraining : function($response) {
             this.methodType == "add" ? this.storeTraining($response) : this.updateTraining($response);
-        }
+        },
+
+        loadMore : function () {
+            this.pageIndex ++;
+            this.getTrainings();
+        },
     },
 
     components : {
@@ -170,12 +180,14 @@
             loyalty : 'Loyalty',
             add_title : 'Add Training',
             edit_title : 'Edit Training',
+            load : 'Load More ...',
         },
         mn : {
             plan : 'Хөтөлбөр',
             loyalty : 'Урамшуулал',
             add_title : 'Хичээл нэмэх',
             edit_title : 'Хичээл засах',
+            load : 'Цааш нь ...',
         },
     }
   }
