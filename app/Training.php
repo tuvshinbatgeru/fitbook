@@ -51,4 +51,10 @@ class Training extends Model
                 ->withPivot('before', 'after')
                 ->withTimestamps();   
     }
+
+    static public function checkNameDuplicate($id, $name)
+    {
+        return Training::where('name', '=', $name)->
+                where('id', '<>' , $id)->exists();
+    }
 }

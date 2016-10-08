@@ -164,8 +164,8 @@ class TrainingController extends Controller
     public function updateTraining(Request $request)
     {
         $decode = json_decode($request->data);
-
         $data = $this->trainingTransformer->transform($decode);
+
         if(Training::where('name', '=', $data['name'])->
                 where('id', '<>' , $data['id'])->exists()) 
         return Response::json([
@@ -181,15 +181,15 @@ class TrainingController extends Controller
         if($training->name != $data['name']) {
             $before->name = $training->name;
             $after->name = $data['name'];
+            $training->name = $data['name'];
         }
 
         if($training->description != $data['description']) {
             $before->description = $training->description;
             $after->description = $data['description'];
+            $training->description = $data['description'];
         }
 
-        $training->name = $data['name'];
-        $training->description = $data['description'];
         $training->save();
 
         $photo_id_array = [];
@@ -205,9 +205,6 @@ class TrainingController extends Controller
         $training->photos()->sync($photo_id_array);
         $training->teachers()->sync($decode->teachers);
         $training->genres()->sync($decode->genres);
-
-        $training->teachers_count = count($decode->teachers);
-        $training->genres_count = count($decode->genres);
 
         $training->histories()->attach(\Illuminate\Support\Facades\Auth::user()->id, [
             'before' => $before->toJson(),
