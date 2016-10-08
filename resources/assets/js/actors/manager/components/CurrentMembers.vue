@@ -5,9 +5,7 @@
         </div>
         <div class="small-2 columns">
             <a class="button success">
-                <i class="fa fa-pencil-square-o">
-                         
-                </i>
+                <i class="fa fa-pencil-square-o"></i>
             </a>
         </div>
     </div>
@@ -112,7 +110,4 @@
     }
 </script>
 <style lang="scss">
-.content--search {
-    background-color: #aecaec;
-}
 </style>

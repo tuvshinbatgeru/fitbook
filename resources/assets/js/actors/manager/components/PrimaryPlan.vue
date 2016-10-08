@@ -1,4 +1,15 @@
 <template>
+    <div class="tile-case">
+        <a href="#">
+          <div class="tile-primary-content">
+            <img src="http://albumcoverart.files.wordpress.com/2010/04/fleet-foxes-lp.jpg" alt="">
+          </div>
+          <div class="tile-secondary-content">
+            <h2>Music</h2>
+            <p>Fleet Foxes</p>
+          </div>
+        </a>
+    </div>
     <div class="row small-up-1 large-up-2" style="font-size:12px;">
         <div class="columns" v-for="current in plans">
         <h3><a href="/plan/22">{{current.plan[0].name}}</a></h3>
@@ -119,3 +130,9 @@
         }
     }
 </script>
+<style lang="scss">
+    .tile-case{
+        width: 45%;
+        position: relative;
+    }
+</style>

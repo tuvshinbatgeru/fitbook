@@ -1,60 +1,60 @@
 <template>
-  <div>
-      <ul class="tabs">
-        <li class="tab s3"><a @click="setContent('primary-plan')" class="active">{{$t('plan')}} (1)</a></li>
-        <li class="tab s3"><a @click="setContent('loyalty-plan')">{{$t('loyalty')}} (1)</a></li>
-      </ul>
-  </div>  
-
-  <div class="row">
-    <div class="small-10 columns">
-      <input type="text" v-model="search"  placeholder="search ...">
+  <div class="widget-content">
+    <div class="content--header">
+      <h3>{{$t('plan')}}</h3>
     </div>
-    <div class="small-2 columns">
-      <div class="small-2 columns">
+    <div class="content--container">
+      <div class="content--back">
+        <ul class="tabs content--tabs">
+          <li class="tab s3"><a @click="setContent('primary-plan')" class="active">{{$t('general')}} (1)</a></li>
+          <li class="tab s3"><a @click="setContent('loyalty-plan')">{{$t('loyalty')}} (1)</a></li>
+        </ul>
+        <div class="row content--search plan--content">
+          <div class="small-10 columns">
+            <input type="text" v-model="search"  placeholder="search ...">
+          </div>
+          <div class="small-2 columns">
             <a @click="showAddPlan = true" class="button success">
-                <i class="fa fa-pencil-square-o">                       
-                </i>
+                <i class="fa fa-pencil-square-o"></i>
             </a>
+          </div>
+        </div>
+        <div class="row">
+            <ul class="dropdown menu sortby--menu" data-dropdown-menu v-foundation-dropdown-menu>
+                <li class="is-dropdown-submenu-parent">
+                    <a>{{$t(orderBy)}}</a>
+                    <ul class="menu">
+                      <div class="arrow"></div>
+                      <li><a @click="setOrderBy('newest')" class="sortby--selected">{{$t('newest')}}</a></li>
+                      <li><a @click="setOrderBy('oldest')">{{$t('oldest')}}</a></li>
+                      <li><a @click="setOrderBy('heart')">{{$t('heart')}}</a></li>
+                      <li><a @click="setOrderBy('price')">{{$t('price')}}</a></li>
+                      <li><a @click="setOrderBy('max')">{{$t('max')}}</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        <custom-modal 
+            :id = "id"
+            v-ref:addpl
+            type = "Club"
+            title = "Add Plan" 
+            usage = "_add-plan" 
+            :show.sync = "showAddPlan"
+            save-callback = "savePlan"
+            validateable = 'Y'
+            context = "AddPlan"
+            >
+        </custom-modal>
+
+        <component :id="id" 
+                   :order-by.sync="orderBy"
+                   :search-text.sync="search"
+                   :is="content">
+        </component>
       </div>
     </div>
   </div>
-
-  <div class="row">
-      <ul class="dropdown menu" data-dropdown-menu v-foundation-dropdown-menu>
-          <li class="is-dropdown-submenu-parent" style="background-color:#aecaec; border-radius:4px; font-size:12px;">
-              <a style="color:#fff; font-weight:bold;">{{$t(orderBy)}}</a>
-              
-              <ul class="menu" style="margin-top:10px; background-color:#F2F5F8; border-radius:4px;">
-                <div class="arrow"></div>
-                <li><a @click="setOrderBy('newest')" style="font-weight:bold; color: #3f4652">{{$t('newest')}}</a></li>
-                <li><a @click="setOrderBy('oldest')">{{$t('oldest')}}</a></li>
-                <li><a @click="setOrderBy('heart')">{{$t('heart')}}</a></li>
-                <li><a @click="setOrderBy('price')">{{$t('price')}}</a></li>
-                <li><a @click="setOrderBy('max')">{{$t('max')}}</a></li>
-              </ul>
-          </li>
-      </ul>
-  </div>
-
-  <custom-modal 
-      :id = "id"
-      v-ref:addpl
-      type = "Club"
-      title = "Add Plan" 
-      usage = "_add-plan" 
-      :show.sync = "showAddPlan"
-      save-callback = "savePlan"
-      validateable = 'Y'
-      context = "AddPlan"
-      >
-  </custom-modal>
-
-  <component :id="id" 
-             :order-by.sync="orderBy"
-             :search-text.sync="search"
-             :is="content">
-  </component>
 </template>
 
 <script>
@@ -134,6 +134,7 @@
     locales: {
         en: { 
             plan : 'Plan',
+            general: 'General',
             loyalty : 'Loyalty',
             newest : 'NEWEST',
             oldest : 'OLDEST',
@@ -143,6 +144,7 @@
         },
         mn : {
             plan : 'Хөтөлбөр',
+            general: 'Үндсэн',
             loyalty : 'Урамшуулал',
             newest : 'Шинэ',
             oldest : 'Хуучин',
@@ -165,5 +167,25 @@
     border-right: 7px solid transparent;
     border-bottom: 9px solid #F2F5F8;
 }
-
+.plan--content{
+  color: inherit;
+  input{
+    margin: 0 !important;
+  }
+  .button{
+    margin: 0;
+  }
+}
+.sortby--menu{
+  font-size:12px;
+  ul{
+    margin-top:10px;
+    background-color:#F2F5F8;
+    border-radius:4px;
+  }
+  .sortby--selected{
+    font-weight:bold;
+    color: #3f4652;
+  }
+}
 </style>
