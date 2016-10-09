@@ -17,4 +17,9 @@ class Subscriptions extends Model
     {
     	return $filters->apply($query);
     }
+
+    public function plan()
+    {
+    	return $this->belongsTo('App\Plan');
+    }
 }
