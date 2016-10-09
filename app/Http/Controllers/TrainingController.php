@@ -9,6 +9,7 @@ use App\Tag;
 use App\Training;
 use App\Transformers\TrainingTransformer;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Response;
 
 class TrainingController extends Controller
@@ -111,6 +112,11 @@ class TrainingController extends Controller
 
         $training->photos()->sync($photo_id_array);
         $training->teachers()->sync($decode->teachers);
+
+        /**
+            Teacher used by training notification
+        */
+
         $training->genres()->sync($decode->genres);
 
         return Response::json([
@@ -203,7 +209,17 @@ class TrainingController extends Controller
         }
 
         $training->photos()->sync($photo_id_array);
-        $training->teachers()->sync($decode->teachers);
+
+        $changes = $this->teachersDirty($training, $decode->teachers);
+        
+        if(count($changes['attached']) > 0) {
+            $after->attached_teachers = $changes['attached'];  
+        }
+
+        if(count($changes['detached']) > 0) {
+            $after->detached_teachers = $changes['detached'];  
+        }
+
         $training->genres()->sync($decode->genres);
 
         $training->histories()->attach(\Illuminate\Support\Facades\Auth::user()->id, [
@@ -218,6 +234,53 @@ class TrainingController extends Controller
         ], 200);
     }
 
+    public function teachersDirty(Training $training, $ids)
+    {
+        $changes = [
+            'attached' => [], 'detached' => [],
+        ];
+
+        $current = $training->teachers()->pluck('id')->all();
+        
+        $detach = array_diff($current, $ids);
+
+        if (count($detach) > 0) {
+            $this->detach($training->id, $detach);
+            $changes['detached'] = $detach;
+        }
+
+        $changes = array_merge(
+            $changes, $this->attachNew($ids, $current, false)
+        );
+
+        if (count($changes['attached']) > 0) {
+            $training->teachers()->attach($changes['attached']);
+        }
+
+        return $changes;
+    }
+
+    protected function attachNew(array $records, array $current, $touch = true)
+    {   
+        $changes = ['attached' => []];
+
+        foreach ($records as $id) {
+            if (!in_array($id, $current)) {
+                $changes['attached'][] = is_numeric($id) ? (int) $id : (string) $id;
+            }
+        }
+
+        return $changes;
+    }
+
+    public function detach($trainingId, $ids)
+    {
+        $query = DB::table('training_teacher')
+                    ->where('training_id', $trainingId)
+                    ->whereIn('user_id', $ids)
+                    ->delete();
+        return $query;
+    }
     /**
      * Remove the specified resource from storage.
      *
