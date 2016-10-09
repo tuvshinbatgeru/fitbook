@@ -1,7 +1,7 @@
 @extends('layouts.club-edit-layout', ['currentView' => 'club-edit-view'])
 @section('content')
 
-<section class="container" style="background-color:#ebeced !important;">
+<section class="container" style="background-color:#f6f9fa !important;">
 	<section class="sidebar" v-cloak>
 		<ul class="setting-menu vertical menu" data-accordion-menu>
 			<li>
