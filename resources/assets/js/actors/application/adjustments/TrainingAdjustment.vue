@@ -1,9 +1,23 @@
 <template>
 	<p>{{before.name}}</p>
 	<p>{{{before.description}}}</p>
-	<hr>
+	
 	<p>{{after.name}}</p>
 	<p>{{{after.description}}}</p>
+
+	<ul v-if="after.attached_teachers">
+		Added : 
+		<li v-for="teacher in after.attached_teachers">
+			{{teacher}}
+		</li>
+	</ul>
+	<hr>
+	<ul v-if="after.detached_teachers">
+		Removed :
+		<li v-for="teacher in after.detached_teachers">
+			{{teacher}}
+		</li>
+	</ul>
 </template>
 
 <script>

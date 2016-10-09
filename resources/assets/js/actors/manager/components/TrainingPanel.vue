@@ -111,10 +111,12 @@
             this.$http.post(this.$env.get('APP_URI') + 'training?data=' + $response.data.param).then(res => {
                 if(res.data.code == 0) {
                     var curTraining = res.data.result;
-                    curTraining.teachers = $response.data.teachers;
                     var pinned_photos = [];
+
                     pinned_photos.push($response.data.pinned_photo);
                     curTraining.pinned_photos = pinned_photos;
+                    curTraining.genres = $response.data.genres;
+                    curTraining.teachers_count = $response.data.teachers.length;
 
                     this.training.shift(curTraining);
                     this.showAddTraining = false;
@@ -134,9 +136,10 @@
             this.copyInstance.name = curTraining.name;
             this.copyInstance.description = curTraining.description;
             this.copyInstance.teachers_count = curTraining.teachers_count;
-            this.copyInstance.genres_count = curTraining.genres_count;
+            this.copyInstance.genres = curTraining.genres;
             this.copyInstance.pinned_photos = curTraining.pinned_photos;
             this.showAddTraining = false;
+
         },
 
         updateTraining : function ($response) {
@@ -147,6 +150,9 @@
                     
                     pinned_photos.push($response.data.pinned_photo);
                     curTraining.pinned_photos = pinned_photos;
+                    curTraining.teachers_count = $response.data.teachers.length;
+                    curTraining.genres = $response.data.genres;
+                    
                     this.cloneTraining(curTraining);
                     this.copyInstance.histories_count ++;
                 }
