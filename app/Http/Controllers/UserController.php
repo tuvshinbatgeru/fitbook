@@ -63,7 +63,7 @@ class UserController extends Controller
         return Response::json([
             'code' => 0,
             'menus' => $user->clubs,
-            'subscriptions' => $user->subscriptionPlans
+            'subscriptions' => $user->subscriptionPlans()->with('pinnedPhotos')->get(),
         ]);
     }
 
