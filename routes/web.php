@@ -36,6 +36,21 @@ use Illuminate\Support\Facades\Storage;
 		return view('search');
 	});
 
+	Route::get('/test/search', function (Request $request) {
+		$param = $request->q;
+
+		$users = User::where(function ($query) use ($param) {
+            $query->where('username', 'like', '%'.$param.'%')
+                  ->orWhere('first_name', 'like', '%'.$param.'%')
+                  ->orWhere('last_name', 'like', '%'.$param.'%');
+        })->get();
+
+        return Response::json([
+        	'code' => 0,
+        	'result' => $users,
+        ]);
+	});
+
 	Route::get('/login', function() {
 		return view('auth.login');
 	});
