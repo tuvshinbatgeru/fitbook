@@ -1,5 +1,6 @@
 <component :user="{{Auth::user()}}" 
            is="main-header" 
+           v-cloak
            inline-template>
     <div class="site-header">
         <div class="site-header-container">
@@ -16,11 +17,20 @@
                 </div>
             </div>
             <div class="site-header-search site-header-item">
-                <div class="site-search-input">
-                  <input placeholder="Клуб, дасгалжуулагч, гишүүн ... " type="text"/>
-                  <a>
-                    <i class="fa fa-search"></i>
-                  </a>
+                <div id="graph-search" class="site-search-input">
+                  <typeahead @search-change="graphSearch"
+                             :items.sync="graphResult"
+                             :loading.sync="graphLoading"
+                             :min-chars="1"
+                             :context="'graph-' + searchType +'-result'"
+                             placeholder="Клуб, Хөтөлбөр хайх ...">
+                            <div slot="header">
+                              <ul class="tabs">
+                                  <li class="tab"><a class="active">Plan</a></li>
+                                  <li class="tab"><a>Club</a></li>
+                              </ul>
+                            </div>
+                  </typeahead>
                 </div>
             </div>
             <div class="site-header-item" style="width: 120px;">
@@ -56,6 +66,5 @@
           </components>
         </div>
     </custom-modal>
-
 </component>
 
