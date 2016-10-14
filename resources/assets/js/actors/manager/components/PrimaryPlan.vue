@@ -32,7 +32,7 @@
             <strong>{{current.comments_count}}</strong>
 
             <span class="fa fa-eye"></span>
-            <strong>1270</strong>
+            <strong>{{current.visitors_count}}</strong>
         </div>
         
         <p>{{{current.description}}}</p>
