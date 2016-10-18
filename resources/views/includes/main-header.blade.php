@@ -1,6 +1,5 @@
 <component :user="{{Auth::user()}}" 
            is="main-header" 
-           v-cloak
            inline-template>
     <div class="site-header">
         <div class="site-header-container">
@@ -10,7 +9,7 @@
                     <img src="{{asset('images/site/logo-white.png')}}" />
                   </a>
                 </div>
-                <div class="site-header-title">
+                <div class="site-header-title hide-for-small-only">
                     <label>
                         Fitbook
                     </label>
@@ -24,12 +23,11 @@
                              :min-chars="1"
                              :context="'graph-' + searchType +'-result'"
                              placeholder="Клуб, Хөтөлбөр хайх ...">
-                            <div slot="header">
-                              <ul class="tabs">
-                                  <li class="tab"><a class="active">Plan</a></li>
-                                  <li class="tab"><a>Club</a></li>
-                              </ul>
-                            </div>
+                             <div slot="footer">
+                                <div class="row text-center">
+                                    <p style="color:#3f465;">See all results ...</p>
+                                </div>
+                             </div>
                   </typeahead>
                 </div>
             </div>
@@ -45,7 +43,7 @@
             </div>
             <div class="site-header-profile site-header-item">
               <div>  
-                <img @click="showLogoutMenus = true" data-toggle="user-menu" class="header-profile-pic" src="{{Auth::user()->avatar_url}}" />
+                <img @click="showLogoutMenus = true" data-toggle="user-menu" class="header-profile-pic" src="{{Auth::user()->avatarSmall[0]->url}}" />
               </div>
             </div>
         </div>
