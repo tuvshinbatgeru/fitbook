@@ -25,8 +25,17 @@
 		<h3>{{item.name}}</h3>
 		{{{item.description}}}	
 		<div class="row text-center">
-            <span class="fa fa-user-md" style="color: red;"></span>
-            <strong>{{item.teachers_count}}</strong>
+
+			<custom-selection-list 
+				:limit="2" 
+				:total="item.teachers_count"
+				:items="item.first_two_teachers"
+				:item-text="itemText"
+				@clicked="allTeachers"
+				:limit-before="teacherLimitBefore"
+				:limit-after="teacherLimitAfter">
+			</custom-selection-list>
+
         </div>
         <ul class="small-12 medium-6 column">
             <li class="training--genre" v-for="genre in item.genres">
@@ -67,13 +76,41 @@
 
 			showHistory : function () {
 
-			}
+			},
 
+			allTeachers : function () {
+				this.$dispatch('allTeachers', this.item);
+			},
+
+			teacherLimitBefore : function() {
+				return this.$t('and');
+			},
+
+			teacherLimitAfter : function() {
+				return this.$t('other');
+			},
+
+			itemText : function (item) {
+				return '<a href="/users/' + item.username + '">' + item.first_name + ' ' + item.last_name + '</a> ';
+			}
 		},
 
 		components : {
  			AdjustmentHistories,
-  		}		  		
+  		},
+
+  		locales : {
+  			en : {
+  				and : 'and ',
+  				other : ' others teachers',
+
+  			},
+
+  			mn : {
+  				and : 'ба бусад ',
+  				other : ' багш нар'
+  			}
+  		} 		
 	}
 </script>
 <style>
