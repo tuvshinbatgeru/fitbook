@@ -43,7 +43,9 @@ use Illuminate\Support\Facades\Storage;
             $query->where('username', 'like', '%'.$param.'%')
                   ->orWhere('first_name', 'like', '%'.$param.'%')
                   ->orWhere('last_name', 'like', '%'.$param.'%');
-        })->get();
+        })->take(8)->get();
+
+        $users->load('avatarSmall');
 
         return Response::json([
         	'code' => 0,

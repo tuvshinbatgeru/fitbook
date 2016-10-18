@@ -56,7 +56,9 @@ Route::group(['middleware' => ['auth:api']], function () {
 	//direct apis
 
 	Route::get('/training/{training}/adjustments', 'TrainingController@adjustments');
+	Route::get('/training/{training}/teachers', 'TrainingController@teachers');
 	Route::get('/plan/{plan}/edit', 'PlanController@edit');
+	Route::get('/plan/{plan}/teachers', 'PlanController@teachers');
 
 	//Club info apis
 	Route::group(['prefix' => '/club/{club}/'], function () {
