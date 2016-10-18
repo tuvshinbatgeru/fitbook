@@ -79,6 +79,13 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
                     ->withPivot('begin_date', 'end_date');
     }
 
+    public function watchedPlans()
+    {
+        return $this->belongsToMany('App\Plan', 'plan_visitor', 'user_id', 'plan_id')
+                    ->withPivot('hits', 'visit_date')
+                    ->withTimestamps();
+    }
+
     public function comments()
     {
         return $this->hasMany('App\Comment', 'user_id');
@@ -102,12 +109,12 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
 
     public function avatarSmall()
     {
-        return $this->photos()->where('type', '=', 2)->first();
+        return $this->photos()->where('type', 2);
     }
 
     public function avatarMedium()
     {
-        return $this->photos()->where('type', '=', 3)->first();
+        return $this->photos()->where('type', '=', 3);
     }
 
     public function canEditable($club_id)
@@ -202,6 +209,33 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
             return Response::json(['result' => 'Success', 'type' => 'APPROVE']);
         }
     }
+
+    static public function setWatchedPlan($user, $planId)
+    {
+        if($user->isWatchedBefore($planId)) {
+            \Illuminate\Support\Facades\DB::table('plan_visitor')
+                ->where('plan_id', $planId)
+                ->where('user_id', $user->id)
+                ->where('visit_date', Carbon::now()->toDateString())
+                ->increment('hits', 1);   
+
+            return;
+        }
+
+        $user->watchedPlans()->attach($planId, [
+            'hits' => 1,
+            'visit_date' => Carbon::now()->toDateString(),
+        ]);
+    }
+
+    public function isWatchedBefore($planId)
+    {
+        return $this->watchedPlans()
+                    ->where('plan_id', $planId)
+                    ->where('visit_date', Carbon::now()->toDateString())
+                    ->exists();
+    }
+
 
     public function toggleReaction($action, $obj)
     {
@@ -399,5 +433,10 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
             'last_name' => $this->last_name,
             'email' => $this->email,
         ];
+    }
+
+    private function isLogged()
+    {
+        return \Illuminate\Support\Facades\Auth::check();
     }
 }
