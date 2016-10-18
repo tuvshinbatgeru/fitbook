@@ -26,14 +26,16 @@
 	    ]
 	};
 
-	import Followed from '.././components/Followed.vue';
-	import Timeline from '.././components/Timeline.vue';
-	import Activity from '.././components/Activity.vue';
+	import Followed from '../components/Followed.vue';
+	import Timeline from '../components/Timeline.vue';
+	import Activity from '../components/Activity.vue';
+	import UserHome from '../actors/user/components/UserHome.vue';
+
 
 	export default {
 		props: { 
 			title : { default : 'test' },
-			submenu : { default : 'activity'}
+			submenu : { default : 'user-home'}
 		},
 
 		data () {
@@ -69,7 +71,7 @@
 		},
 
 		components : {
-            Followed, Timeline, Activity
+            Followed, Timeline, Activity, UserHome
         }
 	}
 </script>
