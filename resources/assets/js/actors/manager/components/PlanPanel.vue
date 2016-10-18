@@ -8,7 +8,7 @@
 
   <div class="row content--search plan--content">
     <div class="small-10 columns">
-      <input type="text" v-model="search"  placeholder="search ...">
+    
     </div>
     <div class="small-2 columns">
       <div class="small-2 columns">
@@ -23,6 +23,12 @@
   
   <plan-select-collection>
   </plan-select-collection>
+
+  <custom-modal title = "Teachers" :show.sync="showTeachers">
+    <div slot="body">
+      <plan-teachers :id="currentPlan.id"></plan-teachers>
+    </div>
+  </custom-modal>
 
   <custom-modal 
       :id = "id"
@@ -55,6 +61,7 @@
   import LoyaltyPlan from './LoyaltyPlan.vue';
   import PlanSelectCollection from '../../application/components/PlanSelectCollection.vue';
   import AddPlan from '../../../context/AddPlan.vue';
+  import PlanTeachers from './PlanTeachers.vue';
 
   export default {
     props: { 
@@ -68,6 +75,7 @@
         plans : [],
         orderBy : 'newest',
         showAddPlan : false,
+        showTeachers : false,
         search : '',
         dateOption : {},
         dateSelection : null,
@@ -98,6 +106,11 @@
         'editPlan' : function($response) {
             this.currentPlan = $response;
             this.editPlan($response.id);
+        }, 
+
+        'allTeachers' : function($response) {
+            this.currentPlan = $response;
+            this.showTeachers = true;
         }
     },
 
@@ -178,7 +191,7 @@
     },
 
     components : {
-        PrimaryPlan, LoyaltyPlan, PlanSelectCollection, AddPlan
+        PrimaryPlan, LoyaltyPlan, PlanSelectCollection, AddPlan, PlanTeachers
     },
 
     locales: {

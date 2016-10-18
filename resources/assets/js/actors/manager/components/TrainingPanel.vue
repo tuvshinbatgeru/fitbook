@@ -1,7 +1,7 @@
 <template>
   <div class="row">
     <div class="small-10 columns">
-      <input type="text" name="search" placeholder="search ...">
+      
     </div>
     <div class="small-2 columns">
       <div class="small-2 columns">
@@ -13,6 +13,12 @@
       </div>
     </div>
   </div>
+
+  <custom-modal title = "Teachers" :show.sync="showTeachers">
+    <div slot="body">
+      <training-teachers :id="currentTraining.id"></training-teachers>
+    </div>
+  </custom-modal>
 
   <custom-modal 
         :id = "id"
@@ -45,6 +51,7 @@
 
   import FtTraining from '.././components/FtTraining.vue';
   import AddTraining from '../../../context/AddTraining.vue';
+  import TrainingTeachers from './TrainingTeachers.vue';
 
   export default {
     props: { 
@@ -56,6 +63,7 @@
           training : [],
           currentTraining : null,
           showAddTraining : false,
+          showTeachers : false,
           methodType : 'add',
           copyInstance : null,
           pageIndex : 1,
@@ -79,6 +87,11 @@
         'editTraining' : function($response) {
             this.copyInstance = $response;
             this.editTraining($response.id);
+        },
+
+        'allTeachers' : function($response) {
+            this.currentTraining = $response;
+            this.showTeachers = true;
         }
     },
 
@@ -177,7 +190,7 @@
     },
 
     components : {
-        FtTraining, AddTraining
+        FtTraining, AddTraining, TrainingTeachers
     },
 
     locales: {
