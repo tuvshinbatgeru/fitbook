@@ -12,8 +12,13 @@
 	title ="Photo chooser" 
 	usage = "_photo-chooser" 
 	:show.sync = "showFileManager"
-	save-callback = "chooseAvatar"
-	context = "fileManager">
+	save-callback = "chooseAvatar">
+	<div slot="body">
+		<component 
+			v-ref:context 
+			is="file-manager"
+		></component>
+	</div>
 </custom-modal>
 
 

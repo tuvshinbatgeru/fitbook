@@ -52,8 +52,8 @@
 			<ul class="row">
 				@foreach ($plan->teachers as $teacher)
 				   <li>
-				   		<p>{{$teacher->username}}</p>
-				   		<img style="height:24px; width:24px;" src={{$teacher->avatar_ul}}/> 
+				   		<p>{{$teacher->username}}</p>`
+				   		<img style="height:24px; width:24px;" src={{$teacher->avatar_url}}/> 
 				   </li>
 				@endforeach
 			</ul>
