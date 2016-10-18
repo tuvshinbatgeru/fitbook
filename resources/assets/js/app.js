@@ -20,16 +20,10 @@ import ReceptionDashboardView from './web/ReceptionDashboardView.vue';
 
 Vue.debug = true;
 Vue.http.headers.common['X-CSRF-TOKEN'] = document.querySelector('#_token').getAttribute('value');
-Vue.config.lang = 'en';
+Vue.config.lang = 'mn';
 
 const app = new Vue({
 	el : 'body',
-
-	created: function () {
-		this.$env.set('APP_ENV', 'Development');
-		this.$env.set('APP_URI', 'http://localhost/');
-		this.$env.set('APP_LANG', 'en');
-	},
 
 	ready : function () {
 		$(document).foundation();
