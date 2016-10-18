@@ -49,7 +49,7 @@ class UserController extends Controller
     public function storeAvatar(Photo $photo)
     {
         $mediumAvatar = Auth::user()->deletePrevAvatar()
-                    ->saveAvatar($photo);
+                                    ->saveAvatar($photo);
 
         return Response::json([
                 'result' => 'OK',
