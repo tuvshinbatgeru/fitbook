@@ -20,6 +20,15 @@
         </div>
 
         <h3><a>{{current.name}}</a></h3>
+        <custom-selection-list 
+                :limit="2" 
+                :total="current.teachers_count"
+                :items="current.first_two_teachers"
+                :item-text="itemText"
+                @clicked="allTeachers(current)"
+                :limit-before="teacherLimitBefore"
+                :limit-after="teacherLimitAfter">
+        </custom-selection-list>
         <span style="background-color:#3f4652; color:#fff; padding:5px; border-radius:5px;">{{current.frequency_type | freqFilter}}</span>
         <span style="background-color:#3f4652; color:#fff; padding:5px; border-radius:5px;">{{current.length}}</span>
 
@@ -33,6 +42,9 @@
 
             <span class="fa fa-eye"></span>
             <strong>{{current.visitors_count}}</strong>
+
+            <span class="fa fa-users"></span>
+            <strong>{{current.subscriptions_count}}</strong>
         </div>
         
         <p>{{{current.description}}}</p>
@@ -136,6 +148,22 @@
                 }).catch(err => {
                 });
             },
+
+            allTeachers : function (current) {
+                this.$dispatch('allTeachers', current);
+            },
+
+            teacherLimitBefore : function() {
+                return this.$t('and');
+            },
+
+            teacherLimitAfter : function() {
+                return this.$t('other');
+            },
+
+            itemText : function (item) {
+                return '<a href="/users/' + item.username + '">' + item.first_name + ' ' + item.last_name + '</a> ';
+            }
         },
 
         components : {
@@ -145,9 +173,13 @@
         locales: {
             en: { 
                 load : 'Load More ...',
+                and : 'and ',
+                other : ' others teachers',
             },
             mn : {
                 load : 'Цааш нь ...',
+                and : 'ба бусад ',
+                other : ' багш нар'
             },
         }
     }

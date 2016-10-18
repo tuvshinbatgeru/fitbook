@@ -32,7 +32,10 @@
             <strong>{{current.comments_count}}</strong>
 
             <span class="fa fa-eye"></span>
-            <strong>1270</strong>
+            <strong>{{current.visitors_count}}</strong>
+
+            <span class="fa fa-users"></span>
+            <strong>{{current.subscriptions_count}}</strong>
         </div>
         
         <p>{{{current.description}}}</p>
@@ -51,9 +54,16 @@
         off to 
         <label>{{current.price}}</label>
 
-        <ul v-for="teacher in current.teachers">
-            {{teacher.username}}
-        </ul>
+        <custom-selection-list 
+                :limit="2" 
+                :total="current.teachers_count"
+                :items="current.first_two_teachers"
+                :item-text="itemText"
+                @clicked="allTeachers(current)"
+                :limit-before="teacherLimitBefore"
+                :limit-after="teacherLimitAfter">
+        </custom-selection-list>
+
         <ul v-for="service in current.services">
             {{service.name}}
         </ul>
@@ -141,6 +151,22 @@
                 }).catch(err => {
                 });
             },
+
+            allTeachers : function (current) {
+                this.$dispatch('allTeachers', current);
+            },
+
+            teacherLimitBefore : function() {
+                return this.$t('and');
+            },
+
+            teacherLimitAfter : function() {
+                return this.$t('other');
+            },
+
+            itemText : function (item) {
+                return '<a href="/users/' + item.username + '">' + item.first_name + ' ' + item.last_name + '</a> ';
+            }
         },
 
         components : {
@@ -150,9 +176,13 @@
         locales: {
             en: { 
                 load : 'Load More ...',
+                and : 'and ',
+                other : ' others teachers',
             },
             mn : {
                 load : 'Цааш нь ...',
+                and : 'ба бусад ',
+                other : ' багш нар'
             },
         }
     }
