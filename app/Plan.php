@@ -21,6 +21,13 @@ class Plan extends Model
         return $filters->apply($query);
     }
 
+    public function visitors()
+    {
+        return $this->belongsToMany('App\User', 'plan_visitor', 'plan_id', 'user_id')
+                    ->withPivot('hits', 'visit_date')
+                    ->withTimestamps();
+    }
+
     public function photos()
     {
     	return $this->belongsToMany('App\Photo', 'plan_photos', 'plan_id', 'photo_id')
@@ -36,8 +43,7 @@ class Plan extends Model
 
     public function subscriptions()
     {
-        return $this->belongsToMany('App\User', 'subscriptions', 'plan_id', 'user_id')
-                ->withPivot('club_id', 'begin_date', 'end_date')
+        return $this->belongsToMany('App\User', 'subscriptions', 'plan_id', 'user_id')->withPivot('club_id', 'begin_date', 'end_date')
                 ->withTimestamps();
     }
 
@@ -55,6 +61,12 @@ class Plan extends Model
     {
     	return $this->belongsToMany('App\User', 'plan_teacher', 'plan_id', 'teacher_id')
     			->withTimestamps();
+    }
+
+    public function firstTwoTeachers()
+    {
+        return $this->belongsToMany('App\User', 'plan_teacher', 'plan_id', 'teacher_id')
+            ->take(2);
     }
 
     public function services()
