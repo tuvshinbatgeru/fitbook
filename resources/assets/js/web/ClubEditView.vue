@@ -13,7 +13,7 @@
 		props: { 
 			clubid : {},
 			selectedMenu : { default : 'club-registration'},
-			content : {default : 'plan-panel'},
+			content : { default : 'plan-panel' },
 		},
 
 		data () {
