@@ -1,4 +1,6 @@
 <script>
+	import FileManager from '../context/FileManager.vue';
+	
 	export default {
 		props: { 
 			title : { default : 'test' },
@@ -40,6 +42,10 @@
 				
 				
 			}
+		}, 
+
+		components : {
+			FileManager
 		}	
 	}
 </script>
