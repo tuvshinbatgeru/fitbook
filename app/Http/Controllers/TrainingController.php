@@ -55,7 +55,14 @@ class TrainingController extends Controller
     
     public function clubTrainings(Club $club, Request $request)
     {
-        $trainings = $club->trainings()->with('pinnedPhotos','genres')->withCount('teachers', 'histories')->paginate(2);
+        $trainings = $club->trainings()
+                          ->with('pinnedPhotos','genres')
+                          ->withCount('histories', 'teachers')->paginate(6);
+
+        
+        foreach ($trainings->items() as $training) {
+            $training->firstTwoTeachers;
+        }
 
         return Response::json([
             'result' => $trainings,
@@ -67,6 +74,14 @@ class TrainingController extends Controller
         return Response::json([
             'code' => 0,
             'result' => $training->histories,
+        ]);
+    }
+
+    public function teachers(Training $training)
+    {
+        return Response::json([
+            'code' => 0,
+            'result' => $training->teachers()->with('avatarSmall')->get(),
         ]);
     }
 
