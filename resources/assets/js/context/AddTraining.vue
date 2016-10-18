@@ -42,7 +42,7 @@
 		</div>
 	  </div>
 	  <div id="teacher">
-	  	<teacher-slider v-ref:tslider :id="id" :teachers.sync="trainings"></teacher-slider>
+	  	<teacher-slider v-ref:tslider :id="id"></teacher-slider>
 	  </div>
 	</form>
 </template>
