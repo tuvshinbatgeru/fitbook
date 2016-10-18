@@ -1,5 +1,6 @@
 module.exports = {
     DEBUG: true,
     APP_ENV: 'local',
-    BASE_URI: 'http://localhost/',
+    APP_URI: 'http://localhost/',
+    APP_LANG: 'en',
 };
