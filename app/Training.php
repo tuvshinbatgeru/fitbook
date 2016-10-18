@@ -39,6 +39,14 @@ class Training extends Model
     			->withTimestamps();
     }
 
+    public function firstTwoTeachers()
+    {
+        return $this->belongsToMany('App\User', 'training_teacher', 'training_id', 'user_id')
+                ->orderBy('created_at')
+                ->orderBy('id')
+                ->limit(2);
+    }
+
     public function genres()
     {
         return $this->belongsToMany('App\Genre', 'training_genre', 'training_id', 'genre_id')
