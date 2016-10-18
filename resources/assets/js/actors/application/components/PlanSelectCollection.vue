@@ -1,6 +1,6 @@
 <template>
-	<div class="row" style="font-size:12px;">
-		<div class="small-12 medium-3 columns">
+	<div class="row small-up-1 medium-up-2 large-up-5" style="font-size:12px;">
+		<div class="column">
 		    <multiselect
 		      :options="dateOption",
 		      :selected="dateSelection",
@@ -15,7 +15,7 @@
 		      id="date">
 		    </multiselect>
 	  	</div>
-	  	<div class="small-12 medium-3 columns">
+	  	<div class="column">
 	  		<multiselect
 		      :options="heartOption",
 		      :selected="heartSelection",
@@ -30,7 +30,7 @@
 		      id="date">
 		    </multiselect>
 	  	</div>
-	  	<div class="small-12 medium-3 columns">
+	  	<div class="column">
 	  		<multiselect
 		      :options="priceOption",
 		      :selected="priceSelection",
@@ -45,7 +45,22 @@
 		      id="date">
 		    </multiselect>
 	  	</div>
-	  	<div class="small-12 medium-3 columns">
+	  	<div class="column">
+	  		<multiselect
+		      :options="freqOption",
+		      :selected="freqSelection",
+		      @update="freqUpdate"
+		      placeholder="Freq",
+		      select-label='сонгох'
+		      selected-label='сонгосон' 
+		      deselect-label='устгах'
+		      :searchable="false",
+		      label="label"
+		      key="name"
+		      id="date">
+		    </multiselect>
+	  	</div>
+	  	<div class="column">
 	  		<multiselect
 		      :options="freqOption",
 		      :selected="freqSelection",
@@ -191,7 +206,6 @@
 
 		computed : {
 			selectedFilters : function () {
-				debugger;
 
 				var filter = [];
 				if(this.dateSelection) {
