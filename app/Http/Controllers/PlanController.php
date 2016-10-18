@@ -64,6 +64,14 @@ class PlanController extends Controller
         ]);
     }
 
+    public function teachers(Plan $plan)
+    {
+        return Response::json([
+            'code' => 0,
+            'result' => $plan->teachers()->with('avatarSmall')->get(),
+        ]);
+    }
+
     public function comments(Plan $plan)
     {
         $comments = $plan->comments()
@@ -93,11 +101,15 @@ class PlanController extends Controller
     public function index(Club $club, \App\Filters\PlanFilters $filters)
     {
         $query = $club->plans()
-                ->with('planable', 'teachers', 'services', 'pinnedPhotos')
-                ->withCount('heartsActions', 'comments', 'histories')
+                ->with('planable', 'services', 'pinnedPhotos')
+                ->withCount('heartsActions', 'comments', 'histories', 'visitors', 'subscriptions', 'teachers')
                 ->where('planable_type', self::$lookup[$filters->getRequest()->type]);
         
-        $plans = Plan::filter($query, $filters)->paginate(2);
+        $plans = Plan::filter($query, $filters)->paginate(6);
+
+        foreach ($plans->items() as $plan) {
+            $plan->firstTwoTeachers;
+        }
 
         return Response::json([
             'result' => $plans,
@@ -169,6 +181,10 @@ class PlanController extends Controller
         $plan->planable;
         $plan->photos;
         $plan->hearth_count = $plan->reactions()->where('action_id', 1)->count();
+
+        if(Auth::check()) {
+            \App\User::setWatchedPlan(Auth::user(), $plan->id);
+        }
 
         return view('club.plan')->with(compact('plan'));
     }
