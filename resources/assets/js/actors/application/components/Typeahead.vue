@@ -34,6 +34,9 @@
           </li>
         </ul>
       </slot>
+      <slot name="footer">
+          
+      </slot>
     </div>
 
   </div>
