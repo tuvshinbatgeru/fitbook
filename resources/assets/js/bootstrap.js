@@ -22,6 +22,8 @@ require('./dependency/collapse');
 require('./dependency/bootstrap-datetimepicker');
 require('./dependency/jquery.caret');
 require('./dependency/jquery.atwho');
+//window.Handlebars = require('./dependency/handlebars-v4.0.5');
+//require('./dependency/typeahead.bundle');
 
 
 /*require('../../../bower_components/rangy-official/rangy-core');
@@ -67,6 +69,7 @@ import CustomButton from './actors/application/components/CustomButton.vue';
 import CustomCallout from './actors/application/components/CustomCallout.vue';
 import CustomEditor from './actors/application/components/CustomEditor.vue';
 import CommentsList from './actors/application/components/CommentsList.vue';
+import CustomSelectionList from './actors/application/components/CustomSelectionList.vue';
 import CustomButtonGroup from './actors/application/components/CustomButtonGroup.vue';
 import CustomSearchTag from './actors/application/components/CustomSearchTag.vue';
 //import CustomDropdownMenu from './actors/application/components/CustomDropdownMenu.vue';
@@ -82,6 +85,7 @@ Vue.component('CustomComment', CustomComment);
 Vue.component('CustomEditor', CustomEditor);
 Vue.component('CommentsList', CommentsList);
 Vue.component('CustomSearchTag', CustomSearchTag);
+Vue.component('CustomSelectionList', CustomSelectionList);
 //Vue.component('CustomDropdownMenu', CustomDropdownMenu);
 
 
