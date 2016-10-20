@@ -77,6 +77,7 @@ Route::group(['middleware' => ['auth:api']], function () {
 
 		Route::get('/training', 'TrainingController@clubTrainings');
 		Route::get('/training/context', 'TrainingController@forContext');
+		Route::get('plan/count', 'ClubController@planCounts');
 		Route::get('plan/simple', 'PlanController@simpleSearch');
 		Route::get('plan/widget', 'PlanController@forWidgets');
 		Route::get('plan/adjustments', 'PlanController@adjustments');
