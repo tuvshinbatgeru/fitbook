@@ -1,5 +1,5 @@
 <template>
-    <div class="row small-up-1 large-up-2" style="font-size:12px;">
+    <div class="row small-up-1 medium-up-2" style="font-size:12px;">
         <div class="columns" v-for="current in plans">
 
         <div class="row text-right">
@@ -75,115 +75,26 @@
 </template>
 
 <script>
-    import AdjustmentHistories from '../../application/components/AdjustmentHistories.vue';
+    import Planable from '../mixins/Planable'
 
     export default {
         
-        props: { 
-            id : {},
-            orderBy : {
-                required : true
-            },
-        },
-
-        created : function () {
-            this.getLoyaltyPlans();
-        },
-
-        ready : function () {
-            this.$on('_planadded', this.loyaltyAdded);
-        },
-
-        data () {
-            return {
-                plans : [],
-                pageIndex : 1,
-                pageLast : 0,
-            }
-        },
-
-        filters : {
-            freqFilter : function (freq) {
-                switch(freq) {
-                    case 1 :
-                        return "dayly";
-                        break;
-                    case 2 :
-                        return "weakly";
-                        break;
-                    case 3 :
-                        return "monthly";
-                        break;
-                    default : 
-                        return "dayly";
-                        break;
-                }
-                
-            }
-        },
+        mixins : [Planable],
+        
         methods : {
-            setShowHistory : function (plan) {
-                 Vue.set(plan, 'showPlanHistory', true);
-                 new Foundation.Dropdown($('#plan-history-' + plan.id));
-            },
+            getPlans : function () {
+                this.$dispatch('planLoaderStart');
 
-            editPlan : function (plan) {
-                this.$dispatch('editPlan', plan);
-            },
-
-            deletePlan : function(plan) {
-                this.plans.$remove(plan);
-            },
-
-            loyaltyAdded : function(loyalty) {
-                this.plans.push(loyalty);
-            },
-
-            loadMore : function () {
-                this.pageIndex ++;
-                this.getLoyaltyPlans();
-            },
-
-            getLoyaltyPlans : function () {
-                this.$http.get(this.$env.get('APP_URI') + 'api/club/' + this.id + '/plan?type=loyalty&' + this.orderBy + '&page=' + this.pageIndex).then(res => {
+                this.$http.get(this.$env.get('APP_URI') + 'api/club/' + this.id + '/plan?type=loyalty&' + 
+                    this.orderBy + '&page=' + this.pageIndex + this.filterParam()).then(res => {
                     this.plans = this.plans.concat(res.data.result.data);
                     this.pageLast = res.data.result.last_page;
+                    this.$dispatch('planLoaderStop');
                 }).catch(err => {
+                    this.$dispatch('planLoaderStop');
                 });
             },
-
-            allTeachers : function (current) {
-                this.$dispatch('allTeachers', current);
-            },
-
-            teacherLimitBefore : function() {
-                return this.$t('and');
-            },
-
-            teacherLimitAfter : function() {
-                return this.$t('other');
-            },
-
-            itemText : function (item) {
-                return '<a href="/users/' + item.username + '">' + item.first_name + ' ' + item.last_name + '</a> ';
-            }
         },
-
-        components : {
-            AdjustmentHistories
-        },
-
-        locales: {
-            en: { 
-                load : 'Load More ...',
-                and : 'and ',
-                other : ' others teachers',
-            },
-            mn : {
-                load : 'Цааш нь ...',
-                and : 'ба бусад ',
-                other : ' багш нар'
-            },
-        }
     }
+
 </script>

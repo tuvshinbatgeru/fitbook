@@ -1,22 +1,32 @@
 <template>
-    <div class="row small-up-1 large-up-2" style="font-size:12px;">
+    <div v-show="plans.length == 0" class="row text-center">
+            <span style="color:#3f4652">There is no plans ...</span>
+    </div>
+    <div v-else class="row small-up-1 large-up-2" style="font-size:12px;">
         <div class="columns" v-for="current in plans">
-
         <div class="row text-right">
-            <a @click="editPlan(current)">Edit</a>
-            <a @click="deletePlan(current)">Delete</a>
-            <a>
-                <span class="fa fa-history"></span> 
-                <a @click="setShowHistory(current)" :data-toggle="'plan-history-' + current.id">{{current.histories_count}}</a>
+            
 
-                 <div class="dropdown-pane bottom" v-bind:id="'plan-history-' + current.id" data-dropdown data-close-on-click="true">
-                     <div v-if="current.showPlanHistory">
-                         <adjustment-histories :id="current.id" type='plan-adjustment'>
-                         
-                         </adjustment-histories>
-                     </div>
-                 </div>
-            </a>
+            <span style="font-size: 25px; color: #3f4652;" @click="editDropClicked(current)" class="fa edit__dropdown fa-ellipsis-h" :data-toggle="'plan-edit-' + current.id">
+                <div class="dropdown-pane bottom" v-bind:id="'plan-edit-' + current.id" data-dropdown data-close-on-click="true">
+                    <a class="fa" @click="editPlan(current)">Edit</a>    
+                    <a class="fa" @click="deletePlan(current)">Delete</a>
+                    <a>
+                        <span class="fa fa-history"></span> 
+                        <a @click="setShowHistory(current)" :data-toggle="'plan-history-' + current.id">{{current.histories_count}}</a>
+
+                         <div class="dropdown-pane bottom" v-bind:id="'plan-history-' + current.id" data-dropdown data-close-on-click="true">
+                             <div v-if="current.showPlanHistory">
+                                 <adjustment-histories :id="current.id" type='plan-adjustment'>
+                                 
+                                 </adjustment-histories>
+                             </div>
+                         </div>
+                    </a>
+                </div>
+            </span>
+            
+            
         </div>
 
         <h3><a>{{current.name}}</a></h3>
@@ -29,6 +39,7 @@
                 :limit-before="teacherLimitBefore"
                 :limit-after="teacherLimitAfter">
         </custom-selection-list>
+
         <span style="background-color:#3f4652; color:#fff; padding:5px; border-radius:5px;">{{current.frequency_type | freqFilter}}</span>
         <span style="background-color:#3f4652; color:#fff; padding:5px; border-radius:5px;">{{current.length}}</span>
 
@@ -75,112 +86,33 @@
 </template>
 
 <script>
-    import AdjustmentHistories from '../../application/components/AdjustmentHistories.vue';
+
+    import Planable from '../mixins/Planable'
 
     export default {
         
-        props: { 
-            id : {},
-            orderBy : {
-                required : true
-            },
-        },
-        created : function () {
-            this.getPrimaryPlans();
-        },
-        ready : function () {
-            this.$on('_planadded', this.PlanAdded);
-        },
-        data () {
-            return {
-                plans : [],
-                pageIndex : 1,
-                pageLast : 0,
-            }
-        },
-        filters : {
-            freqFilter : function (freq) {
-                switch(freq) {
-                    case 1 :
-                        return "dayly";
-                        break;
-                    case 2 :
-                        return "weakly";
-                        break;
-                    case 3 :
-                        return "monthly";
-                        break;
-                    default : 
-                        return "dayly";
-                        break;
-                }
-                
-            }
-        },
+        mixins : [Planable],
+        
         methods : {
-            setShowHistory : function (plan) {
-                 Vue.set(plan, 'showPlanHistory', true);
-                 new Foundation.Dropdown($('#plan-history-' + plan.id));
-            },
-            
-            editPlan : function (plan) {
-                this.$dispatch('editPlan', plan);
-            },
+            getPlans : function () {
+                this.$dispatch('planLoaderStart');
 
-            deletePlan : function(plan) {
-                this.plans.$remove(plan);
-            },
-
-            PlanAdded : function(plan) {
-                this.plans.push(plan);
-            },
-
-            loadMore : function () {
-                this.pageIndex ++;
-                this.getPrimaryPlans();
-            },
-
-            getPrimaryPlans : function () {
                 this.$http.get(this.$env.get('APP_URI') + 'api/club/' + this.id + '/plan?type=primary&' + 
-                    this.orderBy + '&page=' + this.pageIndex).then(res => {
+                    this.orderBy + '&page=' + this.pageIndex + this.filterParam()).then(res => {
                     this.plans = this.plans.concat(res.data.result.data);
                     this.pageLast = res.data.result.last_page;
+                    this.$dispatch('planLoaderStop');
                 }).catch(err => {
+                    this.$dispatch('planLoaderStop');
                 });
             },
-
-            allTeachers : function (current) {
-                this.$dispatch('allTeachers', current);
-            },
-
-            teacherLimitBefore : function() {
-                return this.$t('and');
-            },
-
-            teacherLimitAfter : function() {
-                return this.$t('other');
-            },
-
-            itemText : function (item) {
-                return '<a href="/users/' + item.username + '">' + item.first_name + ' ' + item.last_name + '</a> ';
-            }
         },
-
-        components : {
-            AdjustmentHistories
-        },
-        
-        locales: {
-            en: { 
-                load : 'Load More ...',
-                and : 'and ',
-                other : ' others teachers',
-            },
-            mn : {
-                load : 'Цааш нь ...',
-                and : 'ба бусад ',
-                other : ' багш нар'
-            },
-        }
     }
 </script>
+<style lang="scss">
+    .edit__dropdown {
+        &:hover {
+            cursor: pointer;
+        }
+    }
+</style>
