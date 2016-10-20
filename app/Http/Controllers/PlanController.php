@@ -141,19 +141,19 @@ class PlanController extends Controller
 
         $plan = new Plan($data);
         $plan->price = $data['isPrimary'] ? $data['price'] : $data['discount'];
-        $plan->planable = $planable;
+        
         $planable->save();
-        $plan->save();
+        $planable->plan()->save($plan);
+        $plan->planable = $planable;
 
         $photo_id_array = [];
+        
         for ($i = 0; $i < count($decode->pictures); $i++) {
 
-            if($decode->pictures[$i]->pinned == 'Y') {
-                $photo_id_array[$decode->pictures[$i]->id] = [
-                  'pinned' => $decode->pictures[$i]->pinned ? 'Y' : 'N',
-                  'top_percentage' => $decode->pictures[$i]->pinned ? $decode->crop : 0,
-                ];  
-            }
+            $photo_id_array[$decode->pictures[$i]->id] = [
+                'pinned' => isset($decode->pictures[$i]->pinned) && $decode->pictures[$i]->pinned ? 'Y' : 'N',
+                'top_percentage' => isset($decode->pictures[$i]->pinned) && $decode->pictures[$i]->pinned ? $decode->crop : 0,
+            ];  
             
             Photo::attachTagById($decode->pictures[$i]->id, Tag::TRAINING_ID);
         }
@@ -307,10 +307,10 @@ class PlanController extends Controller
         else {
             $plan = new LoyaltyPlan;
             $plan->before_price = $data['price'];
-            $plan->finish_date = Carbon::now();
+            $plan->finish_date = $data['finish_date'];
         }
 
-        $plan->start_date = Carbon::now();
+        $plan->start_date = $data['start_date'];
         $plan->save();
 
         return $plan;
