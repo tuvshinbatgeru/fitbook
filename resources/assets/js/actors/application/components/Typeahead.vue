@@ -26,7 +26,7 @@
       <slot name="result">
         <ul>
           <li v-for="item in items" :class="activeClass($index)" @mousedown="hit" @mousemove="setActive($index)">
-              <component :is="context" 
+              <component :is="matchContext(item)" 
                          :item="item" 
                          >
                 
@@ -47,6 +47,7 @@ import Controlable from '../mixins/Controlable'
 import Loadable from '../mixins/Loadable'
 import GraphUserResult from '../context/GraphUserResult.vue'
 import GraphPlanResult from '../context/GraphPlanResult.vue'
+import GraphClubResult from '../context/GraphClubResult.vue'
 
 export default {
   mixins: [
@@ -56,9 +57,6 @@ export default {
   props : {
       limit : {
           default : 5
-      },
-      context : {
-          default : 'graph-user-result'
       },
       minChars : {
           default : 3
@@ -76,6 +74,20 @@ export default {
       query : '',
       show : false,
     }
+  },
+
+  filters : {
+      contextFilter : function (type) {
+          switch (type) {
+              case "App\\User" : 
+                return 'graph-user-result';
+              case "App\\Plan" : 
+                return 'graph-plan-result';
+              case "App\\Club" :
+                return 'graph-club-result';
+          }
+          return '';
+      }
   },
 
   computed: {
@@ -99,6 +111,18 @@ export default {
       this.loading = false
     },
 
+    matchContext : function (item) {
+      switch (item.searchable_type) {
+          case "App\\User" : 
+            return 'graph-user-result';
+          case "App\\Plan" : 
+            return 'graph-plan-result';
+          case "App\\Club" :
+            return 'graph-club-result';
+      }
+      return '';
+    },
+
     search : function () {
       if (!this.query) {
         return this.reset()
@@ -113,12 +137,24 @@ export default {
 
     onHit (item) {
       this.show = false;
-      window.location.href = 'http://localhost/users/' + item.username
+      switch(item.searchable_type) {
+          case "App\\User" :
+          window.location.href = this.$env.get('APP_URI') + 'users/' + item.searchable.username;
+          break;
+          case "App\\Plan" :
+          window.location.href = this.$env.get('APP_URI') + 'plan/' + item.searchable_id;
+          break;
+          case "App\\Club" : 
+          window.location.href = this.$env.get('APP_URI') + item.searchable.club_id;
+          break;
+          default :
+      }
+      
     }
   },
 
   components : {
-      GraphUserResult, GraphPlanResult
+      GraphUserResult, GraphPlanResult, GraphClubResult
   }
 }
 </script>
