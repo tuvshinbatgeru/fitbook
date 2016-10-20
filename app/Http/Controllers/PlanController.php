@@ -75,7 +75,7 @@ class PlanController extends Controller
     public function comments(Plan $plan)
     {
         $comments = $plan->comments()
-                         ->with('user')
+                         ->with('user.avatarSmall')
                          ->withCount('thumbsup')
                          ->orderBy('thumbsup_count', 'DESC')
                          ->paginate(5);
