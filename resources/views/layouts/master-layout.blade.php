@@ -9,7 +9,9 @@
 </head>
 <body>
     
-    @include('includes.main-header')
+    @if (Auth::check())
+      @include('includes.main-header')
+    @endif
 
   	@if (isset($currentView))
         <component :user="{{$user}}" 
