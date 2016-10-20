@@ -20,7 +20,7 @@
     </div>
      
   </div>
-  
+
   <plan-select-collection v-ref:filters @update="planFilterChanged">
   </plan-select-collection>
 
@@ -185,30 +185,15 @@
 
         savePlan : function($response) {
             this.$http.post(this.$env.get('APP_URI') + 'api/club/' + this.id + '/plan?data=' + $response.data.param).then(res => {
-                  
-                if(res.data.code == 0) {
-                    var current = res.data.result;
-                    var pinned_photos = [];
-                    pinned_photos.push($response.data.pinned_photo);
-
-                    current.plan.pinned_photos = pinned_photos;
-                    current.plan.first_two_teachers = $response.data.teachers;
-                    current.plan.teachers_count = $response.data.teachers.length;
-                    current.plan.services = $response.data.services;
-                    current.plan.trainings = $response.data.trainings;
-                    current.plan.histories_count = 0;
-                    current.hearts_actions_count = 0;
-                    current.comments_count = 0;
-                    current.visitors_count = 0;
-                    current.subscriptions_count = 0;
-
-                    this.$broadcast('_planadded', current);
-                    this.increasePlanCount(current.plan.planable_type);
-                    this.showAddPlan = false;
-                }
 
                 this.$refs.addpl.loading = false;
                 this.$root.$refs.toast.showMessage(res.data.message);
+                this.showAddPlan = false;
+
+                if(res.data.code == 0) {
+                    this.$refs.filters.setNewestFilterOn();
+                }
+                
             }).catch(err => {
                 this.$refs.addpl.loading = false;
                 this.$root.$refs.toast.showMessage('Server side error!.');

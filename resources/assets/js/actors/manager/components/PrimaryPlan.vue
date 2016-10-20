@@ -95,15 +95,14 @@
         
         methods : {
             getPlans : function () {
-                this.$dispatch('planLoaderStart');
 
-                this.$http.get(this.$env.get('APP_URI') + 'api/club/' + this.id + '/plan?type=primary&' + 
-                    this.orderBy + '&page=' + this.pageIndex + this.filterParam()).then(res => {
+                this.loadStart();
+                this.$http.get(this.$env.get('APP_URI') + 'api/club/' + this.id + '/plan?type=primary&page=' + this.pageIndex + this.filterParam()).then(res => {
                     this.plans = this.plans.concat(res.data.result.data);
                     this.pageLast = res.data.result.last_page;
-                    this.$dispatch('planLoaderStop');
+                    this.loadStop();
                 }).catch(err => {
-                    this.$dispatch('planLoaderStop');
+                    this.loadStop();
                 });
             },
         },
