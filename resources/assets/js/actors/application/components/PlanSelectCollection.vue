@@ -97,45 +97,46 @@
 		        freqSelection : null,
 		        subsOption : {},
 		        subsSelection : null,
+		        selectedFilters : [],
 		    }
 	    },
 
 	    ready : function () {
 	    	this.subsOption = [];
 		    this.subsOption.push({
-		        "label" : "HIGH",
+		        "label" : this.$t('subsHighLabel'),
 			    "order" : "desc",
 			    "name" : "subscription"
 		    });
 
 		    this.subsOption.push({
-		    	"label" : "LOW",
+		    	"label" : this.$t('subsLowLabel'),
 			    "order" : "asc",
 			    "name" : "subscription"
 		    });
 
 		    this.dateOption = [];
 		    this.dateOption.push({
-		        "label" : "NEWEST",
+		        "label" : this.$t('dateHighLabel'),
 			    "order" : "desc",
 			    "name" : "date"
 		    });
 
 		    this.dateOption.push({
-		    	"label" : "OLDEST",
+		    	"label" : this.$t('dateLowLabel'),
 			    "order" : "asc",
 			    "name" : "date"
 		    });
 
 		    this.heartOption = [];
 		    this.heartOption.push({
-		    	"label" : "HIGH",
+		    	"label" : this.$t('heartHighLabel'),
 			    "order" : "desc",
 			    "name" : "heart"
 		    });
 
 		    this.heartOption.push({
-		    	"label" : "LOW",
+		    	"label" : this.$t('heartLowLabel'),
 			    "order" : "asc",
 			    "name" : "heart"
 		    });
@@ -143,38 +144,38 @@
 
 		    this.priceOption = [];
 		    this.priceOption.push({
-		    	"label" : "HIGH",
+		    	"label" : this.$t('priceHighLabel'),
 			    "order" : "desc",
 			    "name" : "price"
 		    });
 
 		    this.priceOption.push({
-		    	"label" : "LOW",
+		    	"label" : this.$t('priceLowLabel'),
 			    "order" : "asc",
 			    "name" : "price"
 		    });
 
 		    this.freqOption = [];
 		    this.freqOption.push({
-		    	"label" : "DAYLY",
+		    	"label" : this.$t('daylyLabel'),
 		    	"order" : "dayly",
 		    	"name" : "freq",
 		    });
 
 		    this.freqOption.push({
-		    	"label" : "WEEKLY",
+		    	"label" : this.$t('weeklyLabel'),
 		    	"order" : "weekly",
 		    	"name" : "freq",
 		    });
 
 		    this.freqOption.push({
-		    	"label" : "MONTHLY",
+		    	"label" : this.$t('monthlyLabel'),
 		    	"order" : "monthly",
 		    	"name" : "freq",
 		    });
 
 		    this.freqOption.push({
-		    	"label" : "YEARLY",
+		    	"label" : this.$t('yearlyLabel'),
 		    	"order" : "yearly",
 		    	"name" : "freq",
 		    });
@@ -199,6 +200,8 @@
 						this.subsSelection = null
 						break;
 				}
+
+				this.filterUpdated();
 			},
 		},
 
@@ -209,53 +212,91 @@
 				this.heartSelection = null;
 				this.freqSelection = null;
 				this.subsSelection = null;
+				this.filterUpdated();
+			},
+
+			setNewestFilterOn : function () {
+				this.resetFilter();
+				this.dateSelection = this.dateOption[0];
 			},
 
 			dateUpdate : function (value) {
 				this.dateSelection = value;
+				this.filterUpdated();
 			},
 
 			heartUpdate : function (value) {
 				this.heartSelection = value;
+				this.filterUpdated();
 			},
 
 			priceUpdate : function (value) {
 				this.priceSelection = value;
+				this.filterUpdated();
 			},
 
 			freqUpdate : function (value) {
 				this.freqSelection = value;
+				this.filterUpdated();
 			},
 
 			subsUpdate : function (value) {
 				this.subsSelection = value;
+				this.filterUpdated();
 			},
-		},
 
-		computed : {
-			selectedFilters : function () {
-
-				var filter = []
+			filterUpdated : function () {
+				this.selectedFilters = []
 
 				if(this.dateSelection) {
-					filter.push(this.dateSelection)
+					this.selectedFilters.push(this.dateSelection)
 				}
 				if(this.heartSelection) {
-					filter.push(this.heartSelection)
+					this.selectedFilters.push(this.heartSelection)
 				}
 				if(this.priceSelection) {
-					filter.push(this.priceSelection)
+					this.selectedFilters.push(this.priceSelection)
 				}
 				if(this.freqSelection) {
-					filter.push(this.freqSelection)
+					this.selectedFilters.push(this.freqSelection)
 				}
 
 				if(this.subsSelection) {
-					filter.push(this.subsSelection)
+					this.selectedFilters.push(this.subsSelection)
 				}
 
-				this.$emit('update', filter)
-				return filter
+				this.$emit('update', this.selectedFilters)
+			}
+		},
+
+		locales : {
+			en : {
+				dateHighLabel : 'Newest',
+				dateLowLabel : 'Oldest',
+				subsHighLabel : 'Popular',
+				subsLowLabel : 'Least',
+				heartHighLabel : 'Loved',
+				heartLowLabel : 'Unloved',
+				priceHighLabel : 'Expensive',
+				priceLowLabel : 'Cheap',
+				daylyLabel : 'Dayly',
+				weeklyLabel : 'Weekly',
+				monthlyLabel : 'Monthly',
+				yearlyLabel : 'Yearly',
+			},
+			mn : {
+				dateHighLabel : 'Шинэ',
+				dateLowLabel : 'Хуучин',
+				subsHighLabel : 'Алдартай',
+				subsLowLabel : 'Least',
+				heartHighLabel : 'Дуртай',
+				heartLowLabel : 'Дургүй',
+				priceHighLabel : 'Үнэтэй',
+				priceLowLabel : 'Хямд',
+				daylyLabel : 'Өдөр',
+				weeklyLabel : 'Долоо хоног',
+				monthlyLabel : 'Сар',
+				yearlyLabel : 'Жил',
 			}
 		}
 	}
