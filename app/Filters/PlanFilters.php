@@ -22,14 +22,32 @@ class PlanFilters extends QueryFilter{
 		return $this->builder->orderBy('price', $order);
 	}
 
-	public function search($value)
+	public function subscription($order = 'desc')
 	{
-		dd($this->builder);
-		return $this->builder->orWhere('plan.name', 'LIKE', '%' . $value .'%');
+		return $this->builder->orderBy('subscriptions_count', $order);	
 	}
 
-	public function max()
+	public function freq($value)
 	{
-		return $this->builder;	
+		$freq = 0;
+
+		switch ($value) {
+			case 'dayly':
+				$freq = 1;
+				break;
+			case 'weekly':
+				$freq = 2;
+				break;
+			case 'monthly': 
+				$freq = 3;
+			    break;
+			case 'yearly':
+				$freq = 4;
+				break;
+			default:
+				break;
+		}
+
+		return $this->builder->where('frequency_type', $freq);
 	}
 }
