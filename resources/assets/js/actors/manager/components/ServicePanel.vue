@@ -20,10 +20,16 @@
         title = "Үйлчилгээ сонгох" 
         title_en = "Add Service"
         usage = "_add-service" 
-        :items = "services"
         :show.sync = "showAddService"
         save-callback = "chooseService"
         context = "services">
+        <div slot="body">
+          <component v-ref:context 
+                     :id="id" 
+                     :selected = "services"
+                     is="services">
+          </component>
+        </div>
   </custom-modal>
 
   <div class="row small-up-3 medium-up-4 large-up-5">
