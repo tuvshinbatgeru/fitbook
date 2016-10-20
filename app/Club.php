@@ -14,6 +14,11 @@ class Club extends Model
         'club_id', 'short_name', 'full_name','address', 'description', 'lat', 'lng','is_active'
     ];
 
+    public function graph()
+    {
+        return $this->hasMany('App\Training');
+    }
+
 	static public function isAvailableClub($club_id)
 	{
 		return static::where('club_id','=', $club_id)->first();

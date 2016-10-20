@@ -16,6 +16,11 @@ class Plan extends Model
         , 'trainer_count', 'length', 'is_active'
     ];
 
+    public function graph()
+    {
+        return $this->pinnedPhotos();
+    }
+
     static public function filter($query, QueryFilter $filters)
     {
         return $filters->apply($query);

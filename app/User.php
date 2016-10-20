@@ -52,6 +52,11 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
         'password', 'remember_token',
     ];
 
+    public function graph()
+    {
+        return $this->photos()->where('type', 2);
+    }
+
     static public function findByUsername($username)
     {
         return static::where('username', '=', $username)->first();
