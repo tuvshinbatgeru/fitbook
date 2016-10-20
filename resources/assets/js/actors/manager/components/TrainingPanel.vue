@@ -130,6 +130,8 @@
                     curTraining.pinned_photos = pinned_photos;
                     curTraining.genres = $response.data.genres;
                     curTraining.teachers_count = $response.data.teachers.length;
+                    curTraining.first_two_teachers = $response.data.teachers;
+                    curTraining.histories_count = 0;
 
                     this.training.shift(curTraining);
                     this.showAddTraining = false;
@@ -163,6 +165,7 @@
                     
                     pinned_photos.push($response.data.pinned_photo);
                     curTraining.pinned_photos = pinned_photos;
+                    curTraining.first_two_teachers = $response.data.teachers;
                     curTraining.teachers_count = $response.data.teachers.length;
                     curTraining.genres = $response.data.genres;
                     
