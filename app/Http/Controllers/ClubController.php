@@ -56,6 +56,21 @@ class ClubController extends Controller
         ]);
     }
 
+    public function planCounts(Club $club)
+    {
+        $rets = $club->plans()
+             ->orderBy('planable_type', 'DESC')
+             ->groupBy('planable_type')
+             ->select('planable_type', \Illuminate\Support\Facades\DB::raw('count(1) as total'))
+             ->get();
+
+        return Response::json([
+            'code' => 0,
+            'general_count' => isset($rets[0]) ? $rets[0]->total : 0,
+            'loyalty_count' => isset($rets[1]) ? $rets[1]->total : 0,
+        ]);
+    }
+
     public function members(Club $club, $type)
     {
         return Response::json([
