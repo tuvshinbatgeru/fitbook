@@ -1,7 +1,8 @@
 <template>
-    <div>
+    <div class="Comment__List">
         <ul>
             <li v-for="comment in comments">
+                <img :src="comment.user.avatar_small[0].url" style="width:32px; height:32px; border-radius: 32px;" />
                 {{comment.created_at | moment "from"}}
                 {{{comment.message}}}
 
@@ -99,4 +100,7 @@
 </script>
 
 <style lang="scss">
+.Comment__List {
+    font-size : 12px;
+}
 </style>
