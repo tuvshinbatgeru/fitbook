@@ -13,6 +13,7 @@ export default {
             pageIndex : 1,
             pageLast : 0,
             planFilters : null,
+            loadType: 'main',
         }
       },
 
@@ -65,12 +66,15 @@ export default {
           },
 
           loadMore : function () {
+              this.loadType = "more";
               this.pageIndex ++;
               this.getPlans();
           },
 
           planFiltered : function (filters) {
+              this.resetPage();
               this.planFilters = filters;
+              this.loadType = "main";
               this.getPlans();
           },
 
@@ -80,7 +84,7 @@ export default {
           },
 
           filterParam : function () {
-              this.resetPage();
+
               var params = "";
               _.forEach(this.planFilters, function(filter) {
                   params += "&" + filter.name + "=" + filter.order;
@@ -108,6 +112,20 @@ export default {
           getPlans : function () {
               console.log('implement own plans method :D')
           },
+
+          loadStart : function () {
+              if(this.loadType == 'main') {
+                  this.$dispatch('planLoaderStart');
+                  return;
+              }
+          },
+
+          loadStop : function () {
+              if(this.loadType == 'main') {
+                  this.$dispatch('planLoaderStop');
+                  return;
+              }
+          }
       },
 
       components : {
