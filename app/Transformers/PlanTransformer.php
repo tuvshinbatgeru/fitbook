@@ -9,7 +9,7 @@ class PlanTransformer extends Transformer {
 	public function transform($item)
 	{
 		return [
-			'id' => $item->id,
+			'id' => isset($item->id) ? $item->id : 0,
 			'name' => $item->name,
 			'club_id' => $item->club_id,
 			'description' => stripslashes($item->description),
@@ -21,8 +21,8 @@ class PlanTransformer extends Transformer {
 			'is_active' => 'Y',
 			'length' => $item->length,
 			'frequency_type' => $item->freq,
-			'start_date' => $item->startDate,
-			'finish_date' => $item->finishDate,
+			'start_date' => isset($item->startDate) ? Carbon::createFromFormat('d/m/Y', $item->startDate) : Carbon::now(),
+			'finish_date' => isset($item->finish_date) ? Carbon::createFromFormat('d/m/Y', $item->finishDate) : Carbon::now(),
 		];
 	}
 	
