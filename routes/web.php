@@ -1,6 +1,7 @@
 <?php
 
 use App\Events\UserOutTraining;
+use App\GraphSearch;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -39,17 +40,17 @@ use Illuminate\Support\Facades\Storage;
 	Route::get('/test/search', function (Request $request) {
 		$param = $request->q;
 
-		$users = User::where(function ($query) use ($param) {
-            $query->where('username', 'like', '%'.$param.'%')
-                  ->orWhere('first_name', 'like', '%'.$param.'%')
-                  ->orWhere('last_name', 'like', '%'.$param.'%');
+		$results = GraphSearch::where(function ($query) use ($param) {
+            $query->where('field1', 'like', '%'.$param.'%')
+                  ->orWhere('field2', 'like', '%'.$param.'%')
+                  ->orWhere('field3', 'like', '%'.$param.'%');
         })->take(8)->get();
 
-        $users->load('avatarSmall');
+        $results->load('searchable.graph');
 
         return Response::json([
         	'code' => 0,
-        	'result' => $users,
+        	'result' => $results,
         ]);
 	});
 
