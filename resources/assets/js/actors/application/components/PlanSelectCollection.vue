@@ -11,7 +11,7 @@
 		      :searchable="false",
 		      @update="dateUpdate"
 		      label="label"
-		      key="name"
+		      key="label"
 		      id="date">
 		    </multiselect>
 	  	</div>
@@ -27,7 +27,7 @@
 		      :searchable="false",
 		      label="label"
 		      key="label"
-		      id="date">
+		      id="heart">
 		    </multiselect>
 	  	</div>
 	  	<div class="column">
@@ -41,8 +41,8 @@
 		      @update="priceUpdate"
 		      :searchable="false",
 		      label="label"
-		      key="name"
-		      id="date">
+		      key="label"
+		      id="price">
 		    </multiselect>
 	  	</div>
 	  	<div class="column">
@@ -56,30 +56,28 @@
 		      deselect-label='устгах'
 		      :searchable="false",
 		      label="label"
-		      key="name"
-		      id="date">
+		      key="label"
+		      id="freq">
 		    </multiselect>
 	  	</div>
 	  	<div class="column">
 	  		<multiselect
-		      :options="freqOption",
-		      :selected="freqSelection",
-		      @update="freqUpdate"
-		      placeholder="Freq",
+		      :options="subsOption",
+		      :selected="subsSelection",
+		      @update="subsUpdate"
+		      placeholder="Subs",
 		      select-label='сонгох'
 		      selected-label='сонгосон' 
 		      deselect-label='устгах'
 		      :searchable="false",
 		      label="label"
-		      key="name"
+		      key="label"
 		      id="date">
 		    </multiselect>
 	  	</div>
 	</div>
 	<div class="row">
-
 		<custom-search-tag v-for="filter in selectedFilters" :tag="filter">
-			
 		</custom-search-tag>
 	</div>
 </template>
@@ -97,33 +95,48 @@
 		        priceSelection : null,
 		        freqOption : {},
 		        freqSelection : null,
+		        subsOption : {},
+		        subsSelection : null,
 		    }
 	    },
 
 	    ready : function () {
+	    	this.subsOption = [];
+		    this.subsOption.push({
+		        "label" : "HIGH",
+			    "order" : "desc",
+			    "name" : "subscription"
+		    });
+
+		    this.subsOption.push({
+		    	"label" : "LOW",
+			    "order" : "asc",
+			    "name" : "subscription"
+		    });
+
 		    this.dateOption = [];
 		    this.dateOption.push({
 		        "label" : "NEWEST",
-			    "order" : "asc",
+			    "order" : "desc",
 			    "name" : "date"
 		    });
 
 		    this.dateOption.push({
 		    	"label" : "OLDEST",
-			    "order" : "desc",
+			    "order" : "asc",
 			    "name" : "date"
 		    });
 
 		    this.heartOption = [];
 		    this.heartOption.push({
 		    	"label" : "HIGH",
-			    "order" : "asc",
+			    "order" : "desc",
 			    "name" : "heart"
 		    });
 
 		    this.heartOption.push({
 		    	"label" : "LOW",
-			    "order" : "desc",
+			    "order" : "asc",
 			    "name" : "heart"
 		    });
 
@@ -131,13 +144,13 @@
 		    this.priceOption = [];
 		    this.priceOption.push({
 		    	"label" : "HIGH",
-			    "order" : "asc",
+			    "order" : "desc",
 			    "name" : "price"
 		    });
 
 		    this.priceOption.push({
 		    	"label" : "LOW",
-			    "order" : "desc",
+			    "order" : "asc",
 			    "name" : "price"
 		    });
 
@@ -171,22 +184,33 @@
 			'removeTag' : function(tag) {
 				switch(tag.name) {
 					case "date" :
-						this.dateSelection = null;
+						this.dateSelection = null
 						break;
 					case "price" :
-						this.priceSelection = null;
+						this.priceSelection = null
 						break;
 					case "heart" : 
-						this.heartSelection = null;
+						this.heartSelection = null
 						break;
 					case "freq" : 
-						this.freqSelection = null;
+						this.freqSelection = null
+						break;
+					case "subscription" :
+						this.subsSelection = null
 						break;
 				}
 			},
 		},
 
 		methods : {
+			resetFilter : function () {
+				this.dateSelection = null;
+				this.priceSelection = null;
+				this.heartSelection = null;
+				this.freqSelection = null;
+				this.subsSelection = null;
+			},
+
 			dateUpdate : function (value) {
 				this.dateSelection = value;
 			},
@@ -202,26 +226,36 @@
 			freqUpdate : function (value) {
 				this.freqSelection = value;
 			},
+
+			subsUpdate : function (value) {
+				this.subsSelection = value;
+			},
 		},
 
 		computed : {
 			selectedFilters : function () {
 
-				var filter = [];
+				var filter = []
+
 				if(this.dateSelection) {
-					filter.push(this.dateSelection);
+					filter.push(this.dateSelection)
 				}
 				if(this.heartSelection) {
-					filter.push(this.heartSelection);
+					filter.push(this.heartSelection)
 				}
 				if(this.priceSelection) {
-					filter.push(this.priceSelection);
+					filter.push(this.priceSelection)
 				}
 				if(this.freqSelection) {
-					filter.push(this.freqSelection);
+					filter.push(this.freqSelection)
 				}
 
-				return filter;
+				if(this.subsSelection) {
+					filter.push(this.subsSelection)
+				}
+
+				this.$emit('update', filter)
+				return filter
 			}
 		}
 	}

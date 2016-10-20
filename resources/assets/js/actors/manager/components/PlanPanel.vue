@@ -1,8 +1,8 @@
 <template>
   <div>
       <ul class="tabs content--tabs">
-        <li class="tab s3"><a @click="setContent('primary-plan')" class="active">{{$t('general')}} (1)</a></li>
-        <li class="tab s3"><a @click="setContent('loyalty-plan')">{{$t('loyalty')}} (1)</a></li>
+        <li class="tab s3"><a @click="setContent('primary-plan')" class="active">{{$t('general')}} ({{general_count}})</a></li>
+        <li class="tab s3"><a @click="setContent('loyalty-plan')">{{$t('loyalty')}} ({{loyalty_count}})</a></li>
       </ul>
   </div>  
 
@@ -21,7 +21,7 @@
      
   </div>
   
-  <plan-select-collection>
+  <plan-select-collection v-ref:filters @update="planFilterChanged">
   </plan-select-collection>
 
   <custom-modal title = "Teachers" :show.sync="showTeachers">
@@ -50,10 +50,13 @@
       </div>
   </custom-modal>
 
-  <component :id="id" 
-             :order-by.sync="orderBy"
-             :is="content">
-  </component>
+  <custom-callout :loading.sync="planLoader" :spinner-color="'#5fcf80'">
+    <div slot="content">
+      <component :id="id" :is="content">
+      </component>    
+    </div>
+  </custom-callout>
+  
 </template>
 
 <script>
@@ -72,33 +75,36 @@
       return {
         planType : 1,
         content : 'primary-plan',
+        planLoader : false,
         plans : [],
-        orderBy : 'newest',
         showAddPlan : false,
         showTeachers : false,
         search : '',
         dateOption : {},
         dateSelection : null,
         currentPlan : null,
+        general_count : 0,
+        loyalty_count : 0,
       }
     },
 
     created : function () {
-
+        this.init();
     },
 
     ready : function () {
-      $('ul.tabs').tabs();
-      this.dateOption = [{
-        "label" : "NEWEST",
-        "name" : "asc"
-      }, {
-        "label" : "OLDEST",
-        "name" : "desc"
-      }];
+        $('ul.tabs').tabs();
     },
 
     events : {
+        'planLoaderStart' : function() {
+            this.planLoader = true;
+        },
+
+        'planLoaderStop' : function() {
+            this.planLoader = false;
+        },
+
         'savePlan' : function($response) {
             this.methodType == "add" ? this.savePlan($response) : this.updatePlan($response);
         },
@@ -115,6 +121,21 @@
     },
 
     methods : {
+        planFilterChanged : function (filters) {
+            this.$broadcast('_filtered', filters);
+        },
+
+        init : function () {
+            this.$http.get(this.$env.get('APP_URI') + 'api/club/' + this.id + '/plan/count').then(res => {
+
+                this.general_count = res.data.general_count;
+                this.loyalty_count = res.data.loyalty_count;
+
+            }).catch(err => {
+              console.log(err);
+            });
+        },
+
         setOrderBy : function (order) {
             this.orderBy = order;
             this.$broadcast('_orderchanged', this.orderBy);
@@ -144,12 +165,13 @@
                     var pinned_photos = [];
                     pinned_photos.push($response.data.pinned_photo);
 
-                    current.plan[0].pinned_photos = pinned_photos;
+                    current.plan.pinned_photos = pinned_photos;
+                    current.plan.first_two_teachers = $response.data.teachers;
+                    current.plan.teachers_count = $response.data.teachers.length;
+                    current.plan.services = $response.data.services;
+                    current.plan.trainings = $response.data.trainings;
 
-                    current.plan[0].teachers = $response.data.teachers;
-                    current.plan[0].services = $response.data.services;
-                    current.plan[0].trainings = $response.data.trainings;
-                    this.$broadcast('_planadded', current);
+
                     this.showAddPlan = false;
                 }
 
@@ -163,17 +185,25 @@
 
         savePlan : function($response) {
             this.$http.post(this.$env.get('APP_URI') + 'api/club/' + this.id + '/plan?data=' + $response.data.param).then(res => {
-                
+                  
                 if(res.data.code == 0) {
                     var current = res.data.result;
                     var pinned_photos = [];
                     pinned_photos.push($response.data.pinned_photo);
 
                     current.plan.pinned_photos = pinned_photos;
-                    current.plan.teachers = $response.data.teachers;
+                    current.plan.first_two_teachers = $response.data.teachers;
+                    current.plan.teachers_count = $response.data.teachers.length;
                     current.plan.services = $response.data.services;
                     current.plan.trainings = $response.data.trainings;
+                    current.plan.histories_count = 0;
+                    current.hearts_actions_count = 0;
+                    current.comments_count = 0;
+                    current.visitors_count = 0;
+                    current.subscriptions_count = 0;
+
                     this.$broadcast('_planadded', current);
+                    this.increasePlanCount(current.plan.planable_type);
                     this.showAddPlan = false;
                 }
 
@@ -185,7 +215,17 @@
             });
         },
 
+        increasePlanCount : function (type) {
+            if(type == "'App\\PrimaryPlan'") {
+                this.general_count ++;
+                return;
+            }
+
+            this.loyalty_count ++;
+        },
+
         setContent : function (content) {
+            this.$refs.filters.resetFilter();
             this.content = content;
         }
     },
