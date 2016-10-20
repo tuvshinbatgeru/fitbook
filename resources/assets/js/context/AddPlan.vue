@@ -199,11 +199,11 @@
 		ready : function () {
 			$('ul.tabs').tabs();
 			$('#start_date').datetimepicker({
-                    format: 'DD/MM/YYYY'
+                format: 'DD/MM/YYYY'
             });
 
 			$('#finish_date').datetimepicker({
-                    format: 'DD/MM/YYYY'
+                format: 'DD/MM/YYYY'
             });
 
             if(this.plan) {
@@ -255,8 +255,7 @@
 
 			getData : function() {
 				this.$dispatch('startLoading');
-
-				return {
+				return { 
 					teachers : this.teachers,
 					trainings : this.trainings,
 					services : this.services,
