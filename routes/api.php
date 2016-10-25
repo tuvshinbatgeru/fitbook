@@ -25,6 +25,7 @@ Route::group(['middleware' => ['auth:api']], function () {
 	Route::get('/service', 'ServiceController@listService');	
 	Route::get('/search', 'SearchController@search');
 	Route::resource('/genre', 'GenreController');
+	Route::get('/activity/{activity}', 'ActivityController@show');
 	Route::get('/user/files', 'FileManagerController@files');
 	Route::post('/user/avatar/{photo}', 'UserController@storeAvatar');
 	Route::resource('/user/comments', 'CommentController');
