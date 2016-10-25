@@ -35,7 +35,7 @@
 	export default {
 		props: { 
 			title : { default : 'test' },
-			submenu : { default : 'user-home'}
+			submenu : { default : 'activity'}
 		},
 
 		data () {
