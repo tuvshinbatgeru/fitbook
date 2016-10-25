@@ -81,6 +81,10 @@
 	right: 0;
 }
 
+.callout__base {
+		background-color: #f6f9fa;
+}
+
 .callout {
 	.preloader-wrapper {
 		top: 45%;
