@@ -95,9 +95,16 @@ class UserController extends Controller
 
     public function userActivity(User $user, Request $request)
     {
+        $activities = \Illuminate\Support\Facades\DB::table('user_activity')
+                        ->where('user_id', $user->id)
+                        ->where('start_time', '>', $request->year . '-01-01 00:00:01')
+                        ->where('start_time', '<', ($request->year + 1) . '-01-01 00:00:01')
+                        ->select('start_time', 'duration')
+                        ->get();
+
         return Response::json([
             'code' => 0,
-            'result' => $user->activities,
+            'result' => $activities,
         ]);
     }
 
