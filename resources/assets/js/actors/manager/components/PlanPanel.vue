@@ -50,7 +50,7 @@
       </div>
   </custom-modal>
 
-  <custom-callout :loading.sync="planLoader" :spinner-color="'#5fcf80'">
+  <custom-callout :loading.sync="planLoader" :spinner-color="'#5fcf80'" type="callout__base">
     <div slot="content">
       <component :id="id" :is="content">
       </component>    

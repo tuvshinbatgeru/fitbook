@@ -2,11 +2,9 @@
     <div v-show="plans.length == 0" class="row text-center">
             <span style="color:#3f4652">There is no plans ...</span>
     </div>
-    <div v-else class="row small-up-1 large-up-2" style="font-size:12px;">
-        <div class="columns" v-for="current in plans">
+    <div v-else class="row small-up-1 medium-up-2" style="font-size:12px;">
+        <div class="column Plan__block" v-for="current in plans">
         <div class="row text-right">
-            
-
             <span style="font-size: 25px; color: #3f4652;" @click="editDropClicked(current)" class="fa edit__dropdown fa-ellipsis-h" :data-toggle="'plan-edit-' + current.id">
                 <div class="dropdown-pane bottom" v-bind:id="'plan-edit-' + current.id" data-dropdown data-close-on-click="true">
                     <a class="fa" @click="editPlan(current)">Edit</a>    
@@ -81,7 +79,7 @@
         </div>
     </div>
     <div class="row text-center" v-show="pageIndex < pageLast">
-        <a class="button" @click="loadMore()">{{ $t("load") }}</a>
+        <a class="button expanded" @click="loadMore()">{{ $t("load") }}</a>
     </div>
 </template>
 
@@ -113,5 +111,10 @@
         &:hover {
             cursor: pointer;
         }
+    }
+
+    .Plan__block {
+        background-color: #fff;
+        border-radius: 5px;
     }
 </style>
