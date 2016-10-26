@@ -1,5 +1,9 @@
 export default {
+  mn: {
+    noresult : 'илэрц алга ...',
+  },
   en: {
+    noresult : 'any result ...',
     message: {
       hello: 'the world',
       hoge: 'hoge',
@@ -7,7 +11,7 @@ export default {
         named: 'Hello {name}, how are you?',
         list: 'Hello {0}, how are you?'
       },
-      fallback: 'this is fallback'
+      fallback: 'this is fallback',
     },
     'hello world': 'Hello World',
     'Hello {0}': 'Hello {0}',
