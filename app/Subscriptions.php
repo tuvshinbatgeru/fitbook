@@ -22,4 +22,9 @@ class Subscriptions extends Model
     {
     	return $this->belongsTo('App\Plan');
     }
+
+    public function club()
+    {
+        return $this->belongsTo('App\Club');
+    }    
 }
