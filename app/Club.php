@@ -79,6 +79,13 @@ class Club extends Model
 					->withTimestamps();
 	}
 
+	public function capabilities()
+	{
+		return $this->belongsToMany('App\Genre', 'club_capability', 'club_id', 'genre_id')
+					->withPivot('amount')
+					->withTimestamps();
+	}
+
 	public function widgets()
 	{
 		return $this->belongsToMany('App\Widget', 'club_widgets', 'club_id', 'widget_id')
