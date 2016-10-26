@@ -1,23 +1,54 @@
 <template>
-    <svg version="1.1" width="750" height="120" style="position: relative;">
-        <custom-hexagon
-        	v-for="activity in hexagons"
-        	:bg-color="calcColor(activity.duration)" 
-        	:length.sync="length" 
-        	:cord-x="activity.x" 
-        	:cord-y="activity.y"
-        	:item="activity"
-        	@hovered="onHexagonHover"
-        	@mouseout="onHexagonMouseOut"
-        	@clicked="onHexagonClick">
-        </custom-hexagon>
-        
-        <div v-if="showHexagonTooltip" class="Hexagon__tooltip" 
-        	:style="'top:' + (hoveredActivity.y - 28) + 'px; left:' + (hoveredActivity.x - 40) + 'px'">
-        		{{hexagonTooltipContent}}
-        </div>
+    <svg version="1.1" width="800" height="180" style="position: relative;" class="calendar-graph">
+    	<g transform="translate(40, 30)">
+	        <custom-hexagon
+	        	v-for="activity in hexagons"
+	        	:bg-color="calcColor(activity.duration)" 
+	        	:length.sync="length" 
+	        	:cord-x="activity.x" 
+	        	:cord-y="activity.y"
+	        	:item="activity"
+	        	@hovered="onHexagonHover"
+	        	@mouseout="onHexagonMouseOut"
+	        	@clicked="onHexagonClick">
+	        </custom-hexagon>
+
+	        <text v-for="week in weeks"
+	        	  class="Calendar__Month"
+	        	  :transform="'translate(-25, ' + week.distance + ')'">
+	        	{{week.label | weekFilter}}
+	        </text>
+
+	        <text v-for="month in months" 
+	        	  class="Calendar__Month"
+	        	  :transform="'translate(' + month.distance + ', -10)'">
+	        	{{month.label | monthFilter}}
+	        </text>
+
+	        <div v-if="showHexagonTooltip" class="Hexagon__tooltip"
+	        	:style="'top:' + (hoveredActivity.y) + 'px; left:' + (hoveredActivity.x - 25) + 'px'">
+	        		{{hexagonTooltipContent}}
+	        </div>
+    	</g>
         
     </svg>
+    <div class="row" style="margin-left: 100px; margin-right: 100px;">
+    	<span class="Calendar__Year active"><a>2016</a></span>
+    	<span class="Calendar__Year"><a>2017</a></span>
+    	<span class="Calendar__Year"><a>2018</a></span>
+
+    	<div class="contrib-legend">
+	    	<span>Бага</span>
+	    	<ul class="legend">
+	          <li style="background-color: #eee"></li>
+	          <li style="background-color: #d6e685"></li>
+	          <li style="background-color: #8cc665"></li>
+	          <li style="background-color: #44a340"></li>
+	          <li style="background-color: #1e6823"></li>
+	        </ul>
+	    	<span>Их</span>
+    	</div>
+    </div>
 </template>
 
 <script>
@@ -48,11 +79,78 @@
 				showHexagonTooltip : false ,
 				hexagonTooltipContent : '',
 				hoveredActivity : null,
+				monthDistance : 60,
+				weekDistance : 30,
+				monthPadding : 10, 
+				months : [],
+				weeks : [],
 			}
 		},
 
 		created : function () {
 			this.getActivities()
+		},
+
+		ready : function () {
+			for(var i = 0; i < 12; i ++) {
+				this.months.push({
+					'label' : i,
+					'distance' : (i * this.monthDistance) + this.monthPadding
+				})
+			}
+
+			for(var i = 1; i < 4; i ++) {
+				this.weeks.push({
+					'label' : i,
+					'distance' : (i * this.weekDistance)
+				})
+			} 
+		},
+
+		filters : {
+			weekFilter : function (week) {
+				switch (week) {
+					case 1 : 
+						return 'Mon'
+					case 2 : 
+						return 'Wed'
+					case 3 : 
+						return 'Fri'
+					default : 
+						return 'Sun'
+				}
+			},
+
+			monthFilter : function (month) {
+				switch (month) {
+					case 0 : 
+						return 'Jan'
+					case 1 : 
+						return 'Feb'
+					case 2 : 
+						return 'Mar'
+					case 3 : 
+						return 'Apr'
+					case 4 : 
+						return 'May'
+					case 5 : 
+						return 'Jun'
+					case 6 : 
+						return 'Jul'
+					case 7 : 
+						return 'Aug'
+					case 8 : 
+						return 'Sep'
+					case 9 : 
+						return 'Oct'
+					case 10 : 
+						return 'Nov'
+					case 11 : 
+						return 'Dec'
+					default : 
+						return 'Dec'
+				}
+			}
 		},
 
 		methods : {
@@ -85,7 +183,6 @@
 			},
 
 			onHexagonClick : function (activity) {
-				debugger
 				this.$dispatch('_hexagonclicked', activity)
 			},
 			
@@ -172,5 +269,55 @@
 			top: 100%;
 			left: 104px;
 		}
+	}
+
+	text.Calendar__Month {
+	    font-size: 10px;
+	    text-anchor: middle;
+	    fill: #767676;
+	}
+
+	.contrib-legend {
+	    float: right;
+	    color: #767676 !important;
+	}
+
+	.contrib-legend span {
+		font-size:  12px;
+	}
+
+	.contrib-legend .legend li {
+	    display: inline-block;
+	    width: 10px;
+	    height: 10px;
+	}
+
+	.contrib-legend .legend {
+	    position: relative;
+	    bottom: -1px;
+	    display: inline-block;
+	    margin: 0 5px;
+	    list-style: none;
+	}
+
+	.Calendar__Year {
+		margin-right: 5px;
+		float: left;
+		padding : 3px;
+		border-radius: 3px;
+		background-color : #eeeeee;
+	}
+
+	.Calendar__Year.active {
+		background-color: #3f4652;
+
+		a {
+			color: #eeeeee !important;
+		}
+	}
+
+	.Calendar__Year a {
+		color : #3f4652 !important;
+		font-size: 11px;
 	}
 </style>
