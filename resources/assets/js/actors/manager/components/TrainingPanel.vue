@@ -9,7 +9,7 @@
       </div>
   </div>
 
-  <training-select-collection :club-id="id">
+  <training-select-collection :club-id="id" @update="trainingFilterChanged">
     
   </training-select-collection>
 
@@ -68,6 +68,7 @@
           copyInstance : null,
           pageIndex : 1,
           pageLast : 0,
+          trainingFilters: null
       }
     },
 
@@ -112,7 +113,8 @@
         },
 
         getTrainings : function () {
-            this.$http.get(this.$env.get('APP_URI') + 'api/club/' + this.id + '/training?page=' + this.pageIndex).then(res => {
+            this.$http.get(this.$env.get('APP_URI') + 'api/club/' + this.id + '/training?page=' + this.pageIndex
+                + '&genre=' + (this.trainingFilters && this.trainingFilters.length > 0 ? this.trainingFilters[0].name_en : '')).then(res => {
                 this.training = this.training.concat(res.data.result.data)
                 this.pageLast = res.data.result.last_page
             }).catch(err => {
@@ -187,9 +189,20 @@
         },
 
         loadMore : function () {
-            this.pageIndex ++;
-            this.getTrainings();
+            this.pageIndex ++
+            this.getTrainings()
         },
+
+        resetPage : function () {
+            this.pageIndex = 1
+            this.training = []
+        },
+
+        trainingFilterChanged : function (filters) {
+            this.resetPage()
+            this.trainingFilters = filters
+            this.getTrainings()
+        }
     },
 
     components : {

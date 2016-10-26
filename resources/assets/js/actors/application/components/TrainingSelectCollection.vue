@@ -5,8 +5,6 @@
               :options="clubGenres" 
               :selected="genre" 
               :multiple="false"
-              :clear-on-select="false" 
-              :close-on-select="true" 
               :searchable="false"
               select-label='сонгох'
               selected-label='сонгосон' 
@@ -76,7 +74,7 @@
 				this.selectedFilters = []
 
 				if(this.genre) {
-					this.selectedFilters.push(this.this.genre)
+					this.selectedFilters.push(this.genre)
 				}
 
 				this.$emit('update', this.selectedFilters)
