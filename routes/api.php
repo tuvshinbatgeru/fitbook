@@ -86,7 +86,7 @@ Route::group(['middleware' => ['auth:api']], function () {
 		Route::resource('widgets', 'TemplateController');
 		Route::resource('service', 'ServiceController');
 		Route::post('/service/edit', 'ServiceController@modifyClubServices');
-
+		Route::get('/capability', 'ClubController@capabilities');
 	});
 		
 
