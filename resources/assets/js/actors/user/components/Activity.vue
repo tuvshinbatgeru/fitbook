@@ -1,9 +1,13 @@
 <template>
     <div class="Activity__Calendar">
-        <custom-calendar :user-id="id" :year="2016">
+        <custom-calendar :user-id="id" :year.sync="selectedYear">
             
         </custom-calendar>
     </div>
+
+    <activity-detail :user-id="id" :date.sync="selectedDate">
+        
+    </activity-detail>
 
     <div class="row" v-for="activity in activities">
         <h3>{{activity.short_name}}</h3>
@@ -14,7 +18,9 @@
 </template>
 
 <script>
-    import CustomCalendar from '../actors/application/svg/CustomCalendar.vue';
+
+    import CustomCalendar from '../../application/svg/CustomCalendar.vue'
+    import ActivityDetail from './ActivityDetail.vue';
 
     export default {
         
@@ -24,16 +30,24 @@
 
         data () {
             return {
-
+                selectedDate : null,
+                selectedYear : 0,
             }
         },
 
         created : function () {
-
+            this.selectedYear = Vue.moment().year()
+            this.selectedDate = Vue.moment().format('YYYY/MM/DD')
         },
 
         ready : function () {
 
+        },
+
+        events : {
+            '_hexagonclicked' : function (activity) {
+                this.selectedDate = activity.label
+            },
         },
 
         methods : {
@@ -41,7 +55,8 @@
         },
 
         components : {
-            CustomCalendar
+            CustomCalendar, 
+            ActivityDetail
         }
     }
 </script>
@@ -50,5 +65,6 @@
         width: 100%;
         overflow-y: hidden;
         overflow-x: auto;
+        position: relative;
     }
 </style>
