@@ -25,7 +25,6 @@ Route::group(['middleware' => ['auth:api']], function () {
 	Route::get('/service', 'ServiceController@listService');	
 	Route::get('/search', 'SearchController@search');
 	Route::resource('/genre', 'GenreController');
-	Route::get('/activity/{activity}', 'ActivityController@show');
 	Route::get('/user/files', 'FileManagerController@files');
 	Route::post('/user/avatar/{photo}', 'UserController@storeAvatar');
 	Route::resource('/user/comments', 'CommentController');
@@ -37,6 +36,7 @@ Route::group(['middleware' => ['auth:api']], function () {
 		Route::get('notifications', 'UserController@notifications');
 		Route::get('mentions', 'UserController@mentions');
 		Route::get('activity', 'UserController@userActivity');
+		Route::get('activity/detail', 'UserController@dateActivities');
 		Route::get('followed', 'UserController@followedClubs');
 		Route::get('subscriptions', 'UserController@subscriptions');
 		Route::post('inuser', 'UserController@inUser');

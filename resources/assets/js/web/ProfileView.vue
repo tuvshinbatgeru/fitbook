@@ -28,7 +28,7 @@
 
 	import Followed from '../components/Followed.vue';
 	import Timeline from '../components/Timeline.vue';
-	import Activity from '../components/Activity.vue';
+	import Activity from '../actors/user/components/Activity.vue';
 	import UserHome from '../actors/user/components/UserHome.vue';
 
 
