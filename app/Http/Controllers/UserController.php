@@ -95,10 +95,10 @@ class UserController extends Controller
 
     public function dateActivities(User $user, Request $request)
     {
-        //date = '2016/10/01'
         $activities = $user->activities()
                         ->wherePivot('start_time', '>', $request->date. ' 00:00:01')
-                        ->wherePivot('start_time', '<', $request->date. ' 00:00:01')
+                        ->wherePivot('start_time', '<', $request->until. ' 00:00:01')
+                        ->with('plan', 'club')
                         ->get();
 
         return Response::json([
