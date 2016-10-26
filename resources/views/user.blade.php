@@ -31,7 +31,7 @@
     </div>
 
 	  <div class="small-9 text-center small-centered columns">
-      <component :id="{{$user->id}}" :is="submenu">
+      <component :id="{{$user->id}}" :is="submenu" keep-alive>
       
       </component>
     </div>    
