@@ -93,6 +93,20 @@ class UserController extends Controller
         ]);
     } 
 
+    public function dateActivities(User $user, Request $request)
+    {
+        //date = '2016/10/01'
+        $activities = $user->activities()
+                        ->wherePivot('start_time', '>', $request->date. ' 00:00:01')
+                        ->wherePivot('start_time', '<', $request->date. ' 00:00:01')
+                        ->get();
+
+        return Response::json([
+            'code' => 0,
+            'result' => $activities,
+        ]);
+    }
+
     public function userActivity(User $user, Request $request)
     {
         $activities = \Illuminate\Support\Facades\DB::table('user_activity')
