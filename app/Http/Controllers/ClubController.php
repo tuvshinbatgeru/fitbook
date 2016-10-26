@@ -71,6 +71,22 @@ class ClubController extends Controller
         ]);
     }
 
+    public function capabilities(Club $club)
+    {
+        return Response::json([
+            'code' => 0,
+            'result' => $club->capabilities,
+        ]);
+    }
+
+    public function genres(Club $club)
+    {
+        return Response::json([
+            'code' => 0,
+            'result' => $club->genres,
+        ]);
+    }
+
     public function members(Club $club, $type)
     {
         return Response::json([
