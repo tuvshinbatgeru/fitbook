@@ -1,7 +1,7 @@
 <template>
 	<div class="multiselect__div">
 		<span class="multiselect__tag"> 
-			<span>{{tag.label}}</span> 
+			<span>{{tag[label]}}</span> 
 			<i @click="removeTag()" aria-hidden="true" tabindex="1" class="multiselect__tag-icon"></i> 
 		</span>
 	</div>
@@ -11,7 +11,12 @@
 
 	export default {
 		props : {
-			tag : {}
+			tag : {},
+			label : {},
+		},
+
+		ready : function () {
+			debugger
 		},
 
 		methods : {

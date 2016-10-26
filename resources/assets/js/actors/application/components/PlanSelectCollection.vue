@@ -77,7 +77,7 @@
 	  	</div>
 	</div>
 	<div class="row">
-		<custom-search-tag v-for="filter in selectedFilters" :tag="filter">
+		<custom-search-tag v-for="filter in selectedFilters" :tag="filter" label="label">
 		</custom-search-tag>
 	</div>
 </template>
