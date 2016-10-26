@@ -1,9 +1,5 @@
 <template>
   <div class="row">
-    <div class="small-10 columns">
-      
-    </div>
-    <div class="small-2 columns">
       <div class="small-2 columns">
             <a @click="addTraining()" class="button success">
                 <i class="fa fa-pencil-square-o">
@@ -11,8 +7,11 @@
                 </i>
             </a>
       </div>
-    </div>
   </div>
+
+  <training-select-collection :club-id="id">
+    
+  </training-select-collection>
 
   <custom-modal title = "Teachers" :show.sync="showTeachers">
     <div slot="body">
@@ -49,9 +48,10 @@
 
 <script>
 
-  import FtTraining from '.././components/FtTraining.vue';
-  import AddTraining from '../../../context/AddTraining.vue';
-  import TrainingTeachers from './TrainingTeachers.vue';
+  import FtTraining from '.././components/FtTraining.vue'
+  import AddTraining from '../../../context/AddTraining.vue'
+  import TrainingTeachers from './TrainingTeachers.vue'
+  import TrainingSelectCollection from '../../application/components/TrainingSelectCollection.vue'
 
   export default {
     props: { 
@@ -72,49 +72,49 @@
     },
 
     created: function () {
-        this.getTrainings();
+        this.getTrainings()
     },
 
     events : {
         'saveTraining' : function($response) {
-          this.saveTraining($response);
+          this.saveTraining($response)
         },
 
         'deleteTraining' : function($response) {
-          this.training.$remove($response);
+          this.training.$remove($response)
         },
 
         'editTraining' : function($response) {
-            this.copyInstance = $response;
-            this.editTraining($response.id);
+            this.copyInstance = $response
+            this.editTraining($response.id)
         },
 
         'allTeachers' : function($response) {
-            this.currentTraining = $response;
-            this.showTeachers = true;
+            this.currentTraining = $response
+            this.showTeachers = true
         }
     },
 
     methods : {
         addTraining : function () {
-            this.currentTraining = null;
-            this.methodType = 'add';
-            this.showAddTraining = true;
+            this.currentTraining = null
+            this.methodType = 'add'
+            this.showAddTraining = true
         },
 
         editTraining : function(id) {
             this.$http.get(this.$env.get('APP_URI') + 'training/' + id).then(res => {
-                this.methodType = 'edit';
-                this.currentTraining = res.data.result;
-                this.showAddTraining = true;
+                this.methodType = 'edit'
+                this.currentTraining = res.data.result
+                this.showAddTraining = true
             }).catch(err => {
             });
         },
 
         getTrainings : function () {
             this.$http.get(this.$env.get('APP_URI') + 'api/club/' + this.id + '/training?page=' + this.pageIndex).then(res => {
-                this.training = this.training.concat(res.data.result.data);
-                this.pageLast = res.data.result.last_page;
+                this.training = this.training.concat(res.data.result.data)
+                this.pageLast = res.data.result.last_page
             }).catch(err => {
 
             });
@@ -123,37 +123,37 @@
         storeTraining : function ($response) {
             this.$http.post(this.$env.get('APP_URI') + 'training?data=' + $response.data.param).then(res => {
                 if(res.data.code == 0) {
-                    var curTraining = res.data.result;
-                    var pinned_photos = [];
+                    var curTraining = res.data.result
+                    var pinned_photos = []
 
-                    pinned_photos.push($response.data.pinned_photo);
-                    curTraining.pinned_photos = pinned_photos;
-                    curTraining.genres = $response.data.genres;
-                    curTraining.teachers_count = $response.data.teachers.length;
-                    curTraining.first_two_teachers = $response.data.teachers;
-                    curTraining.histories_count = 0;
+                    pinned_photos.push($response.data.pinned_photo)
+                    curTraining.pinned_photos = pinned_photos
+                    curTraining.genres = $response.data.genres
+                    curTraining.teachers_count = $response.data.teachers.length
+                    curTraining.first_two_teachers = $response.data.teachers
+                    curTraining.histories_count = 0
 
-                    this.training.shift(curTraining);
-                    this.showAddTraining = false;
+                    this.training.push(curTraining)
+                    this.showAddTraining = false
                 }
 
                 this.$refs.addtr.loading = false;
-                this.$root.$refs.toast.showMessage(res.data.message);
+                this.$root.$refs.toast.showMessage(res.data.message)
 
             }).catch(err => {
                 this.$refs.addtr.loading = false;
-                this.$root.$refs.toast.showMessage('Server side error!.');
+                this.$root.$refs.toast.showMessage('Server side error!.')
             });
         },
 
         cloneTraining : function (curTraining) {
 
-            this.copyInstance.name = curTraining.name;
-            this.copyInstance.description = curTraining.description;
-            this.copyInstance.teachers_count = curTraining.teachers_count;
-            this.copyInstance.genres = curTraining.genres;
-            this.copyInstance.pinned_photos = curTraining.pinned_photos;
-            this.showAddTraining = false;
+            this.copyInstance.name = curTraining.name
+            this.copyInstance.description = curTraining.description
+            this.copyInstance.teachers_count = curTraining.teachers_count
+            this.copyInstance.genres = curTraining.genres
+            this.copyInstance.pinned_photos = curTraining.pinned_photos
+            this.showAddTraining = false
 
         },
 
@@ -193,7 +193,7 @@
     },
 
     components : {
-        FtTraining, AddTraining, TrainingTeachers
+        FtTraining, AddTraining, TrainingTeachers, TrainingSelectCollection
     },
 
     locales: {
