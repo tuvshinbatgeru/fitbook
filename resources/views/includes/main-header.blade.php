@@ -37,7 +37,7 @@
               <div class="site-header-notification">
                 <a @click="showNotifications = true">
                   <i class="fa fa-bell-o"> </i>
-                  <span class="alert badge">12</span>
+                  <span class="alert badge" style="background: #ff5c2d">12</span>
                 </a>
               </div>             
             </div>
