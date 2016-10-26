@@ -1,8 +1,32 @@
 @extends('layouts.club-edit-layout', ['currentView' => 'club-edit-view'])
 @section('content')
 
-<section class="container" style="background-color:#f6f9fa !important;">
-	<section class="sidebar" v-cloak>
+<section class="row" style="background-color: #fff!important; min-height: 100%;">
+	<div class="large-12 columns info-bar">
+		<div class="row">
+			<div class="large-12 columns">
+				<a class="menu-navicon">
+					<i class="fa fa-navicon"></i>
+				</a>
+				<span class="menu-title">
+					Dashboard
+				</span>
+				<div class="info">
+					<span class="seperator">
+					</span>
+					<span class="weather">
+						Weather +14
+					</span>
+					<br/>
+					<span class="date">
+						October, Tuesday, 26
+					</span> 
+
+				</div>
+			</div>
+		</div>
+	</div>
+	<section class="sidebar large-1 medium-2 columns" v-cloak>
 		<ul class="setting-menu vertical menu" data-accordion-menu>
 			<li>
 				<a @click="setMenu('club-dashboard')">
@@ -49,7 +73,7 @@
 					@{{$t('registration')}}
 				</a>
 				<span class="secondary badge">@{{requests_count}}</span>
-				<ul>
+				<ul class="menu vertical nested">
 					<li>
 						<a @click="setMenu('plan-panel')">
 							<i class="fa fa-pencil-square-o"></i>
@@ -79,7 +103,7 @@
 					<br/>
 					@{{$t('template')}}
 				</a>
-				<ul>
+				<ul class="menu vertical nested">
 					<li>
 						<a @click="setMenu('club-template')">
 							<i class="fa fa-object-ungroup"></i>
@@ -110,7 +134,7 @@
 			</component>
 		</section> --}}
 	</section>
-	<section class="widget--container">
+	<section class="large-11 medium-10 columns">
 		<div class="widget-content float-center">
 			<div class="content--container float-center">
 				<component v-if="content == 'all-members'"

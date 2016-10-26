@@ -168,11 +168,13 @@ export default {
 }
 
 i {
+  font-size: 23px;
   float: right;
-  position: relative;
-  top: 30px;
-  right: 29px;
+  position: absolute;
+  top: 25%;
+  left: 15px;
   opacity: 0.4;
+  font-size: 17;
 }
 
 .Typeahead__result {

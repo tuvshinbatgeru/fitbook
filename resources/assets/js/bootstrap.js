@@ -32,6 +32,7 @@ require('../../../bower_components/rangy-official/rangy-classapplier');*/
 /*require('./dependency/tooltip');*/
 
 import Chart from 'chart.js';
+import Fullpage from 'fullpage.js';
 
 /**
  * Vue is a modern JavaScript library for building interactive web interfaces

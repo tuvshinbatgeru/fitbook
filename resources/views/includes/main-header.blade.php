@@ -3,15 +3,16 @@
            inline-template>
     <div class="site-header">
         <div class="site-header-container">
+          <div class="site-header-row">
             <div class="site-header-item" style="width: 200px;">
                 <div class="site-logo">
                   <a href="{{ URL::to('/users/' . Auth::user()->username) }}">
-                    <img src="{{asset('images/site/logo-white.png')}}" />
+                    <img src="{{asset('images/site/fitbook_logo.png')}}" height="55" />
                   </a>
                 </div>
                 <div class="site-header-title hide-for-small-only">
                     <label>
-                        Fitbook
+                        
                     </label>
                 </div>
             </div>
@@ -31,8 +32,6 @@
                   </typeahead>
                 </div>
             </div>
-            <div class="site-header-item" style="width: 120px;">
-            </div>
             <div class="site-header-item" style="width: 40px;">
               <div class="site-header-notification">
                 <a @click="showNotifications = true">
@@ -43,9 +42,10 @@
             </div>
             <div class="site-header-profile site-header-item">
               <div>  
-                <img @click="showLogoutMenus = true" data-toggle="user-menu" class="header-profile-pic" src="{{Auth::user()->avatarSmall[0]->url}}" />
+                <img @click="showLogoutMenus = true" data-toggle="user-menu" class="header-profile-pic" src="{{Auth::user()->avatar_url}}" />
               </div>
             </div>
+          </div>
         </div>
   </div>
     <div class="dropdown-pane bottom" id="user-menu" data-dropdown data-close-on-click="true">
@@ -65,4 +65,3 @@
         </div>
     </custom-modal>
 </component>
-

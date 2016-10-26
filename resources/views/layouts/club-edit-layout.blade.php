@@ -8,10 +8,10 @@
 
     @include('includes.header')
 </head>
-<body>
+<body class="admin-body">
     @include('includes.main-header')
     <custom-toast v-ref:toast></custom-toast>
-    <div class="site-body">
+    <div class="site-body container">
     <component clubid = "{{$club->id}}" is="club-edit-view" inline-template>
       @yield('content')      
     </component>
