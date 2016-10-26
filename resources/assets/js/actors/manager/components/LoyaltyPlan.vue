@@ -1,12 +1,10 @@
 <template>
     <div v-show="plans.length == 0" class="row text-center">
-            <span style="color:#3f4652">There is no plans ...</span>
+            <span style="color:#3f4652">{{$t('noresult')}}</span>
     </div>
     <div v-else class="row small-up-1 large-up-2" style="font-size:12px;">
         <div class="columns" v-for="current in plans">
         <div class="row text-right">
-            
-
             <span style="font-size: 25px; color: #3f4652;" @click="editDropClicked(current)" class="fa edit__dropdown fa-ellipsis-h" :data-toggle="'plan-edit-' + current.id">
                 <div class="dropdown-pane bottom" v-bind:id="'plan-edit-' + current.id" data-dropdown data-close-on-click="true">
                     <a class="fa" @click="editPlan(current)">Edit</a>    
