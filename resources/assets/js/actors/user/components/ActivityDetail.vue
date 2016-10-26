@@ -6,8 +6,12 @@
 			{{$t('noEntry')}}
 		</div>
 
-		<div v-else>
-			
+		<div v-else v-for="activity in activities">
+			<h4>{{activity.club.short_name}} {{activity.plan.name}}</h4>
+			<span>{{activity.pivot.start_time | moment 'hh:mm'}}</span>
+			<span>{{activity.pivot.finish_time | moment 'hh:mm'}}</span>
+			<span>{{activity.pivot.duration}}</span>
+			<hr>
 		</div>
 		
 	</div>
@@ -36,7 +40,9 @@
 		methods : {
 			getActivity : function () {
 				this.$http.get(this.$env.get('APP_URI') + 'api/user/' + this.userId + '/activity/detail?date=' + 
-					Vue.moment(this.date).format('YYYY-MM-DD')).then(res => {
+					Vue.moment(this.date).format('YYYY-MM-DD')
+					+ "&until=" + Vue.moment(this.date).add(1, 'days').format('YYYY-MM-DD')).then(res => {
+					debugger
 				  	this.activities = res.data.result
 				}).catch(err => {
 
