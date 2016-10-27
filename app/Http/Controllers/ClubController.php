@@ -87,15 +87,28 @@ class ClubController extends Controller
         ]);
     }
 
-    public function members(Club $club, $type)
+    public function members(Club $club, Request $request)
     {
+        $members = $club->members()->with('roles');
+
+        if(isset($request->member)) {
+            $role = $request->member;
+            $members = $members->whereHas('roles', function ($query) use ($role) {
+                $query->where('name', $role);
+            });
+        }
+
+        if(isset($request->date)) {
+            $members = $members->orderBy('since_date', $request->date);
+        }
+
+        $members = $members->get();
+
         return Response::json([
             'code' => 0,
-            'result' => $club->members()->where('type', '=', $type)->get(),
+            'result' => $members,
             'max_id' => $club->nextTeacherViewOrder() - 1,
         ]);
-        return $club->members()->where('type', '=', $type)
-                    ->get();
     }
     
     public function toggleTeacherViewOrder($clubId, User $first, User $second, Request $request)
