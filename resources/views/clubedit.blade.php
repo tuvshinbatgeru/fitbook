@@ -36,35 +36,12 @@
 				</a>
 			</li>
 			<li>
-				<a>
+				<a @click="setMenu('all-members')">
 					<i class="fa fa-users"></i>
 					<br/>
 					@{{$t('members')}}
 				</a>
 				<span class="success badge">@{{members_count}}</span>
-				<ul class="menu vertical nested">
-					<li>
-						<a @click="setMenu('teacher-panel')">
-							<i class="fa fa-users"></i>
-							<br/>
-							@{{$t('teacher')}}
-						</a>
-					</li>
-					<li>
-						<a @click="setMenu('manager-panel')">
-							<i class="fa fa-users"></i>
-							<br/>
-							@{{$t('manager')}}
-						</a>
-					</li>
-					<li>
-						<a @click="setMenu('reception-panel')">
-							<i class="fa fa-users"></i>
-							<br/>
-							@{{$t('reception')}}
-						</a>
-					</li>
-				</ul>
 			</li>
 			<li>
 				<a>
