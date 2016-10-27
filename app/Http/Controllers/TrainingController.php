@@ -55,11 +55,23 @@ class TrainingController extends Controller
     
     public function clubTrainings(Club $club, Request $request)
     {
-        $trainings = $club->trainings()
-                          ->with('pinnedPhotos','genres')
-                          ->withCount('histories', 'teachers')->paginate(6);
-
+        $genre = $request->genre;
+        $queryStr = $club->trainings();
+        $queryStr = $queryStr->with('genres');
         
+        if(empty($genre)) {
+            
+        } else {
+            $queryStr = $queryStr->whereHas('genres', function ($query) use ($genre){
+                $query->where('name_en', $genre);
+            });
+        }
+
+        $queryStr = $queryStr->with('pinnedPhotos')
+                             ->withCount('histories', 'teachers');
+
+        $trainings = $queryStr->paginate(6);
+
         foreach ($trainings->items() as $training) {
             $training->firstTwoTeachers;
         }
