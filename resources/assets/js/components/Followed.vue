@@ -52,9 +52,9 @@
             toggleState : function (club) {
 
                 this.$http.post(this.$env.get('APP_URI') + 'api/club/' + club.id + '/follow').then(res => {
-                  club.state = res.data.type;
+                  club.state = res.data.type
                 }).catch(err => {
-                  club.state = "following";
+                  club.state = "following"
                 });
             }
         },
@@ -66,7 +66,7 @@
             },
             mn : {
                 follow : 'Дагах',
-                unfollow : 'Дагсан',
+                unfollow : 'Дагасан',
             },
         }
     }
