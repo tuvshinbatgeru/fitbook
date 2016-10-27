@@ -8,7 +8,28 @@
                 <i class="fa fa-pencil-square-o"></i>
             </a>
         </div>
+
+        <custom-modal 
+              :id = "id"
+              v-ref:add
+              title = "Invite Employer" 
+              usage = "_invite_employee" 
+              :show.sync = "showInvite"
+              >
+              <div slot="body">
+                <components v-ref:context 
+                            :id="id" 
+                            is="add-plan"
+                            :plan="currentPlan">
+                    
+                </components>
+              </div>
+        </custom-modal>
     </div>
+
+    <member-selection-collection @update="memberFilterUpdate">
+        
+    </member-selection-collection>
 
     <form>
         <ul class="row">
@@ -23,6 +44,7 @@
                         <img v-bind:src="member.avatar_url" height="40" width="40" />
                         <span>{{member.first_name}}</span>
                         {{member.last_name}}
+                        <p>{{member.pivot.since_date | moment "from"}}</p>
                     </div>
                     <div class="small-2 columns ">
                         <a @click="rejectRequest(member)" class="button alert member--button"><i class="fa fa-trash-o"></i></a>   
@@ -34,37 +56,35 @@
 </template>
 
 <script>
+
+    import MemberSelectionCollection from '../../application/components/MemberSelectionCollection.vue'
+
     export default {
         
         props: { 
             id : {},
-            type : {},
         },
 
         created: function () {
-            this.init();
+            this.getMembers();
         },
 
         data : function () {
             return {
                 members : [],
                 maxViewOrder : 0,
+                memberFilters : [],
             }
         },
 
-        ready : function () {
-            this.$watch('type', function () {
-                debugger;
-                this.init();
-            })
-        },
-
         methods : {
-            init : function () {
-                this.$http.get(this.$env.get('APP_URI') + 'api/club/' + this.id + '/members/' + this.type).then((response) => 
+            getMembers : function () {
+                debugger
+                this.$http.get(this.$env.get('APP_URI') + 'api/club/' + this.id + '/members?' + this.filterParam(this.memberFilters)).then((response) => 
                 {
-                    this.members = response.data.result;
-                    this.maxViewOrder = response.data.max_id;
+                    this.members = response.data.result
+                    if(response.data.max_id)
+                        this.maxViewOrder = response.data.max_id
                 }, (response) => {
 
                 });
@@ -106,6 +126,25 @@
 
                 return null;
             },
+
+            memberFilterUpdate : function (filter) {
+                this.memberFilters = filter
+                this.getMembers()
+            },
+
+            filterParam : function (filters) {
+
+                var params = "";
+                _.forEach(filters, function(filter) {
+                    params += filter.name + "=" + filter.order + "&";
+                });
+
+                return params;
+            },
+        }, 
+
+        components : {
+            MemberSelectionCollection
         }
     }
 </script>
