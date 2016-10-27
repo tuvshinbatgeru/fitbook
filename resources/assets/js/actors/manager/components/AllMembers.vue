@@ -1,8 +1,5 @@
 <template>
     <div class="widget-content">
-      <div class="content--header">
-        <h3>Teacher</h3>
-      </div>
       <div class="content--container">
         <div class="content--back">
           <ul class="tabs content--tabs">
