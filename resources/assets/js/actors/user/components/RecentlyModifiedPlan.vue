@@ -5,109 +5,15 @@
                 <div class="plan-section-title">
                     RECENTLY ADDED
                 </div>
-                <div class="large-3 columns">
-                    <div class="plan-card">
-                        <div class="plan-card-container">
-                            <div class="plan-card-image">
-                                <img src="http://localhost/images/users/91f5060e20b1d98a49b35d974dca573f1477461676Nuur huudas new 7.gif">
-                            </div>
-                            <div class="plan-card-info">
-                                <div class="club-name">
-                                    Flex gym
-                                </div>
-                                <div class="plan-name">
-                                    Summer and Winter plan
-                                </div>
-                                <div class="plan-statistic">
-                                    <div class="info">
-                                        <i class="fa fa-heart"></i> 350
-                                        <i class="fa fa-eye"></i> 401
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="plan-price">
-                            140,000 ₮
-                        </div>
-                    </div>
-                </div>
-                <div class="large-3 columns">
-                    <div class="plan-card">
-                        <div class="plan-card-container">
-                            <div class="plan-card-image">
-                                <img src="http://localhost/images/users/91f5060e20b1d98a49b35d974dca573f1477461676Nuur huudas new 7.gif">
-                            </div>
-                            <div class="plan-card-info">
-                                <div class="club-name">
-                                    Flex gym
-                                </div>
-                                <div class="plan-name">
-                                    Summer and Winter plan
-                                </div>
-                                <div class="plan-statistic">
-                                    <div class="info">
-                                        <i class="fa fa-heart"></i> 350
-                                        <i class="fa fa-eye"></i> 401
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="plan-price">
-                            140,000 ₮
-                        </div>
-                    </div>
-                </div>
-                <div class="large-3 columns">
-                    <div class="plan-card">
-                        <div class="plan-card-container">
-                            <div class="plan-card-image">
-                                <img src="http://localhost/images/users/91f5060e20b1d98a49b35d974dca573f1477461676Nuur huudas new 7.gif">
-                            </div>
-                            <div class="plan-card-info">
-                                <div class="club-name">
-                                    Flex gym
-                                </div>
-                                <div class="plan-name">
-                                    Summer and Winter plan
-                                </div>
-                                <div class="plan-statistic">
-                                    <div class="info">
-                                        <i class="fa fa-heart"></i> 350
-                                        <i class="fa fa-eye"></i> 401
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="plan-price">
-                            140,000 ₮
-                        </div>
-                    </div>
-                </div>
-                <div class="large-3 columns">
-                    <div class="plan-card">
-                        <div class="plan-card-container">
-                            <div class="plan-card-image">
-                                <img src="http://localhost/images/users/91f5060e20b1d98a49b35d974dca573f1477461676Nuur huudas new 7.gif">
-                            </div>
-                            <div class="plan-card-info">
-                                <div class="club-name">
-                                    Flex gym
-                                </div>
-                                <div class="plan-name">
-                                    Summer and Winter plan
-                                </div>
-                                <div class="plan-statistic">
-                                    <div class="info">
-                                        <i class="fa fa-heart"></i> 350
-                                        <i class="fa fa-eye"></i> 401
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="plan-price">
-                            140,000 ₮
-                        </div>
-                    </div>
+            </div>
+
+            <horizontal-slide :slide-width="247" :step="1" :items="items">
+                
+            </horizontal-slide>
+
+            <div class="row" style="position: relative;padding: 10px 30px;">
+                <div style="width: 25%;display: inline-block;">
+                    
                 </div>
             </div>
         </div>
@@ -130,7 +36,7 @@
 
         data () {
             return {
-
+                items : []
             }
         },
 
@@ -139,7 +45,23 @@
         },
 
         ready : function () {
-            
+            this.items.push({
+                'label' : 'slide1'
+            }, {
+                'label' : 'slide2'
+            }, {
+                'label' : 'slide3'
+            }, {
+                'label' : 'slide4'
+            }, {
+                'label' : 'slide5'
+            }, {
+                'label' : 'slide6'
+            }, {
+                'label' : 'slide7'
+            }, {
+                'label' : 'slide8'
+            })
         },
 
         methods : {
