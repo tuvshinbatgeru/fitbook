@@ -6,9 +6,9 @@
               :selected="selectedDate" 
               :multiple="false"
               :searchable="false"
-              select-label='сонгох'
-              selected-label='сонгосон' 
-              deselect-label='устгах'
+              select-label=''
+              selected-label='' 
+              deselect-label=''
               label="label"
               key="label"
               @update="updateDates"
@@ -22,9 +22,9 @@
               :selected="selectedType" 
               :multiple="false"
               :searchable="false"
-              select-label='сонгох'
-              selected-label='сонгосон' 
-              deselect-label='устгах'
+              select-label=''
+              selected-label='' 
+              deselect-label=''
               label="label"
               key="label"
               @update="updateTypes"
