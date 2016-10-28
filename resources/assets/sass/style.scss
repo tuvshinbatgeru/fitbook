@@ -1019,7 +1019,11 @@ $break-large: 1200px;
 .plan-card {
 	width: 247px;
 	padding: 0px;
-	display: inline-block;
+	margin: 0 auto;
+	-webkit-user-select: none;  
+  -moz-user-select: none;    
+  -ms-user-select: none;      
+  user-select: none;
 	.plan-price {
 		width: 100%;
 		padding: 14px;
