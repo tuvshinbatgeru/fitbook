@@ -12,6 +12,7 @@ window.$ = window.jQuery = require('jquery');
 require('./dependency/jquery.fileupload');
 require('./dependency/jquery-ui.min');
 require('./dependency/jquery.ui.touch-punch');
+require('./dependency/hammer.min');
 require('./dependency/foundation');
 require('./dependency/jquery.tokenize');
 require('./dependency/tabs');
@@ -73,6 +74,8 @@ import CommentsList from './actors/application/components/CommentsList.vue';
 import CustomSelectionList from './actors/application/components/CustomSelectionList.vue';
 import CustomButtonGroup from './actors/application/components/CustomButtonGroup.vue';
 import CustomSearchTag from './actors/application/components/CustomSearchTag.vue';
+import HorizontalSlide from './actors/application/components/HorizontalSlide.vue';
+
 //import CustomDropdownMenu from './actors/application/components/CustomDropdownMenu.vue';
 import Multiselect from 'vue-multiselect'
 
@@ -87,6 +90,7 @@ Vue.component('CustomEditor', CustomEditor);
 Vue.component('CommentsList', CommentsList);
 Vue.component('CustomSearchTag', CustomSearchTag);
 Vue.component('CustomSelectionList', CustomSelectionList);
+Vue.component('HorizontalSlide', HorizontalSlide);
 //Vue.component('CustomDropdownMenu', CustomDropdownMenu);
 
 
