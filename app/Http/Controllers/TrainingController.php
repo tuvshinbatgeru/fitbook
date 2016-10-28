@@ -140,11 +140,14 @@ class TrainingController extends Controller
         $training->photos()->sync($photo_id_array);
         $training->teachers()->sync($decode->teachers);
 
+
         /**
             Teacher used by training notification
         */
 
         $training->genres()->sync($decode->genres);
+        
+        Club::find($training->club_id)->capabilities()->syncWithoutDetaching($decode->genres);
 
         return Response::json([
             'code' => 0,
@@ -248,6 +251,7 @@ class TrainingController extends Controller
         }
 
         $training->genres()->sync($decode->genres);
+        Club::find($training->club_id)->capabilities()->syncWithoutDetaching($decode->genres);
 
         $training->histories()->attach(\Illuminate\Support\Facades\Auth::user()->id, [
             'before' => $before->toJson(),

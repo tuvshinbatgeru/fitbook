@@ -246,7 +246,7 @@
 			},
 
 			getClubServices : function () {
-				this.$http.get(this.$env.get('APP_URI') + 'api/club/' + this.id + '/service').then(res => {
+				this.$http.get(this.$env.get('APP_URI') + 'api/service').then(res => {
 				 	this.clubservices = res.data.result;
 				}).catch(err => {
 

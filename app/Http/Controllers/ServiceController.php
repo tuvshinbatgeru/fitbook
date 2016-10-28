@@ -11,15 +11,38 @@ use Response;
 
 class ServiceController extends Controller
 {
+    public function savePhoto(Club $club, Request $request)
+    {
+        $photo_id = $request->photo_id;
+        $service_id = $request->service_id;
+
+        if(empty($photo_id) || empty($service_id)) return 
+            Response::json([
+                'code' => 1,
+                'message' => 'Error',
+            ]);
+
+        $club->services()->updateExistingPivot($service_id, [
+            'photo_id' => $photo_id
+        ]);
+
+        return Response::json([
+            'code' => 0,
+            'message' => 'Succesfully set photo.'
+        ]);
+    }
+
     public function index(Club $club)
     {
     	$services = $club->services;
 
     	foreach ($services as $service) {
+            $service->photo = \App\Photo::find($service->pivot->photo_id);   
     		$service->selected = false;
     	}
 
         return Response::json([
+            'code' => 0,
         	'result' => $services,
         ]);
     }

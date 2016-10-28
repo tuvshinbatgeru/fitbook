@@ -161,7 +161,10 @@ class PlanController extends Controller
         $plan->trainings()->sync($decode->trainings);
         $plan->photos()->sync($photo_id_array);
         $plan->teachers()->sync($decode->teachers);
+
         $plan->services()->sync($decode->services);
+        Club::find($plan->club_id)->services()->syncWithoutDetaching($decode->services);
+
 
         //event(new PlanAddedEvent($plan));
 
@@ -272,7 +275,9 @@ class PlanController extends Controller
         $plan->trainings()->sync($decode->trainings);
         $plan->photos()->sync($photo_id_array);
         $plan->teachers()->sync($decode->teachers);
+
         $plan->services()->sync($decode->services);
+        Club::find($plan->club_id)->services()->syncWithoutDetaching($decode->services);
 
         $plan->histories()->attach(\Illuminate\Support\Facades\Auth::user()->id, [
             'before' => $before->toJson(),

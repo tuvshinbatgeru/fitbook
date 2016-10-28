@@ -16,6 +16,7 @@ class CreateServiceTable extends Migration
             $table->increments('id');
             $table->string('name');
             $table->string('name_en');
+            $table->string('icon');
             $table->integer('view_order');
             $table->enum('verified',['N','Y'])->default('N');
             $table->timestamps();
