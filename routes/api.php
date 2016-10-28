@@ -85,6 +85,7 @@ Route::group(['middleware' => ['auth:api']], function () {
 		Route::resource('plan', 'PlanController');
 		Route::resource('widgets', 'TemplateController');
 		Route::resource('service', 'ServiceController');
+		Route::post('service/photo', 'ServiceController@savePhoto');
 		Route::post('/service/edit', 'ServiceController@modifyClubServices');
 		Route::get('/capability', 'ClubController@capabilities');
 	});
