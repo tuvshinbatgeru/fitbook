@@ -1,9 +1,17 @@
 export default {
   mn: {
     noresult : 'илэрц алга ...',
+    admin : 'Админ',
+    manager : 'Менежер',
+    teacher : 'Багш',
+    reception : 'Ресепшен',
   },
   en: {
     noresult : 'any result ...',
+    admin : 'Admin',
+    manager : 'Manager',
+    teacher : 'Teacher',
+    reception : 'Reception',
     message: {
       hello: 'the world',
       hoge: 'hoge',
