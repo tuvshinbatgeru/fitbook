@@ -168,7 +168,7 @@ export default {
 }
 
 i {
-  font-size: 23px;
+  font-size: 17px;
   float: right;
   position: absolute;
   top: 25%;

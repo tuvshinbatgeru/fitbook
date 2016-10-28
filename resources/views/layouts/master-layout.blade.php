@@ -12,7 +12,7 @@
     @if (Auth::check())
       @include('includes.main-header')
     @endif
-
+    <div class="site-body container">
   	@if (isset($currentView))
         <component :user="{{$user}}" 
                    is="{{$currentView}}" 
@@ -22,6 +22,7 @@
   	@if (isset($currentView))
       	</component>
     @endif
+    </div>
 
     <script src="{{ elixir('js/app.js') }}"></script>
 </body>
