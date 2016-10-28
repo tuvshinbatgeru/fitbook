@@ -1,34 +1,11 @@
 <template>
     <div class="row content--search">
         <div class="small-10 columns">
-             <input type="text" name="search" placeholder="search ...">
+            <input type="text" name="search" placeholder="search ...">
         </div>
-        <div class="small-2 columns">
-            <a class="button success">
-                <i class="fa fa-pencil-square-o"></i>
-            </a>
-        </div>
-
-        <custom-modal 
-              :id = "id"
-              v-ref:add
-              title = "Invite Employer" 
-              usage = "_invite_employee" 
-              :show.sync = "showInvite"
-              >
-              <div slot="body">
-                <components v-ref:context 
-                            :id="id" 
-                            is="add-plan"
-                            :plan="currentPlan">
-                    
-                </components>
-              </div>
-        </custom-modal>
     </div>
 
-    <member-selection-collection @update="memberFilterUpdate">
-        
+    <member-selection-collection @update="memberFilterUpdate">        
     </member-selection-collection>
 
     <form>
@@ -45,6 +22,7 @@
                         <span>{{member.first_name}}</span>
                         {{member.last_name}}
                         <p>{{member.pivot.since_date | moment "from"}}</p>
+                        <span class="Member__Roles" v-for="role in member.roles">{{$t(role.name)}}</span>
                     </div>
                     <div class="small-2 columns ">
                         <a @click="rejectRequest(member)" class="button alert member--button"><i class="fa fa-trash-o"></i></a>   
@@ -145,8 +123,14 @@
 
         components : {
             MemberSelectionCollection
-        }
+        },
     }
 </script>
 <style lang="scss">
+.Member__Roles {
+    background-color: #ff5c2d;
+    padding : 5px;
+    color : #fff;
+    border-radius : 5px;
+}
 </style>
