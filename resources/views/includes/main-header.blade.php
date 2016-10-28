@@ -7,7 +7,7 @@
             <div class="site-header-item" style="width: 200px;">
                 <div class="site-logo">
                   <a href="{{ URL::to('/users/' . Auth::user()->username) }}">
-                    <img src="{{asset('images/site/fitbook_logo.png')}}" height="55" />
+                    <img src="{{asset('images/site/fitbook_logo.png')}}"/>
                   </a>
                 </div>
                 <div class="site-header-title hide-for-small-only">
