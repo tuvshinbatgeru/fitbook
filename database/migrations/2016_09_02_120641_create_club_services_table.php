@@ -17,7 +17,7 @@ class CreateClubServicesTable extends Migration
             $table->increments('id');
             $table->integer('club_id')->unsigned()->index();
             $table->integer('service_id')->unsigned()->index();
-            $table->integer('photo_id')->unsigned()->index();
+            $table->integer('photo_id')->unsigned()->index()->default(0);
             $table->timestamps();
         });
     }

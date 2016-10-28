@@ -16,7 +16,7 @@ class CreateClubCapabilityTable extends Migration
         Schema::create('club_capability', function (Blueprint $table) {
             $table->integer('club_id')->unsigned()->index();            
             $table->integer('genre_id')->unsigned()->index();            
-            $table->integer('amount');            
+            $table->integer('amount')->default(-1);            
             $table->timestamps();
         });
     }
