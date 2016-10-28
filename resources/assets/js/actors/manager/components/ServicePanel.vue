@@ -5,7 +5,6 @@
         <h3>
           {{service.name}}
         </h3>
-        <span class="Service__Count">5</span>
         <a @click="changePhoto(service)" class="button fa fa-plus"></a>
     </div>
   </div>
