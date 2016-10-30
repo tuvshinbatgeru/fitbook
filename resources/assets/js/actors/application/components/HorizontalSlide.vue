@@ -66,11 +66,11 @@
 		    Hammer(document.getElementsByClassName("Horizontal__Window")[0]).on("swiperight", this.moveLeft);
 
 		    $(window).resize(this.windowResize)
+		    this.windowResize()
 		},
 		
 		methods : {
 			windowResize : function () {
-				debugger
 				this.windowWidth = $('.Horizontal__Slide').width()
 			},
 
@@ -80,11 +80,12 @@
 
 			moveLeft : function () {
 				if(this.index > 0)
-					this.index --
+					this.index -= this.step
 			},
 
 			moveRight : function () {
-				this.index ++ 
+				if((this.index * this.step + this.block) < this.items.length)
+					this.index += this.step 
 			},
 		},
 
