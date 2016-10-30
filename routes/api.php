@@ -37,7 +37,9 @@ Route::group(['middleware' => ['auth:api']], function () {
 		Route::get('mentions', 'UserController@mentions');
 		Route::get('activity', 'UserController@userActivity');
 		Route::get('activity/detail', 'UserController@dateActivities');
-		Route::get('followed', 'UserController@followedClubs');
+		Route::get('following/count', 'UserController@followingCount');
+		Route::get('following', 'UserController@followings');
+		Route::post('following', 'UserController@toggleFollow');
 		Route::get('subscriptions', 'UserController@subscriptions');
 		Route::post('inuser', 'UserController@inUser');
 		Route::post('outuser', 'UserController@outUser');
