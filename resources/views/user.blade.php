@@ -1,6 +1,17 @@
 @extends('layouts.master-layout', ['currentView' => 'profile-view'])
 @section('content')
 
+<custom-modal
+    title = "Following"
+    usage = "_following"
+    :show.sync = "showFollowing">
+    <div slot="body">
+      <user-following user-id="{{$user->id}}" @toggle="toggleFollow">
+        
+      </user-following>
+    </div>
+</custom-modal>
+
 <div class="row" style="margin-bottom: 10px;">
   <div class="user-cover">
     <img src="{{asset('images/site/cove_photo.jpg')}}" class="cover-photo"/>
@@ -20,6 +31,9 @@
         </div>
     	</div>
     <div class="cover-buttons">
+      <a @click="showFollowing = true" class="cover-button">
+        @{{following_count}} following
+      </a>
       @if($editable)
         <a class="cover-button">
           <i class="fa fa-edit"></i> Following
