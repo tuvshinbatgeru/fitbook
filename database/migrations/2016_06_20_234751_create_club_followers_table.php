@@ -13,11 +13,12 @@ class CreateClubFollowersTable extends Migration
     public function up()
     {
         Schema::create('followers', function (Blueprint $table) {
-            $table->integer('club_id')->unsigned()->index();
             $table->integer('user_id')->unsigned()->index();
+            $table->integer('followable_id')->unsigned()->index();
+            $table->string('followable_type');
             $table->timestamps();
 
-            $table->primary(['club_id', 'user_id']);
+            $table->primary(['followable_id', 'user_id']);
         });
     }
 
