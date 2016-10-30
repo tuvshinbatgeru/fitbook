@@ -5,6 +5,7 @@ namespace App;
 use App\ClubFollowers;
 use App\Photo;
 use App\Tag;
+use App\Follower;
 use Carbon\Carbon;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Auth\Passwords\CanResetPassword;
@@ -139,9 +140,9 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
                     ->withTimestamps();
     }
 
-    public function followedClubs()
+    public function following()
     {
-        return $this->belongsToMany('App\Club', 'followers', 'user_id', 'club_id')->withTimestamps();
+        return $this->hasMany('App\Follower', 'user_id');
     }
 
     public function clubAsReception()
@@ -304,21 +305,38 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
         return Response::json(['result' => 'Success', 'type' => $type == 2 ? 'unteacher' : 'untrainer']);
     }
 
-    public function toggleClubFollow($club)
+    public function toggleFollow($id, $followable)
     {
-        $follow = ClubFollowers::firstOrNew([
-            'user_id' => $this->id,
-            'club_id' => $club->id,
-        ]);
+        $follow = \App\Follower::where('user_id', $this->id)
+                  ->where('followable_id', $id)
+                  ->where('followable_type', $followable);
 
-        if($follow->exists) 
+        if($follow->exists()) 
         {
-            $this->followedClubs()->detach($club->id);
-            return Response::json(['result' => 'Success', 'type' => 'follow']);
+            $follow->delete();
+
+            return Response::json([
+                'code' => 0,
+                'result' => 'follow',
+            ]);
         } 
 
-        $this->followedClubs()->attach($club->id);
-        return Response::json(['result' => 'Success', 'type' => 'unfollow']);
+        $instance = new \App\Follower;
+        $instance->user_id = $this->id;
+        $instance->followable_id = $id;
+        $instance->followable_type = $followable;
+
+        $instance->save();
+
+        return Response::json([
+            'code' => 0, 
+            'result' => 'unfollow'
+        ]);
+    }
+
+    public function attachMorph()
+    {
+        
     }
 
     public function joinClub($club, $type)
