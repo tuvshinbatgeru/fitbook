@@ -22,7 +22,7 @@
         },
 
         created : function () {
-            this.getFollowedClubs();
+
         },
 
         ready : function () {
@@ -36,19 +36,6 @@
         },
 
         methods : {
-            getFollowedClubs : function () {
-                this.$http.get(this.$env.get('APP_URI') + 'api/user/' +  this.id + '/followed').then(res => {
-                    this.clubs = res.data.data; 
-                    /*debugger;
-
-                    for(var i = 0; i < this.clubs.length; i ++) {
-                        this.clubs[i]["state"] = "following";
-                    }*/
-
-                }).catch(err => {
-                });
-            },
-
             toggleState : function (club) {
 
                 this.$http.post(this.$env.get('APP_URI') + 'api/club/' + club.id + '/follow').then(res => {
