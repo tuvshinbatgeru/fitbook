@@ -10,6 +10,7 @@ use App\Http\Requests;
 use App\Photo;
 use App\Subscriptions;
 use App\User;
+use App\Follower;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 use Illuminate\Http\Request;
@@ -122,24 +123,44 @@ class UserController extends Controller
         ]);
     }
 
-    public function followedClubs(User $user)
+    public function followingCount(User $user)
     {
-        $followedClubs = $user->followedClubs;
-
-        foreach ($followedClubs as $club) {
-            $club->state = "unfollow";
-        }
-
         return Response::json([
-            'result' => 'OK',
-            'data' => $followedClubs,
+            'code' => 0,
+            'result' => $user->following()->count()
         ]);
     }
 
-    public function toggleFollow(Club $club)
+    public function followings(User $user)
     {
-    	if(!Auth::check()) return Response::json(['result' => 'Login']);
-    	return Auth::user()->toggleClubFollow($club);
+        $following = $user->following()->with('followable')->paginate(10);
+        
+        foreach ($following->items() as $follow) {
+            $follow->state = "unfollow";
+        }
+
+        return Response::json([
+            'code' => 0,
+            'result' => $following
+        ]);
+    }
+
+    public function toggleFollow(Request $request)
+    {
+    	if(!Auth::check()) 
+        return Response::json([
+            'code' => '2',
+            'message' => 'Must be logged in',
+        ]);
+
+        if(empty($request->followable) || empty($request->id)) {
+            return Response::json([
+                'code' => 10,
+                'message' => 'Error during follow',
+            ]);
+        }
+
+    	return Auth::user()->toggleFollow($request->id, $request->followable);
     }
 
     public function toggleRequest(Request $request, Club $club)
