@@ -12,6 +12,7 @@ class Tag extends Model
     const TRAINING_ID = 1;
     const PLAN_ID = 2;
     const PROFILE_ID = 3;
+    const COVER_ID = 4;
 
     public function photos()
     {
