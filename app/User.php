@@ -97,6 +97,13 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
         return $this->hasMany('App\Comment', 'user_id');
     }
 
+    public function myPhotos()
+    {
+        return $this->belongsToMany('App\Photo', 'user_photos')
+                    ->withPivot('top', 'left', 'type')
+                    ->withTimestamps();
+    }
+
     public function photos()
     {
         return $this->hasMany('App\Photo', 'object_id');
@@ -106,6 +113,11 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
     {
         return $this->hasMany('App\Photo', 'object_id')
                     ->whereNotIn('type', [2 , 3]);
+    }
+
+    public function coverPhoto()
+    {
+        return $this->myPhotos()->wherePivot('type', 1);
     }
 
     public function avatars()
@@ -364,6 +376,23 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
         }
 
         return $this;
+    }
+
+    public function saveCover(Photo $photo, $top = 0, $left = 0)
+    {
+        $photo->attachTag(Tag::COVER_ID);
+
+        $this->deletePrevCover();
+
+        return $this->myPhotos()->attach($photo->id, [
+            'type' => 1,
+            'top' => $top,
+            'left' => $left,
+        ]);
+    }
+
+    private function deletePrevCover() {
+        $this->myPhotos()->newPivotStatement()->where('type',1)->delete();
     }
 
     public function saveAvatar($photo)
