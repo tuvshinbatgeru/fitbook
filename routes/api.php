@@ -26,12 +26,14 @@ Route::group(['middleware' => ['auth:api']], function () {
 	Route::get('/search', 'SearchController@search');
 	Route::resource('/genre', 'GenreController');
 	Route::get('/user/files', 'FileManagerController@files');
+	Route::post('/user/cover', 'UserController@changeCoverPhoto');
 	Route::post('/user/avatar/{photo}', 'UserController@storeAvatar');
 	Route::resource('/user/comments', 'CommentController');
 	Route::post('/user/comments/{comment}/reaction', 'CommentController@reaction');
 
 	Route::group(['prefix' => '/user/{user}/'], function () {
 
+		Route::get('cover', 'UserController@cover');
 		Route::get('menus', 'UserController@menus');
 		Route::get('notifications', 'UserController@notifications');
 		Route::get('mentions', 'UserController@mentions');
