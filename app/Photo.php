@@ -31,6 +31,12 @@ class Photo extends Model
         return $this->tags()->attach($tagId);
     }
 
+    public function attachTagIfnotExist($tagId)
+    {
+        if($this->tags()->where('id','=', $tagId)->exists()) return;
+        return $this->tags()->attach($tagId);   
+    }
+
     static public function attachTagById($id, $tagId)
     {
         $photo = static::findOrFail($id);
