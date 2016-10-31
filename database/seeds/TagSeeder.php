@@ -26,5 +26,10 @@ class TagSeeder extends Seeder
             'name' => 'нүүр зураг',
             'name_en' => 'profile',
         ]);
+
+        DB::table('tags')->insert([
+            'name' => 'нүүр зураг',
+            'name_en' => 'cover',
+        ]);
     }
 }
