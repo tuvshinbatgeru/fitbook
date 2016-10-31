@@ -1093,8 +1093,9 @@ $break-large: 1200px;
 //cover photo
 
 .user-cover {
-	height: 280px;
 	position: relative;
+	overflow:hidden;
+	width: 100%;
 	.user-profile-picture {
 		position: absolute;
 		right: 0;
