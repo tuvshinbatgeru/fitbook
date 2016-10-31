@@ -36,7 +36,7 @@
 		<div class="thumb-back">
 			<ul>
 				<li v-for="tag in file.tags">
-					{{tag.name}}
+					{{$t(tag.name_en)}}
 				</li>
 			</ul>
 
@@ -223,6 +223,10 @@
 		    	plan : 'Plan',
 		    	profile : 'Profile',
 		    	selected : 'Selected',
+		    	cover : '#Ковер',
+		    	profile : '#нүүр_зураг',
+		    	plan : '#хөтөлбөр',
+		    	training: '#хичээл',
 	    	},
 	    	mn : {
 	    		title : 'Хичээл нэмэх',
@@ -231,6 +235,10 @@
 		    	plan : 'Төлөвлөгөө',
 		    	profile : 'Нүүр зураг',
 		    	selected : 'Сонгосон',
+		    	cover : '#cover',
+		    	profile : '#profile',
+		    	plan : '#plan',
+		    	training: '#training',
 	    	},
 	    }
 	}
