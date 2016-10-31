@@ -47,6 +47,54 @@ class UserController extends Controller
         return view('auth.profile.edit')->with(compact('user', 'activities'));
     }
 
+    public function cover(User $user)
+    {
+        if(!$user->coverPhoto()->exists()) {
+            return Response::json([
+                'code' => 404,
+            ]);
+        }
+
+        return Response::json([
+            'code' => 0,
+            'result' => $user->coverPhoto()->first(),
+        ]);
+    }
+
+    public function changeCoverPhoto(Request $request)
+    {
+        if(!Auth::check()) {
+            return Response::json([
+                'code' => 1,
+                'message' => 'Must be logged in',
+            ]);
+        }
+
+        if(empty($request->photoId)) {
+            return Response::json([
+                'code' => 10,
+                'message' => 'Error during change cover',
+            ]);
+        }
+
+        $photo = \App\Photo::find($request->photoId);
+
+        if(!$photo) {
+            return Response::json([
+                'code' => 11,
+                'message' => 'Photo not found',
+            ]);
+        }
+
+        Auth::user()->saveCover($photo, $request->top, $request->left);
+
+        return Response::json([
+            'code' => 0,
+            'result' => $photo,
+            'message' => 'Successfully change cover',
+        ]);
+    }
+
     public function storeAvatar(Photo $photo)
     {
         $mediumAvatar = Auth::user()->deletePrevAvatar()
