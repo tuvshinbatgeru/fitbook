@@ -215,14 +215,6 @@
     font-size: 1.2em;
 }
 
-.coverWrap {
-    display: block;
-    position: relative;
-    height: 315px;
-    overflow: hidden;
-    text-decoration: none;
-}
-
 .pinned	{
 	  &:hover {
 	    cursor: move;
