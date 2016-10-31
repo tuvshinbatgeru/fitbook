@@ -35,12 +35,6 @@ require('../../../bower_components/rangy-official/rangy-classapplier');*/
 import Chart from 'chart.js';
 import Fullpage from 'fullpage.js';
 
-/**
- * Vue is a modern JavaScript library for building interactive web interfaces
- * using reactive data binding and reusable components. Vue's API is clean
- * and simple, leaving you to focus on building your next great project.
- */
-
 window.Vue = require('vue')
 require('vue-resource')
 Vue.use(require('vue-i18n'))
@@ -75,6 +69,7 @@ import CustomSelectionList from './actors/application/components/CustomSelection
 import CustomButtonGroup from './actors/application/components/CustomButtonGroup.vue';
 import CustomSearchTag from './actors/application/components/CustomSearchTag.vue';
 import HorizontalSlide from './actors/application/components/HorizontalSlide.vue';
+import CustomCropper from './actors/application/components/CustomCropper.vue';
 
 //import CustomDropdownMenu from './actors/application/components/CustomDropdownMenu.vue';
 import Multiselect from 'vue-multiselect'
@@ -91,6 +86,7 @@ Vue.component('CommentsList', CommentsList);
 Vue.component('CustomSearchTag', CustomSearchTag);
 Vue.component('CustomSelectionList', CustomSelectionList);
 Vue.component('HorizontalSlide', HorizontalSlide);
+Vue.component('CustomCropper', CustomCropper);
 //Vue.component('CustomDropdownMenu', CustomDropdownMenu);
 
 
