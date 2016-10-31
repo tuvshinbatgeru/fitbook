@@ -12,10 +12,28 @@
     </div>
 </custom-modal>
 
-<div class="row" style="margin-bottom: 10px;">
+<custom-modal 
+    title ="Cover" 
+    usage = "_cover-chooser" 
+    :show.sync = "showCoverPhoto"
+    save-callback = "chooseCover">
+    <div slot="body">
+      <component 
+        v-ref:context 
+        is="file-manager"
+      ></component>
+    </div>
+</custom-modal>
+
+<div class="row" style="margin-bottom: 10px;">  
   <div class="user-cover">
-    <img src="{{asset('images/site/cove_photo.jpg')}}" class="cover-photo"/>
-    <div class="user-profile-picture">
+    <custom-cropper ratio="4.1785" 
+                    :editable.sync="editCover"
+                    v-ref:coverCropper
+                    :image.sync="coverPhoto">
+    </custom-cropper>  
+    
+    <div class="user-profile-picture" v-show="!editCover">
         <div class="hexagon" style="background-image: url('{{$user->avatar_url}}')">
           <div class="hexTop"></div>
           <div class="hexBottom"></div>
@@ -30,7 +48,13 @@
           </span>
         </div>
     	</div>
-    <div class="cover-buttons">
+
+    <div class="cover-buttons" v-show="editCover">
+      <a @click="cancelCoverChange()" class="cover-button">Cancel</a>
+      <a @click="saveCoverChange()" class="cover-button">Save</a>
+    </div>
+
+    <div class="cover-buttons" v-show="!editCover">
       <a @click="showFollowing = true" class="cover-button">
         @{{following_count}} following
       </a>
@@ -38,11 +62,8 @@
         <a class="cover-button">
           <i class="fa fa-edit"></i> Following
         </a>
-        <a class="cover-button">
+        <a @click="changeCover()" class="cover-button">
           <i class="fa fa-edit"></i> Change cover
-        </a>
-        <a href="{{$user->username}}/edit" class="cover-button">
-          Edit Profile
         </a>
       @endif
     </div>
