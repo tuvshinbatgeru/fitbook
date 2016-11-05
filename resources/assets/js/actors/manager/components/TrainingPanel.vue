@@ -35,7 +35,7 @@
         </div>
   </custom-modal>
 
-  <div class="row small-up-1 medium-up-2">
+  <div class="row small-up-1 medium-up-2 large-up-3">
     <ft-training :item = "train" v-for = "train in training">
         
     </ft-training>
@@ -117,8 +117,9 @@
                 + '&genre=' + (this.trainingFilters && this.trainingFilters.length > 0 ? this.trainingFilters[0].name_en : '')).then(res => {
                 this.training = this.training.concat(res.data.result.data)
                 this.pageLast = res.data.result.last_page
+                this.$root.$refs.loader.show = false
             }).catch(err => {
-
+                this.$root.$refs.loader.show = false
             });
         },
 
