@@ -1,19 +1,23 @@
 <script>
 	import ClubDashboard from '.././actors/manager/menus/ClubDashboard.vue';
 	import ClubMembers from '.././actors/manager/menus/ClubMembers.vue';
-	import ClubRegistration from '.././actors/manager/menus/ClubRegistration.vue';
 	import ClubTemplate from '.././actors/manager/menus/ClubTemplate.vue';
 	import PlanPanel from '.././actors/manager/components/PlanPanel.vue';
 	import TrainingPanel from '.././actors/manager/components/TrainingPanel.vue';
 	import ServicePanel from '.././actors/manager/components/ServicePanel.vue';
 	import AllMembers from '.././actors/manager/components/AllMembers.vue';
 
+	//SUB MENU
+	import HeaderPreview from '.././actors/manager/components/preview/HeaderPreview.vue';
+	import ContentPreview from '.././actors/manager/components/preview/ContentPreview.vue';
+	import FooterPreview from '.././actors/manager/components/preview/FooterPreview.vue';
+
 	export default {
 
 		props: { 
 			clubid : {},
 			selectedMenu : { default : 'club-registration'},
-			content : { default : 'plan-panel' },
+			content : { default : 'training-panel' },
 		},
 
 		data () {
@@ -25,7 +29,7 @@
 		},
 
 		created : function () {
-			this.init();
+			this.init()
 		},
 
 		ready : function () {
@@ -58,7 +62,23 @@
 				});	
 			},
 
+			getDefaultContent : function (menu) {
+				switch (menu) {
+					case "club-template" : 
+						return "header-preview"
+					default : 
+						return ""
+				}
+			},
+
+			setWithSubMenu : function (menu) {
+				this.$root.$refs.loader.show = true
+				this.selectedMenu = menu
+				this.content = this.getDefaultContent(this.selectedMenu)
+			},
+
 			setMenu : function(menu) {
+				this.$root.$refs.loader.show = true
 				this.selectedMenu = menu;
 				this.setSubMenu();
 				this.content = this.selectedMenu;
@@ -84,8 +104,9 @@
 
 		components : {
 			ClubDashboard, ClubMembers, 
-			ClubRegistration, ClubTemplate, PlanPanel, 
-			TrainingPanel, ServicePanel, AllMembers
+			ClubTemplate, PlanPanel, 
+			TrainingPanel, ServicePanel, AllMembers,
+			HeaderPreview, ContentPreview, FooterPreview
 		},
 
 		locales: {
