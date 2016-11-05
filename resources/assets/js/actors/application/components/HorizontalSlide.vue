@@ -8,8 +8,8 @@
 	    	<i class="fa fa-arrow-right"></i>
 	    </button>
 
-		<div class="Horizontal__Window" :style="'left:-' + index * (windowWidth / block) + 'px'">
-		    <div :style="'width:' + windowWidth / block + 'px;'" class="Horizontal__Content" v-for="item in items">
+		<div class="Horizontal__Window" :style="'left:-' + (index * (windowWidth / block)) + 'px'">
+		    <div :style="'width:' + ((windowWidth / block)) + 'px;'" class="Horizontal__Content" v-for="item in items">
 		    	<div class="plan-card" style="margin: 0 auto;">
                     <div class="plan-card-container">
                         <div class="plan-card-image">
@@ -56,7 +56,7 @@
 
 		data () {
 			return {
-				index : 1,
+				index : 0,
 				windowWidth : null,
 			}
 		},
