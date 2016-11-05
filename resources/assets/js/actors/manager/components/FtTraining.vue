@@ -1,5 +1,5 @@
 <template>
-	<div class="column" style="font-size:12px;">
+	<div class="column FtTraining">
 		<a @click="editTraining()">Edit</a>
 		<a @click="deleteTraining()">Delete</a>
 		<a>
@@ -14,13 +14,10 @@
  		        </div>
  		    </div>
   		</a>
-		<div class="ft-pinned">
-            <img :id="'training-' + item.id + '-img'"
-            	 v-lazy="item.pinned_photos[0].url"
-                 :style = "{ 
-                        top: -1 * parseInt((item.pinned_photos[0].pivot.top_percentage * 300 * item.pinned_photos[0].ratio) / 100) + 'px'
-                 }" />    
-        </div>
+        <custom-cropper :ratio="920 / 280" 
+                :editable="false"
+                :image="item.pinned_photos | imageFilter">
+		</custom-cropper>      
         <span>{{item.created_at | moment "from"}}</span>
 		<h3>{{item.name}}</h3>
 		{{{item.description}}}	
@@ -62,7 +59,18 @@
  		},
 
  		ready : function () {
- 			new Foundation.Dropdown($('#training-history-' + this.item.id));	
+ 			new Foundation.Dropdown($('#training-history-' + this.item.id))	
+ 		},
+
+ 		filters : {
+ 			imageFilter : function (photos) {
+
+ 				if(photos.length > 0) {
+ 					return photos[0]
+ 				}
+
+ 				return this.$env.get('APP_URI') + 'images/site/default_photo.jpg'
+ 			} 
  		},
 
 		methods : {
@@ -114,6 +122,11 @@
 	}
 </script>
 <style>
+.FtTraining {
+	width:200px !important; 
+	font-size: 12px;
+}
+
 .ft-pinned {
 	width:300px; 
 	height:100px; 
