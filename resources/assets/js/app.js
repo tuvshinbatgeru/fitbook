@@ -18,9 +18,11 @@ import ClubView from './web/ClubView.vue';
 import PlanView from './web/PlanView.vue';
 import ReceptionDashboardView from './web/ReceptionDashboardView.vue';
 
-Vue.debug = true;
-Vue.http.headers.common['X-CSRF-TOKEN'] = document.querySelector('#_token').getAttribute('value');
-Vue.config.lang = 'mn';
+Vue.config.debug = true
+Vue.config.devtools = true
+Vue.config.silent = false
+Vue.http.headers.common['X-CSRF-TOKEN'] = document.querySelector('#_token').getAttribute('value')
+Vue.config.lang = 'en'
 
 const app = new Vue({
 	el : 'body',
