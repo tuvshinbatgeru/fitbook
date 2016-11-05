@@ -20,7 +20,7 @@
 				following_count : 0,
 				editCover : false, 
 				showCoverPhoto : false,
-				coverPhoto : null,
+				coverPhoto : {},
 				duplicatePhoto : null,
 			}
 		},
