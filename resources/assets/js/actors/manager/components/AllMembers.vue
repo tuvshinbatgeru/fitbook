@@ -65,8 +65,9 @@
                 this.request_count = response.data.requests_count;
                 this.member_count = response.data.members_count;
                 this.archive_count = response.data.archive_count;
+                this.$root.$refs.loader.show = false
             }, (response) => {
-
+                this.$root.$refs.loader.show = false
             });        
         },
 
