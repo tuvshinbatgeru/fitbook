@@ -50,6 +50,31 @@ class Club extends Model
 		return $this->belongsToMany('App\User', 'followers', 'club_id', 'user_id');
 	}
 
+	public function photos()
+	{
+		return $this->belongsToMany('App\Photo', 'club_photos', 'club_id', 'photo_id')->withPivot('type', 'top', 'left', 'view_order', 'pinned')->withTimestamps();
+	}
+
+	public function phones()
+	{
+		return $this->hasMany('App\Phone');
+	}
+
+	public function coverPhotos()
+	{
+		return $this->photos()->wherePivot('type', 2);
+	}
+
+	public function logo()
+	{
+		return $this->photos()->wherePivot('type', 1);	
+	}
+
+	public function coverWithLogo()
+	{
+		return $this->photos()->wherePivot('type', '<', 3);
+	}
+
 	public function requests()
 	{
 		return $this->belongsToMany('App\User', 'requests', 'club_id', 'user_id')->withPivot('type', 'description')->withTimestamps();;
