@@ -22,6 +22,12 @@
 			ratio : {
 
 			},
+			mobileRatio : {
+
+			},
+			tabletRatio : {
+
+			},
 			image : {
 
 			},
@@ -43,19 +49,30 @@
 				verticalPort : 0,
 				width: 0,
 				height: 0,
+				mobileWidth : 760,
+				tabletWidth : 900
+			}
+		},
+
+		created : function () {
+			if(!this.tabletRatio) {
+				this.tabletRatio = this.ratio
+			}
+
+			if(!this.mobileRatio) {
+				this.mobileRatio = this.ratio
 			}
 		},
 
 		ready : function () {
 			$(window).resize(this.windowResize)
 		    this.setDraggable()
+		    this.reCalc()
 		},
 
 		watch : {
 			image : function (oldValue, newValue) {
-				this.axis = this.image.ratio <= 0.5 ? "x" : "y"
-				this.setMargin()
-				this.windowResize()
+				this.reCalc()	
 			},
 
 			editable : function (oldValue, newValue) {
@@ -64,6 +81,12 @@
 		},
 
 		methods : {
+			reCalc : function () {
+				this.axis = this.image.ratio <= 0.5 ? "x" : "y"
+				this.setMargin()
+				this.windowResize()
+			},
+
 			setDraggable:  function () {
 				if(this.editable) {
 					$(".draggable").draggable({
@@ -117,9 +140,36 @@
 				}
 			},
 
+			isMobile : function () {
+				if(this.width <= this.mobileWidth) return true
+				return false
+			}, 
+
+			isTablet : function () {
+				if(this.mobileWidth > this.width && this.width <= this.tabletWidth) return true
+				return false
+			},
+
+			isWeb : function () {
+				if(this.width > this.tabletWidth) return true
+				return false
+			},
+
 			windowResize : function () {
 				this.width = $('.viewContainer').width()
-				this.height = this.width / this.ratio
+
+				if(this.isMobile()) {
+					this.height = this.width / this.mobileRatio
+				}
+
+				if(this.isTablet()) {
+					this.height = this.width / this.tabletRatio
+				}
+
+				if(this.isWeb()) {
+					this.height = this.width / this.ratio	
+				}
+
 				$('.viewContainer').css('height', this.height)
 				this.setViewPort()
 			}
@@ -132,7 +182,7 @@
 		position: relative;
 		height: 200px;
 		width: 100%;
-		background-color: #aecaec;
+		background-color: #202b30;
 	}
 
 	#draggableContainer {
