@@ -11,6 +11,9 @@
 <body class="admin-body">
     @include('includes.main-header')
     <custom-toast v-ref:toast></custom-toast>
+    <ui-progress-linear v-ref:loader :show="false" color="primary">
+    </ui-progress-linear>
+
     <div class="site-body container">
     <component clubid = "{{$club->id}}" is="club-edit-view" inline-template>
       @yield('content')      
