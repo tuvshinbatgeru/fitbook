@@ -51,6 +51,8 @@ Route::group(['middleware' => ['auth:api']], function () {
 	//Club edit APIs
 	Route::group(['prefix' => '/club/edit/{club}/'], function () {
 
+		Route::get('headerinfo', 'ClubEditController@headerInfo');
+		Route::get('footerinfo', 'ClubEditController@footerInfo');
 		Route::get('index', 'ClubEditController@index');
 		Route::get('members', 'ClubEditController@members');
 		Route::get('request', 'ClubEditController@request');
