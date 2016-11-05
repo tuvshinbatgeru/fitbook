@@ -1,5 +1,5 @@
 <template>
-	<div v-show="!loading"
+	<div v-if="!loading"
 	     class="callout" 
 	     :class="type | lowercase">
 		<button v-show="closeable" class="callout__close" aria-label="Dismiss alert" type="button" data-close>
@@ -9,7 +9,7 @@
 		</slot>
 	</div>
 
-	<div v-show="loading" 
+	<div v-else 
 		 :style="'height:' + height + 'px;'"
 		 :class="type | lowercase"
 		 class="callout text-center">
