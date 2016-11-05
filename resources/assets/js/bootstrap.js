@@ -70,6 +70,7 @@ import CustomButtonGroup from './actors/application/components/CustomButtonGroup
 import CustomSearchTag from './actors/application/components/CustomSearchTag.vue';
 import HorizontalSlide from './actors/application/components/HorizontalSlide.vue';
 import CustomCropper from './actors/application/components/CustomCropper.vue';
+import UiProgressLinear from './actors/application/components/loader/UiProgressLinear.vue';
 
 //import CustomDropdownMenu from './actors/application/components/CustomDropdownMenu.vue';
 import Multiselect from 'vue-multiselect'
@@ -87,6 +88,7 @@ Vue.component('CustomSearchTag', CustomSearchTag);
 Vue.component('CustomSelectionList', CustomSelectionList);
 Vue.component('HorizontalSlide', HorizontalSlide);
 Vue.component('CustomCropper', CustomCropper);
+Vue.component('UiProgressLinear', UiProgressLinear);
 //Vue.component('CustomDropdownMenu', CustomDropdownMenu);
 
 
