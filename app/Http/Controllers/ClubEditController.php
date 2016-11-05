@@ -80,4 +80,15 @@ class ClubEditController extends Controller
 
         return Response::json(['result' => '200']);
     }
+
+    //API
+    public function headerinfo(Club $club)
+    {
+        $club->load('phones', 'coverWithLogo');
+
+        return Response::json([
+            'code' => 0,
+            'result' => $club
+        ]);
+    }
 }
