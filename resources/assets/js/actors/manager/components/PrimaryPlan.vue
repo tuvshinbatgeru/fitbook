@@ -1,6 +1,6 @@
 <template>
     <div v-show="plans.length == 0" class="row text-center">
-            <span style="color:#3f4652">{{$t('noresult')}}</span>
+        <span style="color:#3f4652">{{$t('noresult')}}</span>
     </div>
     <div v-else class="row small-up-1 medium-up-2" style="font-size:12px;">
         <div class="column Plan__block" v-for="current in plans">
@@ -23,19 +23,17 @@
                     </a>
                 </div>
             </span>
-            
-            
         </div>
 
         <h3><a>{{current.name}}</a></h3>
         <custom-selection-list 
-                :limit="2" 
-                :total="current.teachers_count"
-                :items="current.first_two_teachers"
-                :item-text="itemText"
-                @clicked="allTeachers(current)"
-                :limit-before="teacherLimitBefore"
-                :limit-after="teacherLimitAfter">
+            :limit="2" 
+            :total="current.teachers_count"
+            :items="current.first_two_teachers"
+            :item-text="itemText"
+            @clicked="allTeachers(current)"
+            :limit-before="teacherLimitBefore"
+            :limit-after="teacherLimitAfter">
         </custom-selection-list>
 
         <span style="background-color:#3f4652; color:#fff; padding:5px; border-radius:5px;">{{current.frequency_type | freqFilter}}</span>
