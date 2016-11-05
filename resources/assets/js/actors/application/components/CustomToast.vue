@@ -43,8 +43,6 @@
 			},
 
 			showToast : function(option) {
-				debugger;
-				
 			    this.message = option.message ? option.message : '';
 			    this.timeout = option.timeout ? option.timeout : 3000;
 			    this.position = option.position ? option.position : 'bottom';
