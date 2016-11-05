@@ -75,37 +75,14 @@
 				</ul>
 			</li>
 			<li>
-				<a>
+				<a @click="setWithSubMenu('club-template')">
 					<i class="fa fa-object-ungroup"></i>
 					<br/>
 					@{{$t('template')}}
 				</a>
-				<ul class="menu vertical nested">
-					<li>
-						<a @click="setMenu('club-template')">
-							<i class="fa fa-object-ungroup"></i>
-							<br/>
-							@{{$t('template')}}
-						</a>
-					</li>
-					<li>
-						<a @click="setMenu('club-template')">
-							<i class="fa fa-object-ungroup"></i>
-							<br/>
-							@{{$t('template')}}
-						</a>
-					</li>
-					<li>
-						<a @click="setMenu('club-template')">
-							<i class="fa fa-object-ungroup"></i>
-							<br/>
-							@{{$t('template')}}
-						</a>
-					</li>
-				</ul>
 			</li>
 		</ul>
-		{{-- <section class="widget" style="margin-left:100px; display:none;">
+		{{-- <section class="widget" style="margin-left:100px;">
 			<component :clubid="clubid" 
 					   :is="selectedMenu">
 			</component>
