@@ -17,14 +17,14 @@ class Training extends Model
     public function photos()
     {
     	return $this->belongsToMany('App\Photo', 'training_photos', 'training_id', 'photo_id')
-    			->withPivot('pinned', 'top_percentage')
+    			->withPivot('pinned', 'top', 'left')
     			->withTimestamps();
     }
 
     public function pinnedPhotos()
     {
         return $this->belongsToMany('App\Photo', 'training_photos', 'training_id', 'photo_id')
-                    ->withPivot('pinned', 'top_percentage')
+                    ->withPivot('pinned', 'top', 'left')
                     ->where('pinned', '=', 'Y');
     }
 
