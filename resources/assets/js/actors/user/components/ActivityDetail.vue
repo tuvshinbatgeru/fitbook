@@ -42,7 +42,6 @@
 				this.$http.get(this.$env.get('APP_URI') + 'api/user/' + this.userId + '/activity/detail?date=' + 
 					Vue.moment(this.date).format('YYYY-MM-DD')
 					+ "&until=" + Vue.moment(this.date).add(1, 'days').format('YYYY-MM-DD')).then(res => {
-					debugger
 				  	this.activities = res.data.result
 				}).catch(err => {
 
