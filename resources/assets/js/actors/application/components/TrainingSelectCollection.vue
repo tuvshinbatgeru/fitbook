@@ -83,10 +83,10 @@
 
 		locales : {
 			en : {
-
+				genre : 'genre'
 			},
 			mn : {
-
+				genre : 'төрөл'
 			}
 		}
 	}
