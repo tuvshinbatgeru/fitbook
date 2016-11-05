@@ -15,15 +15,10 @@
 		</div>
 	</custom-modal>
 
-	<div id="viewContainer">
-        <div id="draggableContainer" 
-        	 :style="{ top: viewPort + 'px', bottom: viewPort + 'px' }">
-	    </div>
-	    <img id="draggable" 
-	         class="pinned" 
-	         :style="{ top: top + 'px'}"
-	         :src = "pinnedPic"/>
-	</div>
+	<custom-cropper :ratio="258 / 192" 
+                :editable="true"
+                :image.sync="pinnedPic">
+	</custom-cropper>  
 
 	<div class="row">
 	  	<waterfall 
@@ -75,17 +70,7 @@
 				showFileManager : false,
 				pinned : null,
 				pinnedPhoto : null,
-				viewPort : 0,
-				top : 0,
 			}
-		},
-
-		ready : function () {
-
-			$('#draggable').draggable({
-				axis: "y",
-				containment:"#draggableContainer"
-			});
 		},
 
 		events : {
@@ -95,17 +80,6 @@
 		},
 
 		methods : {
-			getViewPort : function () {
-				var top = $('#draggable').css('top');
-				top = -1 * parseInt(top.split('px')[0]);
-				return parseInt((top * 100) / (this.pinnedPhoto.ratio * 600));
-			},
-
-			setViewPort : function (width) {
-				this.viewPort = width;
-				$('#draggable').css('top', this.viewPort + 'px');
-			},
-
 			setPhotos : function(photos) {
 				this.pictures = photos;
 
@@ -117,7 +91,6 @@
 			},
 
 			choosedPictures : function($response) {
-				debugger;
 				this.pictures = $response.data;
 				if(this.pictures.length > 0) {
 					this.pinnedPhoto = this.pictures[0];
@@ -147,10 +120,7 @@
 
 		computed : {
 			pinnedPic : function () {
-
-				this.setViewPort(this.pinnedPhoto == null ? -175 : (200 - this.pinnedPhoto.ratio * 600));
-
-				return this.pinnedPhoto == null ? this.$env.get('APP_URI') + 'images/site/back.jpg' : this.pinnedPhoto.url;
+				return this.pinnedPhoto == null ? this.$env.get('APP_URI') + 'images/site/back.jpg' : this.pinnedPhoto;
 			}
 		},
 
@@ -186,26 +156,6 @@
 <style lang="scss">
 
 /* $container : 100%; */
-
-#viewContainer {
-	width: 600px;
-	height: 200px;
-	overflow:hidden;
-	position: relative;
-}
-
-#draggableContainer {
-	left: 0px; 
-	right: 0px; 
-	position: absolute;
-}
-
-#draggable {
-	width:100%; 
-	position:relative; 
-	max-height:none;
-	top: 0px;
-}
 
 .photo-container {
     top: 5px;
