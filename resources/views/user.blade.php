@@ -28,6 +28,8 @@
 <div class="row" style="margin-bottom: 10px;">  
   <div class="user-cover">
     <custom-cropper ratio="4.1785" 
+                    mobile-ratio="1"
+                    tablet-ratio="2"
                     :editable.sync="editCover"
                     v-ref:coverCropper
                     :image.sync="coverPhoto">
@@ -77,7 +79,7 @@
       </ul>
 
 	  <div class="large-12 small-centered columns">
-      <component :id="{{$user->id}}" :is="submenu" keep-alive>
+      <component :id="{{$user->id}}" :is="submenu">
       
       </component>
     </div>
