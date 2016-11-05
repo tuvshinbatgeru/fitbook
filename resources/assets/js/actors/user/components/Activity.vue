@@ -1,8 +1,11 @@
 <template>
-    <div class="Activity__Calendar">
-        <custom-calendar :user-id="id" :year.sync="selectedYear">
-            
-        </custom-calendar>
+    <div id="activity_calendar" class="Activity__Calendar">
+        <custom-callout :loading.sync="timeIsCome" :spinner-color="'#5fcf80'" type="callout__base">
+            <div slot="content">
+              <custom-calendar :user-id="id" :year.sync="selectedYear">
+              </custom-calendar>    
+            </div>
+        </custom-callout>
     </div>
 
     <activity-detail :user-id="id" :date.sync="selectedDate">
@@ -12,8 +15,6 @@
     <div class="row" v-for="activity in activities">
         <h3>{{activity.short_name}}</h3>
         <label>{{activity.pivot.duration}} min</label>
-
-       
     </div>
 </template>
 
@@ -32,6 +33,7 @@
             return {
                 selectedDate : null,
                 selectedYear : 0,
+                timeIsCome : true,
             }
         },
 
@@ -41,7 +43,7 @@
         },
 
         ready : function () {
-
+            this.resetUserActivity()
         },
 
         events : {
@@ -51,7 +53,16 @@
         },
 
         methods : {
-            
+            resetUserActivity : function () {
+                setTimeout(
+                    () => this.tick(),
+                    1000
+                )   
+            },
+
+            tick : function () {
+                this.timeIsCome = false
+            }
         },
 
         components : {
@@ -63,6 +74,8 @@
 <style lang="scss">
     .Activity__Calendar {
         width: 100%;
+        text-align: center;
+        height: 230px;
         overflow-y: hidden;
         overflow-x: auto;
         position: relative;
