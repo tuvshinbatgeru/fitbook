@@ -98,11 +98,11 @@
 
     events : {
         'planLoaderStart' : function() {
-            this.planLoader = true;
+            this.planLoader = true
         },
 
         'planLoaderStop' : function() {
-            this.planLoader = false;
+            this.planLoader = false
         },
 
         'savePlan' : function($response) {
