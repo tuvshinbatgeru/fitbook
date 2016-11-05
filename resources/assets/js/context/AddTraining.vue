@@ -165,7 +165,6 @@
 	    		description : 'Description',
 	    		name_watermark : 'name ...',
 	    		description_watermark : 'description ...',
-	    		genre : 'Genre',
 	    	},
 	    	mn : {
 	    		info : 'Инфо',
@@ -175,7 +174,6 @@
 	    		description : 'Тайлбар',
 	    		name_watermark : 'нэр ...',
 	    		description_watermark : 'тайлбар ...',
-	    		genre : 'Төрөл',
 	    	},
 	    }
 	}
