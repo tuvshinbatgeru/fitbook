@@ -106,8 +106,6 @@
             }).catch(err => {
                 this.showFileManager = false    
             });
-
-            
         },
 
         getGenres : function () {
@@ -121,8 +119,9 @@
         getServices: function () {
             this.$http.get(this.$env.get('APP_URI') + 'api/club/' + this.id + '/service').then(res => {
                 this.services = res.data.result
+                this.$root.$refs.loader.show = false
             }).catch(err => {
-
+                this.$root.$refs.loader.show = false
             });
         },
 
