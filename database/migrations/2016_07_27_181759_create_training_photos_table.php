@@ -15,7 +15,8 @@ class CreateTrainingPhotosTable extends Migration
         Schema::create('training_photos', function (Blueprint $table) {
             $table->integer('training_id')->unsigned()->index();
             $table->integer('photo_id')->unsigned()->index();
-            $table->tinyInteger('top_percentage');
+            $table->tinyInteger('top');
+            $table->tinyInteger('left');
             $table->enum('pinned', ['N','Y'])->default('N');
             $table->timestamps();
         });
