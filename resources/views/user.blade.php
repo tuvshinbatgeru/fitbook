@@ -35,7 +35,7 @@
                     v-ref:coverCropper
                     :image.sync="coverPhoto">
     </custom-cropper>
-    <div class="gradient-cover black-gardient">
+    <div class="gradient-cover black-gardient" v-show="!editCover">
     </div>
     
     <div class="user-info">
@@ -75,7 +75,7 @@
         </svg>
         <div class="user-name">
           <span class="name">
-              {{$user->first_name}}
+          <span>@</span>{{$user->username}}
             </span>
         </div>
       </div>
@@ -106,7 +106,7 @@
         <a @click="saveCoverChange()" class="cover-button">Save</a>
       </div>
       <div class="cover-buttons" v-show="!editCover">   
-        @if($editable)
+        @if($user->editable)
           <a @click="changeCover()" class="cover-button">
             <i class="fa fa-edit"></i> Change cover
           </a>
