@@ -117,7 +117,6 @@ class TrainingController extends Controller
     {
         $decode = json_decode($request->data);
         $data = $this->trainingTransformer->transform($decode);
-
         if(Training::where('name', '=', $data['name'])->exists()) 
         return Response::json([
             'code' => 1,
@@ -130,8 +129,9 @@ class TrainingController extends Controller
         $photo_id_array = [];
         for ($i = 0; $i < count($decode->pictures); $i++) {
             $photo_id_array[$decode->pictures[$i]->id] = [
-                'pinned' => isset($decode->pictures[$i]->pinned) && $decode->pictures[$i]->pinned ? 'Y' : 'N',
-                'top_percentage' => isset($decode->pictures[$i]->pinned) && $decode->pictures[$i]->pinned ? $decode->crop : 0,
+                'pinned' => $this->isPinned($decode->pictures[$i]) ? 'Y' : 'N',
+                'top' => $this->isPinned($decode->pictures[$i]) ? $data['top'] : 0,
+                'left' => $this->isPinned($decode->pictures[$i]) ? $data['left'] : 0,
             ];
 
             Photo::attachTagById($decode->pictures[$i]->id, Tag::TRAINING_ID);
@@ -154,6 +154,11 @@ class TrainingController extends Controller
             'message' => 'Successfully added training',
             'result' => $training,
         ], 200);
+    }
+
+    public function isPinned($photo)
+    {
+        return isset($photo->pinned) && $photo->pinned ? true : false;
     }
 
     /**
@@ -231,8 +236,9 @@ class TrainingController extends Controller
         $photo_id_array = [];
         for ($i = 0; $i < count($decode->pictures); $i++) {
             $photo_id_array[$decode->pictures[$i]->id] = [
-                'pinned' => isset($decode->pictures[$i]->pinned) && $decode->pictures[$i]->pinned ? 'Y' : 'N',
-                'top_percentage' => isset($decode->pictures[$i]->pinned) && $decode->pictures[$i]->pinned ? $decode->crop : 0,
+                'pinned' => $this->isPinned($decode->pictures[$i]) ? 'Y' : 'N',
+                'top' => $this->isPinned($decode->pictures[$i]) ? $data['top'] : 0,
+                'left' => $this->isPinned($decode->pictures[$i]) ? $data['left'] : 0,
             ];
 
             Photo::attachTagById($decode->pictures[$i]->id, Tag::TRAINING_ID);
