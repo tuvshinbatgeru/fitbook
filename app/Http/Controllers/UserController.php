@@ -33,9 +33,11 @@ class UserController extends Controller
     {
         $user = User::findByUsername($username);
         $editable = false;
-        if(Auth::check() && Auth::user()->username == $username)
+        if(Auth::check() && Auth::user()->username == $username) 
             $editable = true;
-        return view('user')->with(compact('user', 'editable'));
+
+        $user->editable = $editable;
+        return view('user')->with(compact('user'));
     }
 
     public function edit($username)
