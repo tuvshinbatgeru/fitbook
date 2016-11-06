@@ -1,5 +1,5 @@
 
-window._ = require('lodash');
+window._ = require('lodash')
 
 /**
  * We'll load jQuery and the Bootstrap jQuery plugin which provides support
@@ -7,22 +7,21 @@ window._ = require('lodash');
  * code may be modified to fit the specific needs of your application.
  */
 
-window.$ = window.jQuery = require('jquery');
-
-require('./dependency/jquery.fileupload');
-require('./dependency/jquery-ui.min');
-require('./dependency/jquery.ui.touch-punch');
-require('./dependency/hammer.min');
-require('./dependency/foundation');
-require('./dependency/jquery.tokenize');
-require('./dependency/tabs');
-require('./dependency/dropdown');
-require('./dependency/velocity.min');
-require('./dependency/transition');
-require('./dependency/collapse');
-require('./dependency/bootstrap-datetimepicker');
-require('./dependency/jquery.caret');
-require('./dependency/jquery.atwho');
+window.$ = window.jQuery = require('jquery')
+require('./dependency/jquery.fileupload')
+require('./dependency/jquery-ui.min')
+require('./dependency/jquery.ui.touch-punch')
+require('./dependency/hammer.min')
+require('./dependency/foundation')
+require('./dependency/jquery.tokenize')
+require('./dependency/tabs')
+require('./dependency/dropdown')
+require('./dependency/velocity.min')
+require('./dependency/transition')
+require('./dependency/collapse')
+require('./dependency/bootstrap-datetimepicker')
+require('./dependency/jquery.caret')
+require('./dependency/jquery.atwho')
 //window.Handlebars = require('./dependency/handlebars-v4.0.5');
 //require('./dependency/typeahead.bundle');
 
@@ -32,8 +31,8 @@ require('../../../bower_components/rangy-official/rangy-classapplier');*/
 
 /*require('./dependency/tooltip');*/
 
-import Chart from 'chart.js';
-import Fullpage from 'fullpage.js';
+import Chart from 'chart.js'
+import Fullpage from 'fullpage.js'
 
 window.Vue = require('vue')
 require('vue-resource')
@@ -58,60 +57,62 @@ Vue.use(VueLazyload, {
 })
 
 //global components
-import CustomModal from './actors/application/components/CustomModal.vue';
-import CustomToast from './actors/application/components/CustomToast.vue';
-import CustomComment from './actors/application/components/CustomComment.vue';
-import CustomButton from './actors/application/components/CustomButton.vue';
-import CustomCallout from './actors/application/components/CustomCallout.vue';
-import CustomEditor from './actors/application/components/CustomEditor.vue';
-import CommentsList from './actors/application/components/CommentsList.vue';
-import CustomSelectionList from './actors/application/components/CustomSelectionList.vue';
-import CustomButtonGroup from './actors/application/components/CustomButtonGroup.vue';
-import CustomSearchTag from './actors/application/components/CustomSearchTag.vue';
-import HorizontalSlide from './actors/application/components/HorizontalSlide.vue';
-import CustomCropper from './actors/application/components/CustomCropper.vue';
-import UiProgressLinear from './actors/application/components/loader/UiProgressLinear.vue';
+require('./actors/application/components/VueCropper')
+import CustomModal from './actors/application/components/CustomModal.vue'
+import CustomToast from './actors/application/components/CustomToast.vue'
+import CustomComment from './actors/application/components/CustomComment.vue'
+import CustomButton from './actors/application/components/CustomButton.vue'
+import CustomCallout from './actors/application/components/CustomCallout.vue'
+import CustomEditor from './actors/application/components/CustomEditor.vue'
+import CommentsList from './actors/application/components/CommentsList.vue'
+import CustomSelectionList from './actors/application/components/CustomSelectionList.vue'
+import CustomButtonGroup from './actors/application/components/CustomButtonGroup.vue'
+import CustomSearchTag from './actors/application/components/CustomSearchTag.vue'
+import HorizontalSlide from './actors/application/components/HorizontalSlide.vue'
+import CustomCropper from './actors/application/components/CustomCropper.vue'
+import UiProgressLinear from './actors/application/components/loader/UiProgressLinear.vue'
+
 
 //import CustomDropdownMenu from './actors/application/components/CustomDropdownMenu.vue';
 import Multiselect from 'vue-multiselect'
 
-Vue.component('CustomButtonGroup', CustomButtonGroup);
-Vue.component('CustomModal', CustomModal);
-Vue.component('CustomToast', CustomToast);
-Vue.component('Multiselect', Multiselect);
-Vue.component('CustomButton', CustomButton);
-Vue.component('CustomCallout', CustomCallout);
-Vue.component('CustomComment', CustomComment);
-Vue.component('CustomEditor', CustomEditor);
-Vue.component('CommentsList', CommentsList);
-Vue.component('CustomSearchTag', CustomSearchTag);
-Vue.component('CustomSelectionList', CustomSelectionList);
-Vue.component('HorizontalSlide', HorizontalSlide);
-Vue.component('CustomCropper', CustomCropper);
-Vue.component('UiProgressLinear', UiProgressLinear);
-//Vue.component('CustomDropdownMenu', CustomDropdownMenu);
+Vue.component('CustomButtonGroup', CustomButtonGroup)
+Vue.component('CustomModal', CustomModal)
+Vue.component('CustomToast', CustomToast)
+Vue.component('Multiselect', Multiselect)
+Vue.component('CustomButton', CustomButton)
+Vue.component('CustomCallout', CustomCallout)
+Vue.component('CustomComment', CustomComment)
+Vue.component('CustomEditor', CustomEditor)
+Vue.component('CommentsList', CommentsList)
+Vue.component('CustomSearchTag', CustomSearchTag)
+Vue.component('CustomSelectionList', CustomSelectionList)
+Vue.component('HorizontalSlide', HorizontalSlide)
+Vue.component('CustomCropper', CustomCropper)
+Vue.component('UiProgressLinear', UiProgressLinear)
+//Vue.component('CustomDropdownMenu', CustomDropdownMenu)
 
 
 //global context
-import MainHeader from './actors/user/components/MainHeader.vue';
+import MainHeader from './actors/user/components/MainHeader.vue'
 
-Vue.component('MainHeader', MainHeader);
+Vue.component('MainHeader', MainHeader)
 
 //common tools
-import Tools from './settings/Tools.js';
+import Tools from './settings/Tools.js'
 
 //global storage
-import _env from '../../../env.js';
+import _env from '../../../env.js'
 
 //language support
-import locales from './lang/locales';
+import locales from './lang/locales'
 
 Object.keys(locales).forEach(function (lang) {
   Vue.locale(lang, locales[lang])
 })
 
-Vue.use(Tools);
-Vue.use(require('vue-env'), _env);
+Vue.use(Tools)
+Vue.use(require('vue-env'), _env)
 
 //Custom Directives
 require('./actors/application/directives/foundation-dropdown-menu')
