@@ -38,8 +38,16 @@
 				default : ''
 			},
 
+			filterId: {
+				default : ''
+			},
+
 			borderColor : {
 				default : '#ccc'
+			},
+
+			borderWidth : {
+				default : 0
 			},
 
 			rotate : {
@@ -80,6 +88,8 @@
 
 			this.draw()
 			this.fillBgColor()
+			this.fillStroke()
+			this.setFilterId()
 		},
 
 		methods : {
@@ -131,6 +141,13 @@
 
 			fillBgColor : function() {
 				$(this.$el).attr('fill', this.bgColor)	
+			},
+
+			fillStroke : function() {
+				$(this.$el).attr('stroke', this.borderColor).attr('stroke-width',this.borderWidth);
+			},
+			setFilterId : function() {
+				$(this.$el).attr('filter', this.filterId);
 			}
 		}
 
