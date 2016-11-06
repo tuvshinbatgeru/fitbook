@@ -973,19 +973,11 @@ $break-large: 1200px;
        -moz-user-select: none;    
         -ms-user-select: none;      
             user-select: none;
-    @include transition(all 0.3s ease);
     cursor: pointer;
-    &:hover {
-    	-moz-transform: translateY(-10px);
-		-webkit-transform: translateY(-10px);
-		-o-transform: translateY(-10px);
-		-ms-transform: translateY(-10px);
-		transform: translateY(-10px);
-    }
 	.plan-card-container {
 		width: 100%;
 		border-radius: 4px;
-		@include box-shadow(0px, 0, 10px, 0, #676767);
+		@include box-shadow(0px, 0, 3px, 0, #676767);
 		overflow: hidden;
 	}
 	.plan-card-image {
@@ -1066,11 +1058,11 @@ $break-large: 1200px;
 
 //cover photo
 .black-gardient {
-	/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#000000+66,000000+100&0+66,0.65+100 */
-	background: -moz-linear-gradient(top,  rgba(0,0,0,0) 66%, rgba(0,0,0,0.65) 100%); /* FF3.6-15 */
-	background: -webkit-linear-gradient(top,  rgba(0,0,0,0) 66%,rgba(0,0,0,0.65) 100%); /* Chrome10-25,Safari5.1-6 */
-	background: linear-gradient(to bottom,  rgba(0,0,0,0) 66%,rgba(0,0,0,0.65) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00000000', endColorstr='#a6000000',GradientType=0 ); /* IE6-9 */
+	/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#000000+0,000000+100&0+46,0.25+70,0.73+100 */
+	background: -moz-linear-gradient(top, rgba(0,0,0,0) 0%, rgba(0,0,0,0) 46%, rgba(0,0,0,0.25) 70%, rgba(0,0,0,0.73) 100%); /* FF3.6-15 */
+	background: -webkit-linear-gradient(top, rgba(0,0,0,0) 0%,rgba(0,0,0,0) 46%,rgba(0,0,0,0.25) 70%,rgba(0,0,0,0.73) 100%); /* Chrome10-25,Safari5.1-6 */
+	background: linear-gradient(to bottom, rgba(0,0,0,0) 0%,rgba(0,0,0,0) 46%,rgba(0,0,0,0.25) 70%,rgba(0,0,0,0.73) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00000000', endColorstr='#ba000000',GradientType=0 ); /* IE6-9 */
 }
 .gradient-cover {
 	width: 100%;
@@ -1112,7 +1104,7 @@ $break-large: 1200px;
 			    	}
 			    	.active {
 		    			border-top: 2px solid #f04545;
-    
+    					color: #f04242;
 			    	}
 			    }
 		    }
@@ -1125,27 +1117,20 @@ $break-large: 1200px;
 		height: 40px;
 		.follow-button {
 			border-radius: 3px;
-		    color: #000;
-		    font-weight: 600;
-		    padding: 8px 15px;
+		    color: #fff;
+		    font-weight: 400;
+		    padding: 5px 15px;
 		    height: 100%;
-		    /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#fcfff4+0,d0d3bc+100 */
-			background: rgb(252,255,244); /* Old browsers */
-			background: -moz-linear-gradient(top,  rgba(252,255,244,1) 0%, rgba(208,211,188,1) 100%); /* FF3.6-15 */
-			background: -webkit-linear-gradient(top,  rgba(252,255,244,1) 0%,rgba(208,211,188,1) 100%); /* Chrome10-25,Safari5.1-6 */
-			background: linear-gradient(to bottom,  rgba(252,255,244,1) 0%,rgba(208,211,188,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-			filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fcfff4', endColorstr='#d0d3bc',GradientType=0 ); /* IE6-9 */
-
+			background: #f04242;
 			i {
-				color: #f04545;
-
+				color: #fff;
 			}
 		}
 	}
 	.user-followers {
 		float: left;
 		padding: 7px 0px;
-		font-size: 18px;
+		font-size: 16px;
 		text-shadow: 0 0 2px #4F4F4F;
 		span {
 			color: #f04545;
@@ -1160,7 +1145,8 @@ $break-large: 1200px;
 			color: #fff;
 			font-weight: 800;
 			font-size: 20px;
-			margin-top: 20px;
+			margin-top: 5px;
+			text-align: center;
 			text-shadow: 0 0 2px #4F4F4F;
 		}
 	}
