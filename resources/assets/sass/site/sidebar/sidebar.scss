@@ -71,12 +71,8 @@ section {
 .site-header {
 	z-index:100;
 	position: fixed;
-    background-color: #fff;
-    top: 0px;
-    color: #fff;
     width: 100%;
-    @include box-shadow(0px, 0, 10px, 0, #676767);
-
+    top: 0px;
     .site-header-title {
     	display: inline-block;
     	label {
@@ -99,6 +95,10 @@ section {
 		display:table;
 		height: 45px;
 		margin: 0 auto;
+		padding: 0 35px;
+		background-color: #fff;
+		overflow-x: hidden;
+		@include box-shadow(0px, 5px, 5px, -3px, #8e8e8e);
 		.site-header-row {
 			display: table-row;
 		}
@@ -170,6 +170,12 @@ $desktop-width: 1170px;
 @media (max-width: #{$mobile-width}) {
 	.site-body, .site-header-container {
 		width: 100%;
+	}
+}
+
+@media (min-width: #{$mobile-width}) and (max-width: #{$tablet-width}) {
+	.site-body, .site-header-container {
+		width: 750px;
 	}
 }
 

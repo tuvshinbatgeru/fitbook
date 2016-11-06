@@ -1,5 +1,16 @@
 [v-cloak] { display: none; }
 
+
+//Mixings
+
+@mixin transition($transition...) {
+    -moz-transition:    $transition;
+    -o-transition:      $transition;
+    -webkit-transition: $transition;
+    transition:         $transition;
+}
+//Mixings end
+
 @mixin menu-positioning() {
 	position: fixed;
 	display: block;
@@ -11,7 +22,13 @@ $main-color: #00c4cc;
 $menu-color: #272C33;
 
 body{
-	background-color: #f5f5f5;
+	/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#ea4242+0,ea4242+39,ffffff+40,ffffff+100 */
+	background: #000; /* Old browsers */
+	background: -moz-linear-gradient(top,  #ea4242 0%, #ea4242 244px, #ffffff 245px, #ffffff 1000%); /* FF3.6-15 */
+	background: -webkit-linear-gradient(top,  #ea4242 0%,#ea4242 244px,#ffffff 245px,#ffffff 1000%); /* Chrome10-25,Safari5.1-6 */
+	background: linear-gradient(to bottom,  #ea4242 0%,#ea4242 244px,#ffffff 245px,#ffffff 1000%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ea4242', endColorstr='#ffffff',GradientType=0 ); /* IE6-9 */
+	background-repeat: no-repeat;
 	line-height: 1.4;
 	font-family: 'Roboto', sans-serif;
 }
@@ -927,111 +944,44 @@ $break-large: 1200px;
 
 // End
 
-//Hexagon picture
-.hexagon {
-	position: relative;
-	height: 180px; 
-	width: 103.92px;
-	margin: 0px auto;
-	background-image: url(http://csshexagon.com/img/meow.jpg);
-	background-size: 184.7521px 100%;
-	background-position: center;
-	box-shadow: 0 1px 1px rgba(0, 0, 0, .07);
-	border-top: solid 10px #ffffff;
-	border-bottom: solid 10px #ffffff;
-	.hexTop, .hexBottom {
-		position: absolute;
-		z-index: 1;
-		width: 127.28px;
-		height: 127.28px;
-		overflow: hidden;
-		-webkit-transform: scaleX(0.5774) rotate(-45deg);
-		-ms-transform: scaleX(0.5774) rotate(-45deg);
-		transform: scaleX(0.5774) rotate(-45deg);
-		background: inherit;
-		top: 16.36px;
-		box-shadow: 0 1px 1px rgba(0, 0, 0, .07);
-	}
-	.hexTop {
-		left: -63.6396px;
-		border-top: solid 14.1421px #ffffff;
-		border-left: solid 14.1421px #ffffff;
-	}
-
-	.hexBottom {
-		right: -63.6396px;
-		border-bottom: solid 14.1421px #ffffff;
-		border-right: solid 14.1421px #ffffff;
-	}
-}
-
-
-
-/*counter transform the bg image on the caps*/
-.hexTop:after, .hexBottom:after {
-  content: "";
-  position: absolute;
-  height: 160.0000px;
-  width: 92.37604307034013px;
-  transform-origin: 0 0;
-  -webkit-transform:  rotate(45deg) scaleX(1.7321) translateY(-39.5px) translateX(-23.1145px);
-  -ms-transform:      rotate(45deg) scaleX(1.7321) translateY(-39.5px) translateX(-23.1145px);
-  transform:          rotate(45deg) scaleX(1.7321) translateY(-39.5px) translateX(-23.1145px);
-  -webkit-transform-origin: 0 0;
-  -ms-transform-origin: 0 0;
-  background: inherit;
-}
-
-
-
-.hexTop:after {
-  background-position: top left;
-}
-
-.hexBottom:after {
-  background-position: top right;
-}
-
-.hexagon:after {
-  content: "";
-  position: absolute;
-  left: 5.7735px;
-  top: 0;
-  height: 160.0000px;
-  width: 92.3760px;
-  z-index: 2;
-  background: inherit;
-}
-
-// Hexagon picture end
-
 // user place 
 .plan-section {
+	height: 50px;
+	line-height: 50px;
+	padding: 0px 50px;
 	.plan-section-title {
-		height: 96px;
-	    line-height: 96px;
-	    text-align: center;
+	    text-align: left;
 	    margin-bottom: 0px;
 	    font-size: 15px;
+	    text-transform: uppercase;
+	    font-weight: 600;
+	    float:left;
 	}
-	    
+	.result-length {
+		text-align: right;
+		font-size: 12px;
+		color: #7d7d7d;
+		float:right;
+	}
 }
 
 .plan-card {
-	width: 247px;
+	width: 258px;
 	padding: 0px;
 	margin: 0 auto;
 	-webkit-user-select: none;  
-  -moz-user-select: none;    
-  -ms-user-select: none;      
-  user-select: none;
-	.plan-price {
-		width: 100%;
-		padding: 14px;
-		text-align: center;
-		color: #000;
-		font-size: 13px;
-	}
+       -moz-user-select: none;    
+        -ms-user-select: none;      
+            user-select: none;
+    @include transition(all 0.3s ease);
+    cursor: pointer;
+    &:hover {
+    	-moz-transform: translateY(-10px);
+		-webkit-transform: translateY(-10px);
+		-o-transform: translateY(-10px);
+		-ms-transform: translateY(-10px);
+		transform: translateY(-10px);
+    }
 	.plan-card-container {
 		width: 100%;
 		border-radius: 4px;
@@ -1040,27 +990,12 @@ $break-large: 1200px;
 	}
 	.plan-card-image {
 		width: 100%;
-		height: 152px;
+		height: 192px;
 		background-color: #34495e;
 		border-bottom: 2px solid #fff;
+		position: relative;
 		img {
 			max-width: 100%;
-		}
-	}
-	.plan-card-info {
-		width: 100%;
-		height: 94px;
-		background-color: #8bc34a;
-		position: relative;
-		color: #fff;
-		padding: 15px;
-		.club-name {
-			font-size: 14px;
-			font-weight: 600;
-			text-transform: uppercase;
-		}
-		.plan-name {
-			font-size: 13px;
 		}
 		.plan-statistic {
 			position: absolute;
@@ -1077,7 +1012,7 @@ $break-large: 1200px;
 				}
 			}
 			.fa-heart {
-				color: #FF5252;
+				color: #f04545;
 			}
 			.price {
 				float: left;
@@ -1087,55 +1022,150 @@ $break-large: 1200px;
 			}
 		}
 	}
+	.plan-card-info {
+		width: 100%;
+		height: 125px;
+		background-color: #fff;
+		position: relative;
+		padding: 5px;
+		.club-profile-picture {
+			position: absolute;
+		    left: 5px;
+    		top: -8px;
+		}
+		.title-container {
+			color: #f04545;
+			margin-left: 85px;
+		    border-bottom: 1px solid #ccc;
+		    padding: 6px 0px;
+		    a {
+		    	color: #000;
+		    	@include transition(color 0.3s ease);
+		    	&:hover {
+		    		color: #f04545;
+		    	}
+		    }
+			.club-name {
+				font-size: 15px;
+				font-weight: 600;
+				text-transform: uppercase;
+			}
+			.plan-name {
+				font-size: 14px;
+			}
+		}
+		.plan-detail {
+			color: #434343;
+			font-size: 14px;
+			padding: 15px;
+			line-height: 1.7;
+		}
+	}
 }
 //user plan end
 
 //cover photo
+.black-gardient {
+	/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#000000+66,000000+100&0+66,0.65+100 */
+	background: -moz-linear-gradient(top,  rgba(0,0,0,0) 66%, rgba(0,0,0,0.65) 100%); /* FF3.6-15 */
+	background: -webkit-linear-gradient(top,  rgba(0,0,0,0) 66%,rgba(0,0,0,0.65) 100%); /* Chrome10-25,Safari5.1-6 */
+	background: linear-gradient(to bottom,  rgba(0,0,0,0) 66%,rgba(0,0,0,0.65) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00000000', endColorstr='#a6000000',GradientType=0 ); /* IE6-9 */
+}
+.gradient-cover {
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	top: 0px;
+	left: 0px;
+}
 
 .user-cover {
 	position: relative;
 	overflow:hidden;
 	width: 100%;
+	.edit-cover {
+		position: absolute;
+		top: 10px;
+		right: 10px;
+	}
+	.user-info {
+		position: absolute;
+		bottom: 0px;
+		left: 0px;
+		width: 100%;
+		padding: 0px 65px;
+		border-top: 1px solid #7d7b79;
+		.tabs-container {
+			display: block;
+		    margin-left: auto;
+		    margin-right: auto;
+		    height: 40px;
+		    width: 200px;
+		    ul {
+		    	display: block;
+		    	padding: 8px;
+			    .tab {
+			    	display: inline;
+			    	a {
+			    		padding: 10px;
+			    	}
+			    	.active {
+		    			border-top: 2px solid #f04545;
+    
+			    	}
+			    }
+		    }
+		}
+	}
+	.user-follow {
+		float: right;
+		padding: 2px 0px;
+		line-height: 38px;
+		height: 40px;
+		.follow-button {
+			border-radius: 3px;
+		    color: #000;
+		    font-weight: 600;
+		    padding: 8px 15px;
+		    height: 100%;
+		    /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#fcfff4+0,d0d3bc+100 */
+			background: rgb(252,255,244); /* Old browsers */
+			background: -moz-linear-gradient(top,  rgba(252,255,244,1) 0%, rgba(208,211,188,1) 100%); /* FF3.6-15 */
+			background: -webkit-linear-gradient(top,  rgba(252,255,244,1) 0%,rgba(208,211,188,1) 100%); /* Chrome10-25,Safari5.1-6 */
+			background: linear-gradient(to bottom,  rgba(252,255,244,1) 0%,rgba(208,211,188,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+			filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fcfff4', endColorstr='#d0d3bc',GradientType=0 ); /* IE6-9 */
+
+			i {
+				color: #f04545;
+
+			}
+		}
+	}
+	.user-followers {
+		float: left;
+		padding: 7px 0px;
+		font-size: 18px;
+		text-shadow: 0 0 2px #4F4F4F;
+		span {
+			color: #f04545;
+			font-weight: 800;
+		}
+	}
 	.user-profile-picture {
 		position: absolute;
-		right: 0;
-		left: 0;
-		top: 30px;
-		.user-profile-name {
-			text-align: center;
+		top: -202px;
+		left: 65px;
+		.user-name {
 			color: #fff;
-			line-height: 25px;
-    		margin-top: 10px;
-    		text-shadow: 0px 0px 4px #000000;
-			.name {
-				font-size: 16px;
-				font-weight: 600;
-			}
-			.role {
-				font-size: 12px;
-			}
+			font-weight: 800;
+			font-size: 20px;
+			margin-top: 20px;
+			text-shadow: 0 0 2px #4F4F4F;
 		}
 	}
-	.cover-photo {
-		max-width: 100%;
-		max-height: 100%;
-		width: 100%;
-		height: 100%;
-	}
-	.cover-buttons {
-		position: absolute;
-		right: 20px;
-		bottom: 20px;
-		.cover-button {
-			background-color: #fff;
-		    padding: 5px 10px;
-		    border-radius: 15px;
-		    color: #777;
-		    margin-left: 10px;
-    		font-size: 12px;
-		    @include box-shadow(0px, 0, 7px, 0, #676767);
-		}
+	a {
+		color: #fff;
 	}
 }
-
 //cover photo end
