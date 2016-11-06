@@ -5,6 +5,7 @@
 	import Activity from '../actors/user/components/Activity.vue'
 	import UserHome from '../actors/user/components/UserHome.vue'
 	import FileManager from '../context/FileManager.vue';
+	import CustomHexagon from '../actors/application/svg/CustomHexagon.vue';
 
 	export default {
 		mixins : [Pageable],
@@ -31,7 +32,7 @@
 		},
 		
 		ready : function () {
-			$('ul.tabs').tabs();
+			$('ul.user-tab').tabs();
 		},
 
 		/*filters : {
@@ -121,7 +122,7 @@
 		},
 
 		components : {
-            UserFollowing, Timeline, Activity, UserHome, FileManager
+            UserFollowing, Timeline, Activity, UserHome, FileManager, CustomHexagon
         }
 	}
 </script>
