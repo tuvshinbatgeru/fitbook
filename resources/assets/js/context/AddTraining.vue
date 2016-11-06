@@ -1,6 +1,6 @@
 <template>
 	<form method="POST" accept="">
-	  <photo-slider v-ref:pslider>
+	  <photo-slider v-ref:pslider :pictures="training.photos">
 	  </photo-slider>
 	  <div class="row">
 	  		<label>{{$t("genre")}}</label>
@@ -84,20 +84,21 @@
 			);
 
 			if(this.training) {
-				this.setData();
+				this.setData()
 			}
 		},
 
 		methods : {
 			setData : function () {
-				this.name = this.training.name;
-				this.$refs.tdescription.setHtml(this.training.description);
-				this.$refs.tslider.setTeachers(this.training.teachers);
-				this.genres = this.training.genres;
-				this.$refs.pslider.setPhotos(this.training.photos);			
+				this.name = this.training.name
+				this.$refs.tdescription.setHtml(this.training.description)
+				this.$refs.tslider.setTeachers(this.training.teachers)
+				this.genres = this.training.genres
 			},
+
 			getData : function() {
-				this.$dispatch('startLoading');
+				this.$dispatch('startLoading')
+				var port = this.$refs.pslider.getPinnedPhoto()
 				return {
 					teachers : this.$refs.tslider.teachers,
 					pinned_photo : this.$refs.pslider.pinnedPhoto,
@@ -107,7 +108,8 @@
 						club_id : this.id,
 						name : this.name,
 						description : this.$refs.tdescription.getHTML(),
-						crop : this.$refs.pslider.getViewPort(),
+						top : port.top,
+						left : port.left,
 						pictures : this.$tools.collectionBy(this.$refs.pslider.pictures, "id|url|pinned"),
 						teachers : this.$tools.arrayBy(this.$refs.tslider.teachers, "id"),
 						genres : this.$tools.arrayBy(this.genres, "id"), 
@@ -119,36 +121,36 @@
 
 				if(!this.name.trim()) {
 					this.$root.$refs.toast.showMessage("Please. Fill the name of training");
-					return false;
+					return fals
 				}
 
 				if(!this.genres || this.genres.length == 0) {
 					this.$root.$refs.toast.showMessage("Please. Choose at least one genre");
-					return false;
+					return false
 				}
 
 				if(!this.$refs.tslider.teachers || this.$refs.tslider.teachers.length == 0) {
 					this.$root.$refs.toast.showMessage("Please. Choose at least one teacher");
-					return false;	
+					return false
 				}
 
-				return true;
+				return true
 			},
 
 			getGenres : function () {
 				this.$http.get(this.$env.get('APP_URI') + 'api/genre').then(res => {
-					this.sysgenres = res.data.result;
+					this.sysgenres = res.data.result
 				}).catch(err => {
 
 				});
 			}, 
 
 			limitText : function(count) {
-				return "ба " + count + " бусад"; 
+				return "ба " + count + " бусад"
 			},
 
 			updateGenres : function (genres) {
-				this.genres = genres;
+				this.genres = genres
 			}
 		},
 
@@ -165,6 +167,8 @@
 	    		description : 'Description',
 	    		name_watermark : 'name ...',
 	    		description_watermark : 'description ...',
+	    		and : 'and other ',
+	    		other : 'teachers'
 	    	},
 	    	mn : {
 	    		info : 'Инфо',
@@ -174,6 +178,8 @@
 	    		description : 'Тайлбар',
 	    		name_watermark : 'нэр ...',
 	    		description_watermark : 'тайлбар ...',
+	    		and : 'ба ',
+	    		other : 'бусад'
 	    	},
 	    }
 	}

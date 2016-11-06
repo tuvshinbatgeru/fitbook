@@ -41,12 +41,14 @@
 			</ul>
 
 			<div class="thumb-check">
-				<a v-if="file.selected" @click="toggle(file)" class="success button">
-					<i class="fa fa-check"></i>
-				</a>
-				<a v-else @click="toggle(file)" class="warning button">
-					<i class="fa fa-times"></i>
-				</a>
+				<div style="position:absolute; top: 50%">
+					<a v-if="file.selected" @click="toggle(file)" class="success button">
+						<i class="fa fa-check"></i>
+					</a>
+					<a v-else @click="toggle(file)" class="warning button">
+						<i class="fa fa-times"></i>
+					</a>
+				</div>
 			</div>
 		</div>
 	  </waterfall-slot>

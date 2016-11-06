@@ -1,10 +1,6 @@
 <template>
-	<polygon @click="polygonMouseClick" v-on:mouseout="polygonMouseOut" v-on:mouseover="polygonMouseOver" class="hex"></polygon>
-	<!-- <g class="hexagon--tooltip" :transform="'translate(' + cordX + ',' + cordY +')'">
-	  <rect x="-3em" y="-45" width="6em" height="1.25em"></rect>
-      <text y="-45" dy="1em" text-anchor="middle" fill="cornflowerblue">
-        {{item.duration}} on {{label}}</text>
-	</g> -->
+	<polygon @click="polygonMouseClick" v-on:mouseout="polygonMouseOut" v-on:mouseover="polygonMouseOver" class="hex">
+	</polygon>
 </template>
 
 <script>
@@ -97,8 +93,8 @@
 				this.$emit('mouseout', this.item)
 			},
 
-			polygonMouseOver : function () {
-				this.$emit('hovered', this.item)
+			polygonMouseOver : function (e) {
+				this.$emit('hovered', this.item, e)
 			},
 
 			polygonMouseClick : function () {

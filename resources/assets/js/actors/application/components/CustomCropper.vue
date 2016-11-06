@@ -8,7 +8,7 @@
         	 	+ verticalPort + 'px;'
         	">
 	    </div>
-	    <img class="pinned draggable" 
+	    <img :id="id" class="pinned draggable" 
 	         :style="axis == 'y' ? 'width:100%' : 'height:100%'"
 	         :src = "image ? image.url : 'null'"/>
 	    <div class="viewLabel" v-show="editable">
@@ -44,6 +44,7 @@
 
 		data() {
 			return {
+				id : {},
 				axis : "y",
 				horizontalPort : 0,
 				verticalPort : 0,
@@ -55,6 +56,8 @@
 		},
 
 		created : function () {
+			this.id = this.$tools.newId()
+
 			if(!this.tabletRatio) {
 				this.tabletRatio = this.ratio
 			}
@@ -65,6 +68,7 @@
 		},
 
 		ready : function () {
+
 			$(window).resize(this.windowResize)
 		    this.setDraggable()
 		    this.reCalc()
@@ -89,7 +93,7 @@
 
 			setDraggable:  function () {
 				if(this.editable) {
-					$(".draggable").draggable({
+					$("#" + this.id).draggable({
 						axis: this.axis,
 						containment:"#draggableContainer"
 					})

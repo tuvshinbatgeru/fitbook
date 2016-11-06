@@ -1,5 +1,5 @@
 <template>
-<div class="modal-mask" @click="modalClose" v-if="show" transition="modal">
+<div class="modal-mask" @click="modalDisapear" v-if="show" transition="modal">
         <div class="modal-container autoscroll" @click.stop>
             <div class="modal-header">
 				<slot name="header">
@@ -79,6 +79,9 @@
 			validateable : { 
 				default: 'N'
 			},
+			disapearable : {
+				default : true,
+			},
 			show: {
 		      type: Boolean,
 		      required: true,
@@ -96,8 +99,13 @@
 
 		methods : {
 
+			modalDisapear: function () {
+				if(this.disapearable)
+					this.modalClose()
+			},
+
 			modalClose : function () {
-				this.show = false;
+				this.show = false
 			},
 
 			modalSave : function() {

@@ -27,11 +27,11 @@
         usage = "_add-training" 
         :show.sync = "showAddTraining"
         save-callback = "saveTraining"
+        :disapearable="false"
         validateable = 'Y'>
         <div slot="body">
-          <components v-ref:context :id="id" is="add-training" :training="currentTraining">
-              
-          </components>
+          <add-training :id="id" :training="currentTraining"
+          </add-training>
         </div>
   </custom-modal>
 

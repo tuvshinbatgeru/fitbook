@@ -1,5 +1,5 @@
 <template>
-    <svg version="1.1" width="800" height="180" style="position: relative;" class="calendar-graph">
+    <svg version="1.1" width="800" height="180">
     	<g transform="translate(40, 30)">
 	        <custom-hexagon
 	        	v-for="activity in hexagons"
@@ -25,10 +25,10 @@
 	        	{{month.label | monthFilter}}
 	        </text>
 
-	        <div v-if="showHexagonTooltip" class="Hexagon__tooltip"
-	        	:style="'top:' + (hoveredActivity.y) + 'px; left:' + (hoveredActivity.x - 25) + 'px'">
-	        		{{hexagonTooltipContent}}
-	        </div>
+	        <g v-show="showHexagonTooltip" :transform="'translate(' + (hoveredActivity.x - 100) + ', '+ (hoveredActivity.y - 30) +')'">
+				<rect x="0" y="0" width="260" height="20" fill="#3f4652"></rect>
+				<text x="10" y="13" font-size="11" fill="white">{{hexagonTooltipContent}}</text>
+			</g>
     	</g>
         
     </svg>
@@ -78,7 +78,7 @@
 				length : 8,
 				showHexagonTooltip : false ,
 				hexagonTooltipContent : '',
-				hoveredActivity : null,
+				hoveredActivity : {},
 				monthDistance : 60,
 				weekDistance : 30,
 				monthPadding : 10, 
@@ -165,8 +165,12 @@
 				});
 			},
 
-			onHexagonHover : function (activity) {
+			onHexagonHover : function (activity, e) {
 				this.hoveredActivity = activity
+				//debugger
+				//this.hoveredActivity.x = e.pageX
+				//this.hoveredActivity.y += 5
+				//this.hoveredActivity.y = e.pageY
 
 				this.hexagonTooltipContent = activity.label + '-ны өдөр '
 
@@ -250,14 +254,18 @@
 	}
 </script>
 <style lang="scss">
+	.calendar-graph {
+	    position: relative;
+	}
+
 	.Hexagon__tooltip {
 		padding: 3px 8px; 
 		white-space: nowrap;
-		background-color: #3f4652; 
 		color: #fff;
 		border-radius: 3px;
 		font-size: 11px;
 		position: absolute;
+		pointer-events: none;
 		&:after {
 			content: '';
 			width: 0; 

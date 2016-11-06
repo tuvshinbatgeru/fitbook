@@ -1,5 +1,16 @@
 <template>
 
+	<custom-modal
+		title="Image cropper"
+		usage = "_image-cropper" 
+		:show.sync="showImageCropper"
+		:disapearable="false"
+		save-callback="croppedImage">
+		<div slot="body">
+			<component-cropper :ratio="290 / 158" :image="pinnedPhoto.url"></component-cropper>
+		</div>
+	</custom-modal>
+
 	<custom-modal 
 		:id = "id" 
 		type = "User"
@@ -14,11 +25,6 @@
 			</components>
 		</div>
 	</custom-modal>
-
-	<custom-cropper :ratio="258 / 192" 
-                :editable="true"
-                :image.sync="pinnedPic">
-	</custom-cropper>  
 
 	<div class="row">
 	  	<waterfall 
@@ -54,7 +60,8 @@
 </template>
 
 <script>
-	import FileManager from '../../../context/FileManager.vue';
+	import FileManager from '../../../context/FileManager.vue'
+	import ComponentCropper from './ComponentCropper.vue'
 
 	var Waterfall = require('vue-waterfall')
 
@@ -68,66 +75,98 @@
 		data() {
 			return {
 				showFileManager : false,
-				pinned : null,
-				pinnedPhoto : null,
+				showImageCropper : false,
+				pinned : {},
+				pinnedPhoto : {},
+				cropImg : {}
 			}
+		},
+
+		created : function () {
+			this.setPhotos()
 		},
 
 		events : {
 			'choosedPictures' : function($response) {
-				this.choosedPictures($response);
+				this.choosedPictures($response)
 			},
+
+			'croppedImage' : function ($response) {
+
+			}
 		},
 
 		methods : {
-			setPhotos : function(photos) {
-				this.pictures = photos;
+			getPinnedPhoto : function () {
+				var port = this.$refs.photocropper.getViewPort()
 
+				this.pinnedPhoto.pivot = {
+					'top' : port.top,
+					'left' : port.left,
+				}
+				
+				return port
+			},
+
+			setPhotos : function() {
 				var pinned = _.filter(this.pictures, function(o) { 
-					return o.pivot.pinned == 'Y'; 
-				});
+					return o.pivot.pinned == 'Y'
+				})
 
-				this.setPinnedPhoto(pinned[0]);				
+				if(pinned.length > 0)
+					this.setPinnedPhoto(pinned[0])
 			},
 
 			choosedPictures : function($response) {
-				this.pictures = $response.data;
+				this.pictures = $response.data
 				if(this.pictures.length > 0) {
-					this.pinnedPhoto = this.pictures[0];
-					this.pinnedPhoto.pinned = true;
+					this.setPinnedPhoto(this.pictures[0])
 				}
-				this.showFileManager = false;
+				this.showFileManager = false
 			},
 
 			setPinnedPhoto : function(photo) {
-				photo.pinned = true;
+				photo.pinned = true
 
 			    if(this.pinnedPhoto && photo != this.pinnedPhoto) {
-					this.pinnedPhoto.pinned = false;
+					this.pinnedPhoto.pinned = false
 				}
 
-				this.pinnedPhoto = photo;
+				this.pinnedPhoto = photo
+				this.showImageCropper = true
+				if(this.$refs.cropper) {
+					this.$refs.cropper.replace(this.pinnedPhoto.url)
+				}
 			},
 
 			deletePhoto : function(photo) {
-				this.pictures.$remove(photo);		
+				this.pictures.$remove(photo)
 			},
 
 			filterPinnedPic : function (obj) {
-				return obj.pinned;
+				return obj.pinned
 			},
+
+	        cropImage () {
+	            this.cropImg = this.$refs.cropper.getCroppedCanvas().toDataURL();
+	        },
+
+	        rotate () {
+	            this.$refs.cropper.rotate(90);
+	        }
 		},
 
 		computed : {
 			pinnedPic : function () {
-				return this.pinnedPhoto == null ? this.$env.get('APP_URI') + 'images/site/back.jpg' : this.pinnedPhoto;
+				return this.pinnedPhoto == null ? this.$env.get('APP_URI') + 'images/site/back.jpg' : this.pinnedPhoto
 			}
 		},
 
 		components : {
 			'waterfall': Waterfall.waterfall,
     		'waterfall-slot': Waterfall.waterfallSlot,
-    		FileManager
+    		FileManager,
+    		ComponentCropper
 		},
 
 		locales: {
