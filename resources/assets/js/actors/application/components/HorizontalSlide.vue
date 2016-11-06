@@ -1,20 +1,19 @@
 <template>
 	<div class="Slide__Container">
-	<button v-show="index > 0" @click="moveLeft()" class="Horizontal__Left"
-		:style="'left: ' + ((windowWidth / block - slideWidth)/2 - 50) + 'px;'">
-	    <i class="fa fa-chevron-left"></i>
-	</button>
-
-    <button v-show="(index * step + block) < items.length" @click="moveRight()" class="Horizontal__Right" :style="'right: ' + ((windowWidth / block - slideWidth)/2 - 50) + 'px;'">
-    	<i class="fa fa-chevron-right"></i>
-    </button>
 	<div id="Horizontal__Slide" class="Horizontal__Slide">
-		<div class="Horizontal__Window" :style="'left:-' + (index * (windowWidth / block)) + 'px'">
-		    <div :style="'width:' + ((windowWidth / block)) + 'px;'" class="Horizontal__Content" v-for="item in items">
+		<button v-show="indexMuch()" @click="moveLeft()" class="Horizontal__Left">
+		    <i class="fa fa-chevron-left"></i>
+		</button>
+
+	    <button v-show="(index * step + block) < items.length" @click="moveRight()" class="Horizontal__Right">
+	    	<i class="fa fa-chevron-right"></i>
+	    </button>
+		<div class="Horizontal__Window" :style="'left:-' + moveLength + 'px'">
+		    <div :style="'width:' + moveWidth + 'px;'" class="Horizontal__Content" v-for="item in items">
 		    	<div class="plan-card" style="margin: 0 auto;">
                     <div class="plan-card-container">
                         <div class="plan-card-image">
-                            <img src="http://localhost/images/users/91f5060e20b1d98a49b35d974dca573f1477461676Nuur huudas new 7.gif">
+                            <img src="/images/site/cropped.jpg">
                             <div class="gradient-cover black-gardient">
     						</div>
                             <div class="plan-statistic">
@@ -137,12 +136,28 @@
 				if((this.index * this.step + this.block) < this.items.length)
 					this.index += this.step 
 			},
+
+			indexMuch : function () {
+				return this.index > 0
+			},
 		},
 
 		computed : {
 			block : function () {
 				return Math.floor(this.windowWidth / this.slideWidth);
 			},
+
+			moveLength : function () {
+				return (this.index * this.moveWidth - this.marginLength)
+			},
+
+			marginLength : function () {
+				return (this.windowWidth % (this.block * this.slideWidth)) / (this.block + 2)
+			},
+
+			moveWidth : function () {
+				return  this.slideWidth + this.marginLength
+			}
 		},
 
 		components : {
@@ -168,7 +183,7 @@
 .Horizontal__Window {
 	position: absolute;
 	width: 3000px;
-	left: 0;
+	left: 0px;
 	top: 0;	
 	padding-top: 10px;
 	-webkit-transition: all 500ms cubic-bezier(0.470, 0.000, 0.745, 0.715); 
@@ -185,44 +200,46 @@
 }
 
 .Horizontal__Left {
-	position: absolute;
-    top: 199px;
-    left: -36px;
-    z-index: 0;
-    color: #f04545;
+    position: absolute;
+    top: 135px;
+    left: 0px;
+    z-index: 10;
+    color: #bdbdbd;
     width: 50px;
     text-align: center;
-    height: 90px;
-    line-height: 90px;
-    border-top: 1px solid #959595;
-    border-left: 1px solid #959595;
-    border-bottom: 1px solid #959595;
-    border-top-left-radius: 5px;
-    border-bottom-left-radius: 5px;
-    background-color: #fff;
+    height: 80px;
+    line-height: 80px;
+    border-radius: 5px;
+    background-color: rgba(0, 0, 0, 0.46);
     font-size: 30px;
-    padding-right: 15px;
-
+    -webkit-transition: all 300ms cubic-bezier(0.470, 0.000, 0.745, 0.715); 
+   -moz-transition: all 300ms cubic-bezier(0.470, 0.000, 0.745, 0.715); 
+     -o-transition: all 300ms cubic-bezier(0.470, 0.000, 0.745, 0.715); 
+        transition: all 300ms cubic-bezier(0.470, 0.000, 0.745, 0.715); /* easeInSine */
+    &:hover {
+    	color: #eee;
+    }
 }
 
 .Horizontal__Right {
 	position: absolute;
-    top: 199px;
-    right: -36px;
-    z-index: 0;
-    color: #f04545;
+    top: 135px;
+    right: 0px;
+    z-index: 10;
+    color: #bdbdbd;
     width: 50px;
     text-align: center;
-    height: 90px;
-    line-height: 90px;
-    border-top: 1px solid #959595;
-    border-right: 1px solid #959595;
-    border-bottom: 1px solid #959595;
-    border-top-right-radius: 5px;
-    border-bottom-right-radius: 5px;
-    background-color: #fff;
+    height: 80px;
+    line-height: 80px;
+    border-radius: 5px;
+    background-color: rgba(0, 0, 0, 0.46);
     font-size: 30px;
-    padding-left: 15px;
-
+    -webkit-transition: all 300ms cubic-bezier(0.470, 0.000, 0.745, 0.715); 
+   -moz-transition: all 300ms cubic-bezier(0.470, 0.000, 0.745, 0.715); 
+     -o-transition: all 300ms cubic-bezier(0.470, 0.000, 0.745, 0.715); 
+        transition: all 300ms cubic-bezier(0.470, 0.000, 0.745, 0.715); /* easeInSine */
+    &:hover {
+    	color: #eee;
+    }
 }
 </style>
