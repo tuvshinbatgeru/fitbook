@@ -1,27 +1,17 @@
 <template>
-    <div class="row">
-        <div class="large-12 columns" style="background-color: #fff;">
-            <div class="row plan-section">
-                <div class="plan-section-title">
-                    RECENTLY ADDED
-                </div>
+    <div class="large-12 columns">
+        <div class="row plan-section">
+            <div class="plan-section-title">
+                RECENTLY ADDED PLANS
             </div>
-
-            <horizontal-slide :slide-width="247" :step="1" :items="items">
-                
-            </horizontal-slide>
-
-            <div class="row" style="position: relative;padding: 10px 30px;">
-                <div style="width: 25%;display: inline-block;">
-                    
-                </div>
+            <div class="result-length">
+                (About 120 results)
             </div>
         </div>
-        <div class="large-12 columns" style="height: 500px; background-color: #202b30;">
 
-        </div>
-        <div class="large-12 columns" style="height: 500px; background-color: #f2f2f2;">
-        </div>
+        <horizontal-slide :slide-width="258" :step="1" :items="items">
+            
+        </horizontal-slide>
     </div>
     <!-- <h3>Recently Added plans</h3> -->
 
