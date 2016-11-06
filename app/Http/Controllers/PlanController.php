@@ -152,7 +152,8 @@ class PlanController extends Controller
 
             $photo_id_array[$decode->pictures[$i]->id] = [
                 'pinned' => isset($decode->pictures[$i]->pinned) && $decode->pictures[$i]->pinned ? 'Y' : 'N',
-                'top_percentage' => isset($decode->pictures[$i]->pinned) && $decode->pictures[$i]->pinned ? $decode->crop : 0,
+                'top' => isset($decode->pictures[$i]->pinned) && $decode->pictures[$i]->pinned ? $data['top'] : 0,
+                'left' => isset($decode->pictures[$i]->pinned) && $decode->pictures[$i]->pinned ? $data['left'] : 0,
             ];  
             
             Photo::attachTagById($decode->pictures[$i]->id, Tag::TRAINING_ID);
@@ -265,7 +266,8 @@ class PlanController extends Controller
             if($decode->pictures[$i]->pinned == 'Y') {
                 $photo_id_array[$decode->pictures[$i]->id] = [
                   'pinned' => $decode->pictures[$i]->pinned ? 'Y' : 'N',
-                  'top_percentage' => $decode->pictures[$i]->pinned ? $decode->crop : 0,
+                  'top' => isset($decode->pictures[$i]->pinned) && $decode->pictures[$i]->pinned ? $data['top'] : 0,
+                  'left' => isset($decode->pictures[$i]->pinned) && $decode->pictures[$i]->pinned ? $data['left'] : 0,
                 ];  
             }
             
