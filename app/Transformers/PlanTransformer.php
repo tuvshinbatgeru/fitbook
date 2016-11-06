@@ -21,6 +21,8 @@ class PlanTransformer extends Transformer {
 			'is_active' => 'Y',
 			'length' => $item->length,
 			'frequency_type' => $item->freq,
+			'top' => isset($item->top) ? $item->top : 0,
+			'left' => isset($item->left) ? $item->left : 0,
 			'start_date' => isset($item->startDate) ? Carbon::createFromFormat('d/m/Y', $item->startDate) : Carbon::now(),
 			'finish_date' => isset($item->finish_date) ? Carbon::createFromFormat('d/m/Y', $item->finishDate) : Carbon::now(),
 		];
