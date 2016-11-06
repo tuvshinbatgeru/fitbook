@@ -1,7 +1,9 @@
 <template>
-    <recently-modified-plan :id="id"></recently-modified-plan>
-    <recommended-plan :id="id"></recommended-plan>
-    <nearby-plan :id="id"></nearby-plan>
+    <div class="row plan-container">
+        <recently-modified-plan :id="id"></recently-modified-plan>
+        <recommended-plan :id="id"></recommended-plan>
+        <nearby-plan :id="id"></nearby-plan>
+    </div>
 </template>
 
 <script>
@@ -38,3 +40,8 @@
         }
     }
 </script>
+<style lang="scss">
+.plan-container {
+    background-color: #f4f4f4;
+}
+</style>
