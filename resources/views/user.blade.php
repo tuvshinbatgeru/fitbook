@@ -29,8 +29,8 @@
   <div class="user-cover">
 
     <custom-cropper ratio="4.1785" 
-                    mobile-ratio="1"
-                    tablet-ratio="2"
+                    mobile-ratio="2"
+                    tablet-ratio="2.5"
                     :editable.sync="editCover"
                     v-ref:coverCropper
                     :image.sync="coverPhoto">
@@ -42,7 +42,7 @@
       <div class="user-profile-picture" v-show="!editCover">
         <svg version="1.1" style="margin: 0 auto; display: block; width: 180px;" xmlns="http://www.w3.org/2000/svg">
           <defs>
-            <pattern id="image-bg" patternUnits="userSpaceOnUse" width="100%" height="100%">
+            <pattern id="profile-bg" patternUnits="userSpaceOnUse" width="100%" height="100%">
                 <image preserveAspectRatio="none" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="{{$user->avatar_url}}" width="100%" height="100%"></image>
             </pattern>
             <filter id="dropshadow" height="130%">
@@ -56,16 +56,16 @@
                 <feMergeNode in="SourceGraphic"/> 
               </feMerge>
             </filter>
-            <linearGradient id="linear" x1="0%" y1="0%" x2="0%" y2="100%">
+            <linearGradient id="border-gradient" x1="0%" y1="0%" x2="0%" y2="100%">
               <stop offset="0%"   stop-color="#fff"/>
               <stop offset="100%" stop-color="#afafaf"/>
             </linearGradient>
           </defs>
           <g transform="translate(10, 5)">
               <custom-hexagon
-                bg-color="url('#image-bg')" 
+                bg-color="url('#profile-bg')" 
                 filter-id="url('#dropshadow')"
-                border-color="url('#linear')"
+                border-color="url('#border-gradient')"
                 :border-width="5"
                 :length="80" 
                 :cord-x="0" 
