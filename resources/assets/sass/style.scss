@@ -23,7 +23,7 @@ $menu-color: #272C33;
 
 body{
 	/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#ea4242+0,ea4242+39,ffffff+40,ffffff+100 */
-	background: #000; /* Old browsers */
+	background: #fff; /* Old browsers */
 	background: -moz-linear-gradient(top,  #ea4242 0%, #ea4242 244px, #ffffff 245px, #ffffff 1000%); /* FF3.6-15 */
 	background: -webkit-linear-gradient(top,  #ea4242 0%,#ea4242 244px,#ffffff 245px,#ffffff 1000%); /* Chrome10-25,Safari5.1-6 */
 	background: linear-gradient(to bottom,  #ea4242 0%,#ea4242 244px,#ffffff 245px,#ffffff 1000%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
@@ -1155,3 +1155,78 @@ $break-large: 1200px;
 	}
 }
 //cover photo end
+
+//media 
+
+@media (max-width: #{$mobile-width}) {
+	body{
+		background: #fff;
+	}
+	.user-cover {
+		overflow: visible;
+		margin-bottom: 244px;
+		.edit-cover {
+		}
+		.user-info {
+			bottom: -244px;
+			border-top: none;
+			padding: 0px;
+		    text-align: center;
+			.tabs-container {
+				background-color: #f4f4f4;
+			    width: 100%;
+			    border: 1px solid #dbdbdb;
+			    ul {
+			    	width: 100% !important;
+			    	margin: 0px !important;
+				    .tab {
+				    	a {
+				    	}
+				    	.active {
+			    			border-top: 2px solid #f04545;
+	    					color: #f04242;
+				    	}
+				    }
+			    }
+			}
+		}
+		.user-follow {
+			float: none;
+    		text-align: center;
+			.follow-button {
+				i {
+				}
+			}
+		}
+		.user-followers {
+			float: none;
+		    margin: 0 auto;
+		    text-align: center;
+		    text-shadow: none;
+			span {
+			}
+		}
+		.user-profile-picture {
+			left: 0;
+    		right: 0;
+			.user-name {
+				color: #000;
+				text-shadow: none;
+			}
+		}
+		a {
+			color: #000;
+		}
+	}
+}
+
+@media (min-width: #{$mobile-width}) and (max-width: #{$tablet-width}) {
+}
+
+@media (min-width: #{$tablet-width}) and (max-width: #{$desktop-width}) {
+}
+
+@media (min-width: #{$desktop-width}) {
+}
+
+//media end
