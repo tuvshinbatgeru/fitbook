@@ -51,6 +51,17 @@ class PlanController extends Controller
         ]);
     }
 
+    public function recentlyAdded(Request $request)
+    {
+        return Response::json([
+            'code' => 0,
+            'result' => Plan::with('pinnedPhotos', 'planable')
+                            ->withCount('visitors', 'heartsActions', 'subscriptions')
+                            ->orderBy('created_at', 'DESC')
+                            ->paginate(10),
+        ]);
+    }
+
     public function simpleSearch(Club $club, Request $request)
     {
         $param = $request->q;
