@@ -81,34 +81,34 @@
       </div>
       <div class="user-followers">
         <a @click="showFollowing = true">
-          <span>@{{following_count}} </span> following
+          <span>@{{following_count}} </span> @{{$t('profile.following')}}
         </a>
         <a @click="showFollowing = true" style="margin-left: 20px;">
-          <span>@{{following_count}} </span> followers
+          <span>@{{following_count}} </span> @{{$t('profile.followers')}}
         </a>
       </div>
       <div class="user-follow">
         <a class="follow-button">
-          <i class="fa fa-blind"></i> Follow
+          <i class="fa fa-blind"></i> @{{$t('profile.follow')}}
         </a>
       </div>
       <div class="tabs-container">
         <ul class="user-tab">
-          <li class="tab col s3"><a @click="setSubMenu('user-home')" class="active">Home</a></li> 
-          <li class="tab col s3"><a @click="setSubMenu('activity')">Activity</a></li>
+          <li class="tab col s3"><a @click="setSubMenu('user-home')" class="active">@{{$t('profile.homeTab')}}</a></li> 
+          <li class="tab col s3"><a @click="setSubMenu('activity')">@{{$t('profile.activityTab')}}</a></li>
         </ul>
       </div>
     </div>
 
     <div class="edit-cover">
       <div class="cover-buttons" v-show="editCover">
-        <a @click="cancelCoverChange()" class="cover-button">Cancel</a>
-        <a @click="saveCoverChange()" class="cover-button">Save</a>
+        <a @click="cancelCoverChange()" class="cover-button">@{{$t('cancel')}}</a>
+        <a @click="saveCoverChange()" class="cover-button">@{{$t('save')}}</a>
       </div>
       <div class="cover-buttons" v-show="!editCover">   
         @if($user->editable)
           <a @click="changeCover()" class="cover-button">
-            <i class="fa fa-edit"></i> Change cover
+            <i class="fa fa-edit"></i> @{{$t('profile.changeCover')}}
           </a>
         @endif
       </div>
