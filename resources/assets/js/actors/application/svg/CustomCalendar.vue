@@ -111,44 +111,44 @@
 			weekFilter : function (week) {
 				switch (week) {
 					case 1 : 
-						return 'Mon'
+						return this.$t('calendar.day.mon')
 					case 2 : 
-						return 'Wed'
+						return this.$t('calendar.day.wed')
 					case 3 : 
-						return 'Fri'
+						return this.$t('calendar.day.fri')
 					default : 
-						return 'Sun'
+						return this.$t('calendar.day.sun')
 				}
 			},
 
 			monthFilter : function (month) {
 				switch (month) {
 					case 0 : 
-						return 'Jan'
+						return this.$t('calendar.month.jan')
 					case 1 : 
-						return 'Feb'
+						return this.$t('calendar.month.feb')
 					case 2 : 
-						return 'Mar'
+						return this.$t('calendar.month.mar')
 					case 3 : 
-						return 'Apr'
+						return this.$t('calendar.month.apr')
 					case 4 : 
-						return 'May'
+						return this.$t('calendar.month.may')
 					case 5 : 
-						return 'Jun'
+						return this.$t('calendar.month.jun')
 					case 6 : 
-						return 'Jul'
+						return this.$t('calendar.month.jul')
 					case 7 : 
-						return 'Aug'
+						return this.$t('calendar.month.aug')
 					case 8 : 
-						return 'Sep'
+						return this.$t('calendar.month.sep')
 					case 9 : 
-						return 'Oct'
+						return this.$t('calendar.month.oct')
 					case 10 : 
-						return 'Nov'
+						return this.$t('calendar.month.nov')
 					case 11 : 
-						return 'Dec'
+						return this.$t('calendar.month.dec')
 					default : 
-						return 'Dec'
+						return this.$t('calendar.month.dec')
 				}
 			}
 		},
@@ -167,10 +167,6 @@
 
 			onHexagonHover : function (activity, e) {
 				this.hoveredActivity = activity
-				//debugger
-				//this.hoveredActivity.x = e.pageX
-				//this.hoveredActivity.y += 5
-				//this.hoveredActivity.y = e.pageY
 
 				this.hexagonTooltipContent = activity.label + '-ны өдөр '
 
