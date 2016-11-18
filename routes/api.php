@@ -64,6 +64,7 @@ Route::group(['middleware' => ['auth:api']], function () {
 
 	Route::get('/training/{training}/adjustments', 'TrainingController@adjustments');
 	Route::get('/training/{training}/teachers', 'TrainingController@teachers');
+	Route::get('/plan/recently', 'PlanController@recentlyAdded');
 	Route::get('/plan/{plan}/edit', 'PlanController@edit');
 	Route::get('/plan/{plan}/teachers', 'PlanController@teachers');
 
