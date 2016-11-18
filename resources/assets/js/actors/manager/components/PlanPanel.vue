@@ -223,8 +223,6 @@
         en: { 
             date : 'Date',
             plan : 'Plan',
-            general: 'General',
-            loyalty : 'Loyalty',
             newest : 'NEWEST',
             oldest : 'OLDEST',
             price : 'PRICE',
@@ -233,9 +231,7 @@
         },
         mn : {
             date : 'Хугацаа',
-            general: 'Үндсэн',
             plan : 'Хөтөлбөр',
-            loyalty : 'Урамшуулал',
             newest : 'Шинэ',
             oldest : 'Хуучин',
             price : 'Үнэ',
