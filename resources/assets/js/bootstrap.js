@@ -68,10 +68,11 @@ import CommentsList from './actors/application/components/CommentsList.vue'
 import CustomSelectionList from './actors/application/components/CustomSelectionList.vue'
 import CustomButtonGroup from './actors/application/components/CustomButtonGroup.vue'
 import CustomSearchTag from './actors/application/components/CustomSearchTag.vue'
-import HorizontalSlide from './actors/application/components/HorizontalSlide.vue'
 import CustomCropper from './actors/application/components/CustomCropper.vue'
 import UiProgressLinear from './actors/application/components/loader/UiProgressLinear.vue'
 
+//slider
+import HorizontalSlide from './actors/application/components/slider/HorizontalSlide.vue'
 
 //import CustomDropdownMenu from './actors/application/components/CustomDropdownMenu.vue';
 import Multiselect from 'vue-multiselect'
