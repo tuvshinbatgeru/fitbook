@@ -4,6 +4,11 @@
 };
 
 $sidebar_width: 90px;
+$blue-official: #2471fe;
+$mobile-width: 750px;
+$tablet-width: 970px;
+$desktop-width: 1170px;
+
 @mixin content--center($position){
 	margin-left: $position;
 	margin-right: $position;
@@ -68,128 +73,7 @@ section {
 	width: 95%;
 	@include content--center(auto);
 }
-.site-header {
-	z-index:100;
-	position: fixed;
-    width: 100%;
-    top: 0px;
-    .site-header-title {
-    	display: inline-block;
-    	label {
-    		font-size: 18px;
-	    	color: #fff;
-	    	font-weight: bold;
-    	}
-    }
 
-    .site-logo {
-		// height: 35px;
-		// width: 35px;
-		display: inline-block;
-		img {
-			height: 40px;
-		}
-	}
-
-    .site-header-container {
-		display:table;
-		height: 45px;
-		margin: 0 auto;
-		padding: 0 35px;
-		background-color: #fff;
-		overflow-x: hidden;
-		@include box-shadow(0px, 5px, 5px, -3px, #8e8e8e);
-		.site-header-row {
-			display: table-row;
-		}
-		.site-header-item {
-			display:table-cell;
-			vertical-align: middle;
-		}
-	}
-
-	.site-header-search{ 
-		.site-search-input {
-			position: relative;
-			max-width: 535px;
-			min-width: 100px;
-    		margin: 0 auto;
-			input {
-				font-size: 14px;
-			    margin: 0px;
-			    display: initial;
-			    height: 33px;
-			    padding: 10px 0px 10px 46px;
-			    border-radius: 5px;
-			}
-		}
-	}
-
-	.site-header-profile {
-		width: 40px;
-		text-align: right;
-		cursor: pointer;
-		a {
-			color: #fff;
-		}
-	}
-	.site-header-notification {
-		margin-right: 20px;
-		a {
-			position: relative;
-			i {
-				font-size: 20px;
-				color: #6b6b6b;
-			}
-			.badge {
-				position: absolute;
-				right: -15px;
-				top: -10px;
-			}
-		}
-	}
-
-	.header-profile-pic {
-		height: 30px;
-		width: 30px;
-
-		@include box-shadow(0,0,2px, 0, #000000);
-	}
-}
-.site-body {
-	padding-top: 45px;
-	margin-left: auto;
-	margin-right: auto;
-	height: 100%;
-}
-
-$mobile-width: 750px;
-$tablet-width: 970px;
-$desktop-width: 1170px;
-
-@media (max-width: #{$mobile-width}) {
-	.site-body, .site-header-container {
-		width: 100%;
-	}
-}
-
-@media (min-width: #{$mobile-width}) and (max-width: #{$tablet-width}) {
-	.site-body, .site-header-container {
-		width: 750px;
-	}
-}
-
-@media (min-width: #{$tablet-width}) and (max-width: #{$desktop-width}) {
-	.site-body, .site-header-container {
-		width: 970px;
-	}
-}
-
-@media (min-width: #{$desktop-width}) {
-	.site-body, .site-header-container {
-		width: 1170px;
-	}
-}
 .admin-body {
 	background-color: #d1d1d4;
 }
@@ -233,4 +117,16 @@ $desktop-width: 1170px;
 			font-size: 11px;
 		}
 	}
+}
+
+@media (max-width: #{$mobile-width}) {
+}
+
+@media (min-width: #{$mobile-width}) and (max-width: #{$tablet-width}) {
+}
+
+@media (min-width: #{$tablet-width}) and (max-width: #{$desktop-width}) {
+}
+
+@media (min-width: #{$desktop-width}) {
 }

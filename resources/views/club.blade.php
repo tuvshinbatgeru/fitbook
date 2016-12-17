@@ -1,14 +1,15 @@
 @extends('layouts.default-layout')
 @section('content')
     
-    <component id = "{{$id}}" is="{{$widget_header}}">
-          
-    </component>
-
-	@foreach ($widget_content as $widget)
-		<component id = "{{$id}}" is="{{$widget}}">
+    <div class="site-body">
+	    <component id = "{{$id}}" is="{{$widget_header}}">
 	          
 	    </component>
-    @endforeach
-    
+
+		@foreach ($widget_content as $widget)
+			<component id = "{{$id}}" is="{{$widget}}">
+		          
+		    </component>
+	    @endforeach
+	</div>
 @stop
