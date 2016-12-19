@@ -2,7 +2,7 @@
            is="main-header" 
            inline-template>
     <div class="site-header">
-        <div class="site-header-container">
+        <div class="site-header-container cntr-fluid">
           <div class="site-header-row">
             <div class="site-header-item" style="width: 200px;">
                 <div class="site-logo">
@@ -32,18 +32,17 @@
                   </typeahead>
                 </div>
             </div>
-            <div class="site-header-item" style="width: 40px;">
-              <div class="site-header-notification">
-                <a @click="showNotifications = true">
-                  <i class="fa fa-bell-o"> </i>
-                  <span class="alert badge" style="background: #ff5c2d">12</span>
-                </a>
-              </div>             
+            <div class="site-header-item site-header-notification">
+              <a>
+                <i class="fa fa-commenting"> </i>
+              </a>
+              <a @click="showNotifications = true">
+                <i class="fa fa-bell"> </i>
+                <span class="alert badge" style="background: #ff5c2d">12</span>
+              </a>
             </div>
             <div class="site-header-profile site-header-item">
-              <div>  
                 <img @click="showLogoutMenus = true" data-toggle="user-menu" class="header-profile-pic" src="{{Auth::user()->avatar_url}}" />
-              </div>
             </div>
           </div>
         </div>

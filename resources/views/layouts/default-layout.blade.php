@@ -10,7 +10,9 @@
     <link rel="stylesheet" type="text/css" href="{{asset('css/widget/cw-default.css')}}">
 </head>
 <body>
-
+    @if (Auth::check())
+      @include('includes.main-header')
+    @endif
     <custom-toast v-ref:toast></custom-toast>
     <component id = "{{$id}}" is="club-view" inline-template>
       @yield('content')      
