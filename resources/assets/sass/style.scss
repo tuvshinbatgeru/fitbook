@@ -1,6 +1,5 @@
 [v-cloak] { display: none; }
 
-
 //Mixings
 
 @mixin transition($transition...) {
@@ -20,15 +19,16 @@
 }
 $main-color: #00c4cc;
 $menu-color: #272C33;
+$main-font: 'Lato';
 
 body{
 	line-height: 1.4;
-	font-family: 'Roboto', sans-serif;
+	font-family: $main-font, sans-serif;
 	background-color: $grey-official;
 }
 
 h1, h2, h3, h4, h5, h6 {
-    font-family: 'Roboto', sans-serif;
+    font-family: $main-font, sans-serif;
     font-weight: normal;
     font-style: normal;
     color: #384047;
