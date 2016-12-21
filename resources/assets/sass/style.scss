@@ -24,7 +24,7 @@ $menu-color: #272C33;
 body{
 	line-height: 1.4;
 	font-family: 'Roboto', sans-serif;
-	background-color: #eff2f4;
+	background-color: $grey-official;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -1214,7 +1214,7 @@ $break-large: 1200px;
 	margin-top: -140px;
 
 	.club-page-header {
-	    @include box-shadow(0px, 0px, 2px, 0px, #9E9E9E);
+	    @include box-shadow(0px, 0px, 2px, 0px, #ddd);
 	    background-color: #fff;
 		.display-table {
 			width: 100%;
@@ -1275,10 +1275,10 @@ $break-large: 1200px;
 			    float: left;
 			    padding-left: 25px;
 			    &.border-right {
-			    	border-right: 1px solid #eff2f4;
+			    	border-right: 1px solid $grey-official;
 			    }
 			    &.border-left {
-			    	border-left: 1px solid #eff2f4;
+			    	border-left: 1px solid $grey-official;
 			    }
 			    &.float-left {
 			    	min-width: 250px;
@@ -1336,7 +1336,7 @@ $break-large: 1200px;
 		padding: 0px 20px;
 		margin: 0px;
 		width: 100%;
-		border-top: 1px solid #eff2f4;
+		border-top: 1px solid $grey-official;
 	    margin-top: 15px;
 		li {
 			display: inline-block;
@@ -1358,7 +1358,7 @@ $break-large: 1200px;
 						position: absolute;
 					    top: 37px;
 						left: 50%;
-						@include box-shadow(1px, 1px, 1px, -1px, #7c7c7c);
+						@include box-shadow(1px, 1px, 1px, -1px, #ccc);
 					}
 				}
 
@@ -1384,12 +1384,14 @@ $break-large: 1200px;
 // fit panel
 
 .fit-panel {
-	background-color: #fff;margin-top: 25px;
+	background-color: #fff;
+	margin-top: 25px;
+	@include box-shadow(0px, 0px, 2px, 0px, #ddd);
 	.fit-panel-header{
 		height: 54px;
 		line-height: 54px;
 		padding: 0px 22px;
-		border-bottom: 1px solid #eff2f4;
+		border-bottom: 1px solid $grey-official;
 		.fit-panel-title {
 			font-size: 18px;
 			color: #3d4347;
@@ -1406,11 +1408,143 @@ $break-large: 1200px;
 		}
 	}
 	.fit-panel-body {
-		padding-left: 22px;
+		.manager {
+			border-bottom: 1px solid $grey-official;
+			height: 74px;
+			line-height: 54px;
+			padding: 10px 0px;
+			.fit-official-btn {
+				font-size: 15px;
+			}
+			.fit-panel-filter {
+				float: none;
+				.filter {
+					font-size: 15px;
+					color: #60686e;
+					padding: 0px 15px;
+					i {
+					    margin-right: 5px;
+					}
+				}
+			}
+			.search-input {
+				margin-right: 15px;
+			}
+		}
 	}
 }
 
 // fit panel end
+
+// search input
+
+.search-input {
+	display: inline-block;
+	position: relative;
+	input {
+		border: 1px solid $blue-official;
+		font-size: 15px;
+		color: #60686e;
+	    padding: 7px 70px 7px 10px;
+		background-color: #fff;
+		border-radius: 3px;
+	    width: auto;
+	    display: inline-block;
+	    margin: 0px;
+	    height: auto;
+	}
+	label {
+	    position: absolute;
+	    right: 0px;
+	    top: 1px;
+	    width:67px;
+	    text-align: center;
+	    padding: 7px 10px 7px 10px;
+	    background-color: $blue-official;
+	    border-top-right-radius: 3px;
+    	border-bottom-right-radius: 3px;
+	    color: #fff;
+	    font-size: 15px;
+	    line-height: normal;
+	}
+}
+
+// search input end
+
+// member card
+
+.member-card {
+	border-right: 1px solid $grey-official;
+	border-bottom: 1px solid $grey-official;
+	padding: 22px;
+	.member-img {
+		position: relative;
+		width: 130px; 
+		height: 120px;
+		display: block;
+		float: left;
+		&:after {
+		    bottom: 0;
+		    content: '';
+		    left: 0;
+		    position: absolute;
+		    right: 0;
+		    top: 0;
+		}
+		.cover-img {
+			border-radius: 3px;
+		}
+		.online {
+			position: absolute;
+			right: 8px;
+			top: 8px;
+			width: 8px;
+			height: 8px;
+			border: 1px solid $grey-official;
+			border-radius: 50%;
+			background-color: #44dd44;
+		}
+	}
+	.member-info {
+		padding-left: 22px;
+	    height: 120px;
+    	margin-left: 130px;
+    	._info {
+    		height: 90px;
+    		._name {
+    			font-size: 17px;
+    			color: #3d4347;
+    			line-height: 20px;
+    		}
+    		.fa-circle {
+    			position: relative;
+    			font-size: 3px;
+    			&:before {
+				    position: absolute;
+				    top: -6px;
+    				left: -1px;
+    				color: #cbced0;
+    			}	
+    		}
+    		._follow {
+    			font-size: 14px;
+    			color: #cbced0;
+    			&:hover {
+    				text-decoration: underline;
+    			}
+    		}
+    	}
+    	.follow-btn {
+    		text-align: left;
+    		width: 100%;
+	    	.fit-hollow-btn {
+	    		font-size: 15px;
+	    	}
+    	}
+	}
+}
+
+// member card end
 
 // table layout
 
@@ -1434,11 +1568,24 @@ $break-large: 1200px;
 }
 .fit-hollow-btn {
     border-radius: 3px;
-    border: 1px solid #2471fe;
-    color: #2471fe;
+    border: 1px solid $blue-official;
+    background-color: #fff;
+    color: $blue-official;
     padding: 2px 10px;
     cursor: pointer;
     font-size: 18px;
+	&:hover {
+
+	}
+}
+.fit-official-btn {
+    border-radius: 3px;
+    border: 1px solid $blue-official;
+    color: #fff;
+    background-color: $blue-official;
+    padding: 7px 10px;
+    cursor: pointer;
+    font-size: 15px;
 	&:hover {
 
 	}
@@ -1520,8 +1667,8 @@ $break-large: 1200px;
 		width: 40px;
 		text-align: right;
 		cursor: pointer;
-		border-left: 1px solid #eff2f4;
-		border-right: 1px solid #eff2f4;
+		border-left: 1px solid $grey-official;
+		border-right: 1px solid $grey-official;
 		padding: 0px 15px;
 		a {
 			color: #fff;
@@ -1531,7 +1678,7 @@ $break-large: 1200px;
 		width: 217px;
 		text-align: right;
 		padding: 0px 10px;
-		border-left: 1px solid #eff2f4;
+		border-left: 1px solid $grey-official;
 		a {
 			position: relative;
 		    display: inline-block;
