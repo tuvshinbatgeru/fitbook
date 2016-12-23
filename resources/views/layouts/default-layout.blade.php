@@ -14,10 +14,13 @@
       @include('includes.main-header')
     @endif
     <custom-toast v-ref:toast></custom-toast>
-    <component id = "{{$id}}" is="club-view" inline-template>
+    <component id = "{{$id}}" 
+               is="club-view" 
+               menu="{{$menu}}" 
+               is-manager="{{$isOwner}}"
+               inline-template>
       @yield('content')      
     </component>
-
    <!-- FOR WIDGET ANIMATION -->
    <script src="{{ elixir('js/app.js') }}"></script>
 </body>
