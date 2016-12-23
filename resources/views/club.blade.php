@@ -2,14 +2,23 @@
 @section('content')
     
     <div class="site-body">
-	    <component id = "{{$id}}" is="{{$widget_header}}">
+	    <component :id="id" 
+	    		   :menu="menu" 
+	    		   is="header-default"
+	    		   @menu-changed="menuChanged">
 	          
 	    </component>
 
-		@foreach ($widget_content as $widget)
-			<component id = "{{$id}}" is="{{$widget}}">
-		          
-		    </component>
-	    @endforeach
+	    @if(isset($filters)) 
+			<component id="{{$id}}" 
+				   	   :filters="{{$filters}}"
+				   	   :is-manager="isManager"
+				       :is="content">
+
+		@else
+			<component id="{{$id}}" 
+				       :is="content">
+		@endif
+	    	</component>
 	</div>
 @stop
