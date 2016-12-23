@@ -157,6 +157,11 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
         return $this->hasMany('App\Follower', 'user_id');
     }
 
+    public function followers()
+    {
+        return $this->morphToMany('App\User', 'followable', 'followers');
+    }
+
     public function clubAsReception()
     {
         return $this->belongsToMany('App\Club', 'members', 'user_id', 'club_id')->where('type', '=', 3);
