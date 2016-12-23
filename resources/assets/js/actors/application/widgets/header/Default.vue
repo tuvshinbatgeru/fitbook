@@ -104,17 +104,17 @@
 				</div>
 			</div>
 			<ul class="club-nav">
-				<li>
-					<a>Home</a>
+				<li :class="menu == 'home' ? 'active' : ''">
+					<a @click="setContent('home')">Home</a>
 				</li>
-				<li class="active">
-					<a>Plans</a>
+				<li :class="menu == 'plan' ? 'active' : ''">
+					<a @click="setContent('plan')">Plans</a>
 				</li>
-				<li>
-					<a>Members</a>
+				<li :class="menu == 'member' ? 'active' : ''">
+					<a @click="setContent('member')">Members</a>
 				</li>
-				<li>
-					<a>Info</a>
+				<li :class="menu == 'info' ? 'active' : ''">
+					<a @click="setContent('info')">Info</a>
 				</li>
 				<li>
 					<a>Schedule</a>
@@ -130,23 +130,9 @@
 				</li>
 			</ul>
 		</div>
-		
 	</div>
-	<div class="cntr-fluid fit-panel" style="height: 600px; background-color: #fff;margin-top: 30px;">
-		<div class="fit-panel-header">
-			<div class="fit-panel-title">
-				Members
-			</div>
-			<div class="fit-panel-filter">
-				<a class="filter">Reception</a>
-				<a class="filter">Member</a>
-				<a class="filter">Active</a>
-			</div>
-		</div>
-		<div class="fit-panel-body">
 
-		</div>
-	</div>
+
 	    <!-- <ul class="menu">
 	      <li><a @click="sentTeacherRequest" class="button btn-fb btn-trans">{{getText(teacher_status)}}</a></li>
 	      <li><a @click="sentFollow" class="button btn-fb btn-trans">{{getText(follow_status)}}</a></li>
@@ -155,14 +141,19 @@
 </template>
 
 <script>
-	import CustomHexagon from '../../svg/CustomHexagon.vue';
 	export default {
 		props : {
-			id : {default : ''},
+			id : {
+				required : true
+			},
+
+			menu : {
+				type : String,
+				required : true,
+			}
 		},
 
 		created: function () {
-			this.setLanguage();
 		    this.getClubHeaderContent(this.id);
 		},
 
@@ -178,6 +169,11 @@
 		},
 
 		methods : {
+			setContent : function (menu) {
+				this.menu = menu
+				this.$emit('menu-changed', this.menu)
+			},
+
 			getClubHeaderContent : function() {
 				this.$http.get(this.$env.get('APP_URI') + 'api/club/'+ this.id +'/club-info').then((response) => {
 			        this.club = response.data.club;
@@ -212,41 +208,30 @@
 
 			    });
 			},
-
-			setLanguage : function () {
-				this.lang_en = {
-			    	teacher : 'Teacher request',
-			    	unteacher : 'Sent',
-			    	follow : 'Follow',
-			    	unfollow : 'Followed',
-			    	trainer : 'Request',
-			    	untrainer : 'Un Request',
-			    	manager : 'Manager',
-			    	reception : 'Reception',
-			    };
-
-			    this.lang_mn = {
-			    	teacher : 'Багш болох',
-			    	unteacher : 'Багш болох хүсэлт илгээсэн',
-			    	follow : 'Дагах',
-			    	unfollow : 'Дагсан',
-			    	trainer : 'Элсэх',
-			    	untrainer : 'Элсэх хүсэлт илгээсэн',
-			    	manager : 'Менежер',
-			    	reception : 'Ресефшин',
-			    };
-			},
-
-			getText : function (value) {
-				return this.lang_mn[value];
-			}
 		},
-		components : {
-			CustomHexagon
+
+		locales : {
+			en : {
+				teacher : 'Teacher request',
+		    	unteacher : 'Sent',
+		    	follow : 'Follow',
+		    	unfollow : 'Followed',
+		    	trainer : 'Request',
+		    	untrainer : 'Un Request',
+		    	manager : 'Manager',
+		    	reception : 'Reception',
+			}, 
+
+			mn : {
+				teacher : 'Багш болох',
+		    	unteacher : 'Багш болох хүсэлт илгээсэн',
+		    	follow : 'Дагах',
+		    	unfollow : 'Дагсан',
+		    	trainer : 'Элсэх',
+		    	untrainer : 'Элсэх хүсэлт илгээсэн',
+		    	manager : 'Менежер',
+		    	reception : 'Ресефшин',
+			}
 		}
 	}
 </script>
-
-<style>
-	
-</style>
