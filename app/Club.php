@@ -92,6 +92,11 @@ class Club extends Model
 		return $this->members()->where('type', 2);
 	}
 
+	public function isManager($user)
+	{
+		return $this->managers()->where('user_id', $user)->exists() ? true : false;	
+	}
+
 	static public function teachers($clubId)
 	{
 		return static::find($clubId)->members()->where('type', '=', 1)->get();
