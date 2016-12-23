@@ -51,5 +51,18 @@ class WidgetSeeder extends Seeder
             'usage_id' => 2,
             'is_default' => 'Y'
         ]);	
+
+        DB::table('widgets')->insert([
+            'section_id' => 2,
+            'content_map' => 'member-default',
+            'name' => 'Member collection',
+            'name_en' => 'Member collection',
+            'price' => 8,
+            'description' => 'Багш нарын жагсаалт',
+            'description_en' => 'Training widget default',
+            'photo_id' => 'http://localhost/images/users/teacher_example.jpg',
+            'usage_id' => 2,
+            'is_default' => 'Y'
+        ]); 
     }
 }
