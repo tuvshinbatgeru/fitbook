@@ -114,8 +114,21 @@ use Illuminate\Support\Facades\Storage;
 	Route::get('/plan/{plan}', 'PlanController@show');
 	Route::get('/plan/{plan}/comments', 'PlanController@comments');
 	Route::post('/plan/{plan}/reaction', 'PlanController@toggleReaction');
-	Route::get('/{club}', 'ClubController@index');
-	Route::get('/{club}/edit', 'ClubEditController@edit');
+	
+	Route::group(['prefix' => '/{club}'], function () {
+
+		Route::get('/', 'ClubController@index');
+		Route::get('/edit', 'ClubEditController@edit');
+		Route::get('/member', 'ClubController@memberPage');
+		Route::get('/plan', 'ClubController@planPage');
+		Route::get('/training', 'ClubController@trainingPage');
+		Route::get('/service', 'ClubController@servicePage');
+		Route::get('/info', 'ClubController@infoPage');	
+
+	});
+
+	
+
 	Route::get('/auth/logout', 'Auth\LoginController@logout');
 	
 	

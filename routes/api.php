@@ -75,8 +75,10 @@ Route::group(['middleware' => ['auth:api']], function () {
 		Route::get('online', 'ClubController@onlineUsers');
 		Route::post('follow', 'UserController@toggleFollow');
 		Route::post('request', 'UserController@toggleRequest');
+
 		Route::get('teacher', 'ClubController@getTeachers');
 		Route::get('members', 'ClubController@members');
+		
 		Route::post('teacher/{first}/{second}', 'ClubController@toggleTeacherViewOrder');
 		Route::post('teacher/{first}/{second}', function($clubId, User $first, User $second, Request $request) {
 		    $first->toggleViewOrder($request->type == 'down' ? 'upper' : 'down', $clubId);
