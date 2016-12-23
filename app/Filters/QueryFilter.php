@@ -4,6 +4,7 @@ namespace App\Filters;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use Response;
 
 abstract class QueryFilter {
 
@@ -14,6 +15,21 @@ abstract class QueryFilter {
 	public function __construct(Request $request)
 	{
 		$this->request = $request;
+	}
+
+	public function toObjectArray()
+	{		
+		$filters = [];
+
+		foreach ($this->filters() as $name => $value) {
+
+			array_push($filters, [
+				'name' => $name,
+				'value' => $value
+			]);
+		}			
+
+		return json_encode($filters);
 	}
 
 	public function apply($builder)

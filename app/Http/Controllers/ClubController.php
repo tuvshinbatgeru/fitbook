@@ -3,13 +3,66 @@
 namespace App\Http\Controllers;
 
 use App\Club;
+use App\Filters\RouterFilters;
 use App\Http\Requests;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Response;
 use Illuminate\Support\Facades\Auth;
+use Response;
 
 class ClubController extends Controller
-{
+{   
+    //Begin Club Pages
+
+    public function memberPage($clubId, RouterFilters $request)
+    {
+        $club = Club::isAvailableClub($clubId);
+        if(!$club) abort(404);
+
+        $filters = $request->toObjectArray();
+
+        //dd($filters);
+
+        $id = $club->id;
+        $widget_content = 'member-default';
+        $menu = 'member'; 
+
+        $isOwner = 'N';
+
+        if($this->checkManager($club)) {
+            $isOwner = 'Y';
+        }
+
+
+        return view('club')->with(compact('widget_content', 'id', 'menu', 'filters', 'isOwner'));
+    }
+
+    public function planPage($clubId)
+    {
+        $club = Club::isAvailableClub($clubId);
+        if(!$club) abort(404);
+
+        $id = $club->id;
+        $widget_content = 'plan-default';
+        $menu = 'plan'; 
+
+        return view('club')->with(compact('widget_content', 'id', 'menu'));        
+    }
+
+    public function trainingPage($clubId)
+    {
+        $club = Club::isAvailableClub($clubId);
+        if(!$club) abort(404);
+
+        $id = $club->id;
+        $widget_content = 'training-default';
+        $menu = 'plan'; 
+
+        return view('club')->with(compact('widget_content', 'id', 'menu'));   
+    }
+    //End Club Pages
+
+
     public function info(Club $club)
     {
     	if(!Auth::check())
@@ -87,22 +140,52 @@ class ClubController extends Controller
         ]);
     }
 
+    private function memberToNumber($type)
+    {
+        switch ($type) {
+            case "teacher":
+                return 1;
+            case "reception":
+                return 3;
+            case "manager":
+                return 2;
+            default:
+                break;
+        }
+
+    }
+
     public function members(Club $club, Request $request)
     {
-        $members = $club->members()->with('roles');
+        switch($request->status_type) {
+            case "request":
+                $query = $club->requests();
+                break;
+            case "active":
+                $query = $club->members();
+                break;
+            case "archive":
+                break;
+            default:
+                break;
+        }
 
-        if(isset($request->member)) {
-            $role = $request->member;
-            $members = $members->whereHas('roles', function ($query) use ($role) {
-                $query->where('name', $role);
-            });
+        $query = $query->withCount('following','followers');
+
+        if(isset($request->type)) {
+            $query = $query->wherePivot('type', $this->memberToNumber($request->type));
         }
 
         if(isset($request->date)) {
-            $members = $members->orderBy('since_date', $request->date);
+            $query = $query->orderBy('since_date', $request->date);
         }
 
-        $members = $members->get();
+        $members = $query->get();
+
+        foreach ($members as $member) {
+            $member->is_online = true;
+            $member->last_online = Carbon::now();
+        }
 
         return Response::json([
             'code' => 0,
@@ -149,12 +232,18 @@ class ClubController extends Controller
         return $type == 3 ? true : false;
     }
 
+    private function checkManager($club) {
+        if(!Auth::check()) return false;
+
+        return $club->isManager(Auth::user()->id);
+    }
+
     static public function isTeacher($type)
     {
     	return $type == 1 ? true : false;
     }
 
-    public function index($clubId)
+    public function index($clubId, Request $request)
     {
     	$club = Club::isAvailableClub($clubId);
 
@@ -180,6 +269,9 @@ class ClubController extends Controller
             }
         }
 
-		return view('club')->with(compact('widget_header', 'widget_content','widget_footer', 'id'));
+        $widget_content = 'home-default';
+        $menu = 'home'; 
+
+		return view('club')->with(compact('widget_header', 'widget_content','widget_footer', 'id', 'menu'));
     }
 }
