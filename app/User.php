@@ -220,7 +220,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
 
     public function isFollowed($club_id)
     {
-        return count($this->followedClubs()->where('id','=', $club_id)->get()) == 0 ? false : true;
+        return $this->following()->where('followable_id','=', $club_id)->exists() ? true : false;
     }
 
     public function removeClubRequest($club)
