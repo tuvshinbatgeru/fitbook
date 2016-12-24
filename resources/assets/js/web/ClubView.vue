@@ -4,6 +4,7 @@
 	import TeacherDefault from '../actors/application/widgets/content/TeacherDefault.vue';
 	import TrainingDefault from '../actors/application/widgets/content/TrainingDefault.vue';
 	import MemberDefault from '../actors/application/widgets/content/MemberDefault.vue';
+	import HomeDefault from '../actors/application/widgets/content/HomeDefault.vue';
 	import PlanDefault from '../actors/application/widgets/content/PlanDefault.vue';
 
 	export default {
@@ -54,7 +55,7 @@
 		},
 
 		components : {
-			PlanDefault, HeaderDefault, 
+			PlanDefault, HeaderDefault, HomeDefault,
 			TeacherDefault, TrainingDefault, MemberDefault
 		},
 	}
