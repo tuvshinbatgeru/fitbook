@@ -94,7 +94,7 @@
 			},
 
 			setStatusType : function () {
-				this.status_type = this.getFilterValue('status_type', 'request')
+				this.status_type = this.getFilterValue('status_type', 'active')
 			},
 
 			changeType : function (type) {
