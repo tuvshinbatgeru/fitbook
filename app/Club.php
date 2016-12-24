@@ -19,6 +19,11 @@ class Club extends Model
         return $this->hasMany('App\Training');
     }
 
+    public function info()
+    {
+    	return $this->hasOne('App\ClubInfo', 'club_id');
+    }
+
 	static public function isAvailableClub($club_id)
 	{
 		return static::where('club_id','=', $club_id)->first();
@@ -29,10 +34,20 @@ class Club extends Model
 		return static::where('club_id','=', $club_id)->first();
 	}
 
+	public function activeTeachers()
+	{
+		return $this->onlineUsers()->wherePivot('type', 2);	
+	}
+
+	public function activeTrainers()
+	{
+		return $this->onlineUsers()->wherePivot('type', 1);			
+	}
+
 	public function onlineUsers()
 	{
 		return $this->belongsToMany('App\User', 'online_members', 'club_id', 'user_id')
-					->withPivot('subscription_id','start_time');
+					->withPivot('subscription_id','start_time', 'type');
 	}
 
 	public function plans()
@@ -47,7 +62,7 @@ class Club extends Model
 
 	public function followers()
 	{
-		return $this->belongsToMany('App\User', 'followers', 'club_id', 'user_id');
+		return $this->belongsToMany('App\User', 'followers', 'followable_id', 'user_id');
 	}
 
 	public function photos()
