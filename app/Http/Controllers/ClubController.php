@@ -65,40 +65,56 @@ class ClubController extends Controller
 
     public function info(Club $club)
     {
+        $club->followers_count = $club->followers()->count();
+        $club->phones;
+        $club->info;
+
     	if(!Auth::check())
     	{
-    		return Response::json ([
-    				'club' => $club,
-    				'teacher_status' => 'teacher',
-    				'follow_status' => 'follow',
-    				'request_status' => 'trainer'
-    			]);
+            return Response::json ([
+    			'club' => $club,
+                'status_type' => 'guest',
+    		]);
     	}
 				
 		$member = $club->members()->where('user_id', '=', Auth::user()->id)->first();
 
     	if($member)
     	{
-    		$follow_status = 'unfollow';
-    		$teacher_status = 'deteacher';
-
-    		if(self::isManager($member->pivot->type)) $request_status = 'manager';
-    		if(self::isTeacher($member->pivot->type)) $request_status = 'teacher';
-            if(self::isReception($member->pivot->type)) $request_status = 'reception';
+    		if(self::isManager($member->pivot->type)) $status_type = 'manager';
+    		if(self::isTeacher($member->pivot->type)) $status_type = 'teacher';
+            if(self::isReception($member->pivot->type)) $status_type = 'reception';
     	}
     	else
     	{
-	    	$request_status = Auth::user()->hasClubRequest($club->id) ? "untrainer" : "trainer";
-	    	$follow_status = Auth::user()->isFollowed($club->id) ? "unfollow" : "follow";
-	    	$teacher_status = "teacher";
+            $status_type = Auth::user()->isFollowed($club->id) ? "follower" : "user";
+	    	//$request_status = Auth::user()->hasClubRequest($club->id) ? "untrainer" : "trainer";
+	    	//$follow_status = Auth::user()->isFollowed($club->id) ? "unfollow" : "follow";
+	    	//$teacher_status = "teacher";
     	}
 
     	return Response::json ([
-    			'club' => $club,
-    			'teacher_status' => $teacher_status,
-    			'follow_status' => $follow_status,
-    			'request_status' => $request_status,
+    	    'club' => $club,
+    		'status_type' => $status_type,
     	]);
+    }
+
+    public function activeTeachers(Club $club)
+    {
+        $teachers = $club->activeTeachers;
+        return Response::json([
+            'code' => 0,
+            'result' => $teachers,
+        ]);
+    }
+
+    public function activeTrainers(Club $club)
+    {
+        $trainers = $club->activeTrainers;
+        return Response::json([
+            'code' => 0,
+            'result' => $trainers
+        ]);
     }
 
     public function onlineUsers(Club $club)
@@ -270,8 +286,10 @@ class ClubController extends Controller
         }
 
         $widget_content = 'home-default';
-        $menu = 'home'; 
 
-		return view('club')->with(compact('widget_header', 'widget_content','widget_footer', 'id', 'menu'));
+        $menu = 'home'; 
+        $isOwner = $this->checkManager($club) ? 'Y' : 'N';
+
+		return view('club')->with(compact('widget_header', 'widget_content','widget_footer', 'id', 'menu', 'isOwner'));
     }
 }
