@@ -17,6 +17,7 @@
 
 		@else
 			<component id="{{$id}}" 
+					   :is-manager="isManager"
 				       :is="content">
 		@endif
 	    	</component>
