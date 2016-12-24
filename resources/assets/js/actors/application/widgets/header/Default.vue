@@ -24,7 +24,7 @@
 								<span class="number-label">TRAINERS</span>
 							</a>
 							<a class="info-number border-right">
-								<span class="number">2,300</span>
+								<span class="number">{{club.followers_count}}</span>
 								<br/>
 								<span class="number-label">FOLLOWERS</span>
 							</a>
@@ -35,7 +35,7 @@
 							</a>
 							<div class="buttons float-right"> 
 								<a class="fit-hollow-btn float-right">
-									+ Follow 
+									{{$t(status_type)}}
 								</a>
 							</div>
 						</div>
@@ -44,45 +44,15 @@
 								<label>
 									ACTIVE TEACHERS
 								</label>
-								<ul class="active-people">
-									<li>
-										<a>
-											<img src="../images/site/cropped.jpg" width="25"  height="25" />
-										</a>
-									</li>
-									<li>
-										<a>
-											<img src="../images/site/cropped.jpg" width="25"  height="25"/>
-										</a>
-									</li>
-									<li>
-										<a>
-											<img src="../images/site/cropped.jpg" width="25"  height="25"/>
-										</a>
-									</li>
-								</ul>
+								
+								<active-teachers :club-id="id"></active-teachers>
 							</div>
 							<div class="active-list">
 								<label>
 									ACTIVE MEMBERS
 								</label>
-								<ul class="active-people">
-									<li>
-										<a>
-											<img src="../images/site/cropped.jpg" width="25"  height="25" />
-										</a>
-									</li>
-									<li>
-										<a>
-											<img src="../images/site/cropped.jpg" width="25"  height="25"/>
-										</a>
-									</li>
-									<li>
-										<a>
-											<img src="../images/site/cropped.jpg" width="25"  height="25"/>
-										</a>
-									</li>
-								</ul>
+
+								<active-trainers :club-id="id"></active-trainers>
 							</div>
 							<div class="active-list float-right border-left">
 								<label>
@@ -91,11 +61,13 @@
 								<table>
 									<tr>
 										<td><i class="fa fa-phone"></i> </td>
-										<td>8621-6748</td>
+										<td v-for="phone in club.phones">
+											{{phone.value}}
+										</td>
 									</tr>
 									<tr>
 										<td><i class="fa fa-clock-o"></i> </td>
-										<td>Hours: 9:00 - 21:00 <span class="open"> open </span></td>
+										<td>Hours: {{club.info.open_time}} - {{club.info.close_time}} <span class="open"> open </span></td>
 									</tr>
 								</table>
 							</div>
@@ -141,6 +113,9 @@
 </template>
 
 <script>
+	import ActiveTeachers from '../../components/ActiveTeachers.vue'
+	import ActiveTrainers from '../../components/ActiveTrainers.vue'
+
 	export default {
 		props : {
 			id : {
@@ -160,11 +135,7 @@
 		data : function () {
 			return {
 				club : [],
-				follow_status : '',
-				teacher_status : '',
-				request_status : '',
-				lang_mn : [],
-				lang_eng : [],
+				status_type : 'guest',
 			}
 		},
 
@@ -175,11 +146,10 @@
 			},
 
 			getClubHeaderContent : function() {
-				this.$http.get(this.$env.get('APP_URI') + 'api/club/'+ this.id +'/club-info').then((response) => {
+				this.$http.get(this.$env.get('APP_URI') + 'api/club/'+ this.id +'/info').then((response) => {
+					debugger
 			        this.club = response.data.club;
-			        this.follow_status = response.data.follow_status;
-			        this.teacher_status = response.data.teacher_status;
-			        this.request_status = response.data.request_status;
+			        this.status_type = response.data.status_type;
 			    }, (response) => {
 
 			    });
@@ -232,6 +202,10 @@
 		    	manager : 'Менежер',
 		    	reception : 'Ресефшин',
 			}
+		},
+
+		components : {
+			ActiveTeachers, ActiveTrainers
 		}
 	}
 </script>
