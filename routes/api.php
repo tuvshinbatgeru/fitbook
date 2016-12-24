@@ -71,8 +71,10 @@ Route::group(['middleware' => ['auth:api']], function () {
 	//Club info apis
 	Route::group(['prefix' => '/club/{club}/'], function () {
 
-		Route::get('club-info', 'ClubController@info');
+		Route::get('info', 'ClubController@info');
 		Route::get('online', 'ClubController@onlineUsers');
+		Route::get('active/teachers', 'ClubController@activeTeachers');
+		Route::get('active/trainers', 'ClubController@activeTrainers');
 		Route::post('follow', 'UserController@toggleFollow');
 		Route::post('request', 'UserController@toggleRequest');
 

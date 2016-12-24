@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Storage;
 |
 */
 
-	Auth::loginUsingId(1);
+	Auth::loginUsingId(2);
 	//Auth::loginUsingId(1);
 
 	Route::get('/userout', function() {
@@ -65,7 +65,8 @@ use Illuminate\Support\Facades\Storage;
 	Route::get('/dashboard', function() {
 
 		if(Auth::check()) {
-			$club = Auth::user()->clubAsReception()->first();
+			//$club = Auth::user()->clubAsReception()->first();
+			$club = \App\Club::find(1);
 			return view('auth.reception.dashboard')->with('club', $club);
 		}
 
