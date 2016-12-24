@@ -16,7 +16,7 @@ class CreateClubInfoTable extends Migration
         Schema::create('club_info', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('club_id')->unsigned()->integer();
-            $table->integer('is_fulltime');
+            $table->enum('is_fulltime', ['N', 'Y']);
             $table->timeTz('open_time');
             $table->timeTz('close_time');
             $table->timestamps();

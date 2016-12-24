@@ -16,6 +16,7 @@ class CreateOnlineMemberTable extends Migration
             $table->integer('user_id')->unsigned()->index();
             $table->integer('club_id')->unsigned()->index();
             $table->integer('subscription_id')->unsigned()->index();
+            $table->tinyInteger('type');
             $table->timestamp('start_time');
             $table->timestamps();
 
